@@ -565,12 +565,12 @@ public class CRISPtoPDDL {
 		String problemname = xp("/crispproblem/@name");
 
 		System.err.println("Writing domain file ...");
-		PrintWriter dw = new PrintWriter(new FileWriter(problemname + "-domain-experimental.lisp"));
+		PrintWriter dw = new PrintWriter(new FileWriter(problemname + "-domain.lisp"));
 		domain.writePddl(dw);
 		dw.close();
 
 		System.err.println("Writing problem file ...");
-		PrintWriter pw = new PrintWriter(new FileWriter(problemname + "-problem-experimental.lisp"));
+		PrintWriter pw = new PrintWriter(new FileWriter(problemname + "-problem.lisp"));
 		problem.writePddl(pw);
 		pw.close();
 
@@ -582,7 +582,7 @@ public class CRISPtoPDDL {
 		Problem problem = new Problem();
 		
 		long start = System.currentTimeMillis();
-		convert("../../proj/crisp/grammar/problem-acl-easy.xml", domain, problem);
+		convert(args[0], domain, problem);
 		long end = System.currentTimeMillis();
 		
 		System.err.println("Total runtime: " + (end-start) + "ms");

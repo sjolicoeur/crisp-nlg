@@ -7,23 +7,9 @@
 
 package de.saar.chorus.term;
 
-import java.io.StringReader;
 import java.util.Set;
 
-import de.saar.chorus.term.parser.ParseException;
-import de.saar.chorus.term.parser.TermParser;
-
 public abstract class Term {
-    public static Term parse(String string) {
-        try {
-            TermParser p = new TermParser(new StringReader(string));
-            return p.term();
-        } catch(ParseException e) {
-            System.err.println(e);
-            return null;
-        }
-    }
-    
     public boolean isVariable() {
         return getType() == Type.VARIABLE;
     }

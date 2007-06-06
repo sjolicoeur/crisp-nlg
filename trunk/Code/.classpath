@@ -6,12 +6,12 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/home/Alex/software/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Library/Java/Extensions/GecodeJ.jar"/>
 	<classpathentry exported="true" kind="lib" path="bin"/>
-	<classpathentry kind="lib" path="/Applications/NetBeans.app/Contents/Resources/NetBeans/platform6/modules/org-jdesktop-layout.jar"/>
-	<classpathentry kind="lib" path="/Applications/NetBeans.app/Contents/Resources/NetBeans/platform6/modules/ext/swing-layout-1.0.jar"/>
-	<classpathentry kind="lib" path="/Applications/eclipse/plugins/org.codehaus.groovy.eclipse_1.0.0.20070118/lib/groovy-all-1.0.jar"/>
-	<classpathentry kind="lib" path="/Applications/eclipse/plugins/org.codehaus.groovy.eclipse_1.0.0.20070118/lib/commons-lang-2.1.jar"/>
-	<classpathentry kind="lib" path="/Applications/eclipse/plugins/org.codehaus.groovy.eclipse_1.0.0.20070118/lib/commons-io-1.2.jar"/>
+	<classpathentry kind="lib" path="packages/commons-io-1.2.jar"/>
+	<classpathentry kind="lib" path="packages/commons-lang-2.1.jar"/>
+	<classpathentry kind="lib" path="packages/groovy-all-1.0.jar"/>
+	<classpathentry kind="lib" path="packages/GecodeJ.jar"/>
+	<classpathentry kind="lib" path="packages/org-jdesktop-layout.jar"/>
+	<classpathentry kind="lib" path="packages/swing-layout-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

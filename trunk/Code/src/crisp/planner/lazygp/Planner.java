@@ -77,6 +77,8 @@ public class Planner {
 			System.out.println(state.get(0));
 		}
 		
+		System.err.print("\nBuilding initial planning graph: ");
+		
 		while( !getFinalState().isGoalState() || getPlanGraphSize() < MIN_PLAN_DEPTH ) {
 			System.err.print(".");
 			expandGraphOneStep();
@@ -88,7 +90,7 @@ public class Planner {
 			}
 		}
 		
-		System.err.println();
+		System.err.println(" done.");
 		
 		
 		if( DEBUG && getFinalState().isGoalState() ) {
@@ -109,7 +111,7 @@ public class Planner {
 			minUnsatisfiedGoals = Integer.MAX_VALUE;
 			
 			if( SHOW_TIMES_PER_DEPTH ) {
-				System.err.print("Search at depth " + getPlanGraphSize() + ": ");
+				System.err.print("\nSearch at depth " + getPlanGraphSize() + ": ");
 			}
 					
 			long start = System.currentTimeMillis();
@@ -121,7 +123,6 @@ public class Planner {
 						+ failuresNogood + " due to nogood), "
 						+ (didSearch-start) + "ms.");
 				printNogoodProfile(getFinalState().getStep());
-				System.err.println("Minimal number of unsatisfied goals: " + minUnsatisfiedGoals);
 			}
 			
 			if( !foundPlan ) {

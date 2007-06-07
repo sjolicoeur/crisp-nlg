@@ -35,7 +35,7 @@ public class Planner {
 	private long failures, calls, failuresNogood;
 	private int minUnsatisfiedGoals;
 	
-	Planner(Domain domain, Problem problem) {
+	public Planner(Domain domain, Problem problem) {
 		this.domain = domain;
 		this.problem = problem;
 		
@@ -71,7 +71,7 @@ public class Planner {
 		return newState;
 	}
 	
-	private boolean computeGraph() {
+	public boolean computeGraph() {
 		if( DEBUG ) {
 			System.out.println("Initial state:");
 			System.out.println(state.get(0));
@@ -98,8 +98,8 @@ public class Planner {
 		return getFinalState().isGoalState();
 	}
 	
-	private List<List<ActionInstance>> backwardsSearch() {
-		List<List<ActionInstance>> plans = new ArrayList<List<ActionInstance>>();
+	public List<Plan> backwardsSearch() {
+		List<Plan> plans = new ArrayList<Plan>();
 		boolean foundPlan = false;
 
 		while( !foundPlan ) {
@@ -113,7 +113,7 @@ public class Planner {
 			}
 					
 			long start = System.currentTimeMillis();
-			foundPlan = doBackwardsSearch(getFinalState(), getFinalState().getGoalLiterals(), new ArrayList<ActionInstance>(), plans);
+			foundPlan = doBackwardsSearch(getFinalState(), getFinalState().getGoalLiterals(), new Plan(), plans);
 			long didSearch = System.currentTimeMillis();
 			
 			if( SHOW_TIMES_PER_DEPTH ) {
@@ -171,7 +171,7 @@ public class Planner {
 	}
 
 	// returns true iff found plan
-	private boolean doBackwardsSearch(State state, Set<Integer> goals, List<ActionInstance> partialPlan, List<List<ActionInstance>> plans) {
+	private boolean doBackwardsSearch(State state, Set<Integer> goals, Plan partialPlan, List<Plan> plans) {
 		if( SHOW_SEARCH_TRACE ) {
 			System.err.println("\n\n" + partialPlan);
 			System.err.println("goals: " + state.decodeLiterals(goals, new HashSet<Integer>()));
@@ -207,7 +207,7 @@ public class Planner {
 		
 		if( finished ) {
 			//System.err.println("\n\n\n\n\n  ***** FOUND A PLAN! *****");
-			List<ActionInstance> plan = new ArrayList<ActionInstance>(partialPlan);
+			Plan plan = new Plan(partialPlan);
 			Collections.reverse(plan);
 			plans.add(plan);
 			
@@ -291,14 +291,14 @@ public class Planner {
 
         	//System.out.println("Runtime: " + (end-start) + "ms\n");
 
-        	List<List<ActionInstance>> plans = p.backwardsSearch();
+        	List<Plan> plans = p.backwardsSearch();
         	long end2 = System.currentTimeMillis();
 //      	System.err.println("Plans: " + plans);
 
 
         	System.out.println("\n\n\nFound " + plans.size() + " plan(s):");
-        	for( List<ActionInstance> plan : plans ) {
-        		System.out.println("\n" + planToString(plan));
+        	for( Plan plan : plans ) {
+        		System.out.println("\n" + plan);
         	}
 
         	System.out.println("\n\nRuntime:");
@@ -315,15 +315,7 @@ public class Planner {
        
 	}
 	
-	public static String planToString(List<ActionInstance> plan) {
-		StringBuilder buf = new StringBuilder();
-		
-		for( int i = 0; i < plan.size(); i++ ) {
-			buf.append("" + i + ": " + plan.get(i) + "\n");
-		}
-		
-		return buf.toString();
-	}
+	
 	
 	private State getFinalState() {
 		return state.get(getPlanGraphSize());

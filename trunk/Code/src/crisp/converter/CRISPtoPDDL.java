@@ -41,13 +41,14 @@ import de.saar.chorus.term.Term;
 import de.saar.chorus.term.Variable;
 
 public class CRISPtoPDDL {
-	private static Document problemdoc;
-	private static Document grammardoc;
-	private static XPath xpath;
+	private static Document problemdoc;  // the XML document with the problem specification
+	private static Document grammardoc;  // the XML document with the LTAG grammar
+	private static XPath xpath;          // an XPath object for executing XPath queries
 	
-	private static int plansize;
-	private static int maximumArity = 0;
+	private static int plansize;         // the maximum plan size as specified in the problem file
+	private static int maximumArity = 0; // the maximum arity of any predicate in the problem file
 	
+	// some precompiled XPath expressions
 	private static XPathExpression xpathSem;
 	private static XPathExpression xpathSemContent;
 	private static XPathExpression xpathPragCondition;
@@ -57,28 +58,21 @@ public class CRISPtoPDDL {
 	private static XPathExpression xpathNonSubstitutionNode;
 
 	
-	private static IterableNodeList nl(Object o) {
-		return new IterableNodeList((NodeList) o);
-	}
 	
-	private static String xp(String xpathExpr) throws XPathExpressionException {
-		return xpath.evaluate(xpathExpr, problemdoc);
-	}
+	/************** methods for the CRISP-to-PDDL conversion ***************/
 	
-	/*
-	private static String xg(String xpathExpr) throws XPathExpressionException {
-		return xpath.evaluate(xpathExpr, grammardoc);
-	}
-	*/
-	
-	private static Object xp(String xpathExpr, QName type) throws XPathExpressionException {
-		return xpath.evaluate(xpathExpr, problemdoc, type);
-	}
-	
-	private static Object xg(String xpathExpr, QName type) throws XPathExpressionException {
-		return xpath.evaluate(xpathExpr, grammardoc, type);
-	}
-	
+	/**
+	 * Converts the CRISP specification in the problem file with the given
+	 * name into a PDDL domain and problem object.
+	 * 
+	 * @param problemfilename
+	 * @param domain
+	 * @param problem
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws XPathExpressionException
+	 */
 	public static void convert(String problemfilename, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
 		parseDocuments(problemfilename);
 		
@@ -98,63 +92,79 @@ public class CRISPtoPDDL {
 		computeInitialState(domain, problem);
 		computeDomain(domain, problem);
 		computeGoal(domain, problem);
+		
+		problem.addEqualityLiterals();
 	}
 	
+	/**
+	 * Compute the goal specification for the given CRISP problem.  This becomes the
+	 * "goal" clause in the PDDL problem. 
+	 * 
+	 * @param domain
+	 * @param problem
+	 */
 	private static void computeGoal(Domain domain, Problem problem) {
 		TypedList tlNodeIndiv = new TypedList();
-		  tlNodeIndiv.addItem("?u", "syntaxnode");
-		  tlNodeIndiv.addItem("?x", "individual");
-		  
-		  TypedList tlCatNode = new TypedList();
-		  tlCatNode.addItem("?a", "category");
-		  tlCatNode.addItem("?u", "syntaxnode");
-		  
-		  Goal noSubst = new crisp.planningproblem.goal.Universal(tlCatNode,
-				  new crisp.planningproblem.goal.Literal("subst(?a,?u)", false));
-		  Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
-				  new crisp.planningproblem.goal.Literal("distractor(?u,?x)", false));
-		  
-		  List<Goal> finalStateGoals = new ArrayList<Goal>();
-		  
-		  finalStateGoals.add(noSubst);
-		  finalStateGoals.add(noDistractors);
-		  
-		 
-		  for( int i = 1; i <= maximumArity; i++ ) {
-			  TypedList tlPredicate = new TypedList();
-			  tlPredicate.addItem("?P", "predicate");
-			  
-			  List<Term> subterms = new ArrayList<Term>();
-			  subterms.add(new Variable("?P"));
-			  
-			  for( int j = 1; j <= i; j++ ) {
-				  	tlPredicate.addItem("?x" + j, "individual");
-				  	subterms.add(new Variable("?x" + j));
-			  }
+		tlNodeIndiv.addItem("?u", "syntaxnode");
+		tlNodeIndiv.addItem("?x", "individual");
 
-			  finalStateGoals.add(new crisp.planningproblem.goal.Universal(tlPredicate, 
-		  			new crisp.planningproblem.goal.Literal(new Compound("needtoexpress-" + i, subterms), false)));
-		  }
-		  
-		  
-		  problem.setGoal(new crisp.planningproblem.goal.Conjunction(finalStateGoals));
-		  
+		TypedList tlCatNode = new TypedList();
+		tlCatNode.addItem("?a", "category");
+		tlCatNode.addItem("?u", "syntaxnode");
 
-		  for( int i = 1; i <= maximumArity; i++ ) {
-			  Predicate predNTE = new Predicate(); predNTE.setLabel("needtoexpress-" + i);
-			  predNTE.addVariable("?P", "predicate"); 
-			  for( int j = 1; j <= i; j++ ) {
-				  predNTE.addVariable("?x" + j, "individual");
-			  }
-			  
-			  domain.addPredicate(predNTE);
-		  }
+		// collect all goals in this list
+		List<Goal> finalStateGoals = new ArrayList<Goal>();
+
+		// no positive "subst" literals in the goal state
+		Goal noSubst = new crisp.planningproblem.goal.Universal(tlCatNode,
+				new crisp.planningproblem.goal.Literal("subst(?a,?u)", false));
+		
+		// no positive "distractor" literals in the goal state
+		Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
+				new crisp.planningproblem.goal.Literal("distractor(?u,?x)", false));
+
+		finalStateGoals.add(noSubst);
+		finalStateGoals.add(noDistractors);
+
+		// no positive needtoexpress-* literals, for any arity 
+		for( int i = 1; i <= maximumArity; i++ ) {
+			TypedList tlPredicate = new TypedList();
+			tlPredicate.addItem("?P", "predicate");
+			
+			Predicate predNTE = new Predicate(); 
+			predNTE.setLabel("needtoexpress-" + i);
+			predNTE.addVariable("?P", "predicate"); 
+
+			List<Term> subterms = new ArrayList<Term>();
+			subterms.add(new Variable("?P"));
+
+			for( int j = 1; j <= i; j++ ) {
+				tlPredicate.addItem("?x" + j, "individual");
+				subterms.add(new Variable("?x" + j));
+				
+				predNTE.addVariable("?x" + j, "individual");
+			}
+
+			finalStateGoals.add(new crisp.planningproblem.goal.Universal(tlPredicate, 
+					new crisp.planningproblem.goal.Literal(new Compound("needtoexpress-" + i, subterms), false)));
+			
+			domain.addPredicate(predNTE);
+		}
+
+
+		problem.setGoal(new crisp.planningproblem.goal.Conjunction(finalStateGoals));
 	}
 
-	private static String getAttribute(Node node, String attributeName) {
-		return node.getAttributes().getNamedItem(attributeName).getTextContent();
-	}
 	
+	
+	/**
+	 * Computes the domain of the PDDL planning problem.  In particular, this method
+	 * generates the actions.
+	 * 
+	 * @param domain
+	 * @param problem
+	 * @throws XPathExpressionException
+	 */
 	private static void computeDomain(Domain domain, Problem problem) throws XPathExpressionException {
 		Map<String,Node> trees = new HashMap<String, Node>();
 		Map<String,List<String>> roles = new HashMap<String, List<String>>();
@@ -206,7 +216,6 @@ public class CRISPtoPDDL {
 			IterableNodeList pragEffectNodes = nl(xpathPragEffect.evaluate(treeElement, XPathConstants.NODESET));
 			IterableNodeList nonSubstitutionNodes = nl(xpathNonSubstitutionNode.evaluate(tree, XPathConstants.NODESET));
 			IterableNodeList substitutionNodes = nl(xpathSubstitutionNode.evaluate(tree, XPathConstants.NODESET));
-			// System.err.println("word: " + word + ", tree: " + treeName);
 			
 			for( int i = 1; i <= plansize; i++ ) {
 				Predicate pred = new Predicate();
@@ -234,12 +243,6 @@ public class CRISPtoPDDL {
 				for( String role : roles.get(treeName) ) {
 					pred.addVariable(I.get(n.get(role)), "individual");
 				}
-
-				/*
-				System.err.println(pred);
-				System.err.println(n);
-				System.err.println(I);
-				*/
 				
 				// count the step
 				goals.add(new crisp.planningproblem.goal.Literal("step(step" + i + ")", true));
@@ -389,33 +392,15 @@ public class CRISPtoPDDL {
 			}
 		}
 	}
-
-	private static Term substituteVariablesForRoles(Term term, Map<String, String> n, Map<String, String> I) {
-		if( term instanceof Compound ) {
-			  Compound t = (Compound) term;
-			  List<Term> newChildren = new ArrayList<Term>();
-			  
-			  for( Term sub : t.getSubterms()) {
-				  newChildren.add(substituteVariablesForRoles(sub, n, I));
-			  }
-			  
-			  return new Compound(t.getLabel(), newChildren);
-		  } else if( term instanceof Constant ) {
-			  Constant t = (Constant) term;
-			  if( n.containsKey(t.getName()) ) {
-				  return new Variable(I.get(n.get(t.getName())));
-			  } else {
-				  return t;
-			  }
-		  } else {
-			  return term;
-		  }
-	}
-
-	private static String normalizeTreename(String treename) {
-		return treename.replace("i.", "init-").replace("a.", "aux-");
-	}
-
+	
+	/**
+	 * Computes the initial state for the PDDL problem.  In particular, this encodes
+	 * the knowledge base and the communicative goal.
+	 * 
+	 * @param domain
+	 * @param problem
+	 * @throws XPathExpressionException
+	 */
 	private static void computeInitialState(Domain domain, Problem problem) throws XPathExpressionException {
 		Set<Term> trueAtoms = new HashSet<Term>();
 		
@@ -455,40 +440,14 @@ public class CRISPtoPDDL {
 		problem.addToInitialState(TermParser.parse("step(step1)"));
 	}
 
-	
-	private static Term flattenTerm(Compound t, String newLabel) {
-		List<Term> subterms = new ArrayList<Term>();
-		
-		subterms.add(new Constant(t.getLabel()));
-		subterms.addAll(t.getSubterms());
-		
-		return new Compound(newLabel + "-" + t.getSubterms().size(), subterms);
-	}
-	
-
-	private static void addIndividualConstants(Term term, Domain domain) {
-		if( term instanceof Compound ) {
-			for( Term sub : ((Compound) term).getSubterms() ) {
-				addIndividualConstants(sub, domain);
-			}
-		} else if( term instanceof Constant ) {
-			domain.addConstant(((Constant) term).getName(), "individual");
-		}
-	}
-
-	//	ASSUMPTION: term is a Compound
-	private static Predicate makeSemanticPredicate(Term term) {
-		Predicate ret = new Predicate();
-		Compound t = (Compound) term;
-
-		ret.setLabel(t.getLabel());
-		for( int i = 1; i <= t.getSubterms().size(); i++ ) { 
-			ret.addVariable("?y" + i, "individual");
-		}
-
-		return ret;
-	}
-	
+	/**
+	 * Sets up the PDDL domain by registering the requirements, types, and a bunch of
+	 * constants.  
+	 * 
+	 * @param domain
+	 * @param problem
+	 * @throws XPathExpressionException
+	 */
 	private static void setupDomain(Domain domain, Problem problem) throws XPathExpressionException {
 		domain.clear();
 		problem.clear();
@@ -538,9 +497,22 @@ public class CRISPtoPDDL {
 		domain.addConstant(xp("/crispproblem/@index"), "individual");
 	}
 
+	
+	
+	
+	/******** input, output, main program **********/
+	
+	/**
+	 * Parses the XML document given in problemfilename, as well as the grammar file
+	 * referenced from that document.
+	 * 
+	 * @param problemfilename
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws XPathExpressionException
+	 */
 	private static void parseDocuments(String problemfilename) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
-		long start = System.currentTimeMillis();
-		
 		// parse XML document
 		File problemfile = new File(problemfilename);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -555,28 +527,39 @@ public class CRISPtoPDDL {
 		// obtain and parse grammar file
 		File grammarFile = new File(problemfile.getParentFile(), xpath.evaluate("/crispproblem/@grammar", problemdoc));
 		grammardoc = builder.parse(grammarFile);
-		
-		long end = System.currentTimeMillis();
-		
-		System.err.println("Time for parsing: " + (end-start) + "ms");
 	}
 	
-	private static void writeToDisk(Domain domain, Problem problem) throws XPathExpressionException, IOException {
+	/**
+	 * Writes the PDDL domain and problem to disk.
+	 * 
+	 * @param domain
+	 * @param problem
+	 * @throws XPathExpressionException
+	 * @throws IOException
+	 */
+	public static void writeToDisk(Domain domain, Problem problem, String filenamePrefix) throws XPathExpressionException, IOException {
 		String problemname = xp("/crispproblem/@name");
 
 		System.err.println("Writing domain file ...");
-		PrintWriter dw = new PrintWriter(new FileWriter(problemname + "-domain.lisp"));
+		PrintWriter dw = new PrintWriter(new FileWriter(filenamePrefix + problemname + "-domain.lisp"));
 		domain.writePddl(dw);
 		dw.close();
 
 		System.err.println("Writing problem file ...");
-		PrintWriter pw = new PrintWriter(new FileWriter(problemname + "-problem.lisp"));
+		PrintWriter pw = new PrintWriter(new FileWriter(filenamePrefix + problemname + "-problem.lisp"));
 		problem.writePddl(pw);
 		pw.close();
 
 		System.err.println("Done.");
 	}
 
+	/**
+	 * Main program.  When running the converter from the command line, pass
+	 * the name of the CRISP problem file as the first argument.
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 		Domain domain = new Domain();
 		Problem problem = new Problem();
@@ -590,6 +573,173 @@ public class CRISPtoPDDL {
 		System.out.println("Domain: " + domain);
 		System.out.println("Problem: " + problem);
 		
-		writeToDisk(domain, problem);
+		writeToDisk(domain, problem, "");
+	}
+	
+	
+	
+	/*********** auxiliary functions *************/
+	
+
+	/**
+	 * Replaces all occurrences of semantic roles in the given term by the
+	 * variables that correspond to them.  That is, each occurrence of a role
+	 * r is replaced by I(n(r)) as defined in the paper.
+	 * 
+	 * @param term
+	 * @param n a mapping of role names to node identities
+	 * @param I a mapping of node identities to variables
+	 * @return
+	 */
+	private static Term substituteVariablesForRoles(Term term, Map<String, String> n, Map<String, String> I) {
+		if( term instanceof Compound ) {
+			  Compound t = (Compound) term;
+			  List<Term> newChildren = new ArrayList<Term>();
+			  
+			  for( Term sub : t.getSubterms()) {
+				  newChildren.add(substituteVariablesForRoles(sub, n, I));
+			  }
+			  
+			  return new Compound(t.getLabel(), newChildren);
+		  } else if( term instanceof Constant ) {
+			  Constant t = (Constant) term;
+			  if( n.containsKey(t.getName()) ) {
+				  return new Variable(I.get(n.get(t.getName())));
+			  } else {
+				  return t;
+			  }
+		  } else {
+			  return term;
+		  }
+	}
+
+	/**
+	 * Translates XTAG style tree names into tree names that PDDL will accept.
+	 *  
+	 * @param treename
+	 * @return
+	 */
+	private static String normalizeTreename(String treename) {
+		return treename.replace("i.", "init-").replace("a.", "aux-");
+	}
+	
+	/**
+	 * Translates a term into one in which the predicate symbol of the original
+	 * term becomes the first argument.  The call flattenTerm(f(a,b), "foo") will
+	 * return the term foo-2(f,a,b); the 2 is the arity of the original term.
+	 * 
+	 * @param t
+	 * @param newLabel
+	 * @return
+	 */
+	private static Term flattenTerm(Compound t, String newLabel) {
+		List<Term> subterms = new ArrayList<Term>();
+		
+		subterms.add(new Constant(t.getLabel()));
+		subterms.addAll(t.getSubterms());
+		
+		return new Compound(newLabel + "-" + t.getSubterms().size(), subterms);
+	}
+	
+
+	/**
+	 * Adds all constants that occur as arguments of the term to the domain.
+	 * 
+	 * @param term
+	 * @param domain
+	 */
+	private static void addIndividualConstants(Term term, Domain domain) {
+		if( term instanceof Compound ) {
+			for( Term sub : ((Compound) term).getSubterms() ) {
+				addIndividualConstants(sub, domain);
+			}
+		} else if( term instanceof Constant ) {
+			domain.addConstant(((Constant) term).getName(), "individual");
+		}
+	}
+
+	/**
+	 * Translates a Term into a Predicate.  This method assumes that the argument
+	 * is really an object of class Compound.
+	 * 
+	 * @param term
+	 * @return
+	 */
+	private static Predicate makeSemanticPredicate(Term term) {
+		Predicate ret = new Predicate();
+		Compound t = (Compound) term;
+
+		ret.setLabel(t.getLabel());
+		for( int i = 1; i <= t.getSubterms().size(); i++ ) { 
+			ret.addVariable("?y" + i, "individual");
+		}
+
+		return ret;
+	}
+	
+	
+	
+	
+	
+	
+	/******* XML auxiliary methods ************/
+	
+	/**
+	 * Returns the value of the attribute with name "attributeName" from the
+	 * XML element "node".
+	 * 
+	 * @param node
+	 * @param attributeName
+	 * @return
+	 */
+	private static String getAttribute(Node node, String attributeName) {
+		return node.getAttributes().getNamedItem(attributeName).getTextContent();
+	}
+	
+	/**
+	 * Convert the result of a NODESET XPath call to an IterableNodeList.
+	 * 
+	 * @param o the result of a call to xpath.evaluate(..., XPathConstants.NODESET)
+	 * @return an IterableNodeList containing these nodes
+	 */
+	private static IterableNodeList nl(Object o) {
+		return new IterableNodeList((NodeList) o);
+	}
+	
+	/**
+	 * Evaluate the xpathExpr on the "problem" XML document.
+	 * 
+	 * @param xpathExpr
+	 * @return
+	 * @throws XPathExpressionException
+	 */
+	private static String xp(String xpathExpr) throws XPathExpressionException {
+		return xpath.evaluate(xpathExpr, problemdoc);
+	}
+	
+	/**
+	 * Evaluate the xpathExpr on the "problem" XML document and interpret
+	 * the result as specified by the "type" parameter.
+	 * 
+	 * @param xpathExpr
+	 * @param type
+	 * @return
+	 * @throws XPathExpressionException
+	 */
+	private static Object xp(String xpathExpr, QName type) throws XPathExpressionException {
+		return xpath.evaluate(xpathExpr, problemdoc, type);
+	}
+	
+	/**
+	 * Evaluate the xpathExpr on the "grammar" XML document and interpret
+	 * the result as specified by the "type" parameter.
+	 * 
+	 * @param xpathExpr
+	 * @param type
+	 * @return
+	 * @throws XPathExpressionException
+	 */
+	private static Object xg(String xpathExpr, QName type) throws XPathExpressionException {
+		return xpath.evaluate(xpathExpr, grammardoc, type);
 	}
 }

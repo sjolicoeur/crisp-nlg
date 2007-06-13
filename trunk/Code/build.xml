@@ -10,10 +10,10 @@
     <property name="dist.dir" value="dist" />
 
     <property name="sourcefiles"
-	      value="de/saar/**/*.java,crisp/tools/**/*.java,crisp/termparser/**/*.java,crisp/planningproblem/**/*.java,crisp/planner/lazygp/**/*.java,crisp/pddl/**/*.java,crisp/main/*.java,crisp/converter/*.java" />
+	      value="de/saar/**/*.java,crisp/termparser/**/*.java,crisp/planningproblem/**/*.java,crisp/planner/lazygp/**/*.java,crisp/pddl/**/*.java,crisp/main/*.java,crisp/converter/*.java" />
 
     <property name="classfiles"
-	      value="de/saar/**/*,crisp/tools/**/*,crisp/termparser/**/*,crisp/planningproblem/**/*,crisp/planner/lazygp/**/*,crisp/pddl/**/*,crisp/main/*,crisp/converter/*" />
+	      value="de/saar/**/*,crisp/termparser/**/*,crisp/planningproblem/**/*,crisp/planner/lazygp/**/*,crisp/pddl/**/*,crisp/main/*,crisp/converter/*" />
 
 
 

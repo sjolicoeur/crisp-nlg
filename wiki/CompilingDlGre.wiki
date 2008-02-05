@@ -1,0 +1,17 @@
+#summary How to compile and run the DL-GRE tool.
+
+= Prerequisites =
+
+ * Apache Ant 1.6.2 or higher
+ * Java
+
+
+= Compiling =
+
+ * Check out the source tree from Google Code
+ * Go to the new directory
+ * type "ant"
+
+This should produce a file build/lib/DlGre.jar.
+
+You can run the program with the sample data as follows: java -jar build/lib/DlGre.jar.

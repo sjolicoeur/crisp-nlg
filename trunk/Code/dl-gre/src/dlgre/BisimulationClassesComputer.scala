@@ -60,7 +60,7 @@ class BisimulationClassesComputer(graph:Graph) {
    
    def extractQueue = {
      (for( val x <- queue.elements if x.isInstanceOf[Some[Subset]] ) 
-       yield (x match { case Some(subset) => subset })).toList
+       yield (x match { case Some(subset) => subset; case None => new Subset(Top(), graph) })).toList
    }
    
    def splitOverRoles = {

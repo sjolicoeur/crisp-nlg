@@ -8,7 +8,7 @@
 
 = Compiling =
 
- * Check out the source tree from Google Code
+ * Check out the source tree from Google Code (see the "source" tab)
  * Go to the new directory
  * type "ant"
 

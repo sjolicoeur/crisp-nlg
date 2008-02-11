@@ -79,6 +79,11 @@ class Graph() {
             yield new Edge(u, label, tgt)).toList
         }
         
+        def getAllEdges : List[Edge] = {
+          (for( val src <- edges; val pair <- src._2; val tgt <- pair._2 )
+            yield new Edge(src._1, pair._1, tgt)).toList
+        }
+        
         def hasEdge(src:String, role:String, tgt:String) : Boolean = {
           edges.getOrElse(src, new HashMap).getOrElse(role, new ArrayBuffer).contains(tgt);
         }

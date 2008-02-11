@@ -5,43 +5,46 @@ import scala.collection.mutable.Queue;
 import dlgre.formula._;
 
 class BisimulationClassesComputer(graph:Graph) {
-   val queue = new Queue[Option[Subset]]
-   
    def compute = {
+     val queue = new Queue[Option[Subset]]
+     
      queue += Some(new Subset(Top(), graph));
      
      // split over all (positive) literals
-     graph.getAllPredicates.foreach { p =>
-     	//println("\nProcessing predicate: " + p);
-             
-        forallQueue(queue, { (subset, queue) =>
-          if( subset.canSplitOverLiteral(p, true) ) {
-            val splittings = subset.splitOverLiteral(p, true);
-                           
-            //println("  -> split over " + p + ", new subsets: " + splittings);
-                           
-            queue += Some(splittings._1);
-            queue += Some(splittings._2);
-          } else {
-            queue += Some(subset);
-          }
-        });
-     }
+     splitOverLiterals(queue, graph.getAllPredicates);
      
      
      // now repeatedly split over roles to distinguished subsets
      var oldQueue : List[Subset] = Nil;
-     var newQueue = extractQueue;
+     var newQueue = extractQueue(queue);
      
      do {
-       //println ("\n\n ********** PASS ************\n\n");
-       
        oldQueue = newQueue;
-       splitOverRoles;
-       newQueue = extractQueue;
+       splitOverRoles(queue);
+       newQueue = extractQueue(queue);
      } while( oldQueue != newQueue );
 
      newQueue;
+   }
+   
+   def splitOverLiterals(queue: Queue[Option[Subset]], predicates: Collection[String]) = {
+     predicates.foreach { p =>
+          //println("\nProcessing predicate: " + p);
+          
+     forallQueue(queue, { (subset, queue) =>
+       if( subset.canSplitOverLiteral(p, true) ) {
+         val splittings = subset.splitOverLiteral(p, true);
+                        
+         //println("  -> split over " + p + ", new subsets: " + splittings);
+                        
+         queue += Some(splittings._1);
+         queue += Some(splittings._2);
+       } else {
+         queue += Some(subset);
+       }
+     });
+  }
+
    }
    
    def forallQueue(q : Queue[Option[Subset]], proc : (Subset,Queue[Option[Subset]]) => Unit) = {
@@ -58,13 +61,13 @@ class BisimulationClassesComputer(graph:Graph) {
      }
    }
    
-   def extractQueue = {
+   def extractQueue(queue : Queue[Option[Subset]]) = {
      (for( val x <- queue.elements if x.isInstanceOf[Some[Subset]] ) 
        yield (x match { case Some(subset) => subset; case None => new Subset(Top(), graph) })).toList
    }
    
-   def splitOverRoles = {
-     val elements = extractQueue;
+   def splitOverRoles(queue : Queue[Option[Subset]]) = {
+     val elements = extractQueue(queue);
      val roles = graph.getAllRoles;
      val localQueue = new Queue[Option[Subset]];
      

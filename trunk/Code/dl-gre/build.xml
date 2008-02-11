@@ -21,7 +21,7 @@
         <jar jarfile="${dl-gre.jar}">
             <fileset dir="${build.classes}" includes="dlgre/**,scala/**" />
             <manifest>
-                <attribute name="Main-Class" value="dlgre.Test" />
+                <attribute name="Main-Class" value="dlgre.Main" />
             </manifest>
         </jar>
         

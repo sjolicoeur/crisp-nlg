@@ -12,6 +12,13 @@
  * Go to the new directory
  * type "ant"
 
-This should produce a file build/lib/DlGre.jar.
+This should produce a file build/lib/DlGre.jar, which you can run with "java -jar" as usual.
 
-You can run the program with the sample data as follows: java -jar build/lib/DlGre.jar.
+
+= Running =
+
+The program expects the name of an XML domain specification as a command-line parameter. You can run it on the example data as follows:
+
+{{{
+java -jar build/lib/DlGre.jar examples/dale-haddock.xml
+}}}

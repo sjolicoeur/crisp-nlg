@@ -1,16 +1,23 @@
 package dlgre;
 
 import scala.collection.mutable.Queue;
+import scala.collection.mutable.Set;
 
 import dlgre.formula._;
 
-class BisimulationClassesComputer(graph:Graph) {
-   def compute = {
+object BisimulationClassesComputer {
+   // Computes the bisimulation classes of a graph.  The method returns a list of Subset objects
+   // representing the classes.
+   def compute(graph:Graph) = {
+     val roles = graph.getAllRoles;
+     
+     // the current classes
      val queue = new Queue[Option[Subset]]
      
+     // initialize with a single class that contains everything
      queue += Some(new Subset(Top(), graph));
      
-     // split over all (positive) literals
+     // split over all (positive) literals up to saturation
      splitOverLiterals(queue, graph.getAllPredicates);
      
      
@@ -20,33 +27,67 @@ class BisimulationClassesComputer(graph:Graph) {
      
      do {
        oldQueue = newQueue;
-       splitOverRoles(queue);
+       splitOverRoles(queue, roles);
        newQueue = extractQueue(queue);
      } while( oldQueue != newQueue );
 
      newQueue;
    }
    
+   // Splits classes that satisfy different positive literals.
    def splitOverLiterals(queue: Queue[Option[Subset]], predicates: Collection[String]) = {
      predicates.foreach { p =>
-          //println("\nProcessing predicate: " + p);
-          
-     forallQueue(queue, { (subset, queue) =>
-       if( subset.canSplitOverLiteral(p, true) ) {
-         val splittings = subset.splitOverLiteral(p, true);
-                        
-         //println("  -> split over " + p + ", new subsets: " + splittings);
-                        
-         queue += Some(splittings._1);
-         queue += Some(splittings._2);
-       } else {
-         queue += Some(subset);
-       }
-     });
-  }
-
+       forallQueue(queue, { (subset, queue) =>
+       	subset.splitOverLiteral(p, true) match {
+           case Some((sub1,sub2)) => { 
+             queue += Some(sub1);
+             queue += Some(sub2);
+           }
+           
+           case None => queue += Some(subset);
+        }});
+     }
    }
    
+   // Splits classes that have the same role pointing into different previously
+   // existing classes (1 step). 
+   def splitOverRoles(queue : Queue[Option[Subset]], roles : Set[String]) = {
+     val elements = extractQueue(queue);
+     val localQueue = new Queue[Option[Subset]];
+     
+     queue.clear;
+     
+     elements.foreach { el =>
+        localQueue.clear;
+        localQueue += Some(el);
+        
+        if( el.getIndividuals.size > 1 ) {
+          for( val role <- roles; val sub1 <- elements; val sub2 <- elements if sub1 != sub2) {
+            forallQueue(localQueue, { (subset, q) =>
+            subset.splitOverRole(role, (sub1,sub2)) match {
+              case Some((s1,s2)) => {
+                q += Some(s1);
+                q += Some(s2);
+              }
+              
+              case None => q += Some(subset);
+            }});
+          }
+        }
+        
+        queue ++= localQueue;
+     }
+   }
+
+   
+   
+   
+   
+   
+   
+   // Calls a function for every element in a queue.  In order to ensure that the queue
+   // is only traversed once, a None element is appended to the queue before the iteration.
+   // This element is removed afterwards.
    def forallQueue(q : Queue[Option[Subset]], proc : (Subset,Queue[Option[Subset]]) => Unit) = {
      var finished = false;
      q += None;
@@ -61,47 +102,14 @@ class BisimulationClassesComputer(graph:Graph) {
      }
    }
    
+   // Extracts the list of values from a queue that only contains Some elements.
+   // The method throws an exception if the queue contains None elements.
    def extractQueue(queue : Queue[Option[Subset]]) = {
      (for( val x <- queue.elements if x.isInstanceOf[Some[Subset]] ) 
-       yield (x match { case Some(subset) => subset; case None => new Subset(Top(), graph) })).toList
+       yield (x match { 
+         case Some(subset) => subset; 
+         case None => throw new Exception("Extracting from queue with empty elements!") 
+       })).toList
    }
    
-   def splitOverRoles(queue : Queue[Option[Subset]]) = {
-     val elements = extractQueue(queue);
-     val roles = graph.getAllRoles;
-     val localQueue = new Queue[Option[Subset]];
-     
-     queue.clear;
-     
-     elements.foreach { el =>
-        //println("\n\nConsider element: " +  el);
-        
-     	localQueue.clear;
-        localQueue += Some(el);
-        
-        if( el.getIndividuals.size > 1 ) {
-          for( val role <- roles; val sub1 <- elements; val sub2 <- elements if sub1 != sub2) {
-            //println("Consider split over " + role + ", " + sub1 + ", " + sub2);
-            //println("   (local queue: " + localQueue + ")");
-          
-            forallQueue(localQueue, { (subset, q) =>
-               if( subset.canSplitOverRole(role, (sub1,sub2)) ) {
-                 val splittings = subset.splitOverRole(role, (sub1,sub2));
-
-                 //println("    -> split! new: " + splittings);
-
-                 q += Some(splittings._1);
-                 q += Some(splittings._2);
-               } else {
-                 q += Some(subset);
-               }
-            });
-          }
-        }
-        
-        //println("Finished, local queue is: " + localQueue);
-        
-        queue ++= localQueue;
-     }
-   }
 }

@@ -31,8 +31,7 @@ object Main {
     print("\nComputing bisimulation classes ... ");
     
     val start = System.currentTimeMillis;
-    val c = new BisimulationClassesComputer(graph);
-    val result = c.compute;
+    val result = BisimulationClassesComputer.compute(graph);
 
     println("done, " + (System.currentTimeMillis - start) + " ms.");
     

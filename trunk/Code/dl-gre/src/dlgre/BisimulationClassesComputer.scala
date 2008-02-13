@@ -25,10 +25,14 @@ object BisimulationClassesComputer {
      var oldQueue : List[Subset] = Nil;
      var newQueue = extractQueue(queue);
      
+     println("\n\nBefore role splitting: " + newQueue);
+     
      do {
        oldQueue = newQueue;
        splitOverRoles(queue, roles);
        newQueue = extractQueue(queue);
+       
+       println("Queue is now: " + newQueue);
      } while( oldQueue != newQueue );
 
      newQueue;
@@ -62,10 +66,12 @@ object BisimulationClassesComputer {
         localQueue += Some(el);
         
         if( el.getIndividuals.size > 1 ) {
+          /*
           for( val role <- roles; val sub1 <- elements; val sub2 <- elements if sub1 != sub2) {
             forallQueue(localQueue, { (subset, q) =>
             subset.splitOverRole(role, (sub1,sub2)) match {
               case Some((s1,s2)) => {
+                println("  - split " + subset + " over " + role + " into " + s1 + " and " + s2);
                 q += Some(s1);
                 q += Some(s2);
               }
@@ -73,6 +79,21 @@ object BisimulationClassesComputer {
               case None => q += Some(subset);
             }});
           }
+           */
+
+             for( val role <- roles; val sub <- elements ) {
+               forallQueue(localQueue, { (subset, q) =>
+               subset.splitOverRole1(role, sub) match {
+                 case Some((s1,s2)) => {
+                   println("  - split " + subset + " over " + role + " into " + s1 + " and " + s2);
+                   q += Some(s1);
+                   q += Some(s2);
+                 }
+                 
+                 case None => q += Some(subset);
+               }});
+             }
+
         }
         
         queue ++= localQueue;
@@ -87,7 +108,8 @@ object BisimulationClassesComputer {
    
    // Calls a function for every element in a queue.  In order to ensure that the queue
    // is only traversed once, a None element is appended to the queue before the iteration.
-   // This element is removed afterwards.
+   // This element is removed afterwards.  Crucially, the function gets passed the entire queue
+   // as an argument and is allowed to append new elements to the queue.
    def forallQueue(q : Queue[Option[Subset]], proc : (Subset,Queue[Option[Subset]]) => Unit) = {
      var finished = false;
      q += None;

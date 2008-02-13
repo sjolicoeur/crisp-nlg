@@ -8,6 +8,7 @@ abstract class Formula {
                case Literal(x,true) => x;
                case Literal(x,false) => "~" + x;
                case Existential(role,sub) => "Ex-" + role + ".(" + sub.prettyprint + ")";
+               case Negation(sub) => "~" + sub.prettyprint;
           }
         }
 }

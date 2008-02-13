@@ -48,6 +48,19 @@ class Subset(from:Property, graph:Graph) {
             getIndividuals.exists { x => subsets._2.getIndividuals.exists {y => graph.hasEdge(x,role,y)} }
         }
         
+        
+        def splitOverRole1(role:String, subset:Subset) = {
+          if( getIndividuals.size > 1 &&
+            getIndividuals.exists { x => subset.getIndividuals.exists { y => graph.hasEdge(x,role,y)} } &&
+            getIndividuals.exists { x => subset.getIndividuals.forall { y => !graph.hasEdge(x,role,y)} } ) {
+            Some((new Subset(Existential(this, role, subset), graph),
+                  new Subset(NotExistential(this, role, subset), graph)))
+          } else {
+            None
+          }
+        }
+        
+        
         // Returns the characteristic concept of this class.
         def getFormula : dlgre.formula.Formula = {
           from match {
@@ -56,6 +69,8 @@ class Subset(from:Property, graph:Graph) {
                dlgre.formula.Conjunction(dlgre.formula.Literal(p, polarity == isTrue), fromSubset.getFormula)
             case Existential(fromSubset, role, roleInto) =>
                dlgre.formula.Conjunction(dlgre.formula.Existential(role, roleInto.getFormula), fromSubset.getFormula)
+            case NotExistential(fromSubset, role, roleInto) =>
+               dlgre.formula.Conjunction(dlgre.formula.Negation(dlgre.formula.Existential(role, roleInto.getFormula)), fromSubset.getFormula)
           }
         }
         

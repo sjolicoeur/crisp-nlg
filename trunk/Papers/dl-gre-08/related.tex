@@ -1,10 +1,27 @@
 \section{Related Work} \label{sec:related}
 
 \cite{Dale1995}
+
 \cite{deemter01:_gener_refer_expres}
-\cite{dale91:_gener_refer_expres_invol_relat}
+
+\cite{dale91:_gener_refer_expres_invol_relat} -- avoid infinite
+regress by requiring that each semantic atom can be used only once in
+the description, i.e.\ no \emph{edge} may be used twice.
+
 \cite{gardent02:_gener_minim_defin_descr}
-\cite{Krahmer2003}
+
+\cite{Krahmer2003} -- avoid infinite regress automatically because
+it doesn't count as progress to add an edge to the subgraph that was
+already in it, i.e.\ cleaner version of Dale and Haddock heuristic.
+Subgraphs can be seen as DL concepts made up of conjunction and
+existential quantifiers (no negation).
+
+\cite{kelleher06:_increm_gener_of_spatial_refer} -- generate GREs with
+spatial relations. Polynomial algorithm (check this). Generates REs
+for landmarks recursively, i.e.\ suffer from Dale and Haddock infinite
+regress in principle. Avoid this by using each individual only once in
+the entire description, i.e.\ no \emph{node} may be used
+twice. Advantage over ours: take salience of landmarks into account.
 
 %%% Local Variables: 
 %%% mode: latex

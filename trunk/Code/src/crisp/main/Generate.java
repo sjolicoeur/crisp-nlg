@@ -12,17 +12,20 @@ public class Generate {
 	public static void main(String[] args) throws Exception {
 		Domain domain = new Domain();
 		Problem problem = new Problem();
-		
+
 		/*** read CRISP problem specification and convert it to PDDL domain/problem ***/
 		long start = System.currentTimeMillis();
 		CRISPtoPDDL.convert(args[0], domain, problem);
 		long end = System.currentTimeMillis();
-		
-		CRISPtoPDDL.writeToDisk(domain, problem, "/tmp/");
-		
-		
+
+		CRISPtoPDDL.writeToDisk(domain, problem, "./");
+
+
+
 		/*** run the planner ***/
-		
+
+        problem.addEqualityLiterals();
+
 		long startPlanner = System.currentTimeMillis();
     	Planner p = new Planner(domain, problem);
     	boolean success = p.computeGraph();

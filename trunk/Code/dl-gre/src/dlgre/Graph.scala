@@ -1,6 +1,7 @@
 package dlgre;
 
 import scala.collection.mutable._;
+import util.StringUtils.join;
 
 class Graph() {
   	class Edge(u:String, e:String, v:String) {
@@ -98,8 +99,4 @@ class Graph() {
                     yield src._1 + " --[" + pair._1 + "]--> " + tgt,
                   "\n")
         }
-        
-        def join(list:Iterable[String], sep:String) : String = join(list.toList, sep)
-        
-        def join(list:List[String], sep:String) : String = list.tail.foldLeft(list.head)((x,y) => x + sep + y)
 }

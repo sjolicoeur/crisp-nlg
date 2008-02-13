@@ -2,7 +2,7 @@ package dlgre;
 
 import dlgre.formula._;
 
-class Subset(from:Property, graph:Graph) {
+class Subset(from:Property, graph:Graph, simplifier:Simplifier) {
   val individuals = from.filter(graph)
           
   	// Returns the list of individuals in this class.
@@ -17,8 +17,8 @@ class Subset(from:Property, graph:Graph) {
             if( getIndividuals.size <= 1 ) {
               None
             } else {
-              val sub1 = new Subset(Literal(this, pred, polarity, true), graph);
-              val sub2 = new Subset(Literal(this, pred, polarity, false), graph);
+              val sub1 = new Subset(Literal(this, pred, polarity, true), graph, simplifier);
+              val sub2 = new Subset(Literal(this, pred, polarity, false), graph, simplifier);
               
               if( getIndividuals != sub1.getIndividuals  &&  getIndividuals != sub2.getIndividuals ) {
                 Some((sub1,sub2))
@@ -35,8 +35,8 @@ class Subset(from:Property, graph:Graph) {
         // Otherwise, it returns None.
         def splitOverRole(role:String, subsets:(Subset,Subset)) = {
           if( canSplitOverRole(role, subsets) ) {
-            Some((new Subset(Existential(this, role, subsets._1), graph),
-                  new Subset(Existential(this, role, subsets._2), graph)))
+            Some((new Subset(Existential(this, role, subsets._1), graph, simplifier),
+                  new Subset(Existential(this, role, subsets._2), graph, simplifier)))
           } else {
             None
           }
@@ -53,8 +53,8 @@ class Subset(from:Property, graph:Graph) {
           if( getIndividuals.size > 1 &&
             getIndividuals.exists { x => subset.getIndividuals.exists { y => graph.hasEdge(x,role,y)} } &&
             getIndividuals.exists { x => subset.getIndividuals.forall { y => !graph.hasEdge(x,role,y)} } ) {
-            Some((new Subset(Existential(this, role, subset), graph),
-                  new Subset(NotExistential(this, role, subset), graph)))
+            Some((new Subset(Existential(this, role, subset), graph, simplifier),
+                  new Subset(NotExistential(this, role, subset), graph, simplifier)))
           } else {
             None
           }
@@ -66,16 +66,16 @@ class Subset(from:Property, graph:Graph) {
           from match {
             case Top() => dlgre.formula.Top
             case Literal(fromSubset, p, polarity, isTrue) => 
-               dlgre.formula.Conjunction(dlgre.formula.Literal(p, polarity == isTrue), fromSubset.getFormula)
+               dlgre.formula.Conjunction(List(dlgre.formula.Literal(p, polarity == isTrue), fromSubset.getFormula))
             case Existential(fromSubset, role, roleInto) =>
-               dlgre.formula.Conjunction(dlgre.formula.Existential(role, roleInto.getFormula), fromSubset.getFormula)
+               dlgre.formula.Conjunction(List(dlgre.formula.Existential(role, roleInto.getFormula), fromSubset.getFormula))
             case NotExistential(fromSubset, role, roleInto) =>
-               dlgre.formula.Conjunction(dlgre.formula.Negation(dlgre.formula.Existential(role, roleInto.getFormula)), fromSubset.getFormula)
+               dlgre.formula.Conjunction(List(dlgre.formula.Negation(dlgre.formula.Existential(role, roleInto.getFormula)), fromSubset.getFormula))
           }
         }
         
         override def toString = {
-          getFormula.prettyprint + ": " + getIndividuals
+          simplifier.simplify(getFormula).prettyprint + ": " + getIndividuals
         }
         
 /*

@@ -15,7 +15,7 @@ object BisimulationClassesComputer {
      val queue = new Queue[Option[Subset]]
      
      // initialize with a single class that contains everything
-     queue += Some(new Subset(Top(), graph));
+     queue += Some(new Subset(Top(), graph, new dlgre.formula.Simplifier(graph)));
      
      // split over all (positive) literals up to saturation
      splitOverLiterals(queue, graph.getAllPredicates);
@@ -25,14 +25,14 @@ object BisimulationClassesComputer {
      var oldQueue : List[Subset] = Nil;
      var newQueue = extractQueue(queue);
      
-     println("\n\nBefore role splitting: " + newQueue);
+     //println("\n\nBefore role splitting: " + newQueue);
      
      do {
        oldQueue = newQueue;
        splitOverRoles(queue, roles);
        newQueue = extractQueue(queue);
        
-       println("Queue is now: " + newQueue);
+       //println("Queue is now: " + newQueue);
      } while( oldQueue != newQueue );
 
      newQueue;
@@ -85,7 +85,7 @@ object BisimulationClassesComputer {
                forallQueue(localQueue, { (subset, q) =>
                subset.splitOverRole1(role, sub) match {
                  case Some((s1,s2)) => {
-                   println("  - split " + subset + " over " + role + " into " + s1 + " and " + s2);
+                   //println("  - split " + subset + " over " + role + " into " + s1 + " and " + s2);
                    q += Some(s1);
                    q += Some(s2);
                  }

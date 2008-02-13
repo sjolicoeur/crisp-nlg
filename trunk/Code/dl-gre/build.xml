@@ -19,7 +19,7 @@
 	
     <target name="jar" depends="build,scala.unpacked">
         <jar jarfile="${dl-gre.jar}">
-            <fileset dir="${build.classes}" includes="dlgre/**,scala/**" />
+            <fileset dir="${build.classes}" includes="util/**,dlgre/**,scala/**" />
             <manifest>
                 <attribute name="Main-Class" value="dlgre.Main" />
             </manifest>

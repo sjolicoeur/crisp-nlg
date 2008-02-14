@@ -1,4 +1,5 @@
 #summary Instructions on compiling and running the CRISP system.
+#labels Featured
 
 = Requirements =
 

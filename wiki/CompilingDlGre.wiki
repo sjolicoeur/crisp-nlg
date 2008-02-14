@@ -1,4 +1,5 @@
 #summary How to compile and run the DL-GRE tool.
+#labels Featured
 
 = Prerequisites =
 

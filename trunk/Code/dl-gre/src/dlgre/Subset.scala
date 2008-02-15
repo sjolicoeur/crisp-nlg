@@ -52,7 +52,8 @@ class Subset(from:Property, graph:Graph, simplifier:Simplifier) {
         def splitOverRole1(role:String, subset:Subset) = {
           if( getIndividuals.size > 1 &&
             getIndividuals.exists { x => subset.getIndividuals.exists { y => graph.hasEdge(x,role,y)} } &&
-            getIndividuals.exists { x => subset.getIndividuals.forall { y => !graph.hasEdge(x,role,y)} } ) {
+            getIndividuals.exists { x => subset.getIndividuals.forall { y => !graph.hasEdge(x,role,y)} } 
+          ) {
             Some((new Subset(Existential(this, role, subset), graph, simplifier),
                   new Subset(NotExistential(this, role, subset), graph, simplifier)))
           } else {

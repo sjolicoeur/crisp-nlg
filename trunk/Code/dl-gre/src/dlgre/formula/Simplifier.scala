@@ -37,41 +37,82 @@ class Simplifier(graph:Graph) {
         
         
         def simplify(fmla : Formula) = {
-           simplifyConjunctions(fmla.flatten);  
+           simplifyConjunctions(fmla.flatten,
+               { l => removeEntailedFormulas(stripEntailedByPositive(l), Nil) })
         }
         
-        private def simplifyConjunctions(fmla : Formula) : Formula = {
+        private def simplifyConjunctions(fmla : Formula, simplifier : List[Formula] => List[Formula]) : Formula = {
            fmla match {
-             case Conjunction(l) => fmla.conjoin(replaceNegativeConjunctions(removeEntailedNegatives(l map simplifyConjunctions, Nil)))
-             case Existential(r,sub) => Existential(r,simplifyConjunctions(sub))
+             case Conjunction(l) => fmla.conjoin(simplifier(l map { x => simplifyConjunctions(x,simplifier)}))
+             case Existential(r,sub) => Existential(r,simplifyConjunctions(sub, simplifier))
              case Literal(x,y) => fmla
-             case Negation(sub) => Negation(simplifyConjunctions(sub))
+             case Negation(sub) => Negation(simplifyConjunctions(sub, simplifier))
              case Top() => fmla
            }
         }
         
-        private def removeEntailedNegatives(l : List[Formula], accu : List[Formula]) : List[Formula] = {
+        private def stripEntailedByPositive(l : List[Formula]) = {
+          val ext = extension(l)
+          val positives = (for( p <- graph.getAllPredicates if ext subsetOf extension(Literal(p,true)) ) 
+            			yield Literal(p,true))
+                                    
+          val usedPositives = new HashSet[Formula]
+          val keptFormulas = new HashSet[Formula]
+          
+          var foundPositive = false;
+          
+          l.foreach { f =>
+          	foundPositive = false;
+                for( p <- positives ) {
+                  if( !foundPositive ) {
+                    if( extension(p) subsetOf extension(f) ) {
+                      foundPositive = true;
+                      usedPositives += p;
+                    }
+                  }
+                }
+                
+                if( !foundPositive ) {
+                  keptFormulas += f
+                }
+          }
+
+          keptFormulas ++= usedPositives
+          keptFormulas.toList
+        }
+        
+        private def removeEntailedFormulas(l : List[Formula], accu : List[Formula]) : List[Formula] = {
           if( l.isEmpty ) {
             accu
           } else {
             val fmla = l.head;
             
-            fmla match {
-              case Literal(p,false) => if( isEntailed(fmla, l.tail ::: accu) ) {
-                			removeEntailedNegatives(l.tail, accu);
-                                       } else {
-                                        removeEntailedNegatives(l.tail, fmla::accu)
-                                       }
-              case Negation(p) => if( isEntailed(fmla, l.tail ::: accu) ) {
-                                    removeEntailedNegatives(l.tail, accu);
-                                  } else {
-                                    removeEntailedNegatives(l.tail, fmla::accu)
-                                  }
-              case _ => removeEntailedNegatives(l.tail, fmla::accu)
-
-            }
+            if( isEntailed(fmla, l.tail ::: accu) ) {
+                removeEntailedFormulas(l.tail, accu);
+             } else {
+              removeEntailedFormulas(l.tail, fmla::accu)
+             }
           }
         }
+        
+        /*
+	** earlier version: remove only entailed negative subformulas
+          
+          fmla match {
+            case Literal(p,false) => if( isEntailed(fmla, l.tail ::: accu) ) {
+                                      removeEntailedNegatives(l.tail, accu);
+                                     } else {
+                                      removeEntailedNegatives(l.tail, fmla::accu)
+                                     }
+            case Negation(p) => if( isEntailed(fmla, l.tail ::: accu) ) {
+                                  removeEntailedNegatives(l.tail, accu);
+                                } else {
+                                  removeEntailedNegatives(l.tail, fmla::accu)
+                                }
+            case _ => removeEntailedNegatives(l.tail, fmla::accu)
+
+          }
+        */
         
       private def isEntailed(fmla : Formula, others : List[Formula] ) : Boolean = {
         extension(others) subsetOf extension(fmla)

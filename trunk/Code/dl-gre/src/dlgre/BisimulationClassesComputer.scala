@@ -65,27 +65,12 @@ object BisimulationClassesComputer {
         localQueue.clear;
         localQueue += Some(el);
         
-        if( el.getIndividuals.size > 1 ) {
-          /*
-          for( val role <- roles; val sub1 <- elements; val sub2 <- elements if sub1 != sub2) {
-            forallQueue(localQueue, { (subset, q) =>
-            subset.splitOverRole(role, (sub1,sub2)) match {
-              case Some((s1,s2)) => {
-                println("  - split " + subset + " over " + role + " into " + s1 + " and " + s2);
-                q += Some(s1);
-                q += Some(s2);
-              }
-              
-              case None => q += Some(subset);
-            }});
-          }
-           */
-
-             for( val role <- roles; val sub <- elements ) {
+        for( val role <- roles; val sub <- elements ) {
+          	//println("[" + role + "/" + sub + "] ");
                forallQueue(localQueue, { (subset, q) =>
                subset.splitOverRole1(role, sub) match {
                  case Some((s1,s2)) => {
-                   //println("  - split " + subset + " over " + role + " into " + s1 + " and " + s2);
+                  // println("  - split " + subset + " over " + role + " into " + s1 + " and " + s2);
                    q += Some(s1);
                    q += Some(s2);
                  }
@@ -93,8 +78,7 @@ object BisimulationClassesComputer {
                  case None => q += Some(subset);
                }});
              }
-
-        }
+        
         
         queue ++= localQueue;
      }

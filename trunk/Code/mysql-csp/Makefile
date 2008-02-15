@@ -52,7 +52,7 @@ MAIN_OBJS=src/main.o
 
 MAIN=mysqlcsp
 
-
+all: $(MAIN)
 
 $(MAIN): $(MAIN_OBJS) $(LIB)
 	g++ -L$(MYSQL_LIB_DIR) -L$(MYSQLPP_LIB_DIR) -L. -o $(MAIN) $(MAIN_OBJS) -lMysqlCSP $(LIBS)

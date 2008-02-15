@@ -1,5 +1,27 @@
 
 
+# define MYSQL_LIB_DIR
+# define MYSQL_INCL_DIR
+# define MYSQLPP_LIB_DIR
+
+# on my Mac:
+# export MYSQL_LIB_DIR=/usr/local/mysql-5.0.45-osx10.4-i686/lib
+# export MYSQLPP_LIB_DIR=/usr/local/mysql++-2.3.2
+# export MYSQL_INCL_DIR=/usr/local/mysql-5.0.45-osx10.4-i686/include
+# export DYLD_LIBRARY_PATH=.:$MYSQL_LIB_DIR:$MYSQLPP_LIB_DIR
+
+# on my DICE:
+# export MYSQL_LIB_DIR=/usr/lib/mysql
+# export MYSQLPP_LIB_DIR=/home/v1akolle/proj/crisp/pks/mysql++-2.3.2
+# export MYSQL_INCL_DIR=/usr/include/mysql
+# export LD_LIBRARY_PATH=.:$MYSQL_LIB_DIR:$MYSQLPP_LIB_DIR
+
+
+
+
+
+
+
 UNAME = $(shell uname)
 
 ifeq ($(UNAME), Linux)
@@ -11,20 +33,6 @@ ifeq ($(UNAME), Darwin)
 SO_EXT=dylib
 DYNAMIC_FLAG=-dynamiclib
 endif
-
-# define MYSQL_LIB_DIR
-# define MYSQL_INCL_DIR
-# define MYSQLPP_LIB_DIR
-
-# on my Mac:
-# export MYSQL_LIB_DIR=/usr/local/mysql-5.0.45-osx10.4-i686/lib
-# export MYSQLPP_LIB_DIR=/usr/local/mysql++-2.3.2
-# export MYSQL_INCL_DIR=/usr/local/mysql-5.0.45-osx10.4-i686/include
-# export DYLD_LIBRARY_PATH=.:$MYSQL_LIB_DIR:$MYSQLPP_LIB_DIR
-
-
-
-
 
 
 LIBS=-lmysqlclient -lmysqlpp

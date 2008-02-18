@@ -7,6 +7,13 @@ import scala.collection.mutable._;
 class Simplifier(graph:Graph) {
 	private val _extension = new HashMap[Formula,Set[String]];
         
+        def removeConjunctionsWithTop(fmla:Formula) = {
+          simplifyConjunctions(fmla.flatten,
+              { l => l.remove { el => el.isInstanceOf[Top] } });
+        }
+        
+        
+        
         private def extension(fmla:Formula) : Set[String] = {
           if( ! _extension.contains(fmla) ) {
             val e = new HashSet[String];
@@ -53,6 +60,8 @@ class Simplifier(graph:Graph) {
         
         private def stripEntailedByPositive(l : List[Formula]) = {
           val ext = extension(l)
+          
+          // all positive atomic concepts that are true for all individuals in the extension
           val positives = (for( p <- graph.getAllPredicates if ext subsetOf extension(Literal(p,true)) ) 
             			yield Literal(p,true))
                                     

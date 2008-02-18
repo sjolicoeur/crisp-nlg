@@ -10,7 +10,7 @@ case class Conjunction(sub:List[Formula]) extends Formula {
           
           
 	override def prettyprint = {
-          join(for(f <- sub  if ! f.isInstanceOf[Top]) yield f.prettyprint, " & ");
+          join(sub.map { f => f.prettyprint }, " & ");
         }
         
         override def flatten = {

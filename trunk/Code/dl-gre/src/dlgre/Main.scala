@@ -31,12 +31,14 @@ object Main {
     print("\nComputing bisimulation classes ... ");
     
     val start = System.currentTimeMillis;
-    val result = BisimulationClassesComputer.compute(graph);
+    //val result = new BisimulationClassesComputer(graph).compute;
+    val result = new PositiveClassComputer(graph).compute;
+    val simplifier = new dlgre.formula.Simplifier(graph);
 
     println("done, " + (System.currentTimeMillis - start) + " ms.");
     
     println("\nBisimulation classes with their concepts:");
-    result.foreach { fmla => println(fmla) }
+    result.foreach { fmla => println(simplifier.removeConjunctionsWithTop(fmla).prettyprint + ": " + util.StringUtils.join(fmla.extension(graph),",")) }
   }
   
   private def mygetattr(node : scala.xml.Node, attr : String) = {

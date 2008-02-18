@@ -6,10 +6,12 @@ import scala.xml.parsing.ConstructingParser
 
 object Main {
   def main(args : Array[String]) : Unit = {
-    val p = ConstructingParser.fromFile(new File(args(0)), true)
+    val p = ConstructingParser.fromFile(new File(args(1)), true)
     val doc: xml.Document = p.document
     
     val graph = new Graph
+    
+    val positiveMode = (args(0) == "positive");
     
     (doc \ "individual").foreach { indiv =>
     	val node = mygetattr(indiv, "id");
@@ -31,14 +33,27 @@ object Main {
     print("\nComputing bisimulation classes ... ");
     
     val start = System.currentTimeMillis;
-    //val result = new BisimulationClassesComputer(graph).compute;
-    val result = new PositiveClassComputer(graph).compute;
     val simplifier = new dlgre.formula.Simplifier(graph);
 
+    val result = if(positiveMode) {
+      new PositiveClassComputer(graph).compute
+    } else {
+      new BisimulationClassesComputer(graph).compute
+    }
+    
+    
     println("done, " + (System.currentTimeMillis - start) + " ms.");
     
     println("\nBisimulation classes with their concepts:");
-    result.foreach { fmla => println(simplifier.removeConjunctionsWithTop(fmla).prettyprint + ": " + util.StringUtils.join(fmla.extension(graph),",")) }
+    
+    if( positiveMode ) {
+      result.foreach { fmla => println(simplifier.removeConjunctionsWithTop(fmla).prettyprint + ": " + util.StringUtils.join(fmla.extension(graph),",")) };
+    } else {
+      result.foreach { fmla => println(simplifier.simplify(fmla).prettyprint + ": " + util.StringUtils.join(fmla.extension(graph),",")) };
+    }
+    
+    
+    
   }
   
   private def mygetattr(node : scala.xml.Node, attr : String) = {

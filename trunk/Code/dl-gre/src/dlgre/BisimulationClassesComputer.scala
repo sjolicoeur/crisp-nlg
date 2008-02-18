@@ -15,7 +15,7 @@ class BisimulationClassesComputer(graph:Graph) {
      val queue = new Queue[Option[Formula]]
      
      // initialize with a single class that contains everything
-     queue += Some(new dlgre.formula.Top());
+     queue += Some(new Top());
      
      // split over all (positive) literals up to saturation
      splitOverLiterals(queue, graph.getAllPredicates);
@@ -59,8 +59,8 @@ class BisimulationClassesComputer(graph:Graph) {
      if( ext.size <= 1 ) {
        None
      } else {
-       val sub1 = new dlgre.formula.Conjunction(List(f, new dlgre.formula.Literal(pred, polarity)));
-       val sub2 = new dlgre.formula.Conjunction(List(f, new dlgre.formula.Literal(pred, !polarity)));
+       val sub1 = new Conjunction(List(f, new Literal(pred, polarity)));
+       val sub2 = new Conjunction(List(f, new Literal(pred, !polarity)));
        
        if( ext != sub1.extension(graph)  &&  ext != sub2.extension(graph) ) {
          Some((sub1,sub2))
@@ -108,8 +108,8 @@ class BisimulationClassesComputer(graph:Graph) {
        ext.exists { x => roleTo.extension(graph).exists { y => graph.hasEdge(x,role,y)} } &&
        ext.exists { x => roleTo.extension(graph).forall { y => !graph.hasEdge(x,role,y)} } 
      ) {
-       Some((new dlgre.formula.Conjunction(List(formula, new dlgre.formula.Existential(role, roleTo))),
-             new dlgre.formula.Conjunction(List(formula, new dlgre.formula.Negation(new dlgre.formula.Existential(role, roleTo)))))
+       Some((new Conjunction(List(formula, new Existential(role, roleTo))),
+             new Conjunction(List(formula, new Negation(new Existential(role, roleTo)))))
            )
      } else {
        None

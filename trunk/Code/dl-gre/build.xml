@@ -43,6 +43,10 @@
 		  </classpath>
 	    </scalac>
 	  </target>
+
+	  <target name="clean">
+	    <delete dir="build" />
+	  </target>
 	
 	
 	<target name="init">

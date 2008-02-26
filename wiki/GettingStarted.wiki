@@ -5,7 +5,7 @@
 
 In order to build the CRISP system, you will need the following software:
  * Java SE 5.0 Development Kit or higher (get it [http://java.sun.com/javase/downloads/index.jsp here], unless you have a Mac, in which case it should come preinstalled on you machine)
- * Apache Ant (get it [http://ant.apache.org/bindownload.cgi here])
+ * Apache Ant (get it [http://ant.apache.org/bindownload.cgi here]). If you install Ant via the Fedora package management system, be sure to also install the ant-contrib package, which defines the javacc task.
  * A Subversion client (if you can't get one through the package management system of your platform, e.g. Cygwin, apt-get, etc., you can get binaries [http://subversion.tigris.org/project_packages.html here]).
 
 

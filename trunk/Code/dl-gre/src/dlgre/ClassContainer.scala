@@ -8,6 +8,7 @@ import dlgre.formula._;
 class ClassContainer(graph:Graph) {
 	val classes : Set[Formula] = new HashSet[Formula]; // TODO hashcode for subset
 	val simplifier = new Simplifier(graph);
+        var maxSize = 0;
         
         
         classes += new Top();
@@ -40,6 +41,10 @@ class ClassContainer(graph:Graph) {
               }
             
               removeUninformativeSubsets();
+              
+              if( classes.size > maxSize ) {
+                maxSize = classes.size;
+              }
             
               true
             } else {
@@ -48,6 +53,8 @@ class ClassContainer(graph:Graph) {
           }
           
         }
+        
+        def getMaxSize = maxSize;
         
         private def isNontrivial(fmla:Formula) = {
           ! fmla.extension(graph).isEmpty

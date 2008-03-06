@@ -23,8 +23,9 @@ class PositiveClassComputer(graph:Graph) {
     while( madeChanges && !classes.isAllSingletons ) {
       madeChanges = false;
       
-      println("\n\n\n\n\nClasses:");
-      classes.getClasses.foreach { fmla => println(simplifier.removeConjunctionsWithTop(fmla).prettyprint + ": " + util.StringUtils.join(fmla.extension(graph),",")) }
+      //println("\n\n\n\n\nClasses:");
+      //classes.getClasses.foreach { fmla => println(simplifier.removeConjunctionsWithTop(fmla).prettyprint + ": " + util.StringUtils.join(fmla.extension(graph),",")) }
+      print(".");
       
       graph.getAllRoles.foreach{ r =>
 	classes.getClasses.foreach { cl =>
@@ -33,6 +34,8 @@ class PositiveClassComputer(graph:Graph) {
         }
       }
     }
+    
+    print("[max=" + classes.getMaxSize + "]");
     
     classes.getClasses
     

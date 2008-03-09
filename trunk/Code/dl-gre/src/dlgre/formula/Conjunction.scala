@@ -4,7 +4,7 @@ import util.StringUtils.join;
 
 
 case class Conjunction(sub:List[Formula]) extends Formula {
-  	override def isSatisfied(u:String, graph:Graph) = {
+  	override def isSatisfied(u:String, graph:Graph[String]) = {
           sub.forall { f => f.isSatisfied(u,graph) }  
         }
           

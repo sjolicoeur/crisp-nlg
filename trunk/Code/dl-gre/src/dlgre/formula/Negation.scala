@@ -1,7 +1,7 @@
 package dlgre.formula;
 
 case class Negation(sub:Formula) extends Formula {
-  	override def isSatisfied(u:String, graph:Graph) = {
+  	override def isSatisfied(u:String, graph:Graph[String]) = {
           ! sub.isSatisfied(u,graph)  
         }
           

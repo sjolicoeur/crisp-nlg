@@ -3,13 +3,13 @@ package dlgre.generate;
 import dlgre._;
 
 object RandomGenerator {
-        def generate(numNodes:String, numPreds:String, numRoles:String, predDensity:String, edgeDensity:String) : Graph = {
+        def generate(numNodes:String, numPreds:String, numRoles:String, predDensity:String, edgeDensity:String) : Graph[String] = {
           generate(Integer.parseInt(numNodes), Integer.parseInt(numPreds), Integer.parseInt(numRoles),
               java.lang.Double.parseDouble(predDensity), java.lang.Double.parseDouble(edgeDensity))
         }
 
         def generate(numNodes:Int, numPreds:Int, numRoles:Int, predDensity:Double, edgeDensity:Double) = {
-   		val ret = new Graph();
+   		val ret = new Graph[String]();
                 val rand = new Random();
                 
                 Iterator.range(1, numNodes) foreach { i =>

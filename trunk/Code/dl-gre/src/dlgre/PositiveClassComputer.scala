@@ -5,7 +5,7 @@ import scala.collection.mutable.Set;
 
 import dlgre.formula._;
 
-class PositiveClassComputer(graph:Graph) {
+class PositiveClassComputer(graph:Graph[String]) {
   val classes = new ClassContainer(graph);
   
   
@@ -25,12 +25,17 @@ class PositiveClassComputer(graph:Graph) {
       
       //println("\n\n\n\n\nClasses:");
       //classes.getClasses.foreach { fmla => println(simplifier.removeConjunctionsWithTop(fmla).prettyprint + ": " + util.StringUtils.join(fmla.extension(graph),",")) }
+      
+      
       print(".");
+      //println("-----------------------------");
+      //println(classes.classesGraph);
       
       graph.getAllRoles.foreach{ r =>
 	classes.getClasses.foreach { cl =>
-        	val changed = classes.add(new Existential(r,cl));
-                madeChanges = madeChanges || changed;
+        	if( classes.add(new Existential(r,cl.formula)) ) {
+           		madeChanges = true;       
+                }
         }
       }
     }

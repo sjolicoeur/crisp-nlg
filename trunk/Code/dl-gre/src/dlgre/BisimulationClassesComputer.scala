@@ -1,11 +1,21 @@
 package dlgre;
 
-import scala.collection.mutable.Queue;
-import scala.collection.mutable.Set;
+import scala.collection.mutable._;
 
 import dlgre.formula._;
 
-class BisimulationClassesComputer(graph:Graph) {
+class BisimulationClassesComputer(graph:Graph[String]) {
+   private val extensions = new HashMap[Formula, Set[String]];
+   
+   private def getExtension(fmla:Formula) = {
+     if( !extensions.contains(fmla) ) {
+       extensions += fmla -> fmla.extension(graph);
+     }
+     
+     extensions.get(fmla).get
+   }
+   
+   
    // Computes the bisimulation classes of a graph.  The method returns a list of Subset objects
    // representing the classes.
    def compute = {
@@ -54,7 +64,7 @@ class BisimulationClassesComputer(graph:Graph) {
    }
    
    private def splitOverLiteral(f:Formula, pred:String, polarity:Boolean) = {
-     val ext = f.extension(graph);
+     val ext = getExtension(f);
      
      if( ext.size <= 1 ) {
        None
@@ -62,7 +72,7 @@ class BisimulationClassesComputer(graph:Graph) {
        val sub1 = new Conjunction(List(f, new Literal(pred, polarity)));
        val sub2 = new Conjunction(List(f, new Literal(pred, !polarity)));
        
-       if( ext != sub1.extension(graph)  &&  ext != sub2.extension(graph) ) {
+       if( ext != getExtension(sub1)  &&  ext != getExtension(sub2) ) {
          Some((sub1,sub2))
        } else {
          None
@@ -102,11 +112,11 @@ class BisimulationClassesComputer(graph:Graph) {
    }
 
    private def splitOverRole1(formula:Formula, role:String, roleTo:Formula) = {
-     val ext = formula.extension(graph);
+     val ext = getExtension(formula)
      
      if( ext.size > 1 &&
-       ext.exists { x => roleTo.extension(graph).exists { y => graph.hasEdge(x,role,y)} } &&
-       ext.exists { x => roleTo.extension(graph).forall { y => !graph.hasEdge(x,role,y)} } 
+       ext.exists { x => getExtension(roleTo).exists { y => graph.hasEdge(x,role,y)} } &&
+       ext.exists { x => getExtension(roleTo).forall { y => !graph.hasEdge(x,role,y)} } 
      ) {
        Some((new Conjunction(List(formula, new Existential(role, roleTo))),
              new Conjunction(List(formula, new Negation(new Existential(role, roleTo)))))

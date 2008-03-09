@@ -20,21 +20,23 @@ object Main {
     
     val start = System.currentTimeMillis;
     val simplifier = new dlgre.formula.Simplifier(graph);
-
-    val result = if(positiveMode) {
-      new PositiveClassComputer(graph).compute
-    } else {
-      new BisimulationClassesComputer(graph).compute
-    }
     
-    
-    println(" done, " + (System.currentTimeMillis - start) + " ms.");
-    
-    println("\nBisimulation classes with their concepts:");
     
     if( positiveMode ) {
-      result.foreach { fmla => println(simplifier.removeConjunctionsWithTop(fmla).prettyprint + ": " + util.StringUtils.join(fmla.extension(graph),",")) };
+      val result = new PositiveClassComputer(graph).compute;
+      
+      println(" done, " + (System.currentTimeMillis - start) + " ms.");
+      println("\nBisimulation classes with their concepts:");
+      
+      result.foreach { entry => println(simplifier.removeConjunctionsWithTop(entry.formula).prettyprint + ": " + util.StringUtils.join(entry.extension.asScalaCollection,",")) };      
     } else {
+      print("..[max=0]");
+
+      val result = new BisimulationClassesComputer(graph).compute;
+
+      println(" done, " + (System.currentTimeMillis - start) + " ms.");
+      println("\nBisimulation classes with their concepts:");
+      
       result.foreach { fmla => println(simplifier.simplify(fmla).prettyprint + ": " + util.StringUtils.join(fmla.extension(graph),",")) };
     }
     
@@ -43,7 +45,7 @@ object Main {
   }
   
   private def readGraph(filename:String) = {
-    val ret =  new Graph
+    val ret =  new Graph[String]
     val p = ConstructingParser.fromFile(new File(filename), true)
     val doc: xml.Document = p.document
 

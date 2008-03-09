@@ -1,7 +1,7 @@
 package dlgre.formula;
 
 case class Existential(role:String, sub:Formula) extends Formula {
-  	override def isSatisfied(u:String, graph:Graph) = {
+  	override def isSatisfied(u:String, graph:Graph[String]) = {
 		graph.getAllNodes.exists { v => graph.hasEdge(u,role,v) && sub.isSatisfied(v,graph) };            
         }
           

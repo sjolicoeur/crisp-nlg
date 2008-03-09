@@ -1,7 +1,7 @@
 package dlgre.formula;
 
 case class Literal(p:String, polarity:Boolean) extends Formula {
-  	override def isSatisfied(u:String, graph:Graph) = {
+  	override def isSatisfied(u:String, graph:Graph[String]) = {
 		graph.hasPredicate(u,p) == polarity;            
         }
   

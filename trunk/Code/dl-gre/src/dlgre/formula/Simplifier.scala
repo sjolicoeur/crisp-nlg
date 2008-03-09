@@ -4,7 +4,7 @@ import dlgre.Graph;
 
 import scala.collection.mutable._;
 
-class Simplifier(graph:Graph) {
+class Simplifier(graph:Graph[String]) {
 	private val _extension = new HashMap[Formula,Set[String]];
         
         def removeConjunctionsWithTop(fmla:Formula) = {

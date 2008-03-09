@@ -10,7 +10,11 @@ object IterateRandom {
     
     Iterator.range(0,warmupIterations).foreach { x =>
       val graph = dlgre.generate.RandomGenerator.generate(20, 10, 4, 0.1, 0.1);
-      val result = new PositiveClassComputer(graph).compute;
+      if( positiveMode ) {
+        val result = new PositiveClassComputer(graph).compute;
+      } else {
+        val result = new BisimulationClassesComputer(graph).compute;
+      }
     }
     
     print("(");

@@ -5,7 +5,7 @@ $CLASSPATH="../bin";
 $repetitions = 10;
 
 $min_numNodes = 10;
-$max_numNodes = 60;
+$max_numNodes = 100;
 $step_numNodes = 10;
 
 $min_numPreds = 10;

@@ -8,6 +8,18 @@ object Main {
   def main(args : Array[String]) : Unit = {
     val positiveMode = (args(0) == "positive");
     
+
+    /* warmup for runtime measurements
+    Iterator.range(0,20).foreach { x =>
+      val graph = dlgre.generate.RandomGenerator.generate(20, 10, 4, 0.1, 0.1);
+      if( positiveMode ) {
+        val result = new PositiveClassComputer(graph).compute;
+      } else {
+        val result = new BisimulationClassesComputer(graph).compute;
+      }
+    }
+    */
+    
     val graph = if( args(1) == "random" ) {
       dlgre.generate.RandomGenerator.generate(args(2), args(3), args(4), args(5), args(6))
     } else {

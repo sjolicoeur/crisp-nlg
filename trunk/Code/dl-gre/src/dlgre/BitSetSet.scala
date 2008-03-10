@@ -30,6 +30,15 @@ class BitSetSet[E](domainsize:Int, mapper:E => Int, reverse:Int => E) extends ja
           ret
         }
         
+        override def contains(x:Any) = {
+          if( x.isInstanceOf[E] ) {
+            b.get(mapper(x.asInstanceOf[E]));  
+          } else {
+            false
+          }
+        }
+          
+        
         def addAll(c:scala.Collection[E]) = {
           c.foreach { x => add(x) }
         }

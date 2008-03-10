@@ -35,14 +35,15 @@ class ClassContainer(graph:Graph[String]) {
           if( !memoizedExtensions.contains(fmla) ) {
             val ext = fmla match {
               case Existential(r,sub) => if( memoizedExtensions.contains(sub) ) {
-		val subext = memoizedExtensions.get(sub).get;
-                nodes.filter { u => nodes.exists { v => subext.contains(v) && graph.hasEdge(u,r,v) }} 
-              } else fmla.extension(graph)
-              case _ => fmla.extension(graph)
+		val subext = memoizedExtensions.get(sub).get.asScalaCollection;
+
+                graph.getNodeSet(nodes.filter { u => subext.exists { v => graph.hasEdge(u,r,v) }}) 
+              } else graph.getNodeSet(fmla.extension(graph))
+              case _ => graph.getNodeSet(fmla.extension(graph))
             }
             
             
-            memoizedExtensions += fmla -> graph.getNodeSet(ext);
+            memoizedExtensions += fmla -> ext;
           }
           
           memoizedExtensions.get(fmla).get

@@ -14,7 +14,7 @@ class ClassContainer(graph:Graph[String]) {
     override def toString = extension + ": " + formula.prettyprint;
   }
   
-  val classesGraph = new Graph[Entry];
+  val classesGraph = new grapht.GraphT[Entry,String]();
   val uninformativeClasses = new HashSet[BitSetSet[String]];
   val potentiallyUninformative = new Queue[Entry];
   
@@ -29,8 +29,6 @@ class ClassContainer(graph:Graph[String]) {
         
         
         def getClasses =  classesGraph.getAllNodes
-        private def getClassesAsSet = classesGraph.getAllNodesAsSet
-        private def getClassesIterator = classesGraph.getAllNodesIterator
         
         private def getExtension(fmla:Formula) : BitSetSet[String] = {
           if( !memoizedExtensions.contains(fmla) ) {
@@ -174,16 +172,16 @@ class ClassContainer(graph:Graph[String]) {
             //println("Checking RUS " + pu);
             if( !checked.contains(pu)
                 && !uninformativeClasses.contains(pu.extension)
-                && ! isInformative( pu, classesGraph.getOutEdges(pu).map { edge => edge.tgt } ) ) {
+                && ! isInformative( pu, classesGraph.mapOutEdges(pu, { edge => classesGraph.getTgt(edge) }) ) ) {
               //println(" -> uninformative, removing");
               
-              classesGraph.getInEdges(pu).foreach { edge =>
-                potentiallyUninformative += edge.src;
+              classesGraph.foreachInEdge(pu, { src =>
+                potentiallyUninformative += src;
                 
-                classesGraph.getOutEdges(pu).foreach { outedge =>
-                  classesGraph.addEdge(edge.src, outedge.tgt, "");
-                }
-              }
+                classesGraph.foreachOutEdge(pu, { tgt =>
+                  classesGraph.addEdge(src, tgt, "");
+                });
+              });
               
               
               classesGraph.removeNode(pu);
@@ -205,7 +203,7 @@ class ClassContainer(graph:Graph[String]) {
           private def isInformative(set:BitSetSet[String]) = {
             val unionOverSubsets = graph.getNodeSet;
   
-            getClassesIterator.foreach { cl =>
+            getClasses.foreach { cl =>
               if( cl.extension isSubsetOf set ) {
                  unionOverSubsets.addAll(cl.extension);       
               }

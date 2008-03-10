@@ -22,9 +22,10 @@ class ClassContainer(graph:Graph[String]) {
 
 	val simplifier = new Simplifier(graph);
         var maxSize = 0;
+        val nodes = graph.getAllNodes;
         
         
-        classesGraph.addNode(Entry(graph.getNodeSet(graph.getAllNodes), new Top()));
+        classesGraph.addNode(Entry(graph.getNodeSet(nodes), new Top()));
 
         
         
@@ -35,7 +36,7 @@ class ClassContainer(graph:Graph[String]) {
             val ext = fmla match {
               case Existential(r,sub) => if( memoizedExtensions.contains(sub) ) {
 		val subext = memoizedExtensions.get(sub).get;
-                graph.getAllNodes.filter { u => graph.getAllNodes.exists { v => subext.contains(v) && graph.hasEdge(u,r,v) }} 
+                nodes.filter { u => nodes.exists { v => subext.contains(v) && graph.hasEdge(u,r,v) }} 
               } else fmla.extension(graph)
               case _ => fmla.extension(graph)
             }

@@ -1,27 +1,59 @@
 \section{Related Work} \label{sec:related}
 
-\cite{Dale1995}
+\begin{figure}
+  \centering
+  \begin{tabular}{l|l}
+    GRE algorithm & DL variant \\ \hline
+    \newcite{Dale1995} & conjunctions of atoms \\
+    \newcite{deemter01:_gener_refer_expres} & propositional logic \\
+    \newcite{dale91:_gener_refer_expres_invol_relat} & \el \\
+    \newcite{Krahmer2003} & \el \\
+    \newcite{kelleher06:_increm_gener_of_spatial_refer} & \el \\
+    \newcite{gardent02:_gener_minim_defin_descr} & \alc
+  \end{tabular}
+  \caption{DL variants used by different GRE algorithms.}
+  \label{fig:related}
+\end{figure}
 
-\cite{deemter01:_gener_refer_expres}
+The view of GRE as a problem of computing DL concepts allows us to
+organize existing approaches to GRE with respect to the logical
+connectives of DL which they can use in the referring expressions they
+generate.  This is summarized for some approaches in
+Fig.~\ref{fig:related}.  At the most unexpressive end of the spectrum,
+\newcite{Dale1995} only generate referring expressions that correspond
+to conjunctions of atomic concepts.
+\newcite{deemter01:_gener_refer_expres} adds the other propositional
+connectives (negation and disjunction) to this, whereas
+\newcite{dale91:_gener_refer_expres_invol_relat} and its successors
+\cite{Krahmer2003,kelleher06:_increm_gener_of_spatial_refer} add
+existential quantifiers.  \newcite{gardent02:_gener_minim_defin_descr}
+combines these strands into an algorithm which computes arbitrary
+concepts in \alc. \todo{Is this really what Claire does?}
 
-\cite{dale91:_gener_refer_expres_invol_relat} -- avoid infinite
-regress by requiring that each semantic atom can be used only once in
-the description, i.e.\ no \emph{edge} may be used twice.
+In this paper, we have presented two algorithms for concepts in \el\
+and \alc.  These algorithms compute referring expressions for all
+individuals in the domain at once, and thus there is no danger of
+infinite regress.  Other approaches for \el\ and higher logics
+typically have to invest some effort into avoiding infinite regress --
+e.g.\ by requiring that no edge may be used twice
+\cite{dale91:_gener_refer_expres_invol_relat} or that no node may be
+used twice \cite{kelleher06:_increm_gener_of_spatial_refer}.  The
+graph-based algorithm by \newcite{Krahmer2003} avoids infinite regress
+with similar ease as our algorithms -- adding an edge to a subgraph
+twice doesn't change the subgraph --, but this comes at the price of
+NP-complete complexity.
 
-\cite{gardent02:_gener_minim_defin_descr}
+Because they compute referring expressions for all individuals in the
+domain together, our algorithms will be strongest in static settings,
+such as the generation of descriptions for museum exhibits, in which
+the individuals and their properties don't change much.  Nevertheless,
+they remain fast enough for real-time use in dynamic settings.
+Another advantage that recent algorithms for relational REs
+\cite{Krahmer2003,kelleher06:_increm_gener_of_spatial_refer} have over
+ours is that they can take weights and salience into account.  How
+this could be incorporated into our algorithms is an interesting
+question for future research.
 
-\cite{Krahmer2003} -- avoid infinite regress automatically because
-it doesn't count as progress to add an edge to the subgraph that was
-already in it, i.e.\ cleaner version of Dale and Haddock heuristic.
-Subgraphs can be seen as DL concepts made up of conjunction and
-existential quantifiers (no negation).
-
-\cite{kelleher06:_increm_gener_of_spatial_refer} -- generate GREs with
-spatial relations. Polynomial algorithm (check this). Generates REs
-for landmarks recursively, i.e.\ suffer from Dale and Haddock infinite
-regress in principle. Avoid this by using each individual only once in
-the entire description, i.e.\ no \emph{node} may be used
-twice. Advantage over ours: take salience of landmarks into account.
 
 %%% Local Variables: 
 %%% mode: latex

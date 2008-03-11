@@ -4,8 +4,9 @@ import scala.collection.mutable.Queue;
 import scala.collection.mutable.Set;
 
 import dlgre.formula._;
+import grapht._;
 
-class PositiveClassComputer(graph:Graph[String]) {
+class PositiveClassComputer(graph:GraphT[String,String]) {
   val classes = new ClassContainer(graph);
   
   

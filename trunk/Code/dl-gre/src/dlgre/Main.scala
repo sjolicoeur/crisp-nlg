@@ -3,13 +3,14 @@ package dlgre;
 import java.io._
 
 import scala.xml.parsing.ConstructingParser
+import grapht._;
 
 object Main {
   def main(args : Array[String]) : Unit = {
     val positiveMode = (args(0) == "positive");
     
 
-    /* warmup for runtime measurements
+    // * warmup for runtime measurements
     Iterator.range(0,20).foreach { x =>
       val graph = dlgre.generate.RandomGenerator.generate(20, 10, 4, 0.1, 0.1);
       if( positiveMode ) {
@@ -18,7 +19,7 @@ object Main {
         val result = new BisimulationClassesComputer(graph).compute;
       }
     }
-    */
+    
     
     val graph = if( args(1) == "random" ) {
       dlgre.generate.RandomGenerator.generate(args(2), args(3), args(4), args(5), args(6))
@@ -49,7 +50,7 @@ object Main {
       println(" done, " + (System.currentTimeMillis - start) + " ms.");
       println("\nBisimulation classes with their concepts:");
       
-      result.foreach { fmla => println(simplifier.simplify(fmla).prettyprint + ": " + util.StringUtils.join(fmla.extension(graph),",")) };
+      result.foreach { fmla => println(simplifier.simplify(fmla).prettyprint + ": " + util.StringUtils.join(fmla.extension(graph).asScalaCollection,",")) };
     }
     
     
@@ -57,7 +58,7 @@ object Main {
   }
   
   private def readGraph(filename:String) = {
-    val ret =  new Graph[String]
+    val ret =  new GraphT[String,String]
     val p = ConstructingParser.fromFile(new File(filename), true)
     val doc: xml.Document = p.document
 

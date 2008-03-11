@@ -1,18 +1,33 @@
 package dlgre.formula;
 
 import scala.collection.mutable._;
+import dlgre.BitSetSet;
+import grapht._;
 
 abstract class Formula {
-  	//val memoize = new HashMap[Graph[String],Set[String]];
+  	var memoizedExtension : BitSetSet[String] = null;
           
   	def prettyprint : String;
 
-        def isSatisfied(u:String, graph:Graph[String]) : Boolean;
+        def isSatisfied(u:String, graph:GraphT[String,String]) : Boolean;
 
         def flatten : Formula;
         
+        def setToExtension(set:BitSetSet[String], graph:GraphT[String,String]) : Unit;
         
         
+        def extension(graph:GraphT[String,String]) = {
+          if( memoizedExtension == null ) {
+            memoizedExtension = graph.getNodeSet;
+            setToExtension(memoizedExtension,graph)  
+          }
+          
+          memoizedExtension
+        }
+        
+        
+        
+        /*
         
         def extension(graph:Graph[String]) : Set[String] = {
           //println("** CALL to extension");
@@ -35,7 +50,8 @@ abstract class Formula {
           memoize.get(graph).get
           */
         }
-        
+        */
+          
         def conjoin(l : List[Formula]) : Formula = {
           if( l.isEmpty ) {
             Top()

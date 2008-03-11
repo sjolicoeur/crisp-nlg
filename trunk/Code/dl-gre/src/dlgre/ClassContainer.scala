@@ -3,8 +3,9 @@ package dlgre;
 import scala.collection.mutable._;
 
 import dlgre.formula._;
+import grapht._;
 
-class ClassContainer(graph:Graph[String]) {
+class ClassContainer(graph:GraphT[String,String]) {
   case class Entry(extension:BitSetSet[String], formula:Formula) {
     override def equals(that: Any): boolean =
       that.isInstanceOf[Entry] &&  that.asInstanceOf[Entry].extension == extension;
@@ -38,8 +39,8 @@ class ClassContainer(graph:Graph[String]) {
 		val subext = memoizedExtensions.get(sub).get.asScalaCollection;
 
                 graph.getNodeSet(nodes.filter { u => subext.exists { v => graph.hasEdge(u,r,v) }}) 
-              } else graph.getNodeSet(fmla.extension(graph))
-              case _ => graph.getNodeSet(fmla.extension(graph))
+              } else fmla.extension(graph)
+              case _ => fmla.extension(graph)
             }
             
             

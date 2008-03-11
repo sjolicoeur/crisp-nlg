@@ -24,8 +24,8 @@ $min_edgeDensity = 0.1;
 $max_edgeDensity = 0.1;
 $step_edgeDensity = 10;
 
-$mode = "positive";
-#$mode = "bisim";
+#$mode = "positive";
+$mode = "bisim";
 
 for( $edgeDensity = $min_edgeDensity; $edgeDensity <= $max_edgeDensity; $edgeDensity += $step_edgeDensity ) {
   for( $predDensity = $min_predDensity; $predDensity <= $max_predDensity; $predDensity += $step_predDensity ) {

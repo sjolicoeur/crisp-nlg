@@ -1,7 +1,9 @@
 package dlgre.formula;
 
+import grapht._;
+
 case class Negation(sub:Formula) extends Formula {
-  	override def isSatisfied(u:String, graph:Graph[String]) = {
+  	override def isSatisfied(u:String, graph:GraphT[String,String]) = {
           ! sub.isSatisfied(u,graph)  
         }
           
@@ -11,5 +13,10 @@ case class Negation(sub:Formula) extends Formula {
         
         override def flatten = {
           Negation(sub.flatten)
+        }
+        
+        override def setToExtension(set:BitSetSet[String], graph:GraphT[String,String]) : Unit = {
+          sub.setToExtension(set, graph);
+          set.complement();
         }
 }

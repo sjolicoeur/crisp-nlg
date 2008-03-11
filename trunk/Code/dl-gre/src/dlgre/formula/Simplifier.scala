@@ -1,10 +1,10 @@
 package dlgre.formula;
 
-import dlgre.Graph;
+import grapht._;
 
 import scala.collection.mutable._;
 
-class Simplifier(graph:Graph[String]) {
+class Simplifier(graph:GraphT[String,String]) {
 	private val _extension = new HashMap[Formula,Set[String]];
         
         def removeConjunctionsWithTop(fmla:Formula) = {

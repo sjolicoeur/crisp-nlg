@@ -44,7 +44,12 @@ class GraphT[V,E]() {
         def getAllPredicates : Set[String] = predicates;
         
         def getPredicates(u:V) = nodesToPredicates.get(u).get;
-        def hasPredicate(u:V, pred:String) = nodesToPredicates.get(u).get.contains(pred);
+        def hasPredicate(u:V, pred:String) = {
+          nodesToPredicates.get(u) match {
+            case None => false
+            case Some(preds) => preds.contains(pred);
+          }
+        }
 
         // OPT: store root nodes directly
         def getRoots = getAllNodes.toList.filter { u => graph.inDegreeOf(u) == 0 };
@@ -54,6 +59,9 @@ class GraphT[V,E]() {
 	/*** edges ***/
         
         def addEdge(u : V, v : V, r : E) = {
+          if( !containsNode(u) ) addNode(u);
+          if( !containsNode(v) ) addNode(v);
+          
           val edge = graph.addEdge(u,v);
 
           if( edge != null ) {
@@ -97,7 +105,16 @@ class GraphT[V,E]() {
             proc(graph.getEdgeSource(it.next()));
           }
         }
-        
+
+        def foreachInEdgeWithRole(u:V, proc:((V,E) => Unit)) = {
+          val it = getInEdges(u).iterator();
+          
+          while( it.hasNext() ) {
+            val edge = it.next();
+            proc(graph.getEdgeSource(edge), edgesToRoles(edge));
+          }
+        }
+
         def mapOutEdges[T](u:V, fun:(DefaultEdge => T)) = {
           val ret = new ArrayBuffer[T];
           val it = getOutEdges(u).iterator();
@@ -150,14 +167,45 @@ class GraphT[V,E]() {
               proc(u);
               
               if( !cancel(u) ) {
-                foreachInEdge(u, v => _foreachDFSr(v, proc, cancel, visited));
+                foreachInEdge(u, (v:V) => _foreachDFSr(v, proc, cancel, visited));
               }
             }
           }
           
 
+	private val and = { (a:Boolean, b:  () => Boolean) => a && b() };
+        private val or = { (a:Boolean, b:  () => Boolean) => a || b() };
+        
+        def dfs(u:V, found:V => Boolean, combine: (Boolean, () => Boolean) => Boolean) = {
+          _dfs(u, found, combine, new HashSet[V]);
+        }
+        
+        private def _dfs(u:V, found:V => Boolean, combine: (Boolean, () => Boolean) => Boolean, visited:Set[V]) :Boolean = {
+          if( !visited.contains(u) ) {
+            visited += u;
+            
+            if( found(u) ) {
+              true
+            } else {
+              val it = getOutEdges(u).iterator();
+              var ret = false;
+              
+              while( it.hasNext() ) {
+                ret = combine(ret, () => _dfs(graph.getEdgeTarget(it.next()), found, combine, visited));
+              }
 
+              ret
+            }
+          } else {
+            false
+          }
 
+        }
+        
+        def isReachable(u:V, tgt:V) = dfs(u, { v => v == tgt }, or);
+
+        
+        /*
           def _isReachable(u:V, tgt:V, visited:Set[V]) : Boolean = {
             if( !visited.contains(u) ) {
               visited += u;
@@ -180,7 +228,7 @@ class GraphT[V,E]() {
           }
           
           def isReachable(src:V, tgt:V) = _isReachable(src, tgt, new HashSet[V]);
-          
+          */
           
           /****** support for bitsets ******/
             

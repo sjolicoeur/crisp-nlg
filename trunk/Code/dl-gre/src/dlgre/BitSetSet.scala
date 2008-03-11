@@ -3,9 +3,38 @@ package dlgre;
 class BitSetSet[E](domainsize:Int, mapper:E => Int, reverse:Int => E) extends java.util.AbstractSet[E] {
   	private val b = new java.util.BitSet(domainsize);
         private val tmp = new java.util.BitSet(domainsize);
+        
+        class BitSetSetIterator extends java.util.Iterator[E] {
+          private var pos = b.nextSetBit(0);
           
-        // expensive
-	override def iterator() : java.util.Iterator[E] = {
+          override def hasNext() = (pos >= 0);
+          
+          override def next() = {
+            val ret = pos;
+            pos = b.nextSetBit(pos+1);
+            
+            reverse(ret)
+          }
+          
+          override def remove() = throw new java.lang.UnsupportedOperationException;
+        }
+        
+        class ScalaBitSetSetIterator extends scala.Iterator[E] {
+          private var pos = b.nextSetBit(0);
+          
+          override def hasNext() = (pos >= 0);
+          
+          override def next() = {
+            val ret = pos;
+            pos = b.nextSetBit(pos+1);
+            
+            reverse(ret)
+          }
+        }
+          
+        override def iterator() : java.util.Iterator[E] = {
+          new BitSetSetIterator
+          /*
           val ret = new java.util.HashSet[E]
           
           Iterator.range(0,domainsize).foreach { x =>
@@ -14,7 +43,8 @@ class BitSetSet[E](domainsize:Int, mapper:E => Int, reverse:Int => E) extends ja
             }
           }
           
-          ret.iterator()       
+          ret.iterator()
+          */
         }
         
         override def size() : Int = {
@@ -38,14 +68,13 @@ class BitSetSet[E](domainsize:Int, mapper:E => Int, reverse:Int => E) extends ja
           }
         }
           
-        
-        def addAll(c:scala.Collection[E]) = {
+        def addAll(c:Iterator[E]) = {
           c.foreach { x => add(x) }
         }
-        
-        def getDomainsize : Int = domainsize
-        def getMapper = mapper
-        def getReverseMapper = reverse
+
+        def addAll(c:scala.Iterable[E]) = {
+          c.foreach { x => add(x) }
+        }
         
         def addAll(other:BitSetSet[E]) = {
           if( domainsize != other.getDomainsize || mapper != other.getMapper || reverse != other.getReverseMapper ) {
@@ -53,6 +82,19 @@ class BitSetSet[E](domainsize:Int, mapper:E => Int, reverse:Int => E) extends ja
           }
           
           b.or(other.b);
+        }
+
+        def getDomainsize : Int = domainsize
+        def getMapper = mapper
+        def getReverseMapper = reverse
+        
+        
+        def exists(prop: E => Boolean) = {
+          (new ScalaBitSetSetIterator).exists(prop)
+        }
+        
+        def forall(prop: E => Boolean) = {
+          (new ScalaBitSetSetIterator).forall(prop)
         }
         
         def intersect(other:BitSetSet[E]) = {
@@ -62,6 +104,14 @@ class BitSetSet[E](domainsize:Int, mapper:E => Int, reverse:Int => E) extends ja
           ret.b.and(other.b);
           
           ret;
+        }
+        
+        def intersectWith(other:BitSetSet[E]) = {
+          b.and(other.b);
+        }
+        
+        def complement() = {
+          b.flip(0, b.size());
         }
         
         // ATTN: not thread-safe

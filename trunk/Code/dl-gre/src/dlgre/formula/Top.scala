@@ -1,7 +1,9 @@
 package dlgre.formula;
 
+import grapht._;
+
 case class Top extends Formula {
-	override def isSatisfied(u:String, graph:Graph[String]) = {
+	override def isSatisfied(u:String, graph:GraphT[String,String]) = {
    		true       
         }
         
@@ -11,6 +13,10 @@ case class Top extends Formula {
         
         override def flatten = {
           this
+        }
+        
+        override def setToExtension(set:BitSetSet[String], graph:GraphT[String,String]) : Unit = {
+          set.addAll(graph.getAllNodes);
         }
   
 }

@@ -2,9 +2,10 @@ package dlgre.formula;
 
 import util.StringUtils.join;
 
+import grapht._;
 
 case class Conjunction(sub:List[Formula]) extends Formula {
-  	override def isSatisfied(u:String, graph:Graph[String]) = {
+  	override def isSatisfied(u:String, graph:GraphT[String,String]) = {
           sub.forall { f => f.isSatisfied(u,graph) }  
         }
           
@@ -24,5 +25,16 @@ case class Conjunction(sub:List[Formula]) extends Formula {
           }
           
           conjoin(results.flatten { x => x })
+        }
+        
+        override def setToExtension(set:BitSetSet[String], graph:GraphT[String,String]) : Unit = {
+          sub match {
+            case Nil => set.addAll(graph.getAllNodes);
+            case h::t => {
+              val tmp = graph.getNodeSet
+              h.setToExtension(set, graph);
+              t.foreach { sub => sub.setToExtension(tmp, graph); set.intersectWith(tmp); }  
+            }
+          }
         }
 }

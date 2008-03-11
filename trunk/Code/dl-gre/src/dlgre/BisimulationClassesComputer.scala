@@ -3,10 +3,14 @@ package dlgre;
 import scala.collection.mutable._;
 
 import dlgre.formula._;
+import grapht._;
 
-class BisimulationClassesComputer(graph:Graph[String]) {
-   private val extensions = new HashMap[Formula, Set[String]];
+class BisimulationClassesComputer(graph:GraphT[String,String]) {
+   private val extensions = new HashMap[Formula, BitSetSet[String]];
    
+   private def getExtension(fmla:Formula) = fmla.extension(graph);
+   
+   /*
    private def getExtension(fmla:Formula) = {
      if( !extensions.contains(fmla) ) {
        extensions += fmla -> fmla.extension(graph);
@@ -14,6 +18,7 @@ class BisimulationClassesComputer(graph:Graph[String]) {
      
      extensions.get(fmla).get
    }
+   */
    
    
    // Computes the bisimulation classes of a graph.  The method returns a list of Subset objects

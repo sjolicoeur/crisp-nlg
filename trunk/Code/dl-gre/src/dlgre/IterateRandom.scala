@@ -1,4 +1,5 @@
 package dlgre;
+import grapht._;
 
 object IterateRandom {
   def main(args : Array[String]) : Unit = {
@@ -9,7 +10,7 @@ object IterateRandom {
     
     
     Iterator.range(0,warmupIterations).foreach { x =>
-      val graph = dlgre.generate.RandomGenerator.generate(20, 10, 4, 0.1, 0.1);
+      val graph : GraphT[String,String] = dlgre.generate.RandomGenerator.generate(20, 10, 4, 0.1, 0.1);
       if( positiveMode ) {
         val result = new PositiveClassComputer(graph).compute;
       } else {

@@ -75,14 +75,37 @@ $$
 & & \mbox{ and } o' \in |\varphi|^\gM \}.\\
 \end{array}
 $$
+Given a model $\gM$ and an object $o$ in the domain of $\gM$, let
+$\propm(o) = \{p \in \prop \mid o \in |p|^\gM\}$.
 \end{definition}
 
 We can now exactly characterize the problem of when a formula distinguishing two
-elements in a given model exists. We will do so using the notion of \emph{bisimulaiton}.
+elements in a given model exists. We will do so using the notion of \emph{bisimulation}.
 
 \begin{definition}
-Given a model $\gM = (\Delta^\gM,)$
+Given a model $\gM = (\Delta^\gM,|\cdot|^\gM)$, two elements $o$ and $o'$ of $\Delta^\gM$ are $\alc$-bisimilar if it is possible to find a relation $Z \subseteq \Delta^\gM \times \Delta^\gM$ such that
+\begin{enumerate}
+\item $(o,o') \in Z$.
+\item if $(e_1, e_2) \in Z$ then $\propm(e_1) = \propm(e_2)$.
+\item if $(e_1,e_2) \in Z$ and for some $R \in \rel$ there is $e_1'$ such that
+$(e_1,e_1') \in |R|^\gM$ then there is $e_2'$ such that $(e_2,e_2') \in |R|^\gM$ and
+$(e_1',e_2') \in Z$.
+\item if $(e_1,e_2) \in Z$ and for some $R \in \rel$ there is $e_2'$ such that
+$(e_2,e_2') \in |R|^\gM$ then there is $e_1'$ such that $(e_1,e_1') \in |R|^\gM$ and
+$(e_1',e_2') \in Z$.
+\end{enumerate}
 \end{definition}
+
+\begin{theorem}[\cite{modallogic}]
+Given a model $\gM$, if  $o$ and $o'$ are two $\alc$-bisimilar elements in $\gM$
+then there is no $\alc$-formula $\varphi$ such that $o \in |\varphi|^\gM$ and
+$o' \not \in |\varphi|^\gM$.
+\end{theorem}
+
+In other words, $\alc$-bisimilar elements are indistinguishable in the $\alc$ langauge.
+By defining a suitable notion of $\el$-bisimulation, the same result can be proved for
+the $\el$ language.
+
 
 
 \cite{dovier04:_effic_algor_for_comput_bisim_equiv}

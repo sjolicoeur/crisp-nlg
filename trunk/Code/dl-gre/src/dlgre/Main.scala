@@ -41,7 +41,8 @@ object Main {
       println(" done, " + (System.currentTimeMillis - start) + " ms.");
       println("\nBisimulation classes with their concepts:");
       
-      result.foreach { entry => println(simplifier.removeConjunctionsWithTop(entry.formula).prettyprint + ": " + util.StringUtils.join(entry.extension.asScalaCollection,",")) };      
+      result.foreach { entry => println(simplifier.removeConjunctionsWithTop(entry.formula).prettyprint + ": " + util.StringUtils.join(entry.extension.asScalaCollection,",")) };
+      result.foreach { entry => println(entry.extension.asScalaCollection.toString + ": " + dlgre.realize.Realizer.realize(simplifier.removeConjunctionsWithTop(entry.formula), "noun", "drawer")) }; 
     } else {
       print("..[max=0]");
 

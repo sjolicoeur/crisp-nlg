@@ -4,13 +4,18 @@
 \usepackage{times}
 \usepackage{url}
 \usepackage{graphicx}
+\usepackage{xspace}
+\usepackage{amsthm}
+
+\newtheorem{definition}{Definition}[section]
 
 \newcommand{\todo}[1]{\textbf{(#1)}}
 
-\newcommand{\el}{\ensuremath{\mathcal{EL}}}
-\newcommand{\alc}{\ensuremath{\mathcal{ALC}}}
-
-
+\newcommand{\el}{\ensuremath{\mathcal{EL}}\xspace}
+\newcommand{\alc}{\ensuremath{\mathcal{ALC}}\xspace}
+\newcommand{\form}{\textsf{FORM}\xspace}
+\newcommand{\prop}{\textsf{PROP}\xspace}
+\newcommand{\rel}{\textsf{REL}\xspace}
 
 \title{Generating referring expressions by computing bisimulation
   classes}

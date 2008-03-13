@@ -1,4 +1,55 @@
-\section{Computing bisimulation classes} \label{sec:bisim}
+\newcommand{\gM}{\mathcal{M}}
+\newcommand{\gL}{\mathcal{L}}
+
+
+\section{Description Languages and Bisimulation} \label{sec:bisim}
+
+In computational linguistics, the genereting referring expression problem (the GRE
+problem) can be intuitively presented as follows: given some information about
+a group of objects (e.g., grounded facts about individuals in an ongoing dialogue),
+and a grammar, found a grammatically correct expression (usually a noun phrase) that uniquely identify a given object.
+
+By taking a logic perspective, we can recast the GRE problem as an inference problem.
+We can think that the information about the group of objects is provided in the form
+of a model $\gM$ of a given logical language $\gL$.  Now, the inference problem
+associated with the GRE problem will be to find a formula in $\gL$ such that it
+exacly identify a given object $o$.  Formally, if $|\cdot|^\gM$ is the interpretation
+function for $\gL$ which for each formula in $\gL$ and for each model $\gM$ returns
+the set of elements in $\gM$ for which the formula $\varphi$ holds, then we can define
+\medskip
+
+\noindent
+{\small
+\begin{tabular}{l} \hline
+\textsc{$\gL$-GRE Problem}\\ \hline
+\ \ \ Input: A model $\gM$, an object $o$ in the domain of $\gM$\\
+\ \ \ Output: a formula $\varphi \in \gL$ such that $|\varphi|^\gM = \{o\}$\\
+\hspace*{1.4cm} (if such a formula exists).\\ \hline
+\end{tabular}}
+\medskip
+
+As it can be seen from the definition, the problem depends on which particular
+logical language $\gL$ we are interested in, and also (as the original GRE problem)
+it might terminate with failure.  Depending on the model $\gM$, the chosen object $o$
+and the expressive power of $\gL$ it can be the case that there is no formula of
+$\gL$ that uniquely identifies $o$.
+
+Consider the following example.  We have three objects related as indicated in
+Figure~\ref{fig-car1}
+\begin{figure}
+\begin{center}
+\includegraphics{pic.pdf}
+\end{center}
+\caption{Distinguishable/indistinguishable points.}\label{fig-car1}
+\end{figure}
+
+The points $o$ and $o'$ can easily be distinguished in first-order logic:
+the formula $R(x,x)$ is true of $o$ and false in $o'$. The corresponding
+referring expression for $o$ would be ``a point relating to itself''.
+But if we can only use propositional and relational information (equivalently, our grammar does not contain the word ``itself'') then $o$ and $o'$ are indistinguishable. Both
+are ``points which are related to points which are related to points\ldots''
+
+
 
 \cite{dovier04:_effic_algor_for_comput_bisim_equiv}
 

@@ -81,7 +81,9 @@ $\C \leftarrow \{\top\}$ \;
 \caption{add$_\el$($C$, $\C$)}
 \label{algo:bisim-add-el}
 \For{$C' \in \C$ non-singleton}{
-  \If{$C' \sqcap C$ is not subsumed in $\C$}{
+  \If{$C' \sqcap C$ is not subsumed in $\C$ {\bf and} 
+    $\interp{C' \sqcap C} \neq \emptyset$ {\bf and}
+    $\interp{C' \sqcap C} \neq \interp{C'}$}{
     add $C' \sqcap C$ to $\C$ \;
     remove subsumed concepts from $\C$\;
   }

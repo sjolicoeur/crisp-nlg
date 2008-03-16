@@ -154,8 +154,8 @@ bisimulation classes less frequently, because the concepts it can
 build can ``see'' fewer differences between individuals.  For example,
 in the model shown in Fig.~\ref{fig:el-vs-alc}, the \alc\ algorithm
 will compute the concepts $\{\neg \exists R. (\neg P \sqcap \neg Q),
-\exists R. (\neg P \sqcap \neg Q), Q, \neg P \sqcap \neg Q\}$ (each of
-which is singleton), but $a$ and $b$ are \el-bisimilar in this model,
+Q, \exists R. (\neg P \sqcap \neg Q), \neg P \sqcap \neg Q\}$ (each of
+which is singleton), but $a$ and $c$ are \el-bisimilar in this model,
 and the only \el-concept that is true in $d$ is $\top$, so the \el\
 algorithm can only compute the concepts $\{\top, P, P \sqcap Q\}$.
 Furthermore, because the \el\ algorithm maintains a weaker invariant

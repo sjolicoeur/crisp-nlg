@@ -7,6 +7,12 @@
 \usepackage{xspace}
 \usepackage{amsthm}
 
+\usepackage[algoruled, linesnumbered,noend]{algorithm2e}
+
+
+\newcommand{\C}{\ensuremath{\mathcal{C}}\xspace}
+\newcommand{\M}{\ensuremath{\mathcal{M}}\xspace}
+
 \newtheorem{definition}{Definition}[section]
 \newtheorem{theorem}{Theorem}[section]
 
@@ -18,6 +24,8 @@
 \newcommand{\prop}{\textsf{prop}\xspace}
 \newcommand{\rel}{\textsf{rel}\xspace}
 \newcommand{\propm}{\ensuremath{\textsf{prop}^\gM\xspace}}
+
+\newcommand{\interp}[1]{|#1|}
 
 \title{Generating referring expressions by computing bisimulation
   classes}

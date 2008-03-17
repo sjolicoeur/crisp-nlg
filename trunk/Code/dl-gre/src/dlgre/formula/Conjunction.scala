@@ -37,4 +37,10 @@ case class Conjunction(sub:List[Formula]) extends Formula {
             }
           }
         }
+        
+        def getSubAsJava = {
+          val ret = new java.util.ArrayList[Formula]();
+          sub.foreach { x => ret.add(x) };
+          ret;
+        }
 }

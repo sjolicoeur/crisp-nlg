@@ -206,7 +206,24 @@ public class CRISPtoPDDL {
 			String word = xpath.evaluate("../@word", treeElement);
 
 			Node tree = trees.get(treeName);
-			String actionName = normalizeTreename(treeName + "-" + word);
+
+
+			StringBuffer actionNameBuf = new StringBuffer(normalizeTreename(treeName + "-" + word));
+
+			NodeList auxAnchors = (NodeList) xpath.evaluate("lex", treeElement, XPathConstants.NODESET);
+			for( int i = 0; i < auxAnchors.getLength(); i++ ) {
+			    Node auxAnchor = auxAnchors.item(i);
+			    String pos = xpath.evaluate("@pos", auxAnchor);
+			    String w = xpath.evaluate("@word", auxAnchor);
+
+			    //System.err.println("auxiliary word: " + pos + ":" + w);
+			    actionNameBuf.append("-" + pos + ":" + w);
+			}
+
+
+
+
+			String actionName = actionNameBuf.toString();
 			String rootCategory = xpath.evaluate("*[1]/@cat", tree);
 
 			IterableNodeList semnodes = nl(xpathSemContent.evaluate(treeElement, XPathConstants.NODESET));

@@ -46,4 +46,17 @@ class PositiveClassComputer(graph:GraphT[String,String]) {
     classes.getClasses
     
   }
+  
+  def computeForJava = {
+    val ret = new java.util.HashMap[String,Formula]();
+    val classes = compute;
+    
+    classes.foreach { entry =>
+    	entry.extension.scalaIterator.foreach { x =>
+        	ret.put(x, entry.formula);    
+        }
+    }
+    
+    ret
+  }
 }

@@ -7,10 +7,7 @@ import scala.collection.mutable._;
 class Simplifier(graph:GraphT[String,String]) {
 	private val _extension = new HashMap[Formula,Set[String]];
         
-        def removeConjunctionsWithTop(fmla:Formula) = {
-          simplifyConjunctions(fmla.flatten,
-              { l => l.remove { el => el.isInstanceOf[Top] } });
-        }
+        
         
         
         
@@ -44,19 +41,10 @@ class Simplifier(graph:GraphT[String,String]) {
         
         
         def simplify(fmla : Formula) = {
-           simplifyConjunctions(fmla.flatten,
-               { l => removeEntailedFormulas(stripEntailedByPositive(l), Nil) })
+           fmla.flatten.simplifyConjunctions({ l => removeEntailedFormulas(stripEntailedByPositive(l), Nil) })
         }
         
-        private def simplifyConjunctions(fmla : Formula, simplifier : List[Formula] => List[Formula]) : Formula = {
-           fmla match {
-             case Conjunction(l) => fmla.conjoin(simplifier(l map { x => simplifyConjunctions(x,simplifier)}))
-             case Existential(r,sub) => Existential(r,simplifyConjunctions(sub, simplifier))
-             case Literal(x,y) => fmla
-             case Negation(sub) => Negation(simplifyConjunctions(sub, simplifier))
-             case Top() => fmla
-           }
-        }
+        
         
         private def stripEntailedByPositive(l : List[Formula]) = {
           val ext = extension(l)

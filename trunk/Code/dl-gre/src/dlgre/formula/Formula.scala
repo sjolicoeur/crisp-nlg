@@ -26,6 +26,19 @@ abstract class Formula {
         }
         
         
+        def simplifyConjunctions(simplifier : List[Formula] => List[Formula]) : Formula = {
+          this match {
+            case Conjunction(l) => conjoin(simplifier(l map { x => x.simplifyConjunctions(simplifier)}))
+            case Existential(r,sub) => Existential(r,sub.simplifyConjunctions(simplifier))
+            case Literal(x,y) => this
+            case Negation(sub) => Negation(sub.simplifyConjunctions(simplifier))
+            case Top() => this
+          }
+       }
+        
+        def removeConjunctionsWithTop = {
+          flatten.simplifyConjunctions({ l => l.remove { el => el.isInstanceOf[Top] } });
+        }
         
         /*
         

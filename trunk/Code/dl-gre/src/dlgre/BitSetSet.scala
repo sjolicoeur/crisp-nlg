@@ -47,6 +47,8 @@ class BitSetSet[E](domainsize:Int, mapper:E => Int, reverse:Int => E) extends ja
           */
         }
         
+        def scalaIterator : scala.Iterator[E] = new ScalaBitSetSetIterator;
+        
         override def size() : Int = {
           b.cardinality()
         }

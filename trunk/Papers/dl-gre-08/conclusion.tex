@@ -10,6 +10,36 @@ will make implementation available
 first time to actually show efficient runtimes for generation of
 relational REs
 
+
+Because they compute referring expressions for all individuals in the
+domain together, our algorithms will be strongest in static settings,
+such as the generation of descriptions for museum exhibits, in which
+the individuals and their properties don't change much.  Nevertheless,
+they remain fast enough for real-time use in dynamic settings.
+Another advantage that recent algorithms for relational REs
+\cite{Krahmer2003,kelleher06:_increm_gener_of_spatial_refer} have over
+ours is that they can take weights and salience into account.  How
+this could be incorporated into our algorithms is an interesting
+question for future research.
+
+
+relational descriptions in data are comparatively rare and
+inconsistent; not sufficiently annotated in TUNA
+\cite{deemter06:_build_seman_trans_corpus_for}; need more. 
+
+
+Things that we care about but that are never said explicitly so far:
+
+\begin{itemize}
+\item in a static scenario, we only have to compute REs once -- and in
+  any application that uses many REs before the context changes (e.g.\
+  museums), this is exactly what we want to do
+\item it is difficult to control the search for concepts by linguistic
+  constrtaints
+\item our GRE algorithms can take orderings over the propositional and
+  relational symbols into account
+\end{itemize}
+
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: "dl-gre-08"

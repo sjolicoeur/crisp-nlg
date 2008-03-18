@@ -41,7 +41,7 @@ class PositiveClassComputer(graph:GraphT[String,String]) {
       }
     }
     
-    print("[max=" + classes.getMaxSize + "]");
+    //print("[max=" + classes.getMaxSize + "]");
     
     classes.getClasses
     

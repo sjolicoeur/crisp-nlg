@@ -39,18 +39,29 @@ class BisimulationClassesComputer(graph:GraphT[String,String]) {
      // now repeatedly split over roles to distinguished subsets
      var oldQueue : List[Formula] = Nil;
      var newQueue = extractQueue(queue);
-     
-     //println("\n\nBefore role splitting: " + newQueue);
-     
-     do {
+     var madeChanges = true;
+
+     while( madeChanges && !allSingleton(newQueue) ) {
+       print(".");
        oldQueue = newQueue;
        splitOverRoles(queue, roles);
        newQueue = extractQueue(queue);
+
+       madeChanges = (oldQueue != newQueue);
+     }
+
+     /*
+     do {
        
        //println("Queue is now: " + newQueue);
      } while( oldQueue != newQueue );
+     */
 
      newQueue;
+   }
+   
+   private def allSingleton(queue:List[Formula]) = {
+     queue.forall { f => getExtension(f).size == 1 }
    }
    
    // Splits classes that satisfy different positive literals.

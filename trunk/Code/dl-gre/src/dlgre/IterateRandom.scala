@@ -30,7 +30,7 @@ object IterateRandom {
       }
       val end = System.currentTimeMillis;
 
-      print(".");
+      print(":");
       sumTime = sumTime + end-start;
     }
     print(") ");

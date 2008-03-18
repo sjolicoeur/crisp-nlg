@@ -32,7 +32,7 @@ for( $edgeDensity = $min_edgeDensity; $edgeDensity <= $max_edgeDensity; $edgeDen
     for( $numRoles = $min_numRoles; $numRoles <= $max_numRoles; $numRoles += $step_numRoles ) {
       for( $numPreds = $min_numPreds; $numPreds <= $max_numPreds; $numPreds += $step_numPreds ) {
 	for( $numNodes = $min_numNodes; $numNodes <= $max_numNodes; $numNodes += $step_numNodes ) {
-	  $cmd = "java -cp $CLASSPATH:/Applications/eclipse/plugins/ch.epfl.lamp.sdt.compiler_2.7.0.14001-RC2_0/lib/scala-library.jar:../packages/jgrapht-jdk1.5.jar dlgre.IterateRandom $mode $repetitions 20 $numNodes $numPreds $numRoles $predDensity $edgeDensity";
+	  $cmd = "java -cp $CLASSPATH:/Applications/eclipse/plugins/ch.epfl.lamp.sdt.compiler_2.7.0.14321-final_0/lib/scala-library.jar:../packages/jgrapht-jdk1.5.jar dlgre.IterateRandom $mode $repetitions 20 $numNodes $numPreds $numRoles $predDensity $edgeDensity";
 	  $sum_runtime = 0;
 	  $sum_passes = 0;
 	  $sum_classes = 0;

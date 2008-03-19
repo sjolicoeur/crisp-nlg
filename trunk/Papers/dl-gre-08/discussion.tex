@@ -1,10 +1,15 @@
 \section{Discussion} \label{sec:discussion}
 
-We will now describe two experiments evaluating different aspects of
-the performance of our algorithm. First, we will look at its running
-time on randomly generated domain graphs of different sizes. Second,
-we will compare the output of our algorithm to human-generated
-descriptions.
+We will now describe two experiments evaluating the quality of the \el\
+algorithm's output and the efficiency of both of our algorithms, and
+we discuss the interface between our algorithms and realization.
+
+
+%different aspects of
+%the performance of our algorithm. First, we will look at its running
+%time on randomly generated domain graphs of different sizes. Second,
+%we will compare the output of our algorithm to human-generated
+%descriptions.
 
 
 
@@ -56,41 +61,49 @@ orderings is necessary.
 
 \begin{figure*}[thb]
 
-\begin{small}
-\begin{tabular}{|lp{0.9\textwidth}|}\hline
-\multirow{2}{*}{drawer} & \textit{human-produce description} \\
+\begin{footnotesize}
+\begin{tabular}{|l|p{0.95\textwidth}|}\hline
+\multirow{2}{*}{id} & \textit{human-produce description} \\
 & $\mathsf{output\ of\ the\ \el\ algorithm}$\\\hline
-2 & \textit{the orange drawer above the blue drawer} \\
-& (a) $\exists \mathsf{above}.(\mathsf{blue}) \sqcap \mathsf{orange}$ (b) $\exists \mathsf{above}.(\exists \mathsf{below}.(\mathsf{orange}) \sqcap \mathsf{blue}) \sqcap \mathsf{orange}$ (c) $\exists \mathsf{next}.(\mathsf{blue}) \sqcap \exists \mathsf{next}.(\mathsf{pink}) \sqcap \mathsf{orange}$\\
-4 & \textit{the yellow drawer on the top of the pink one} \\ 
-& (a) $\exists \mathsf{above}.(\mathsf{pink}) \sqcap \mathsf{yellow}$  (b) $\exists \mathsf{above}.(\mathsf{pink}) \sqcap \mathsf{corner} \sqcap \mathsf{green}$  (c) $\exists \mathsf{above}.(\exists \mathsf{next}.(\mathsf{green}) \sqcap \mathsf{pink}) \sqcap \mathsf{green} \sqcap \mathsf{corner}$\\
-5 & $\ast$ \textit{the pink drawer in the fourth column below the yellow one}\\
-& (a) $\exists \mathsf{above}.(\mathsf{orange}) \sqcap \mathsf{pink}$  (b) $\exists \mathsf{below}.(\mathsf{green}) \sqcap \mathsf{pink}$  (c) $\exists \mathsf{above}.(\exists \mathsf{next}.(\mathsf{green}) \sqcap \mathsf{orange}) \sqcap \exists \mathsf{next}.(\mathsf{green}) \sqcap \mathsf{pink}$\\
+\multirow{2}{*}{2} & \textit{the orange drawer above the blue drawer} \\
+&  $\bm{\mathsf{orange} \sqcap \exists \mathsf{above}.\mathsf{blue}}$ / $\mathsf{orange} \sqcap \exists \mathsf{above}.(\exists \mathsf{below}.(\mathsf{orange}) \sqcap \mathsf{blue})$ / $ \mathsf{orange} \sqcap \exists \mathsf{next}.(\mathsf{blue}) \sqcap \exists \mathsf{next}.(\mathsf{pink})$\\\hline
+\multirow{2}{*}{4} & \textit{the yellow drawer on the top of the pink one} \\ 
+&  $\bm{\mathsf{yellow} \sqcap \exists \mathsf{above}.\mathsf{pink}}$  / $\mathsf{yellow}  \sqcap \mathsf{corner} \sqcap \exists \mathsf{above}.\mathsf{pink}$  / $\mathsf{yellow} \sqcap \mathsf{corner} \sqcap \exists \mathsf{above}.(\exists \mathsf{next}.(\mathsf{yellow}) \sqcap \mathsf{pink})$\\\hline
+\multirow{2}{*}{5} & $\ast$ \textit{the pink drawer in the fourth column below the yellow one}\\
+&  $\mathsf{pink} \sqcap \exists \mathsf{above}.\mathsf{orange}$  / $\mathsf{pink} \sqcap \exists \mathsf{below}.\mathsf{yellow}$  / $ \mathsf{pink} \sqcap \exists \mathsf{next}.(\mathsf{yellow}) \sqcap \exists \mathsf{above}.(\exists \mathsf{next}.(\mathsf{yellow}) \sqcap \mathsf{orange})$\\\hline
 %6 & \textit{the yellow drawer on top of the yellow drawer} / \textit{the yellow drawer that's above another yellow drawer} / $\ast$ \textit{the drawer after the two blue ones in horizontal sequence}\\
-6 & \textit{the yellow drawer on top of the yellow drawer} (2$\times$) / $\ast$ \textit{the drawer after the two blue ones in horizontal sequence}\\
-& (a) $\exists \mathsf{above}.(\mathsf{yellow}) \sqcap \mathsf{yellow}$  (b) $\exists \mathsf{below}.(\mathsf{pink}) \sqcap \mathsf{green}$  (c) $\exists \mathsf{next}.(\mathsf{blue}) \sqcap \exists \mathsf{next}.(\mathsf{pink}) \sqcap \mathsf{green}$\\
-7 & \textit{the blue drawer below the orange one} / $\ast$ \textit{the blue drawer below the orange drawer in the second column}\\ 
-& (a) $\exists \mathsf{next}.(\exists \mathsf{above}.(\mathsf{orange}) \sqcap \mathsf{blue}) \sqcap \exists \mathsf{above}.(\mathsf{blue}) \sqcap \mathsf{blue}$  (b) $\exists \mathsf{below}.(\mathsf{orange}) \sqcap \mathsf{blue}$  (c) $\exists \mathsf{next}.(\mathsf{blue}) \sqcap \exists \mathsf{next}.(\mathsf{green}) \sqcap \mathsf{blue}$\\
-10 & \textit{the blue drawer above the pink drawer} (2$\times$)\\
-& (a) $\exists \mathsf{above}.(\mathsf{pink}) \sqcap \mathsf{blue}$  (b) $\exists \mathsf{above}.(\mathsf{pink}) \sqcap \exists \mathsf{below}.(\mathsf{blue}) \sqcap \mathsf{blue}$  (c) $\exists \mathsf{next}.(\mathsf{orange}) \sqcap \exists \mathsf{next}.(\mathsf{green}) \sqcap \mathsf{blue}$\\
+\multirow{2}{*}{6} & \textit{the yellow drawer on top of the yellow drawer} (2$\times$) / $\ast$ \textit{the drawer after the two blue ones in horizontal sequence}\\
+&  $\bm{\mathsf{yellow} \sqcap \exists \mathsf{above}.\mathsf{yellow}}$  / $\mathsf{yellow} \sqcap \exists \mathsf{below}.\mathsf{pink}$  / $\mathsf{yellow} \sqcap \exists \mathsf{next}.(\mathsf{blue}) \sqcap \exists \mathsf{next}.(\mathsf{pink})$\\\hline
+\multirow{2}{*}{7} & \textit{the blue drawer below the orange one} / $\ast$ \textit{the blue drawer below the orange drawer in the second column}\\ 
+& $\mathsf{blue} \sqcap \exists \mathsf{above}.(\mathsf{blue}) \sqcap \exists \mathsf{next}.(\exists \mathsf{above}.(\mathsf{orange}) \sqcap \mathsf{blue})$ / $\bm{\mathsf{blue} \sqcap \exists \mathsf{below}.(\mathsf{orange})}$ \textbf{/} $\mathsf{blue} \sqcap \exists \mathsf{next}.(\mathsf{blue}) \sqcap \exists \mathsf{next}.(\mathsf{yellow})$\\\hline
+\multirow{2}{*}{10} & \textit{the blue drawer above the pink drawer} (2$\times$)\\
+&  $\bm{\mathsf{blue} \sqcap \exists \mathsf{above}.(\mathsf{pink})}$  / $\mathsf{blue} \sqcap \exists \mathsf{above}.(\mathsf{pink}) \sqcap \exists \mathsf{below}.(\mathsf{blue})$  / $\mathsf{blue} \sqcap \exists \mathsf{next}.(\mathsf{orange}) \sqcap \exists \mathsf{next}.(\mathsf{yellow})$\\\hline
 %11 & \textit{the yellow drawer next to the orange drawer} / \textit{the yellow one next to the orange one}\\
-11 & \textit{the yellow drawer next to the orange drawer} (2$\times$)\\
-& (a) $\exists \mathsf{above}.(\mathsf{orange}) \sqcap \mathsf{yellow}$  (b) $\exists \mathsf{below}.(\mathsf{green}) \sqcap \mathsf{green}$  (c) $\exists \mathsf{next}.(\mathsf{orange}) \sqcap \mathsf{green}$\\
-12 & \textit{the orange drawer below the pink drawer}\\ 
-& (a) $\exists \mathsf{above}.(\mathsf{pink} \sqcap \mathsf{corner}) \sqcap \mathsf{orange}$  (b) $\exists \mathsf{below}.(\mathsf{pink}) \sqcap \mathsf{orange}$  (c) $\exists \mathsf{next}.(\mathsf{green}) \sqcap \mathsf{orange}$\\
-14 & $\ast$ \textit{the orange drawer below the two yellow drawers} (2$\times$)\\
-& (a) $\exists \mathsf{next}.(\mathsf{pink} \sqcap \mathsf{corner}) \sqcap \exists \mathsf{next}.(\mathsf{pink}) \sqcap \mathsf{orange}$  (b) $\exists \mathsf{below}.(\mathsf{green}) \sqcap \mathsf{orange}$  (c) $\exists \mathsf{next}.(\mathsf{pink} \sqcap \mathsf{corner}) \sqcap \mathsf{orange}$\\\hline
+\multirow{2}{*}{11} & \textit{the yellow drawer next to the orange drawer} (2$\times$)\\
+&  $\mathsf{yellow} \sqcap \exists \mathsf{above}.\mathsf{orange}$  / $\mathsf{yellow} \sqcap \exists \mathsf{below}.\mathsf{yellow}$  / $\bm{\mathsf{yellow} \sqcap \exists \mathsf{next}.\mathsf{orange}}$\\\hline
+\multirow{2}{*}{12} & \textit{the orange drawer below the pink drawer}\\ 
+&  $\mathsf{orange} \sqcap \exists \mathsf{above}.(\mathsf{pink} \sqcap \mathsf{corner})$  / $\bm{\mathsf{orange} \sqcap \exists \mathsf{below}.\mathsf{pink}}$  / $\mathsf{orange} \sqcap \exists \mathsf{next}.\mathsf{yellow}$\\\hline
+\multirow{2}{*}{14} & $\ast$ \textit{the orange drawer below the two yellow drawers} (2$\times$)\\
+&  $ \mathsf{orange} \sqcap \exists \mathsf{next}.(\mathsf{pink} \sqcap \mathsf{corner}) \sqcap \exists \mathsf{next}.(\mathsf{pink})$  / $\mathsf{orange} \sqcap \exists \mathsf{below}.\mathsf{yellow}$  / $\mathsf{orange} \sqcap \exists \mathsf{next}.(\mathsf{pink} \sqcap \mathsf{corner})$\\\hline
 \end{tabular}
-\end{small}
+\end{footnotesize}
 
-\caption{Human produced descriptions and output of our \el\  algorithm
-using the orderings (a) $\mathsf{corner,}$ $\mathsf{color, above,
-next, below, right, left}$, (b) $\mathsf{color, corner, below, above,
-left, right, next}$ and (c) $\mathsf{corner, color, below}$
-$\mathsf{above, left, right, next}$. Descriptions that the \el\
-algorithm cannot generate with any ordering are marked by $\ast$.}
+\caption{Human produced descriptions from
+\cite{viethen06:_algor_for_gener_refer_expres} for nine different drawers (id)
+ and output of our \el\ algorithm using three different orderings.
+ Descriptions that the \el\ algorithm cannot generate with any
+ ordering are marked by $\ast$. Generated descriptions that match one
+ produced by humans are in bold face. 2$\times$ indicates that the
+ same description was produced twice.}
+
 \label{fig:example_outputs}
 \end{figure*}
+
+%(a) $\mathsf{corner,}$ $\mathsf{color, above,
+%next, below, right, left}$, (b) $\mathsf{color, corner, below, above,
+%left, right, next}$ and (c) $\mathsf{corner, color, below}$
+%$\mathsf{above, left, right, next}$. Descriptions that the \el\
+%algorithm cannot generate with any ordering are marked by $\ast$.}
 
 
 % ordering no. 235
@@ -115,8 +128,9 @@ representation of the domain using the predicates $\mathsf{color}$ and
 $\mathsf{corner}$ and the roles $\mathsf{above, below, next\ to, left\ of}$,
 and $\mathsf{right\ of}$. We did not include the $\mathsf{column}$ and
 $\mathsf{row}$ predicates because every drawer can be uniquely
-identified through those predicates. Since our algorithm has to
-consider predicates before relations, this would mean that no relation
+identified through those predicates. Since our algorithm (for
+efficiency reasons)
+considers predicates before relations, this would mean that no relation
 ever gets used. Like for the Incremental Algorithm, we tested all
 possible orderings of predicates and roles (with the restriction that
 all predicates come before all roles). 10 of the 15 human-produced

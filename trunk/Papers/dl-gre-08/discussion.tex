@@ -19,28 +19,30 @@ was collected in an experiment where participants were asked to
 describe one of 16 filing cabinet drawers. The drawers had different
 colors and were arranged in a four-by-four grid, as shown in Figure
 \ref{fig:drawers}. The human-generated descriptions use four
-non-relational properties (the drawer's \textsf{color}, its \textsf{column} and
-\textsf{row} number, and whether it is in a \textsf{corner}) and five
-relational properties (\textsf{above, below, next to, left of, right
-of}). Of the 118 referring expressions, only 15 use relational properties.
+non-relational properties (the drawer's $\mathsf{color}$, its $\mathsf{column}$ and
+$\mathsf{row}$ number, and whether it is in a $\mathsf{corner}$) and five
+relational properties ($\mathsf{above, below, next\ to, left\ of,
+right\ of}$). Of the 118 referring expressions, only 15 use relational properties.
 Viethen and Dale \shortcite{viethen06:_algor_for_gener_refer_expres}
 describe the data in more detail and present results of evaluating the
-Full Brevity algorithm by \cite{}, the Incremental Algorithm by
-\cite{} and the relational algorithm by \cite{} on this corpus.
+Full Brevity algorithm, the Incremental Algorithm (both by
+\cite{Dale1995}) and the relational algorithm by
+\cite{dale91:_gener_refer_expres_invol_relat} on this corpus.
+
 
 \begin{figure}
-\includegraphics[width=0.4\textwidth]{drawers}
+\includegraphics[width=0.3\textwidth]{drawers.jpg}
 \caption{A schematic view of the filing cabinets.\todo{needs nicer pic}}\label{fig:drawers}
 \end{figure}
 
 
 As described above \todo{needs to be described}, Dale and Reiter's
-Incremental Algorithm is a special case of our algorithm, where no
-roles are used and a specific order is imposed on the predicates. We
-replicated Viethen and Dale's experiment, which tested the Incremental
-Algorithm on the drawer domain with all possible preference ordering
-given the four predicates
-\textsf{color, column, row}, and \textsf{corner}
+Incremental Algorithm is a special case of our \el\ algorithm, where
+no roles are used and a specific order is imposed on the
+predicates. We replicated Viethen and Dale's experiment, which tested
+the Incremental Algorithm on the drawer domain with all possible
+preference orderings given the four predicates $\mathsf{color, column,
+row}$, and $\mathsf{corner}$
 \cite{viethen06:_algor_for_gener_refer_expres}.  Unsurprisingly, we
 get the same results as they did: 98 of the 103 non-relational
 descriptions produced by humans can be generated using one of the 24
@@ -50,77 +52,110 @@ orderings is necessary.
 
 
 
+\begin{figure*}[thb]
+
+\begin{small}
+\begin{tabular}{|lp{0.9\textwidth}|}\hline
+\multirow{2}{*}{drawer} & \textit{human-produce description} \\
+& $\mathsf{output\ of\ the\ \el\ algorithm}$\\\hline
+2 & \textit{the orange drawer above the blue drawer} \\
+& (a) $\exists \mathsf{above}.(\mathsf{blue}) \sqcap \mathsf{orange}$ (b) $\exists \mathsf{above}.(\exists \mathsf{below}.(\mathsf{orange}) \sqcap \mathsf{blue}) \sqcap \mathsf{orange}$ (c) $\exists \mathsf{next}.(\mathsf{blue}) \sqcap \exists \mathsf{next}.(\mathsf{pink}) \sqcap \mathsf{orange}$\\
+4 & \textit{the yellow drawer on the top of the pink one} \\ 
+& (a) $\exists \mathsf{above}.(\mathsf{pink}) \sqcap \mathsf{yellow}$  (b) $\exists \mathsf{above}.(\mathsf{pink}) \sqcap \mathsf{corner} \sqcap \mathsf{green}$  (c) $\exists \mathsf{above}.(\exists \mathsf{next}.(\mathsf{green}) \sqcap \mathsf{pink}) \sqcap \mathsf{green} \sqcap \mathsf{corner}$\\
+5 & $\ast$ \textit{the pink drawer in the fourth column below the yellow one}\\
+& (a) $\exists \mathsf{above}.(\mathsf{orange}) \sqcap \mathsf{pink}$  (b) $\exists \mathsf{below}.(\mathsf{green}) \sqcap \mathsf{pink}$  (c) $\exists \mathsf{above}.(\exists \mathsf{next}.(\mathsf{green}) \sqcap \mathsf{orange}) \sqcap \exists \mathsf{next}.(\mathsf{green}) \sqcap \mathsf{pink}$\\
+%6 & \textit{the yellow drawer on top of the yellow drawer} / \textit{the yellow drawer that's above another yellow drawer} / $\ast$ \textit{the drawer after the two blue ones in horizontal sequence}\\
+6 & \textit{the yellow drawer on top of the yellow drawer} (2$\times$) / $\ast$ \textit{the drawer after the two blue ones in horizontal sequence}\\
+& (a) $\exists \mathsf{above}.(\mathsf{yellow}) \sqcap \mathsf{yellow}$  (b) $\exists \mathsf{below}.(\mathsf{pink}) \sqcap \mathsf{green}$  (c) $\exists \mathsf{next}.(\mathsf{blue}) \sqcap \exists \mathsf{next}.(\mathsf{pink}) \sqcap \mathsf{green}$\\
+7 & \textit{the blue drawer below the orange one} / $\ast$ \textit{the blue drawer below the orange drawer in the second column}\\ 
+& (a) $\exists \mathsf{next}.(\exists \mathsf{above}.(\mathsf{orange}) \sqcap \mathsf{blue}) \sqcap \exists \mathsf{above}.(\mathsf{blue}) \sqcap \mathsf{blue}$  (b) $\exists \mathsf{below}.(\mathsf{orange}) \sqcap \mathsf{blue}$  (c) $\exists \mathsf{next}.(\mathsf{blue}) \sqcap \exists \mathsf{next}.(\mathsf{green}) \sqcap \mathsf{blue}$\\
+10 & \textit{the blue drawer above the pink drawer} (2$\times$)\\
+& (a) $\exists \mathsf{above}.(\mathsf{pink}) \sqcap \mathsf{blue}$  (b) $\exists \mathsf{above}.(\mathsf{pink}) \sqcap \exists \mathsf{below}.(\mathsf{blue}) \sqcap \mathsf{blue}$  (c) $\exists \mathsf{next}.(\mathsf{orange}) \sqcap \exists \mathsf{next}.(\mathsf{green}) \sqcap \mathsf{blue}$\\
+%11 & \textit{the yellow drawer next to the orange drawer} / \textit{the yellow one next to the orange one}\\
+11 & \textit{the yellow drawer next to the orange drawer} (2$\times$)\\
+& (a) $\exists \mathsf{above}.(\mathsf{orange}) \sqcap \mathsf{yellow}$  (b) $\exists \mathsf{below}.(\mathsf{green}) \sqcap \mathsf{green}$  (c) $\exists \mathsf{next}.(\mathsf{orange}) \sqcap \mathsf{green}$\\
+12 & \textit{the orange drawer below the pink drawer}\\ 
+& (a) $\exists \mathsf{above}.(\mathsf{pink} \sqcap \mathsf{corner}) \sqcap \mathsf{orange}$  (b) $\exists \mathsf{below}.(\mathsf{pink}) \sqcap \mathsf{orange}$  (c) $\exists \mathsf{next}.(\mathsf{green}) \sqcap \mathsf{orange}$\\
+14 & $\ast$ \textit{the orange drawer below the two yellow drawers} (2$\times$)\\
+& (a) $\exists \mathsf{next}.(\mathsf{pink} \sqcap \mathsf{corner}) \sqcap \exists \mathsf{next}.(\mathsf{pink}) \sqcap \mathsf{orange}$  (b) $\exists \mathsf{below}.(\mathsf{green}) \sqcap \mathsf{orange}$  (c) $\exists \mathsf{next}.(\mathsf{pink} \sqcap \mathsf{corner}) \sqcap \mathsf{orange}$\\\hline
+\end{tabular}
+\end{small}
+
+\caption{Human produced descriptions and output of our \el\  algorithm
+using the orderings (a) $\mathsf{corner,}$ $\mathsf{color, above,
+next, below, right, left}$, (b) $\mathsf{color, corner, below, above,
+left, right, next}$ and (c) $\mathsf{corner, color, below}$
+$\mathsf{above, left, right, next}$. Descriptions that the \el\
+algorithm cannot generate with any ordering are marked by $\ast$.}
+\label{fig:example_outputs}
+\end{figure*}
+
+
+% ordering no. 235
+%List(corner, green, pink, orange, blue)
+%List(above, next, below, right, left)
+
+% ordering no. 19
+%List(green, pink, orange, blue, corner)
+%List(below, above, left, right, next)
+
+% ordering no. 174
+% List(corner, green, pink, orange, blue)
+% List(next, above, below, left, right)
+
+
 \newcite{viethen06:_algor_for_gener_refer_expres} also tested Dale and
 Haddock's \shortcite{dale91:_gener_refer_expres_invol_relat}
 Relational Algorithm on the drawer domain. Surprisingly, it could not
 generate \textit{any} of the descriptions produced by humans. To
 evaluate our algorithm's use of relations, we tested it on a
-representation of the domain using the predicates \textsf{color} and
-\textsf{corner} and the roles \textsf{above, below, next to, left of},
-and \textsf{right of}. We did not include the \textsf{column} and
-\textsf{row} predicates because every drawer can be uniquely
+representation of the domain using the predicates $\mathsf{color}$ and
+$\mathsf{corner}$ and the roles $\mathsf{above, below, next\ to, left\ of}$,
+and $\mathsf{right\ of}$. We did not include the $\mathsf{column}$ and
+$\mathsf{row}$ predicates because every drawer can be uniquely
 identified through those predicates. Since our algorithm has to
 consider predicates before relations, this would mean that no relation
 ever gets used. Like for the Incremental Algorithm, we tested all
 possible orderings of predicates and roles (with the restriction that
-all predicates come before all roles). For 10 of the 15 human-produced
-relational descriptions there is an ordering such that using this
-ordering our algorithm can generate this description. Figure
-\ref{fig:example_outputs} shows the output of our \el\ algorithm for
-one preference ordering of predicates. To cover 10 of the 15
-human-produced descriptions three different orderings are
-necessary. Of the five human-produced escriptions that the \el\
+all predicates come before all roles). 10 of the 15 human-produced
+descriptions could thus be generated using one of the 240 different
+orderings. Figure \ref{fig:example_outputs} shows the output of our
+\el\ algorithm for three preference orderings. Together these three
+orderings cover 10 of the human-produced descriptions. 
+Of the five human-produced escriptions that the \el\
 algorithm can not generate, two mention column information, which we
-excluded from our domain, and three (which interestingly were all
-produced by the same person) are of the format \textit{the
-blue/pink/yellow/orange drawer above/below/next to/right of/left of
-the two blue/pink/yellow/orange drawers}. This would correspond to the
-following output from our algorithm: $C_1 \& \exists R . (C_2 \&
-\exists R . C_2)$ (where $C_i$ are color predicates and $R$ a
-role). While our algorithm does not generate descriptions that contain
-the same relation on two levels of embedding for these drawers, it
-does generate some other, simpler descriptions for them; for example,
-$\textsf{orange} \& \exists
-\textsf{left\_of} . (\textsf{pink}
-\& \textsf{corner})$ which could be rendered as
-\textit{the orange drawer left of the pink one in the corner}, or
-$\textsf{orange} \& \exists \textsf{below} . \textsf{yellow}$,
-which could be rendered as \textit{the orange drawer below the yellow
-drawer}.
-
-\todo{should we show some more examples? - ak}
+excluded from our domain, and three involve references to sets
+(\textit{the two blues ones in horizontal sequence}/\textit{the two
+yellow drawers}). While our algorithm cannot reproduce those
+descriptions, it does  generate other, simpler descriptions for them.
 
 
-\begin{figure*}
+If we were to use this algorithm in an application, we would of course
+have to make a decision on which ordering to use. Dale and Reiter
+\shortcite{Dale1995} seem to assume that there is one ordering for a
+given domain. The data from the drawer domain do not support this
+hypothesis: there is no single ordering that covers all human-produced
+descriptions. It is not even the case that one speaker uses only one
+ordering in this domain; even though some subjects show a clear trend
+towards certain orderings. An interesting open research question is,
+therefore, what factors determine which ordering is used. 
 
-\begin{small}
-\begin{tabular}{|lp{0.5\textwidth}p{0.4\textwidth}|}\hline
-drawer & human-produce description & output of the \el\ algorithm\\\hline
-2 & \textit{the orange drawer above the blue drawer} & $\exists \textsf{above}.(\textsf{blue}) \& \textsf{orange}$\\
-4 & \textit{the yellow drawer on the top of the pink one} & $\exists \textsf{above}.(\textsf{pink}) \& \textsf{yellow}$\\
-5 & \textit{the pink drawer in the fourth column below the yellow one} & $\exists \textsf{above}.(\textsf{orange}) \& \textsf{pink}$\\
-6 & \textit{the yellow drawer on top of the yellow drawer} & $\exists \textsf{above}.(\textsf{yellow}) \& \textsf{yellow}$\\
-6 & \textit{the yellow drawer that's above another yellow drawer} & \\
-6 & \textit{the drawer after the two blue ones in horizontal sequence} & \\
-7 & \textit{the blue drawer below the orange drawer in the second column} & $\exists \textsf{next}.(\exists \textsf{above}.(\textsf{orange}) \& \textsf{blue}) \& \exists \textsf{above}.(\textsf{blue}) \& \textsf{blue}$\\
-7 & \textit{the blue drawer below the orange one} & \\
-10 & \textit{the blue drawer above the pink drawer} & $\exists \textsf{above}.(\textsf{pink}) \& \textsf{blue}$\\
-10 & \textit{the blue drawer above the pink drawer} & \\
-11 & \textit{the yellow drawer next to the orange drawer} & $\exists \textsf{above}.(\textsf{orange}) \& \textsf{yellow}$\\
-11 & \textit{the yellow one next to the orange one} & \\
-12 & \textit{the orange drawer below the pink drawer} & $\exists \textsf{above}.(\textsf{pink} \& \textsf{corner}) \& \textsf{orange}$\\
-14 & \textit{the orange drawer below the two yellow drawers} & $\exists \textsf{next}.(\textsf{pink} \& \textsf{corner}) \& \exists \textsf{next}.(\textsf{pink}) \& \textsf{orange}$\\
-14 & \textit{the orange drawer below the two yellow drawers} & \\\hline
-\end{tabular}
-\end{small}
 
-\caption{Human produced descriptions and output of our \el\  algorithm using the ordering \textsf{corner}, \textsf{color}, \textsf{above, next, below, right, left}}
-\label{fig:example_outputs}
-\end{figure*}
+To further investigate this question both in the absence and in the
+presence of relational properties, we need more human-produced
+descriptions using relational properties. The grid structure of the
+drawer domain lent itself well to non-relational descriptions using
+row and column information and 103 out of 118 human-produced
+descriptions are indeed non-relational. The TUNA corpus
+\cite{deemter06:_build_seman_trans_corpus_for} used a similar
+grid-based mode of presentation and the results are similar in terms
+of the number of relational descriptions used. However, many domains
+do not have such an internal structure which makes the use of
+relations unnecessary. We are currently preparing an experiment to
+collect referring expression data similar to the drawer corpus but
+using a blocks world domain that will hopefully
 
-% ordering no. 235
-%List(corner, green, pink, orange, blue)
-%List(above, next, below, right, left)
+
 
 
 
@@ -134,7 +169,7 @@ compute distinguishing concepts for all 16 individuals in the Viethen
   Java VM to warm up, i.e.\ just-in-time compile all bytecode, before
   taking the measurements.}
 
-\begin{figure}
+\begin{figure}[thb]
   \centering
   \includegraphics[width=\columnwidth]{runtimes}
   \caption{Average runtimes (in ms) of the two algorithms on random

@@ -61,15 +61,19 @@ such a decomposition exists.
 \dontprintsemicolon
 \caption{\el\ bisimulation classes}
 \label{algo:bisim-el}
-$\C \leftarrow \{\top\}$ \;
+\KwIn{A model $\gM = (\Delta^\gM, |\cdot|^\gM)$}
+\KwOut{A set \RE of pairs $(\varphi,|\varphi|^\gM)$ such that
+$\{S \mid (\varphi,S) \in \RE\}$ is the set of $\el$-bisimulation
+classes of $\gM$.}
+\RE $\leftarrow \{(\top,\Delta^\gM)\}$ \;
 \For{$p \in \prop$}{
-  add$_\el$(p, \C) \;
+  add$_\el$(p, \RE) \;
 }
-\While{not all concepts in $\C$ singleton}{
-  \For{$C \in \C$, $R \in \rel$}{
-    add$_\el$($\exists R.C$, $\C$) \;
+\While{for some $(\varphi,S) \in \RE$, $|S| > 1$}{
+  \For{$(\varphi,S) \in$ \RE, $R \in \rel$}{
+    $\RE \leftarrow$ add$_\el$($\exists R.\varphi$, \RE) \;
   }
-  \If{made no changes to $\C$}{
+  \If{made no changes to $\RE$}{
     exit\;
   }
 }
@@ -78,16 +82,55 @@ $\C \leftarrow \{\top\}$ \;
 
 \begin{algorithm}[t]
 \dontprintsemicolon
-\caption{add$_\el$($C$, $\C$)}
+\caption{add$_\el$($\varphi$, $\RE$)}
 \label{algo:bisim-add-el}
-\For{$C' \in \C$ non-singleton}{
-  \If{$C' \sqcap C$ is not subsumed in $\C$ {\bf and} 
-    $\interp{C' \sqcap C} \neq \emptyset$ {\bf and}
-    $\interp{C' \sqcap C} \neq \interp{C'}$}{
-    add $C' \sqcap C$ to $\C$ \;
-    remove subsumed concepts from $\C$\;
+\For{$(\psi,S) \in \RE$ with $|S| > 1$}{
+  \If{$\psi \sqcap \varphi$ is not subsumed in $\RE$ {\bf and}
+    $|\psi \sqcap \varphi|^\gM \neq \emptyset$ {\bf and}
+    $|\psi \sqcap \varphi|^\gM \neq |\psi|^\gM$}{
+    add $(\psi \sqcap \varphi,|\psi \sqcap \varphi|^\gM)$ to $\RE$ \;
+    remove subsumed concepts from $\RE$\;
   }
 }
+\end{algorithm}
+
+\begin{algorithm}[t]
+\dontprintsemicolon
+\caption{}
+\label{algo:bisim-alc}
+\KwIn{A model $\gM = (\Delta^\gM, |\cdot|^\gM)$}
+\KwOut{A set \RE of pairs $(\varphi,|\varphi|^\gM)$ such that
+$\{S \mid (\varphi,S) \in \RE\}$ is the set of $\alc$-bisimulation
+classes of $\gM$.}
+$\RE \leftarrow \{(\top,\Delta^\gM)\}$
+
+\For{$p \in \prop$}{
+   \For{$(\varphi,S) \in \RE$}{
+      split$((\varphi,S),p,\RE)$
+   }
+}
+
+\While{for some $(\varphi,S) \in \RE, |S|>1$}{
+   \For{$(\varphi,S) \in \RE, R \in \rel$}{
+      \For{any set $\{(\psi_1,S_1),\ldots,(\psi_n,S_n)\} \in \RE$}{
+         split$((\varphi,S),\exists R.\bigsqcup_i \psi_i,\RE)$
+         }
+   }
+   \If{made no changes to \RE}{
+      exit
+      }
+}
+ 
+\end{algorithm}
+
+\begin{algorithm}
+\caption{split$((\varphi,S),\psi, \RE)$}
+   \If{$S \cap |\psi|^\gM \not = \emptyset$ and
+    $S \backslash |\psi|^\gM \not = \emptyset$}{
+         add  $(\varphi \sqcap \psi     , S \cap |\psi|^\gM)$ and
+               $(\varphi \sqcap \neg \psi, S \backslash |\psi|^\gM)$ to \RE \;
+         delete $(\varphi,S)$ from \RE \;
+      }
 \end{algorithm}
 
 Algorithms~\ref{algo:bisim-el} and \ref{algo:bisim-add-el} compute

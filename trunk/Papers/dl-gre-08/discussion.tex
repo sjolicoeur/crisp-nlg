@@ -88,14 +88,6 @@ compute distinguishing concepts for all 16 individuals in the Viethen
   Java VM to warm up, i.e.\ just-in-time compile all bytecode, before
   taking the measurements.}
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{runtimes}
-  \caption{Average runtimes (in ms) of the two algorithms on random
-    models of     different sizes.} 
-  \label{fig:runtimes}
-\end{figure}
-
 In order to get a more comprehensive picture of the algorithms'
 efficiency, we ran them on random models with increasing numbers of
 individuals.  Each model had random interpretations for ten different
@@ -120,6 +112,7 @@ we considered.
 
 
 \subsection{Interface to realization}
+\label{sec:discussion-realization}
 
 %\begin{itemize}
 %\item there's a risk to generate a concept that can't be realized,
@@ -139,13 +132,22 @@ $\mathsf{drawer}$ is never used because it applies to all individuals
 in the domain.  This particular problem could easily be worked around
 in a post-processing step.  However, another problem arises from the
 massive use of negation in the \alc\ algorithm; it will be hard for
-any realizer to find a reasonable way of expressing the concept $\neg
-\exists R.(\neg P \sqcap \neg Q)$ from the example in
-Fig.~\ref{fig:el-vs-alc} as a smooth noun phrase.  Although we agree
-with \newcite{deemter01:_gener_refer_expres} and others that the
-careful use of negation and disjunction can improve REs, these
-connectives must not be overused.  Thus we consider the concepts
-computed by the \el\ algorithm ``safer'' with respect to realization.
+any realizer to find a reasonable way of expressing a concept like
+$\neg \exists R.(\neg P \sqcap \neg Q)$ as a smooth noun phrase.
+Although we agree with \newcite{deemter01:_gener_refer_expres} and
+others that the careful use of negation and disjunction can improve
+REs, these connectives must not be overused.  Thus we consider the
+concepts computed by the \el\ algorithm ``safer'' with respect to
+realization.
+
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{runtimes}
+  \caption{Average runtimes (in ms) of the two algorithms on random
+    models of     different sizes.} 
+  \label{fig:runtimes}
+\end{figure}
 
 Of course, we share the problem of interfacing GRE and realization
 with every other approach that separates these two modules, i.e.\

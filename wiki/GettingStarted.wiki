@@ -34,4 +34,9 @@ java -jar dist/crisp.jar grammars/acl07/modifiers/problem-acl-mod2.xml
 
 This should display a plan corresponding to the sentence "Mary likes the foo1 white rabbit" and leave behind the files `/tmp/crisptest-mod2-domain.lisp` and `/tmp/crisptest-mod2-problem.lisp`, which are PDDL input files that can be solved with other off-the-shelf planners.
 
+A new jar runs the new version of the planner, which outputs the derivation tree, derived tree and final sentence after constructing the plan. To use this one, run:
+{{{
+java -jar dist/crisp-sentence.jar grammars/acl07/modifiers/problem-acl-mod2.xml
+}}}
+
 The format for the input files should be straightforward; see the examples.

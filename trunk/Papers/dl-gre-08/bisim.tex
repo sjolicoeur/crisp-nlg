@@ -75,29 +75,23 @@ $(e_1',e_2') \in Z$.
 \end{enumerate}
 \end{definition}
 
-\begin{theorem}[]\label{bisim}
-Given a model $\gM$, if  $i$ and $i'$ are two $\alc$-bisimilar elements in $\gM$
-then there is no $\alc$-formula $\varphi$ such that $i \in |\varphi|^\gM$ and
-$i' \not \in |\varphi|^\gM$.
-\end{theorem}
+Why are bisimulations relevant for computing referring expressions?
+The following result provide us with a crucial characterization:
 
-In other words, $\alc$-bisimilar elements are indistinguishable in the $\alc$ langauge.
-If we only consider finite models (actually, it is enought if we consider models where each element has only a finite number of immediate successors) then the converse of Theorem~\ref{bisim} also holds.
-
-\begin{theorem}[\cite{blac:moda01}]\label{bisim2}
-Given a model $\gM$, $i$ and $i'$ are two $\alc$-bisimilar elements in $\gM$
+\begin{theorem}[\cite{blac:moda01}]\label{bisim}
+Given a finite model $\gM$, $i$ and $i'$ are two $\alc$-bisimilar elements in $\gM$
 if and only if there is no $\alc$-formula $\varphi$ such that $i \in |\varphi|^\gM$ and
 $i' \not \in |\varphi|^\gM$.
 \end{theorem}
 
-By defining a suitable notion of $\el$-bisimulation, the same results can be proved for
-the $\el$ language. 
+In other words, $\alc$-bisimilar elements are indistinguishable in the $\alc$ language. Hence, bisimulation gives us a test for non-referenceability: if a
+model $\gM$ contains two different individuals $i$ and $i'$ which are
+$\alc$-bisimilar, then there is no formula of $\alc$ that can be used to uniquely
+refer to $i$ or $i'$.  We will discuss which is the exact relation between
+bisimulation and generation of referring expressions in the next section.
+For the moment we just remark that a suitable notion of $\el$-bisimulation can also be defined~\cite{kurt:expr99}.
 
-\cite{paig:thre87}
-
-\cite{dovier04:_effic_algor_for_comput_bisim_equiv}
-
-%%% Local Variables: 
+%%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "dl-gre-08"
 %%% End: 

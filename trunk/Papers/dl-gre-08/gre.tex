@@ -57,26 +57,20 @@ A bisimulation class is a maximal subset $C$ of the domain such that
 all members of $C$ are pairwise bisimilar.  For the finite models we
 deal with in GRE, this amounts to saying that there are certain
 concepts that are satisfied by all individuals in $C$ and no
-individuals that are not in $C$ (by Theorems~\ref{bisim} and
-\ref{bisim2}).  If we represent referring expressions as DL concepts,
+individuals that are not in $C$ (by Theorems~\ref{bisim}).  If we represent referring expressions as description logic formulas,
 this means that there exists a unique referring expression for some
-individual $a$ iff $a$ is alone in its bisimulation class; and if it
-is, we can use one of the concepts that are characteristic for $C$ as
+individual $i$ iff $i$ is alone in its bisimulation class; and if it
+is, we can use one of the formulas that are characteristic for $C$ as
 the referring expression.
 
 Representing referring expressions as DL concepts is a very natural
-perspective.  The purely conjunctive bag of propositional symbols that
-e.g.\ \newcite{Dale1995} compute is clearly a conjunction in
+perspective.  The purely conjunctive set of propositional symbols that,
+e.g.,~\newcite{Dale1995} compute is clearly a conjunction in
 description logic.  Relational expressions as in
-\newcite{dale91:_gener_refer_expres_invol_relat} or
-\newcite{Krahmer2003} are simply concepts of \el; for instance, ``the
-book on the table'' corresponds to the concept $\mathsf{book} \sqcap
-\exists \mathsf{on}. \mathsf{table}$.  And other propositional
-connectives, such as disjunction and negation
-\cite{deemter01:_gener_refer_expres}, can clearly be represented in
-\alc\ as well.
+\newcite{dale91:_gener_refer_expres_invol_relat} are concepts of \el.
+We will discuss this idea further in Section~\ref{xxx}.
 
-All this means that we can reduce the problem of computing a unique RE
+Summing up, we can reduce the problem of computing a unique RE
 to the problem of computing the bisimulation classes of a model.  We
 will now present two algorithms -- one for \alc\ and one for \el\ --
 for doing this.  In fact, each of these algorithms computes all
@@ -84,59 +78,33 @@ bisimulation classes of a model at once, effectively computing a RE
 for every single individual in the domain simultaneously.
 
 
-\subsection{Bisimulation classes for \alc}
+\subsection{Bisimulation classes for \alc and \el}
 
 
-\subsection{Bisimulation classes for \el}
+There exists very efficient algorithms
+for computing the bisimulation classes of a model~\cite{hopc:algo71,paig:thre87,dovier04:_effic_algor_for_comput_bisim_equiv}.
+These algorithms were originally used for automata minimization: given an
+automata $A$ they would return a smaller automata $A'$ which recognized the
+same language.  We can adapt these algorithm to compute a formula representing each bisimulation class.  Again, let's first
+discuss the $\alc$ case.
 
-The algorithm we just presented is driven by case distinctions between
-concepts $\varphi$ and $\neg \varphi$, and thus adds large amounts of
-negations to the characteristic concepts.  This can be inconvenient
-in NLG, because such concepts may be expressible only by rather clumsy
-natural-language expressions. \todo{example?}  We will therefore
-introduce a new algorithm which is limited to computing
-(negation-free) concepts of \el.  
-
-As before, the algorithm maintains a set $\C = \{C_1,\ldots,C_n\}$ of
-concepts (this time of \el) such that $\interp{C_1} \cup \ldots \cup
-\interp{C_n} = \Delta$, and which it refines iteratively.  However,
-where the \alc\ algorithm maintains the invariant that
-$\interp{C_1},\ldots,\interp{C_n}$ is a partition of $\Delta$, we
-weaken this invariant to the requirement that there are no $m \geq 2$
-pairwise different indices $1 \leq i_1,\ldots,i_m \leq n$ such that
-$\interp{C_{i_1}} = \interp{C_{i_2}} \cup \ldots \cup
-\interp{C_{i_m}}$.  We call the concept $C_{i_1}$ \emph{subsumed} if
-such a decomposition exists.
-
-% \begin{algorithm}[t]
-% \dontprintsemicolon
-% \caption{\el\ bisimulation classes}
-% \label{algo:bisim-el}
-% \KwIn{A model $\gM = (\Delta^\gM, |\cdot|^\gM)$}
-% \KwOut{A set \RE of pairs $(\varphi,|\varphi|^\gM)$ such that
-% $\{S \mid (\varphi,S) \in \RE\}$ is the set of $\el$-bisimulation
-% classes of $\gM$.}
-% \RE $\leftarrow \{(\top,\Delta^\gM)\}$ \;
-% \For{$p \in \prop$}{
-%   add$_\el$(p, \RE) \;
-% }
-% \While{for some $(\varphi,S) \in \RE$, $|S| > 1$}{
-%   \For{$(\varphi,S) \in$ \RE, $R \in \rel$}{
-%     add$_\el$($\exists R.\varphi$, \RE) \;
-%   }
-%   \If{made no changes to $\RE$}{
-%     exit\;
-%   }
-% }
-% \end{algorithm}
+We assume given a model $\gM=(\Delta^\gM, |\cdot|^\gM)$ containing all the information about the current
+situation.  We will compute a set $\RE$ of $\alc$ formulas such that the
+set $\{|\varphi|^\gM \mid \varphi \in \RE\}$ is a partition of $\Delta^\gM$
+that contains all the bisimulation classes of $\gM$.  The pseudocode is
+shown in Algorithm~\ref{algo:bisim-l} and Algorithm~\ref{algo:bisim-add-alc}.
 
 
-
+\begin{theorem}\label{theo:bisimulation-classes}
+Given a model $\gM$, the set $\mathcal{C}$ of all $\alc$-bisimulation classes
+of $\gM$ is computed by Algorithms~\ref{algo:bisim-l} and~\ref{algo:bisim-add-alc} in polynomial time.  Moreover, for each class $C \in \mathcal{C}$ the algorithm returns an $\alc$ formula $\varphi$ such that
+$C = |\varphi|^\gM$.
+\end{theorem}
 
 \begin{algorithm}[t]
 \dontprintsemicolon
-\caption{}
-\label{algo:bisim-alc}
+\caption{Computes $\mathcal{L}$-bisimulation classes}
+\label{algo:bisim-l}
 \KwIn{A model $\gM = (\Delta^\gM, |\cdot|^\gM)$}
 \KwOut{A set \RE of formulas  such that
 $\{|\varphi|^\gM \in \RE\}$ is the set of $\mathcal{L}$-bisimulation
@@ -156,11 +124,44 @@ $\RE \leftarrow \{\top\}$
       exit
       }
 }
- 
 \end{algorithm}
 
-\begin{algorithm}
+Algorithms~\ref{algo:bisim-l} and \ref{algo:bisim-add-alc} compute
+the \alc-bi\-sim\-u\-la\-tion classes for a given model.
+Algorithm~\ref{algo:bisim-l} iterates over all propositional and
+relational symbols of the signature to construct new formulas until
+either all formulas in $\RE$ denote singletons (i.e., there is only one
+individual that satisfies them), or no progress has been made in the
+previous iteration.  In each iteration, it calls the procedure
+add$_\alc$($\varphi$, $\RE$), which intersects $\varphi$ with any formula $\psi
+\in \RE$ which does not denote a singleton and which is
+not equivalent to $\varphi$ and to $\neg \varphi$. In this case it
+replace $\psi$ in $\RE$ by $\psi \sqcap \varphi$ and $\psi \sqcap \neg \varphi$ to
+$\RE$.
+
+The $\alc$ algorithm is driven by case distinctions between
+concepts $\varphi$ and $\neg \varphi$, and thus freely adds 
+negations to the characteristic formulas in $\RE$.  This can be inconvenient
+in natural language generation, because such concepts may be expressible only by rather clumsy natural-language expressions. We will see examples in Section~\ref{xxx}.
+
+An algorithm which is limited to computing
+(negation-free) formulas in \el can be obtained by combining
+Algorithms~\ref{algo:bisim-l} and~\ref{algo:bisim-add-el}.
+
+As before, the algorithm maintains a set $\RE = \{\varphi_1,\ldots,\varphi_n\}$ of
+formulas (this time of \el) such that $\interp{\varphi_1}^\gM \cup \ldots \cup
+\interp{\varphi_n}^\gM = \Delta^\gM$, and which it refines iteratively.  However,
+where the \alc\ algorithm maintains the invariant that
+$\interp{\varphi_1},\ldots,\interp{\varphi_n}$ is a partition of $\Delta$, we
+weaken this invariant to the requirement that there are no $m \geq 2$
+pairwise different indices $1 \leq i_1,\ldots,i_m \leq n$ such that
+$\interp{\varphi_{i_1}} = \interp{\varphi_{i_2}} \cup \ldots \cup
+\interp{\varphi_{i_m}}$.  We call the formula $\varphi_{i_1}$ \emph{subsumed} if
+such a decomposition exists.
+
+\begin{algorithm}[t]
 \caption{add$_\alc(\varphi,\RE)$}
+\label{algo:bisim-add-alc}
 \For{$\psi \in \RE$ with $|\psi|^\gM > 1$}{
    \If{$|\psi \sqcap \varphi|^\gM \not = \emptyset$ and
        $|\psi \sqcap \neg \varphi|^\gM \not = \emptyset$}{
@@ -170,8 +171,7 @@ $\RE \leftarrow \{\top\}$
       }
    }
 \end{algorithm}
-
-
+%
 \begin{algorithm}[t]
 \dontprintsemicolon
 \caption{add$_\el$($\varphi$, $\RE$)}
@@ -186,19 +186,11 @@ $\RE \leftarrow \{\top\}$
 }
 \end{algorithm}
 
-Algorithms~\ref{algo:bisim-el} and \ref{algo:bisim-add-el} compute
-the \el\ bisimulation classes for a given model.
-Algorithm~\ref{algo:bisim-el} iterates over all propositional and
-relational symbols of the signature to construct new concepts until
-either all concepts in $\C$ are singleton (i.e., there is only one
-individual that satisfies them), or no progress has been made in the
-previous iteration.  In each iteration, it calls the procedure
-add$_\el$($C$, $\C$), which intersects $C$ with all current concepts
-that are not already singleton, adds the result to $\C$ and then
-removes all concepts in $\C$ that have become subsumed.  Removal of
-subsumed concepts can be implemented efficiently by arranging the
-concepts in $\C$ in a a graph that connects two concepts with an edge
-if one is a maximal proper subset of the other.
+The procedure add$_\el$($\varphi$, $\RE$) shown in Algorithms~\ref{algo:bisim-add-el} intersects $\varphi$ with all current formulas in $\RE$
+that do not denote a singleton, adds the result to $\RE$ and then
+removes all formulas in $\RE$ that have become subsumed.  Removal of
+subsumed formulas from $\RE$ can be implemented efficiently by arranging
+them by inclusion in terms of their denotation.
 
 \begin{figure*}
   \centering
@@ -216,6 +208,8 @@ if one is a maximal proper subset of the other.
 %   \caption{Illustrating the difference between \el\ and \alc.}
 %   \label{fig:el-vs-alc}
 % \end{figure}
+
+\subsection{Some Examples}
 
 Let's see what this algorithm does on the example shown in
 Fig.~\ref{fig:dale-haddock}, which is taken from
@@ -271,3 +265,25 @@ evaluations (see below).
 %%% mode: latex
 %%% TeX-master: "dl-gre-08"
 %%% End: 
+
+% \begin{algorithm}[t]
+% \dontprintsemicolon
+% \caption{\el\ bisimulation classes}
+% \label{algo:bisim-el}
+% \KwIn{A model $\gM = (\Delta^\gM, |\cdot|^\gM)$}
+% \KwOut{A set \RE of pairs $(\varphi,|\varphi|^\gM)$ such that
+% $\{S \mid (\varphi,S) \in \RE\}$ is the set of $\el$-bisimulation
+% classes of $\gM$.}
+% \RE $\leftarrow \{(\top,\Delta^\gM)\}$ \;
+% \For{$p \in \prop$}{
+%   add$_\el$(p, \RE) \;
+% }
+% \While{for some $(\varphi,S) \in \RE$, $|S| > 1$}{
+%   \For{$(\varphi,S) \in$ \RE, $R \in \rel$}{
+%     add$_\el$($\exists R.\varphi$, \RE) \;
+%   }
+%   \If{made no changes to $\RE$}{
+%     exit\;
+%   }
+% }
+% \end{algorithm}

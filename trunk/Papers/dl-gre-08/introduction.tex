@@ -1,7 +1,7 @@
 \section{Introduction} \label{sec:introduction}
 
 The generation of referring expressions is one of the most active and
-successful research areas in NLG.  Starting with Dale and Reiter's
+successful research areas in natural language generation.  Starting with Dale and Reiter's
 incremental algorithm \cite{Dale1995}, various researchers have added
 extensions such as reference to sets \cite{Stone2000}, more expressive
 logical connectives \cite{deemter01:_gener_refer_expres}, and
@@ -25,8 +25,8 @@ book on the table \ldots''.
 
 In this paper, we propose a fundamentally new way of looking at the
 problem of generating referring expressions: We take a referring
-expression describing an individual $a$ to be a concept of some
-description logic (DL) which is satisfied by $a$ and no other
+expression describing an individual $i$ to be a formula of some
+description logic (DL) which is satisfied by $i$ and no other
 individual in the universe.  This allows us to organize existing
 approaches to GRE in an expressiveness hierarchy.  For instance, the
 classical Dale \& Reiter algorithms compute concepts in a description
@@ -34,8 +34,8 @@ logic that consists only of conjunctions of atoms, whereas Dale \&
 Haddock and other relational algorithms compute concepts in the logic
 \el, which permits conjunction and existential quantification.
 
-Furthermore, we show how to apply algorithms for computing the
-\emph{bisimulation classes} of a DL model to GRE.  Roughly speaking,
+Furthermore, we show how to addapt algorithms for computing the
+\emph{bisimulation classes} of a DL model to the GRE problem.  Intuitively,
 bisimulation classes are sets of individuals that satisfy exactly the
 same concepts; if an individual is alone in its bisimulation class,
 then the concept corresponding to this class represents a uniquely
@@ -44,7 +44,7 @@ the description logics \el\ (only conjunction and existential
 quantification) and \alc\ (full modal logic).  By essentially
 computing referring expressions for all individuals in the domain at
 once, these algorithms systematically avoid the infinite regress
-problem.  The \el\ algorithm, which generates the same class of
+problem.  The \el\ algorithm, which generates the same kind of
 descriptions as Dale \& Haddock, is capable of generating 67\% of the
 relational REs in the
 \newcite{viethen06:_algor_for_gener_refer_expres} dataset correctly,
@@ -54,9 +54,9 @@ individuals in a random scene.
 The paper is structured as follows.  In Section~\ref{sec:bisim}, we
 will first define description logic and fundamental concepts such as
 bisimulation.  We will then show how to compute bisimulation classes
-in Section~\ref{sec:gre} and apply these algorithms to GRE.  In
+ and how to apply these algorithms to GRE in Section~\ref{sec:gre}.  In
 Section~\ref{sec:discussion}, we evaluate our algorithms and discuss
-these results.  Section~\ref{sec:related} compares our approach to
+our results.  Section~\ref{sec:related} compares our approach to
 related research; in particular, it shows how various prominent GRE
 algorithms can be seen as special cases of ours.
 Section~\ref{sec:conclusion} concludes and points to future work.

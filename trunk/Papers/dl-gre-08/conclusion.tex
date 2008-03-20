@@ -1,49 +1,31 @@
 \section{Conclusion} \label{sec:conclusion}
 
-referring to sets (or is this trivial?)
-
-where do we talk about mutually constraining descriptions like ``the
-rabbit in the hat''?
-
-will make implementation available
-
-first time to actually show efficient runtimes for generation of
-relational REs
-
+In this paper, we have presented a new perspective on GRE as the
+problem of computing concepts of description logic with given
+extensions.  We have also shown how such concepts can be computed
+efficiently by applying existing algorithms for computing bisimulation
+classes.  Our algorithms are able to generate 95\% of the
+non-relational and 67\% of the relational REs from
+\newcite{viethen06:_algor_for_gener_refer_expres}.  They are also
+extremely efficient (140 ms to generate REs for all individuals in a
+random model of size 100); to our knowledge, these are by far the
+fastest runtimes for relational GRE reported in the literature.  We
+will make our implementations available online.
 
 Because they compute referring expressions for all individuals in the
-domain together, our algorithms will be strongest in static settings,
-such as the generation of descriptions for museum exhibits, in which
-the individuals and their properties don't change much.  Nevertheless,
-they remain fast enough for real-time use in dynamic settings.
-Another advantage that recent algorithms for relational REs
-\cite{Krahmer2003,kelleher06:_increm_gener_of_spatial_refer} have over
-ours is that they can take weights and salience into account.  How
-this could be incorporated into our algorithms is an interesting
-question for future research.
-
-
-relational descriptions in data are comparatively rare and
-inconsistent; not sufficiently annotated in TUNA
-\cite{deemter06:_build_seman_trans_corpus_for}; need more. 
-
-
-Things that we care about but that are never said explicitly so far:
-
-\begin{itemize}
-\item in a static scenario, we only have to compute REs once -- and in
-  any application that uses many REs before the context changes (e.g.\
-  museums), this is exactly what we want to do
-\item it is difficult to control the search for concepts by linguistic
-  constrtaints
-\item our GRE algorithms can take orderings over the propositional and
-  relational symbols into account
-\end{itemize}
-
+domain at once, our algorithms will perform especially strongly in
+static settings, such as the generation of descriptions for museum
+exhibits, in which the individuals and their properties don't change
+much.  In such a setting, REs could be computed once when the
+application starts, and then reused throughout.  Nevertheless, they
+remain fast enough for real-time use in dynamic settings.  One
+interesting question for future research is how bisimulation
+algorithms that can incrementally update the bisimulation classes when
+the model changes, such as \todo{cite}, can be adapted to GRE.
 
 One finding in our experiments with the Viethen and Dale dataset is
 that there is no single ordering that covers all human-produced
-description, which seems to be in contrast to Dale and Reiter's
+descriptions, which seems to be in contrast to Dale and Reiter's
 \shortcite{Dale1995} assumption that there is only one ordering for
 each given domain.  In fact, it is not even the case that each speaker
 consistently uses just one ordering.  An interesting open research

@@ -264,7 +264,14 @@ public class Grammar {
 		Anchor lexAnchor = new Anchor(pos,word);
 		LinkedList<Anchor> anchors = new LinkedList<Anchor>();
 		anchors.add(lexAnchor);
-		// TODO Handle multiple-anchor predicates (new)
+		
+		// The last part is the arbitrary number, which we ignore
+		// Any other parts relate to multiple anchors, e.g. in "takes from"
+		for (int i=2; i<nameParts.length-1; i++) {
+			// Found an auxiliary anchor for a lexical entry of the form POS:word
+			String[] pair = nameParts[i].split(":");
+			anchors.add(new Anchor(pair[0],pair[1]));
+		}
 		
 		// Now build the InitialTree
 		TreeNode rootNode = buildTreeNodes(treeName, anchors);
@@ -315,7 +322,14 @@ public class Grammar {
 		Anchor lexAnchor = new Anchor(pos,word);
 		LinkedList<Anchor> anchors = new LinkedList<Anchor>();
 		anchors.add(lexAnchor);
-		// TODO Handle multiple-anchor predicates (new)
+		
+		// The last part is the arbitrary number, which we ignore
+		// Any other parts relate to multiple anchors, e.g. in "takes from"
+		for (int i=2; i<nameParts.length-1; i++) {
+			// Found an auxiliary anchor for a lexical entry of the form POS:word
+			String[] pair = nameParts[i].split(":");
+			anchors.add(new Anchor(pair[0],pair[1]));
+		}
 		
 		// Now build the AuxiliaryTree
 		TreeNode rootNode = buildTreeNodes(treeName, anchors);

@@ -36,13 +36,14 @@ and \emph{c} the expressive power of $\gL$, it can be the case that there is no 
 $\gL$ that uniquely identifies $i$ in $\gM$.
 
 Consider the following example.  We have three individuals related as indicated in
-Figure~\ref{fig-car1}.
-\begin{figure}
-\begin{center}
-\includegraphics[scale=.8]{pic.pdf}
-\end{center}
-\caption{Distinguishable/indistinguishable points.}\label{fig-car1}
-\end{figure}
+Figure~\ref{fig:dale-haddock}d.
+
+%\begin{figure}
+%\begin{center}
+%\includegraphics[scale=.8]{pic.pdf}
+%\end{center}
+%\caption{Distinguishable/indistinguishable points.}\label{fig-car1}
+%\end{figure}
 %
 The individuals $i$ and $i'$ can easily be distinguished in first-order logic:
 the formula $R(x,x)$ is true of $i$ and false in $i'$. The corresponding
@@ -199,19 +200,22 @@ subsumed concepts can be implemented efficiently by arranging the
 concepts in $\C$ in a a graph that connects two concepts with an edge
 if one is a maximal proper subset of the other.
 
-\begin{figure}
+\begin{figure*}
   \centering
-  \includegraphics[width=5cm]{pic-dale-haddock}
-  \caption{The Dale and Haddock scenario.}
+  \includegraphics[width=\textwidth]{pic-dale-haddock}
+  \caption{(a) The \newcite{dale91:_gener_refer_expres_invol_relat}
+    scenario; (b) the \newcite{Stone1998a} scenario; (c) illustrating
+    the difference between \el\ and \alc; (d)
+    distinguishable/indistinguishable points.}
   \label{fig:dale-haddock}
-\end{figure}
+\end{figure*}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=\columnwidth]{pic-el-vs-alc}
-  \caption{Illustrating the difference between \el\ and \alc.}
-  \label{fig:el-vs-alc}
-\end{figure}
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=\columnwidth]{pic-el-vs-alc}
+%   \caption{Illustrating the difference between \el\ and \alc.}
+%   \label{fig:el-vs-alc}
+% \end{figure}
 
 Let's see what this algorithm does on the example shown in
 Fig.~\ref{fig:dale-haddock}, which is taken from

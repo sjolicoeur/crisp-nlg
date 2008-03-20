@@ -1,5 +1,55 @@
 \section{Generating referring expressions} \label{sec:gre}
 
+In computational linguistics, the generating referring expression problem (the GRE
+problem) can be intuitively presented as follows: given some information about
+a group of individuals (e.g., grounded facts about individuals in an ongoing dialogue),
+and a grammar, found a grammatically correct expression (usually a noun phrase) that uniquely identify a given individual.
+
+By taking a logic perspective, we can recast the GRE problem as an inference problem.
+We can think that the information about the group of individuals is provided in the form
+of a model $\gM$ of a given logical language $\gL$.  Now, the inference problem
+associated with the GRE problem will be to find a formula in $\gL$ such that it
+exaclty identifies a given individual $i$.  Formally, if $|\cdot|^\gM$ is the interpretation
+function for $\gL$ which for each formula in $\gL$ and for each model $\gM$ returns
+the set of elements in $\gM$ for which the formula $\varphi$ holds, then we can define:
+\medskip
+
+\noindent
+{\small
+\begin{center}
+\begin{tabular}{ll} \hline
+\multicolumn{2}{l}{
+\textsc{$\gL$-GRE Problem}}\\ \hline
+\ \ Input: & A model $\gM$ and an individual $i$ in the\\
+& \hspace*{0.5cm} domain of $\gM$.\\
+\ \ Output: & A formula $\varphi \in \gL$ such that $|\varphi|^\gM = \{i\}$\\
+& \hspace*{0.5cm} (if such a formula exists).\\ \hline
+\end{tabular}
+\end{center}}
+\medskip
+
+As it can be seen from the definition, the problem depends on which particular
+logical language $\gL$ we are interested in, and (as the original GRE problem)
+it might terminate with failure.  Depending on \emph{a)} the model $\gM$,
+\emph{b)} the chosen individual $i$
+and \emph{c} the expressive power of $\gL$, it can be the case that there is no formula of
+$\gL$ that uniquely identifies $i$ in $\gM$.
+
+Consider the following example.  We have three individuals related as indicated in
+Figure~\ref{fig-car1}.
+\begin{figure}
+\begin{center}
+\includegraphics[scale=.8]{pic.pdf}
+\end{center}
+\caption{Distinguishable/indistinguishable points.}\label{fig-car1}
+\end{figure}
+%
+The individuals $i$ and $i'$ can easily be distinguished in first-order logic:
+the formula $R(x,x)$ is true of $i$ and false in $i'$. The corresponding
+referring expression for $i$ would be ``an individual relating to itself''.
+But if we can only use propositional and relational information (equivalently, our grammar does not contain the word ``itself'') then $i$ and $i'$ are indistinguishable. Both
+are ``individuals which are related to individuals which are related to individuals\ldots''
+
 We can connect description logics to the problem of generating
 referring expressions via the concept of \emph{bisimulation classes}.
 A bisimulation class is a maximal subset $C$ of the domain such that
@@ -57,64 +107,49 @@ $\interp{C_{i_1}} = \interp{C_{i_2}} \cup \ldots \cup
 \interp{C_{i_m}}$.  We call the concept $C_{i_1}$ \emph{subsumed} if
 such a decomposition exists.
 
-\begin{algorithm}[t]
-\dontprintsemicolon
-\caption{\el\ bisimulation classes}
-\label{algo:bisim-el}
-\KwIn{A model $\gM = (\Delta^\gM, |\cdot|^\gM)$}
-\KwOut{A set \RE of pairs $(\varphi,|\varphi|^\gM)$ such that
-$\{S \mid (\varphi,S) \in \RE\}$ is the set of $\el$-bisimulation
-classes of $\gM$.}
-\RE $\leftarrow \{(\top,\Delta^\gM)\}$ \;
-\For{$p \in \prop$}{
-  add$_\el$(p, \RE) \;
-}
-\While{for some $(\varphi,S) \in \RE$, $|S| > 1$}{
-  \For{$(\varphi,S) \in$ \RE, $R \in \rel$}{
-    $\RE \leftarrow$ add$_\el$($\exists R.\varphi$, \RE) \;
-  }
-  \If{made no changes to $\RE$}{
-    exit\;
-  }
-}
-\end{algorithm}
+% \begin{algorithm}[t]
+% \dontprintsemicolon
+% \caption{\el\ bisimulation classes}
+% \label{algo:bisim-el}
+% \KwIn{A model $\gM = (\Delta^\gM, |\cdot|^\gM)$}
+% \KwOut{A set \RE of pairs $(\varphi,|\varphi|^\gM)$ such that
+% $\{S \mid (\varphi,S) \in \RE\}$ is the set of $\el$-bisimulation
+% classes of $\gM$.}
+% \RE $\leftarrow \{(\top,\Delta^\gM)\}$ \;
+% \For{$p \in \prop$}{
+%   add$_\el$(p, \RE) \;
+% }
+% \While{for some $(\varphi,S) \in \RE$, $|S| > 1$}{
+%   \For{$(\varphi,S) \in$ \RE, $R \in \rel$}{
+%     add$_\el$($\exists R.\varphi$, \RE) \;
+%   }
+%   \If{made no changes to $\RE$}{
+%     exit\;
+%   }
+% }
+% \end{algorithm}
 
 
-\begin{algorithm}[t]
-\dontprintsemicolon
-\caption{add$_\el$($\varphi$, $\RE$)}
-\label{algo:bisim-add-el}
-\For{$(\psi,S) \in \RE$ with $|S| > 1$}{
-  \If{$\psi \sqcap \varphi$ is not subsumed in $\RE$ {\bf and}
-    $|\psi \sqcap \varphi|^\gM \neq \emptyset$ {\bf and}
-    $|\psi \sqcap \varphi|^\gM \neq |\psi|^\gM$}{
-    add $(\psi \sqcap \varphi,|\psi \sqcap \varphi|^\gM)$ to $\RE$ \;
-    remove subsumed concepts from $\RE$\;
-  }
-}
-\end{algorithm}
+
 
 \begin{algorithm}[t]
 \dontprintsemicolon
 \caption{}
 \label{algo:bisim-alc}
 \KwIn{A model $\gM = (\Delta^\gM, |\cdot|^\gM)$}
-\KwOut{A set \RE of pairs $(\varphi,|\varphi|^\gM)$ such that
-$\{S \mid (\varphi,S) \in \RE\}$ is the set of $\alc$-bisimulation
+\KwOut{A set \RE of formulas  such that
+$\{|\varphi|^\gM \in \RE\}$ is the set of $\mathcal{L}$-bisimulation
 classes of $\gM$.}
-$\RE \leftarrow \{(\top,\Delta^\gM)\}$
+
+$\RE \leftarrow \{\top\}$
 
 \For{$p \in \prop$}{
-   \For{$(\varphi,S) \in \RE$}{
-      split$((\varphi,S),p,\RE)$
+      add$_\mathcal{L}(p,\RE)$
    }
-}
 
-\While{for some $(\varphi,S) \in \RE, |S|>1$}{
-   \For{$(\varphi,S) \in \RE, R \in \rel$}{
-      \For{any set $\{(\psi_1,S_1),\ldots,(\psi_n,S_n)\} \in \RE$}{
-         split$((\varphi,S),\exists R.\bigsqcup_i \psi_i,\RE)$
-         }
+\While{for some $\varphi \in \RE, |\varphi|^\gM>1$}{
+   \For{$\varphi \in \RE, R \in \rel$}{
+         add$_\mathcal{L}(\exists R.\varphi,\RE)$
    }
    \If{made no changes to \RE}{
       exit
@@ -124,13 +159,30 @@ $\RE \leftarrow \{(\top,\Delta^\gM)\}$
 \end{algorithm}
 
 \begin{algorithm}
-\caption{split$((\varphi,S),\psi, \RE)$}
-   \If{$S \cap |\psi|^\gM \not = \emptyset$ and
-    $S \backslash |\psi|^\gM \not = \emptyset$}{
-         add  $(\varphi \sqcap \psi     , S \cap |\psi|^\gM)$ and
-               $(\varphi \sqcap \neg \psi, S \backslash |\psi|^\gM)$ to \RE \;
-         delete $(\varphi,S)$ from \RE \;
+\caption{add$_\alc(\varphi,\RE)$}
+\For{$\psi \in \RE$ with $|\psi|^\gM > 1$}{
+   \If{$|\psi \sqcap \varphi|^\gM \not = \emptyset$ and
+       $|\psi \sqcap \neg \varphi|^\gM \not = \emptyset$}{
+         add $\psi \sqcap \varphi$ and
+               $\psi \sqcap \neg \varphi$ to \RE \;
+         remove $\psi$ from \RE \;
       }
+   }
+\end{algorithm}
+
+
+\begin{algorithm}[t]
+\dontprintsemicolon
+\caption{add$_\el$($\varphi$, $\RE$)}
+\label{algo:bisim-add-el}
+\For{$\psi \in \RE$ with $|\psi|^\gM > 1$}{
+  \If{$\psi \sqcap \varphi$ is not subsumed in $\RE$ {\bf and}
+    $|\psi \sqcap \varphi|^\gM \neq \emptyset$ {\bf and}
+    $|\psi \sqcap \varphi|^\gM \neq |\psi|^\gM$}{
+    add $\psi \sqcap \varphi$ to $\RE$ \;
+    remove subsumed concepts from $\RE$\;
+  }
+}
 \end{algorithm}
 
 Algorithms~\ref{algo:bisim-el} and \ref{algo:bisim-add-el} compute

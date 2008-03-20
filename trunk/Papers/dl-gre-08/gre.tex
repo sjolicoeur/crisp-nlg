@@ -1,17 +1,15 @@
 \section{Generating referring expressions} \label{sec:gre}
 
-In computational linguistics, the generating referring expression problem (the GRE
-problem) can be intuitively presented as follows: given some information about
+In computational linguistics, the GRE
+problem can be intuitively presented as follows: given some information about
 a group of individuals (e.g., grounded facts about individuals in an ongoing dialogue),
-and a grammar, found a grammatically correct expression (usually a noun phrase) that uniquely identify a given individual.
+and a grammar, find a grammatically correct expression (usually a noun phrase) that uniquely identify a given individual.
 
 By taking a logic perspective, we can recast the GRE problem as an inference problem.
-We can think that the information about the group of individuals is provided in the form
+We can assume that the information about the group of individuals is provided in the form
 of a model $\gM$ of a given logical language $\gL$.  Now, the inference problem
 associated with the GRE problem will be to find a formula in $\gL$ such that it
-exaclty identifies a given individual $i$.  Formally, if $|\cdot|^\gM$ is the interpretation
-function for $\gL$ which for each formula in $\gL$ and for each model $\gM$ returns
-the set of elements in $\gM$ for which the formula $\varphi$ holds, then we can define:
+exaclty identifies a given individual $i$.
 \medskip
 
 \noindent
@@ -36,7 +34,7 @@ and \emph{c} the expressive power of $\gL$, it can be the case that there is no 
 $\gL$ that uniquely identifies $i$ in $\gM$.
 
 Consider the following example.  We have three individuals related as indicated in
-Figure~\ref{fig:dale-haddock}d.
+Fig.~\ref{fig:dale-haddock}d.
 
 %\begin{figure}
 %\begin{center}
@@ -55,9 +53,7 @@ We can connect description logics to the problem of generating
 referring expressions via the concept of \emph{bisimulation classes}.
 A bisimulation class is a maximal subset $C$ of the domain such that
 all members of $C$ are pairwise bisimilar.  For the finite models we
-deal with in GRE, this amounts to saying that there are certain
-concepts that are satisfied by all individuals in $C$ and no
-individuals that are not in $C$ (by Theorems~\ref{bisim}).  If we represent referring expressions as description logic formulas,
+deal with in GRE, this amounts to saying that all individuals in $C$ and only those satisfy the same formulas (Theorems~\ref{bisim}).  If we represent referring expressions as description logic formulas,
 this means that there exists a unique referring expression for some
 individual $i$ iff $i$ is alone in its bisimulation class; and if it
 is, we can use one of the formulas that are characteristic for $C$ as
@@ -68,7 +64,7 @@ perspective.  The purely conjunctive set of propositional symbols that,
 e.g.,~\newcite{Dale1995} compute is clearly a conjunction in
 description logic.  Relational expressions as in
 \newcite{dale91:_gener_refer_expres_invol_relat} are concepts of \el.
-We will discuss this idea further in Section~\ref{xxx}.
+We will discuss this idea further in Section~\ref{sec:related}.
 
 Summing up, we can reduce the problem of computing a unique RE
 to the problem of computing the bisimulation classes of a model.  We
@@ -83,9 +79,9 @@ for every single individual in the domain simultaneously.
 
 There exists very efficient algorithms
 for computing the bisimulation classes of a model~\cite{hopc:algo71,paig:thre87,dovier04:_effic_algor_for_comput_bisim_equiv}.
-These algorithms were originally used for automata minimization: given an
+These algorithms were originally used for automata minimization (given an
 automata $A$ they would return a smaller automata $A'$ which recognized the
-same language.  We can adapt these algorithm to compute a formula representing each bisimulation class.  Again, let's first
+same language), but we can adapt these algorithm to compute a formula representing each bisimulation class.  Again, let's first
 discuss the $\alc$ case.
 
 We assume given a model $\gM=(\Delta^\gM, |\cdot|^\gM)$ containing all the information about the current
@@ -103,7 +99,7 @@ $C = |\varphi|^\gM$.
 
 \begin{algorithm}[t]
 \dontprintsemicolon
-\caption{Computes $\mathcal{L}$-bisimulation classes}
+\caption{Compute $\mathcal{L}$-bisimulation classes}
 \label{algo:bisim-l}
 \KwIn{A model $\gM = (\Delta^\gM, |\cdot|^\gM)$}
 \KwOut{A set \RE of formulas  such that
@@ -135,14 +131,14 @@ individual that satisfies them), or no progress has been made in the
 previous iteration.  In each iteration, it calls the procedure
 add$_\alc$($\varphi$, $\RE$), which intersects $\varphi$ with any formula $\psi
 \in \RE$ which does not denote a singleton and which is
-not equivalent to $\varphi$ and to $\neg \varphi$. In this case it
-replace $\psi$ in $\RE$ by $\psi \sqcap \varphi$ and $\psi \sqcap \neg \varphi$ to
+not equivalent to $\varphi$ and to $\neg \varphi$. In this case, it
+replaces $\psi$ in $\RE$ by $\psi \sqcap \varphi$ and $\psi \sqcap \neg \varphi$ to
 $\RE$.
 
 The $\alc$ algorithm is driven by case distinctions between
 concepts $\varphi$ and $\neg \varphi$, and thus freely adds 
 negations to the characteristic formulas in $\RE$.  This can be inconvenient
-in natural language generation, because such concepts may be expressible only by rather clumsy natural-language expressions. We will see examples in Section~\ref{xxx}.
+in natural language generation, because such concepts may be expressible only by rather clumsy natural-language expressions. We will see examples in Section~\ref{sec:examples}.
 
 An algorithm which is limited to computing
 (negation-free) formulas in \el can be obtained by combining
@@ -192,6 +188,16 @@ removes all formulas in $\RE$ that have become subsumed.  Removal of
 subsumed formulas from $\RE$ can be implemented efficiently by arranging
 them by inclusion in terms of their denotation.
 
+Because the \el\ algorithm maintains a weaker invariant
+for the classes, it may consider more of these classes simultaneously.
+Prima facie, this means that it has worst-case exponential runtime,
+given that the whole domain has an exponential number of subsets.
+However, it is possible that a more careful analysis of the
+combinatorics of the considered subsets reveal that the algorithm is
+actually polynomial; it certainly behaves polynomially in our
+evaluations (see below).
+
+
 \begin{figure*}
   \centering
   \includegraphics[width=\textwidth]{pic-dale-haddock}
@@ -209,34 +215,42 @@ them by inclusion in terms of their denotation.
 %   \label{fig:el-vs-alc}
 % \end{figure}
 
-\subsection{Some Examples}
+\subsection{Some Examples}\label{sec:examples}
 
-Let's see what this algorithm does on the example shown in
-Fig.~\ref{fig:dale-haddock}, which is taken from
-\newcite{dale91:_gener_refer_expres_invol_relat}.  In the first loop,
-the algorithm will add new concepts $\mathsf{floor}$, $\mathsf{bowl}$,
-$\mathsf{cup}$, and $\mathsf{table}$; because adding these concepts
-makes $\top$ subsumed, $\C$ will consist of these four concepts after
-the loop.  Not all of these concepts are singleton; for instance,
-$\interp{\mathsf{cup}}$ contains two individuals.  So we iterate over
-the relations to make the concepts more precise.  After the first
-iteration over the relations, we have $\C = \{ \mathsf{floor},
+We will now see what our algorithms do in some interesting
+examples. Consider the model shown in
+Fig.~\ref{fig:dale-haddock}a, which is taken from
+\newcite{dale91:_gener_refer_expres_invol_relat}, and
+let's run the $\el$ algorithm.
+
+In the first loop,
+the formulas $\mathsf{floor}$, $\mathsf{bowl}$,
+$\mathsf{cup}$, and $\mathsf{table}$ will be added to $\RE$ because they subsume $\top$.  Not all of these formulas denote singletons; for instance,
+$|\mathsf{cup}|\gM$ contains two individuals.  So we iterate over
+the relations to refine our formulas.  After the first
+iteration over the relations, we have $\RE = \{ \mathsf{floor},
 \mathsf{bowl} \sqcap \exists \mathsf{on}.\mathsf{floor}, \mathsf{bowl}
 \sqcap \exists \mathsf{on}.\mathsf{table}, \mathsf{cup},
 \mathsf{table} \}$. Notice that $\mathsf{bowl}$ has become subsumed,
-but we haven't distinguished the cups and tables further, but we can
+but we haven't distinguished the cups and tables further.
+
+Now we can
 use the distinction between the bowls to distinguish the cups in the
-second iteration.  The result of this is $\C = \{ \mathsf{floor},
+second iteration.  The result of this is $\RE = \{ \mathsf{floor},
 \mathsf{bowl} \sqcap \exists \mathsf{on}.\mathsf{floor}, \mathsf{bowl}
 \sqcap \exists \mathsf{on}.\mathsf{table}, \mathsf{cup} \sqcap \exists
 \mathsf{in}. (\mathsf{bowl} \sqcap \exists
 \mathsf{on}.\mathsf{floor}), \mathsf{cup} \sqcap \exists
 \mathsf{in}. (\mathsf{bowl} \sqcap \exists
-\mathsf{on}.\mathsf{table}), \mathsf{table} \}$.  At this point, all
-concepts except for $\mathsf{table}$ are singleton, and further
+\mathsf{on}.\mathsf{table}), \mathsf{table} \}$.
+
+At this point, all
+formulas except $\mathsf{table}$ denote singletons, and further
 iterations don't allow us to refine $\mathsf{table}$; so the algorithm
-terminates.  Each of the singleton bisimulation classes is represented
-by a characteristic concept; for instance, $\C$ tells us that
+terminates.
+
+Each of the singleton bisimulation classes is represented
+by a characteristic formula; for instance, $\RE$ tells us that
 $\mathsf{cup} \sqcap \exists \mathsf{in}. (\mathsf{bowl} \sqcap
 \exists \mathsf{on}.\mathsf{table})$ is only satisfied by $c_2$, so we
 may refer to $c_2$ as ``the cup in the bowl on the table''.
@@ -245,20 +259,11 @@ Compared to the \alc\ algorithm, the \el\ algorithm will generally
 compute larger bisimulation classes, and compute singleton
 bisimulation classes less frequently, because the concepts it can
 build can ``see'' fewer differences between individuals.  For example,
-in the model shown in Fig.~\ref{fig:el-vs-alc}, the \alc\ algorithm
-will compute the concepts $\{\neg \exists R. (\neg P \sqcap \neg Q),
-Q, \exists R. (\neg P \sqcap \neg Q), \neg P \sqcap \neg Q\}$ (each of
-which is singleton), but $a$ and $c$ are \el-bisimilar in this model,
+in the model shown in Fig.~\ref{fig:dale-haddock}c, the \alc algorithm
+will compute the set $\RE = \{\neg \exists R. (\neg P \sqcap \neg Q),
+Q, \exists R. (\neg P \sqcap \neg Q), \neg P \sqcap \neg Q\}$ (each formula denotes a singleton), but $a$ and $c$ are \el-bisimilar in this model,
 and the only \el-concept that is true in $d$ is $\top$, so the \el\
-algorithm can only compute the concepts $\{\top, P, P \sqcap Q\}$.
-Furthermore, because the \el\ algorithm maintains a weaker invariant
-for the classes, it may consider more of these classes simultaneously.
-Prima facie, this means that it has worst-case exponential runtime,
-given that the whole domain has an exponential number of subsets.
-However, it is possible that a more careful analysis of the
-combinatorics of the considered subsets reveal that the algorithm is
-actually polynomial; it certainly behaves polynomially in our
-evaluations (see below).
+algorithm can only compute the formulas $\{\top, P, P \sqcap Q\}$.
 
 
 %%% Local Variables: 

@@ -149,13 +149,6 @@ formulas computed by the \el\ algorithm ``safer'' with respect to
 realization.
 
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{runtimes}
-  \caption{Average runtimes (in ms) of the two algorithms on random
-    models with different numbers of individuals.}%%of different sizes.} 
-  \label{fig:runtimes}
-\end{figure}
 
 Of course, we share the problem of interfacing GRE and realization
 with every other approach that separates these two modules, i.e.\
@@ -168,6 +161,15 @@ awareness of the syntactic context to generate succinct REs as in
 explored here for efficient and expressive RE generation can
 eventually be combined with recent efficient algorithms for integrated
 sentence planning and realization, such as in \newcite{KolSto07}.
+
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{runtimes}
+  \caption{Average runtimes (in ms) of the two algorithms on random
+    models with different numbers of individuals.}%%of different sizes.} 
+  \label{fig:runtimes}
+\end{figure}
 
 One problem that arises in our approach specifically is that the
 bisimulation classes algorithms derive some measure of efficiency from

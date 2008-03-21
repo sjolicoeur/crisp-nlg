@@ -67,14 +67,14 @@ danger of infinite regress.
 It can be shown that for \alc, the similarity sets of a finite model
 coincide exactly with the \emph{simulation classes} of this model.
 Simulation classes have been studied extensively in the literature
-\cite{blac:moda01,kurt:expr99}, and there are several efficient
-algorithms for computing \alc-simulation classes
+(see e.g. \newcite{blac:moda01}; \newcite{kurt:expr99}), and there are several
+efficient algorithms for computing \alc-simulation classes
 \cite{hopc:algo71,paig:thre87,dovier04:_effic_algor_for_comput_bisim_equiv}.
 However, these algorithms will only compute the simulation classes
 themselves. Here we extend the \newcite{hopc:algo71} algorithm such
 that it computes, along with each set, also a formula that denotes
 exactly this set.  We can then use these formulas as representations
-of the REs.
+of the referring expressions.
 
 The pseudocode for our \alc\ algorithm is shown as
 Algorithm~\ref{algo:bisim-l} and Algorithm~\ref{algo:bisim-add-alc}.
@@ -173,6 +173,21 @@ and let's run the $\el$ algorithm.
 
 
 
+
+The algorithm starts with $\RE = \{\top\}$.  In the first loop, it
+adds the formulas $\mathsf{floor}$, $\mathsf{bowl}$, $\mathsf{cup}$,
+and $\mathsf{table}$, and then removes $\top$ because it is now
+subsumed.  Not all of these formulas denote singletons; for instance,
+$\interp{\mathsf{cup}}$ contains two individuals.  So we iterate over
+the relations to refine our formulas.  After the first iteration over
+the relations, we have $\RE = \{ \mathsf{floor}, \mathsf{bowl} \sqcap
+\exists \mathsf{on}.\mathsf{floor}, \mathsf{bowl} \sqcap \exists
+\mathsf{on}.\mathsf{table}, \mathsf{cup}, \mathsf{table} \}$. Notice
+that $\mathsf{bowl}$ has become subsumed, but we haven't distinguished
+the cups and tables further.
+
+
+
 \begin{algorithm}[t]
 \caption{add$_\alc(\varphi,\RE)$}
 \label{algo:bisim-add-alc}
@@ -200,18 +215,6 @@ and let's run the $\el$ algorithm.
 }
 \end{algorithm}
 
-The algorithm starts with $\RE = \{\top\}$.  In the first loop, it
-adds the formulas $\mathsf{floor}$, $\mathsf{bowl}$, $\mathsf{cup}$,
-and $\mathsf{table}$, and then removes $\top$ because it is now
-subsumed.  Not all of these formulas denote singletons; for instance,
-$\interp{\mathsf{cup}}$ contains two individuals.  So we iterate over
-the relations to refine our formulas.  After the first iteration over
-the relations, we have $\RE = \{ \mathsf{floor}, \mathsf{bowl} \sqcap
-\exists \mathsf{on}.\mathsf{floor}, \mathsf{bowl} \sqcap \exists
-\mathsf{on}.\mathsf{table}, \mathsf{cup}, \mathsf{table} \}$. Notice
-that $\mathsf{bowl}$ has become subsumed, but we haven't distinguished
-the cups and tables further.
-
 Now we can use the split between the bowls to distinguish the cups in
 the second iteration.  The result of this is $\RE = \{ \mathsf{floor},
 \mathsf{bowl} \sqcap \exists \mathsf{on}.\mathsf{floor}, \mathsf{bowl}
@@ -230,6 +233,7 @@ refer to $c_2$ as ``the cup in the bowl on the table''.  Notice that
 the algorithm didn't focus on any particular individual; it
 simultaneously generated REs for all individuals except for the two
 tables (which are similar to each other).
+
 
 The \el\ algorithm has a harder time with the example in
 Fig.~\ref{fig:dale-haddock}b \cite{Stone1998a}.  While it will

@@ -1,21 +1,5 @@
 \section{A unified perspective on GRE} \label{sec:related}
 
-\begin{figure}
-  \centering
-  \begin{small}
-  \begin{tabular}{l|p{0.2\textwidth}}
-    GRE algorithm & DL variant \\ \hline
-    \newcite{Dale1995} & $\mathcal{CL}$ \\
-    \newcite{deemter01:_gener_refer_expres} & $\mathcal{PL}$ \\
-    \newcite{dale91:_gener_refer_expres_invol_relat} & \el \\
-    \newcite{kelleher06:_increm_gener_of_spatial_refer} & \el \\
-    \newcite{gardent02:_gener_minim_defin_descr} & $\mathcal{ELU}_{(\neg)}$\\
-%    \newcite{Krahmer2003} & \el\ + equality between individuals
-  \end{tabular}
-  \end{small}
-  \caption{DL variants used by different GRE algorithms.}
-  \label{fig:related}
-\end{figure}
 
 Viewing GRE as a problem of generating DL formulas offers a unified
 perspective of the GRE problem: It is the problem of computing a DL
@@ -46,6 +30,24 @@ regress. While Dale and Haddock's algorithm attempts to generate a RE
 for a single individual for successive individuals in the model, our
 algorithms consider all individuals in parallel and are guaranteed to
 always terminate.
+
+
+\begin{figure}
+  \centering
+  \begin{small}
+  \begin{tabular}{l|p{0.2\textwidth}}
+    GRE algorithm & DL variant \\ \hline
+    \newcite{Dale1995} & $\mathcal{CL}$ \\
+    \newcite{deemter01:_gener_refer_expres} & $\mathcal{PL}$ \\
+    \newcite{dale91:_gener_refer_expres_invol_relat} & \el \\
+    \newcite{kelleher06:_increm_gener_of_spatial_refer} & \el \\
+    \newcite{gardent02:_gener_minim_defin_descr} & $\mathcal{ELU}_{(\neg)}$\\
+%    \newcite{Krahmer2003} & \el\ + equality between individuals
+  \end{tabular}
+  \end{small}
+  \caption{DL variants used by different GRE algorithms.}
+  \label{fig:related}
+\end{figure}
 
 Perhaps closest in spirit to our approach is Krahmer et al.'s graph
 algorithm~\shortcite{Krahmer2003}, which also computes REs by

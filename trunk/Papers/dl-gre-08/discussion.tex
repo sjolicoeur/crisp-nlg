@@ -90,7 +90,7 @@ descriptions for them.
 \subsection{Evaluation: efficiency}
 
 Both the \el\ and the \alc\ algorithms took about 15 milliseconds to
-compute distinguishing concepts for all 16 individuals in the Viethen
+compute distinguishing formulas for all 16 individuals in the Viethen
 and Dale dataset.\footnote{Runtimes are meassured on a MacBook Pro
   (Intel Core 2 Duo, 2.16 GHz) running Java 1.6 beta, and we allowed the
   Java VM to warm up, i.e., just-in-time compile all bytecode, before
@@ -123,7 +123,7 @@ we considered.
 \label{sec:discussion-realization}
 
 %\begin{itemize}
-%\item there's a risk to generate a concept that can't be realized,
+%\item there's a risk to generate a formula that can't be realized,
 %  especially for the \alc\ algorithm
 %\item everybody except perhaps SPUD has this problem
 %\item problem is worse in our case because it is harder to control the
@@ -132,20 +132,20 @@ we considered.
 %  search in the bisim algorithms can be controlled by the realizer
 %\end{itemize}
 
-Our GRE algorithms do not guarantee that the concepts they compute can
-actually be realized in language.  For example, none of the concepts
+Our GRE algorithms do not guarantee that the formula they compute can
+actually be realized in language.  For example, none of the formulas
 our algorithms computed in the Viethen and Dale domain contained an
 atom that would commonly be realized as a noun; the property
 $\mathsf{drawer}$ is never used because it applies to all individuals
 in the domain.  This particular problem could easily be worked around
 in a post-processing step.  However, another problem arises from the
 massive use of negation in the \alc\ algorithm; it will be hard for
-any realizer to find a reasonable way of expressing a concept like
+any realizer to find a reasonable way of expressing a formula like
 $\neg \exists R.(\neg P \sqcap \neg Q)$ as a smooth noun phrase.
 Although we agree with \newcite{deemter01:_gener_refer_expres} and
 others that the careful use of negation and disjunction can improve
 REs, these connectives must not be overused.  Thus we consider the
-concepts computed by the \el\ algorithm ``safer'' with respect to
+formulas computed by the \el\ algorithm ``safer'' with respect to
 realization.
 
 
@@ -171,7 +171,7 @@ sentence planning and realization, such as in \newcite{KolSto07}.
 
 One problem that arises in our approach specifically is that the
 bisimulation classes algorithms derive some measure of efficiency from
-their freedom to build concepts without having to respect any
+their freedom to build formulas without having to respect any
 linguistic constraints.  It seems straightforward, for instance, to
 extend Krahmer et al.'s \shortcite{Krahmer2003} approach such that it
 only considers subgraphs that can actually be realized, because their

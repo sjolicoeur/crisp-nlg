@@ -81,34 +81,34 @@ of the REs.
 The pseudocode for our \alc\ algorithm is shown as
 Algorithm~\ref{algo:bisim-l} and Algorithm~\ref{algo:bisim-add-alc}.
 Given a model $\gM=(\Delta, \interp{\cdot})$, the algorithm computes a
-set $\RE$ of $\alc$ formulas such that the set $\{\interp{\varphi}
-\mid \varphi \in \RE\}$ is the set of \alc-similarity sets of $\gM$.
-The algorithm starts with $\RE = \{\top\}$ (where $\interp{\top} =
+set $\RE$ of $\alc$ formulas such that $\{\interp{\varphi} \mid
+\varphi \in \RE\}$ is the set of \alc-similarity sets of $\gM$.  The
+algorithm starts with $\RE = \{\top\}$ (where $\interp{\top} =
 \Delta$), and successively refines $\RE$ by making its elements denote
 smaller and smaller sets.  It maintains the invariant that at the
 start and end of every iteration, $\{\interp{\varphi} \mid \varphi \in
 \RE\}$ is always a partition of $\Delta$.  The algorithm iterates over
-all propositional and relational symbols of the signature to construct
-new formulas until either all formulas in $\RE$ denote singletons
-(i.e., there is only one individual that satisfies them), or no
-progress has been made in the previous iteration.  In each iteration,
-it calls the procedure add$_\alc$($\varphi$, $\RE$), which intersects
-$\varphi$ with any formula $\psi \in \RE$ which does not denote a
-singleton and which is not equivalent to $\varphi$ and to $\neg
-\varphi$. In this case, it replaces $\psi$ in $\RE$ by $\psi \sqcap
-\varphi$ and $\psi \sqcap \neg \varphi$.
+all propositional and relational symbols in $\prop$ and $\rel$ to
+construct new formulas until either all formulas in $\RE$ denote
+singletons (i.e., there is only one individual that satisfies them),
+or no progress has been made in the previous iteration.  In each
+iteration, it calls the procedure add$_\alc$($\varphi$, $\RE$), which
+intersects $\varphi$ with any formula $\psi \in \RE$ which does not
+denote a singleton and which is not equivalent to $\varphi$ and to
+$\neg \varphi$. In this case, it replaces $\psi$ in $\RE$ by $\psi
+\sqcap \varphi$ and $\psi \sqcap \neg \varphi$.
 
 
 
 The \alc\ algorithm is capable of computing the \alc-similarity sets
-of the model very efficiently, in time $O(nm)$ where $n$ is the number
-of individuals in the domain, and $m$ is the number of pairs of
-individuals that are related by some relation.  However, it will
-freely introduce negations in the case distinctions, which can make
-the resulting formula hard to realize (see also
-Section~\ref{sec:discussion-realization}).  This is why we also
-present an algorithm for the \el-similarity sets; \el\ corresponds to
-positive relational REs, which are generally much easier to realize.
+of the model in time $O(nm)$, where $n$ is the number of individuals
+in the domain, and $m$ is the number of pairs of individuals that are
+related by some relation.  However, it will freely introduce negations
+in the case distinctions, which can make the resulting formula hard to
+realize (see also Section~\ref{sec:discussion-realization}).  This is
+why we also present an algorithm for the \el-similarity sets; \el\
+corresponds to positive relational REs, which are generally much
+easier to realize.
 
 We obtain the \el\ algorithm by replacing the call to add$_{\alc}$ in
 Algorithm~\ref{algo:bisim-l} by a call to add$_{\el}$, which is

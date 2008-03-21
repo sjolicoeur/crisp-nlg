@@ -13,9 +13,7 @@ $$
 \mid \exists R. \varphi
 $$
 where $p$ is in the set of propositional symbols \prop, $R$ is in the
-set of relational symbols \rel.
-
-$\el$ is the negation-free fragment of $\alc$.
+set of relational symbols \rel. $\el$ is the negation-free fragment of $\alc$.
 
 Formulas of both $\alc$ and $\el$ are interpreted in ordinary
 relational first-order models $\gM = (\Delta^\gM,|\cdot|^\gM)$ where
@@ -31,7 +29,8 @@ $$
 & & \mbox{ and } i' \in |\varphi|^\gM \}.\\
 \end{array}
 $$
-Given a model $\gM$ and an individual $i$ in the domain of $\gM$, let
+
+Given a model $\gM$ and an individual $i$ in $\gM$, let
 $\propm(i) = \{p \in \prop \mid i \in |p|^\gM\}$.
 \end{definition}
 
@@ -58,8 +57,7 @@ We will discuss in detail the case for $\alc$; further details can be
 found in~\cite{blac:moda01,kurt:expr99}.
 
 \begin{definition}
-Given a model $\gM = (\Delta^\gM,|\cdot|^\gM)$, two elements $i$ and
-$i'$ of $\Delta^\gM$ are \emph{$\alc$-similar} if there is a relation $Z
+Given a model $\gM = (\Delta^\gM,|\cdot|^\gM)$, and two individuals $i$ and $i'$ in $\gM$, an \emph{$\alc$-simulation} linking $i$ to $i'$  is a relation $Z
 \subseteq \Delta^\gM \times \Delta^\gM$ such that 
 \begin{itemize}
 \item[i)] $(i,i') \in Z$.\\[-1.5em]
@@ -71,31 +69,35 @@ $(e_1',e_2') \in Z$.\\[-1.5em]
 $(e_2,e_2') \in |R|^\gM$ then there is $e_1'$ such that $(e_1,e_1') \in |R|^\gM$ and
 $(e_1',e_2') \in Z$.
 \end{itemize}
-A maximal subset of $\Delta^\gM$ all of whose elements are pairwise
-bisimilar is called an \emph{\alc-bisimulation class} of $\gM$.
+%A maximal subset of $\Delta^\gM$ all of whose elements are pairwise
+%bisimilar is called an \emph{\alc-bisimulation class} of $\gM$.
 \end{definition}
 
-The crucial property that makes bisimulation relevant for GRE is the
+We will say that an individual $i$ is \emph{\alc-similar} to $i'$
+in a given model $\gM$ if for any formula $\varphi \in \alc$ $i \in \interp{\varphi}$ then
+$i' \in \interp{\varphi}$.  Notice that, given that the language includes negation,
+the notion of $\alc$-similarity is symmetric: if $i$ is \alc-similar to $i'$ then
+$i'$ is \alc-similar to $i$.  This is not the case for all description
+logic.  In particular, the notion of $\el$-similarity is not symmetric.
+Given a model $\gM$ and an individual $i$ in $\gM$, we will write \simm$_\alc(i)$, the similarity set, to all the elements of $\gM$ which are \alc-similar to $i$.x
+
+The crucial property that makes simulation relevant for GRE is the
 following theorem \cite{blac:moda01}.
 
 \begin{theorem}\label{bisim}
-  Given a finite model $\gM$, $i$ and $i'$ are $\alc$-bisimilar in
-  $\gM$ if and only if there is no $\alc$-formula $\varphi$ such that
-  $i \in |\varphi|^\gM$ and $i' \not \in |\varphi|^\gM$.
+  Given a finite model $\gM$ and two individuals $i$ and $i'$ in $\gM$, there is an $\alc$-simulation linking $i$ to $i'$ if and only if $i$ is $\alc$-similar to $i'$.
 \end{theorem}
 
-In other words, $\alc$-bisimilar individuals are indistinguishable in
-the $\alc$ language.  In the example in Fig.~\ref{fig:dale-haddock}a,
-the two individuals $t_1$ and $t_2$ are \alc-bisimilar; and indeed,
-they satisfy exactly the same \alc-formulas.  Although we can't go
+Notice that, because for $\alc$ the notion of similarity si symmetric, $\alc$-similar individuals are indistinguishable in the $\alc$ language.  In the example in Fig.~\ref{fig:dale-haddock}a,
+the two individuals $t_1$ and $t_2$ are \alc-similar; and indeed,
+they satisfy exactly the same \alc-formulas.
+
+Although we can't go
 into details here, it is possible to define a suitable notion of
-$\el$-bisimulation for which the analogous theorem holds
-\cite{kurt:expr99}.  In general, \el-bisimulation is a weaker notion
-than \alc-bisimulation; for instance, in Fig.~\ref{fig:dale-haddock},
-$f_1$ and $f_2$ are \el-bisimilar \todo{oops! here's the asymmetry,
-  there is a formula for $f_2$ but not for $f_1$} (no \el-formula will
-distinguish them), but we have already seen that they satisfy
-different \alc-formulas.
+$\el$-simulation for which the analogous theorem holds
+\cite{kurt:expr99}.  In general, \el-simulation is a weaker notion
+than \alc-simulation; for instance, in Fig.~\ref{fig:dale-haddock},
+$f_1$ is \el-similar to $f_2$, but not vice-versa.
 
 %%% Local Variables:
 %%% mode: latex

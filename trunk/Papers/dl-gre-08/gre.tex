@@ -13,7 +13,8 @@ a given target set of individuals.
 \multicolumn{2}{l}{
 \textsc{$\gL$-GRE Problem}}\\ \hline
 \ \ Input: & A model $\gM$ and a set $A \subseteq \Delta^\gM$.\\
-\ \ Output: & A formula $\varphi \in \gL$ such that $|\varphi|^\gM = A$\\
+\ \ Output: & A formula $\varphi \in \gL$ such that
+$\interp{\varphi}^\gM = A$\\ 
 & \hspace*{0.5cm} (if such a formula exists).\\ \hline
 \end{tabular}
 \end{center}}
@@ -47,7 +48,7 @@ In the rest of this section, we will present algorithms that compute
 the similarity sets of a given model for \alc\ and \el, and for each
 similarity set, a characteristic formula that denotes exactly this
 set.  In the \alc\ case, we adapt a standard algorithm from the
-literature for computing \emph{bisimulation classes}; we will then
+literature for computing \emph{simulation classes}; we will then
 further adapt this algorithm for \el.  In effect, both algorithms
 compute REs for all individuals in some model at the same time -- very
 efficiently and without any danger of infinite regress.
@@ -64,17 +65,18 @@ efficiently and without any danger of infinite regress.
 
 \subsection{Computing similarity sets}
 
-Theorem~\ref{bisim} states that in \alc, similarity sets correspond
-exactly to \emph{bisimulation classes}, i.e.\ maximal sets of
-individuals that can be linked by simulations.  Bisimulation classes
-have been studied extensively in the literature, and there are several
-efficient algorithms for computing \alc-bisimulation classes
+It can be shown that for \alc, the similarity sets of a finite model
+coincide exactly with the \emph{simulation classes} of this model
+\cite{blac:moda01}.  We don't have the space here to define simulation
+classes, but they have been studied extensively in the literature, and
+there are several efficient algorithms for computing \alc-simulation
+classes
 \cite{hopc:algo71,paig:thre87,dovier04:_effic_algor_for_comput_bisim_equiv}.
-However, these algorithms will only compute the similarity sets
+However, these algorithms will only compute the simulation classes
 themselves. Here we extend the \newcite{hopc:algo71} algorithm such
-that it computes, for each set, also a formula that denotes exactly
-this set.  We can then use these formulas as representations of the
-REs.
+that it computes, along with each set, also a formula that denotes
+exactly this set.  We can then use these formulas as representations
+of the REs.
 
 The pseudocode for our \alc\ algorithm is shown as
 Algorithm~\ref{algo:bisim-l} and Algorithm~\ref{algo:bisim-add-alc}.
@@ -146,7 +148,7 @@ $\RE \leftarrow \{\top\}$
       add$_\mathcal{L}(p,\RE)$
    }
 
-\While{for some $\varphi \in \RE, |\varphi|^\gM>1$}{
+\While{exists some $\varphi \in \RE, |\interp{\varphi}|^\gM>1$}{
    \For{$\varphi \in \RE, R \in \rel$}{
          add$_\mathcal{L}(\exists R.\varphi,\RE)$
    }
@@ -221,18 +223,17 @@ the second iteration.  The result of this is $\RE = \{ \mathsf{floor},
 \mathsf{in}. (\mathsf{bowl} \sqcap \exists
 \mathsf{on}.\mathsf{floor}), \mathsf{cup} \sqcap \exists
 \mathsf{in}. (\mathsf{bowl} \sqcap \exists
-\mathsf{on}.\mathsf{table}), \mathsf{table} \}$.
-
-At this point, all formulas except $\mathsf{table}$ denote singletons,
-and further iterations don't allow us to refine $\mathsf{table}$; so
-the algorithm terminates.  Each formula with a singleton extension
-$\{a\}$ is a unique description of $a$; for instance, $\mathsf{cup}
-\sqcap \exists \mathsf{in}. (\mathsf{bowl} \sqcap \exists
+\mathsf{on}.\mathsf{table}), \mathsf{table} \}$.  At this point, all
+formulas except $\mathsf{table}$ denote singletons, and further
+iterations don't allow us to refine $\mathsf{table}$; so the algorithm
+terminates.  Each formula with a singleton extension $\{a\}$ is a
+unique description of $a$; for instance, $\mathsf{cup} \sqcap \exists
+\mathsf{in}. (\mathsf{bowl} \sqcap \exists
 \mathsf{on}.\mathsf{table})$ is only satisfied by $c_2$, so we may
 refer to $c_2$ as ``the cup in the bowl on the table''.  Notice that
 the algorithm didn't focus on any particular individual; it
 simultaneously generated REs for all individuals except for the two
-tables.
+tables (which are similar to each other).
 
 The \el\ algorithm has a harder time with the example in
 Fig.~\ref{fig:dale-haddock}b \cite{Stone1998a}.  While it will

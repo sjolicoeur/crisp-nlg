@@ -1,7 +1,7 @@
-\section{Description Languages and Bisimulation} \label{sec:bisim}
+\section{Description Logics and Simulation} \label{sec:bisim}
 
-The main point of this paper is to represent referring expressions
-(REs) as formulas of description logic \cite{baad:desc03}.  In order
+As we mentioned, in this paper we will represent referring expressions
+(REs) as formulas of description logic~\cite{baad:desc03}.  In order
 to make this point, we will now first define the two description
 logics we will be working with -- \alc\ and \el.
 
@@ -53,13 +53,13 @@ quantification, i.e.\ only conjunctions of atoms); $\mathcal{PL}$
 and $\mathcal{ELU}_{(\neg)}$ (\el\ plus disjunction and atomic
 negation).
 
-A key notion in studying description logics is \emph{bisimulation}.
+A key notion in studying description logics is \emph{simulation}.
 We will discuss in detail the case for $\alc$; further details can be
 found in~\cite{blac:moda01,kurt:expr99}.
 
 \begin{definition}
 Given a model $\gM = (\Delta^\gM,|\cdot|^\gM)$, two elements $i$ and
-$i'$ of $\Delta^\gM$ are \emph{$\alc$-bisimilar} if there is a relation $Z
+$i'$ of $\Delta^\gM$ are \emph{$\alc$-similar} if there is a relation $Z
 \subseteq \Delta^\gM \times \Delta^\gM$ such that 
 \begin{itemize}
 \item[i)] $(i,i') \in Z$.\\[-1.5em]

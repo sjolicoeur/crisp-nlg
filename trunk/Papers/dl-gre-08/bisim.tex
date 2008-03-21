@@ -17,7 +17,7 @@ set of relational symbols \rel. $\el$ is the negation-free fragment of $\alc$.
 
 Formulas of both $\alc$ and $\el$ are interpreted in ordinary
 relational first-order models $\gM = (\Delta^\gM,|\cdot|^\gM)$ where
-$\Delta^\gM$ is some non-empy set, and $|\cdot|^\gM$ is an
+$\Delta^\gM$ is a non-empy set and $|\cdot|^\gM$ is an
 interpretation function such that:
 $$
 \begin{array}{ccl}
@@ -40,15 +40,15 @@ instance, in the model in Fig.~\ref{fig:dale-haddock}b, the formula
 $\mathsf{flower}$ denotes the set $\{f_1,f_2\}$; the formula
 $\mathsf{flower} \sqcap \exists \mathsf{in}.\mathsf{hat}$ denotes
 $\{f_2\}$; and the formula $\mathsf{flower} \sqcap \neg
-\exists.\mathsf{hat}$ denotes $\{f_1\}$.
+\exists \mathsf{in}.\mathsf{hat}$ denotes $\{f_1\}$.
 
 Different description logics differ in the inventory of logical
 connectives they permit.  The difference between \alc\ and \el\ is
 that \alc\ permits negation and \el\ doesn't.  There are many other
 description logics in the literature; some that we will get back to in
 Section~\ref{sec:related} are $\mathcal{CL}$ (\el\ without existential
-quantification, i.e.\ only conjunctions of atoms); $\mathcal{PL}$
-(\alc\ without existential quantification, i.e.\ propositional logic);
+quantification, i.e., only conjunctions of atoms); $\mathcal{PL}$
+(\alc\ without existential quantification, i.e., propositional logic);
 and $\mathcal{ELU}_{(\neg)}$ (\el\ plus disjunction and atomic
 negation).
 

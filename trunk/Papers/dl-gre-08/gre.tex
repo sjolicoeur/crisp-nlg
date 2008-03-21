@@ -25,24 +25,23 @@ In the examples above, it is because $\mathsf{flower} \sqcap \exists
 ``the flower in the hat'' to refer to $f_2$.  This perspective
 provides a general framework into which many existing GRE approaches
 fit: Traditional attribute selection \cite{Dale1995} corresponds to
-building purely DL formulas that are conjunctions of atoms; relational
-REs as in \newcite{dale91:_gener_refer_expres_invol_relat} are
-formulas of \el; and so on.  We will pursue the idea of organizing GRE
-approaches with respect to the variant of DL they use further in
+building DL formulas that are conjunctions of atoms; relational REs as
+in \newcite{dale91:_gener_refer_expres_invol_relat} are formulas of
+\el; and so on.  We will pursue the idea of organizing GRE approaches
+with respect to the variant of DL they use further in
 Section~\ref{sec:related}.
 
 For the rest of this paper, we assume that we are generating a
-singular RE, i.e.\ the target referent $A$ will generally be a
-singleton set.  In this case, we will only be able to generate a
-formula that denotes exactly $A = \{a\}$ (i.e., a RE that uniquely
-refers to $a$) if there is no other individual $b$ to which $a$ is
-similar; otherwise, any formula that is satisfied by $a$ is also
-satisfied by $b$.  Conversely, if we know that $a$ is not similar to
-any other individual, then there is a formula that is satisfied by $a$
-and not by anything else; this formula can serve as a unique singular
-RE.  In other words, we can reduce the $\gL$-GRE problem for a given
-model to the problem of computing the $\gL$-similarity sets of this
-model.
+singular RE, i.e.\ the target referent $A$ will be a singleton set.
+In this case, we will only be able to generate a formula that denotes
+exactly $A = \{a\}$ (i.e., a RE that uniquely refers to $a$) if there
+is no other individual $b$ to which $a$ is similar; otherwise, any
+formula that is satisfied by $a$ is also satisfied by $b$.
+Conversely, if we know that $a$ is not similar to any other
+individual, then there is a formula that is satisfied by $a$ and not
+by anything else; this formula can serve as a unique singular RE.  In
+other words, we can reduce the $\gL$-GRE problem for a given model to
+the problem of computing the $\gL$-similarity sets of this model.
 
 In the rest of this section, we will present algorithms that compute
 the similarity sets of a given model for \alc\ and \el, and for each
@@ -100,13 +99,13 @@ $\neg \varphi$. In this case, it replaces $\psi$ in $\RE$ by $\psi
 
 
 
-The \alc\ algorithm is capable of computing the \alc-similarity sets
-of the model in time $O(nm)$, where $n$ is the number of individuals
-in the domain, and $m$ is the number of pairs of individuals that are
-related by some relation.  However, it will freely introduce negations
-in the case distinctions, which can make the resulting formula hard to
-realize (see also Section~\ref{sec:discussion-realization}).  This is
-why we also present an algorithm for the \el-similarity sets; \el\
+The \alc\ algorithm computes the \alc-similarity sets of the model in
+time $O(nm)$, where $n$ is the number of individuals in the domain,
+and $m$ is the number of pairs of individuals that are related by some
+relation.  However, it will freely introduce negations in the case
+distinctions, which can make the resulting formula hard to realize
+(see also Section~\ref{sec:discussion-realization}).  This is why we
+also present an algorithm for the \el-similarity sets; \el\
 corresponds to positive relational REs, which are generally much
 easier to realize.
 
@@ -239,7 +238,7 @@ The \el\ algorithm has a harder time with the example in
 Fig.~\ref{fig:dale-haddock}b \cite{Stone1998a}.  While it will
 correctly identify $r_1$ as ``the rabbit in the hat'' and $f_2$ as
 ``the flower in the bathtub'', it will not be able to compute a RE for
-$f_1$ because $f_2$ is \el-similar to $f_1$.  Indeed, the algorithm
+$f_1$ because $f_1$ is \el-similar to $f_2$.  Indeed, the algorithm
 terminates with $\RE$ containing both $\mathsf{flower}$ and
 $\mathsf{flower} \sqcap \exists \mathsf{in}.\mathsf{hat}$.  This is a
 typical pattern for asymmetrical cases of similarity in \el: If there

@@ -171,20 +171,21 @@ sentence planning and realization, such as in \newcite{KolSto07}.
   \label{fig:runtimes}
 \end{figure}
 
-One problem that arises in our approach specifically is that the
-bisimulation classes algorithms derive some measure of efficiency from
-their freedom to build formulas without having to respect any
-linguistic constraints.  It seems straightforward, for instance, to
-extend Krahmer et al.'s \shortcite{Krahmer2003} approach such that it
-only considers subgraphs that can actually be realized, because their
-algorithm proceeds by a genuine search for uniquely identifying
-subgraphs, and will simply take a different branch of the search if
-some subgraph is useless.  This would be harder in our case.  Our
-algorithms don't search in the same way; if we disallow certain
-refinements of a partition, we have to allow the algorithms to
-backtrack and thus jeopardize the worst-case polynomial runtime.
-Investigating this interplay between efficiency and linguistic
-constraints is an interesting avenue for future research.
+One problem that arises in our approach specifically is that both
+algorithms derive some measure of efficiency from their freedom to
+build formulas without having to respect any linguistic constraints.
+It seems straightforward, for instance, to extend Krahmer et al.'s
+\shortcite{Krahmer2003} approach such that it only considers subgraphs
+that can actually be realized, because their algorithm proceeds by a
+genuine search for uniquely identifying subgraphs, and will simply
+take a different branch of the search if some subgraph is useless.
+This would be harder in our case.  Our algorithms don't search in the
+same way; if we disallow certain refinements of a partition, we have
+to allow the algorithms to backtrack and thus jeopardize the
+worst-case polynomial runtime.  Investigating this interplay between
+efficiency and linguistic constraints is an interesting avenue for
+future research.
+
 
 
 

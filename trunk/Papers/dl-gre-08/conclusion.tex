@@ -1,30 +1,35 @@
 \section{Conclusion} \label{sec:conclusion}
 
-In this paper, we have presented a new perspective on GRE as the
-problem of computing concepts of description logic with given
-extensions.  We have also shown how such concepts can be computed
-efficiently by applying existing algorithms for computing bisimulation
-classes.  Our algorithms are able to generate 95\% of the
-non-relational and 67\% of the relational REs from
-\newcite{viethen06:_algor_for_gener_refer_expres}.  They are also
-extremely efficient (140 ms to generate REs for all individuals in a
-random model of size 100); to our knowledge, these are by far the
-fastest runtimes for relational GRE reported in the literature.  We
-will make our implementations available online.
+In this paper, we have explored the idea of viewing the generation of
+singular REs as the problem of computing a DL formula with a given
+extension.  We have shown how such formulas can be computed
+efficiently (for \alc\ and \el) by adapting existing algorithms for
+computing similarity sets.  The \el\ algorithm is able to generate
+95\% of the non-relational and 67\% of the relational REs from
+\newcite{viethen06:_algor_for_gener_refer_expres}.  Both algorithms
+are extremely efficient (350 ms and 140 ms respectively to generate
+relational REs for all individuals in a random model with 100
+individuals); to our knowledge, these are by far the fastest runtimes
+for relational GRE reported in the literature.  We will make our
+implementation available online.
 
 Because they compute referring expressions for all individuals in the
 domain at once, our algorithms will perform especially strongly in
 static settings, such as the generation of descriptions for museum
 exhibits, in which the individuals and their properties don't change
-much.  In such a setting, REs could be computed once when the
-application starts, and then reused throughout.  Nevertheless, they
-remain fast enough for real-time use in dynamic settings.  One
-interesting question for future research is how bisimulation
-algorithms that can incrementally update the bisimulation classes when
-the model changes, such as \todo{cite}, can be adapted to GRE.
+much.  However, even in more dynamic settings, our algorithms have a
+chance to outperform search algorithms like Dale and Haddock's in the
+average case because they can't get stuck in unproductive branches of
+the search space.  Nevertheless, one interesting question for future
+research is how to adapt bisimulation algorithms that can
+incrementally update the bisimulation classes when the model changes.
+Similarly, it would be interesting to explore how linguistic
+constraints and different attribute orderings can be taken into
+account without slowing the algorithms down, and how the algorithms
+can be adapted to compute REs for sets.
 
-One finding in our experiments with the Viethen and Dale dataset is
-that there is no single ordering that covers all human-produced
+In experimenting with the Viethen and Dale data, we found that
+there is no single ordering that covers all human-produced
 descriptions, which seems to be in contrast to Dale and Reiter's
 \shortcite{Dale1995} assumption that there is only one ordering for
 each given domain.  In fact, it is not even the case that each speaker
@@ -37,7 +42,6 @@ lend themselves very well to row/column style propositional REs.  We
 are currently preparing an experiment to collect REs in a domain in
 which relational REs will be more frequent.
 
-\todo{referring to sets}
 
 
 %%% Local Variables: 

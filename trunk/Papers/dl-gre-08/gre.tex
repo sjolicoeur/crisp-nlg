@@ -12,9 +12,9 @@ a given target set of individuals.
 \begin{tabular}{ll} \hline
 \multicolumn{2}{l}{
 \textsc{$\gL$-GRE Problem}}\\ \hline
-\ \ Input: & A model $\gM$ and a set $A \subseteq \Delta^\gM$.\\
+\ \ Input: & A model $\gM$ and a target set $A \subseteq \Delta$.\\
 \ \ Output: & A formula $\varphi \in \gL$ such that
-$\interp{\varphi}^\gM = A$\\ 
+$\interp{\varphi} = A$\\ 
 & \hspace*{0.5cm} (if such a formula exists).\\ \hline
 \end{tabular}
 \end{center}}
@@ -27,8 +27,8 @@ provides a general framework into which many existing GRE approaches
 fit: Traditional attribute selection \cite{Dale1995} corresponds to
 building DL formulas that are conjunctions of atoms; relational REs as
 in \newcite{dale91:_gener_refer_expres_invol_relat} are formulas of
-\el; and so on.  We will pursue the idea of organizing GRE approaches
-with respect to the variant of DL they use further in
+\el; and so on.  We will further pursue the idea of organizing GRE
+approaches with respect to the variant of DL they use in
 Section~\ref{sec:related}.
 
 For the rest of this paper, we assume that we are generating a
@@ -44,13 +44,13 @@ other words, we can reduce the $\gL$-GRE problem for a given model to
 the problem of computing the $\gL$-similarity sets of this model.
 
 In the rest of this section, we will present algorithms that compute
-the similarity sets of a given model for \alc\ and \el, and for each
-similarity set, a characteristic formula that denotes exactly this
-set.  In the \alc\ case, we adapt a standard algorithm from the
-literature for computing \emph{simulation classes}; we will then
-further adapt this algorithm for \el.  In effect, both algorithms
-compute REs for all individuals in some model at the same time -- very
-efficiently and without any danger of infinite regress.
+the similarity sets of a given model for \alc\ and \el, together with
+characteristic formulas that denote them.  In the \alc\ case, we adapt
+a standard algorithm from the literature for computing
+\emph{simulation classes}; we will then further adapt this algorithm
+for \el.  In effect, both algorithms compute REs for all individuals
+in some model at the same time -- very efficiently and without any
+danger of infinite regress.
 
 
 \begin{figure}[t]
@@ -65,11 +65,10 @@ efficiently and without any danger of infinite regress.
 \subsection{Computing similarity sets}
 
 It can be shown that for \alc, the similarity sets of a finite model
-coincide exactly with the \emph{simulation classes} of this model
-\cite{blac:moda01}.  We don't have the space here to define simulation
-classes, but they have been studied extensively in the literature, and
-there are several efficient algorithms for computing \alc-simulation
-classes
+coincide exactly with the \emph{simulation classes} of this model.
+Simulation classes have been studied extensively in the literature
+\cite{blac:moda01,kurt:expr99}, and there are several efficient
+algorithms for computing \alc-simulation classes
 \cite{hopc:algo71,paig:thre87,dovier04:_effic_algor_for_comput_bisim_equiv}.
 However, these algorithms will only compute the simulation classes
 themselves. Here we extend the \newcite{hopc:algo71} algorithm such
@@ -100,14 +99,12 @@ $\neg \varphi$. In this case, it replaces $\psi$ in $\RE$ by $\psi
 
 
 The \alc\ algorithm computes the \alc-similarity sets of the model in
-time $O(nm)$, where $n$ is the number of individuals in the domain,
-and $m$ is the number of pairs of individuals that are related by some
-relation.  However, it will freely introduce negations in the case
-distinctions, which can make the resulting formula hard to realize
-(see also Section~\ref{sec:discussion-realization}).  This is why we
-also present an algorithm for the \el-similarity sets; \el\
-corresponds to positive relational REs, which are generally much
-easier to realize.
+time $O(n^3)$, where $n$ is the number of individuals in the domain.
+However, it will freely introduce negations in the case distinctions,
+which can make the resulting formula hard to realize (see also
+Section~\ref{sec:discussion-realization}).  This is why we also
+present an algorithm for the \el-similarity sets; \el\ corresponds to
+positive relational REs, which are generally much easier to realize.
 
 We obtain the \el\ algorithm by replacing the call to add$_{\alc}$ in
 Algorithm~\ref{algo:bisim-l} by a call to add$_{\el}$, which is
@@ -120,8 +117,8 @@ $\interp{\varphi_1},\ldots,\interp{\varphi_n}$ is a partition of
 $\Delta$, we weaken this invariant to the requirement that there are
 no $m \geq 2$ pairwise different indices $1 \leq i_1,\ldots,i_m \leq
 n$ such that $\interp{\varphi_{i_1}} = \interp{\varphi_{i_2}} \cup
-\ldots \cup \interp{\varphi_{i_m}}$.  We call the formula
-$\varphi_{i_1}$ \emph{subsumed} if such a decomposition exists.
+\ldots \cup \interp{\varphi_{i_m}}$.  We call $\varphi_{i_1}$
+\emph{subsumed} if such a decomposition exists.
 
 Because it maintains a weaker invariant, the set $\RE$ may contain
 more formulas at the same time in the \el\ algorithm than in the \alc\
@@ -237,8 +234,8 @@ tables (which are similar to each other).
 The \el\ algorithm has a harder time with the example in
 Fig.~\ref{fig:dale-haddock}b \cite{Stone1998a}.  While it will
 correctly identify $r_1$ as ``the rabbit in the hat'' and $f_2$ as
-``the flower in the bathtub'', it will not be able to compute a RE for
-$f_1$ because $f_1$ is \el-similar to $f_2$.  Indeed, the algorithm
+``the flower in the hat'', it will not be able to compute a RE for $f_1$
+because $f_1$ is \el-similar to $f_2$.  Indeed, the algorithm
 terminates with $\RE$ containing both $\mathsf{flower}$ and
 $\mathsf{flower} \sqcap \exists \mathsf{in}.\mathsf{hat}$.  This is a
 typical pattern for asymmetrical cases of similarity in \el: If there

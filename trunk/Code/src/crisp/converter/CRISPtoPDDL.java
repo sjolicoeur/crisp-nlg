@@ -122,8 +122,13 @@ public class CRISPtoPDDL {
 		Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
 				new crisp.planningproblem.goal.Literal("distractor(?u,?x)", false));
 
+		// no positive "mustadjoin" literals in the goal state
+        Goal noMustAdj= new crisp.planningproblem.goal.Universal(tlCatNode,
+                new crisp.planningproblem.goal.Literal("mustadjoin(?a,?u)", false));
+
 		finalStateGoals.add(noSubst);
 		finalStateGoals.add(noDistractors);
+		finalStateGoals.add(noMustAdj);
 
 		// no positive needtoexpress-* literals, for any arity
 		for( int i = 1; i <= maximumArity; i++ ) {
@@ -217,7 +222,7 @@ public class CRISPtoPDDL {
 			    String w = xpath.evaluate("@word", auxAnchor);
 
 			    //System.err.println("auxiliary word: " + pos + ":" + w);
-			    actionNameBuf.append("-" + pos + ":" + w);
+			    actionNameBuf.append("-" + pos + "-" + w);
 			}
 
 
@@ -273,8 +278,9 @@ public class CRISPtoPDDL {
 					goals.add(new crisp.planningproblem.goal.Literal("subst(" + rootCategory + ", ?u)", true));
 					effects.add(new crisp.planningproblem.effect.Literal("subst(" + rootCategory + ", ?u)", false));
 				} else {
-					// auxiliary tree: adjoin
+					// auxiliary tree: adjoin, and satisfies mustadjoin requirements
 					goals.add(new crisp.planningproblem.goal.Literal("canadjoin(" + rootCategory + ", ?u)", true));
+					effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" + rootCategory + ", ?u)", false));
 				}
 
 				// semantic content must be satisfied
@@ -398,6 +404,12 @@ public class CRISPtoPDDL {
 					// canadjoin
 					effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" + cat + ", " + roleN + ")", true));
 
+					// mustadjoin
+					if( hasAttribute(adjnode, "constraint") && getAttribute(adjnode, "constraint").equals("oa")) {
+					    effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" + cat + ", " + roleN + ")", true));
+					}
+
+
 					// don't need to add constant to the domain because we ASSUME that every role
 					// except for "self" decorates some substitution node (and hence is added there)
 				}
@@ -504,6 +516,10 @@ public class CRISPtoPDDL {
 		Predicate predCanadjoin = new Predicate(); predCanadjoin.setLabel("canadjoin");
 		predCanadjoin.addVariable("?x", "category"); predCanadjoin.addVariable("?y", "syntaxnode");
 		domain.addPredicate(predCanadjoin);
+
+		Predicate predMustadjoin = new Predicate(); predMustadjoin.setLabel("mustadjoin");
+        predMustadjoin.addVariable("?x", "category"); predMustadjoin.addVariable("?y", "syntaxnode");
+        domain.addPredicate(predMustadjoin);
 
 		for( int i = 1; i <= plansize+1; i++ ) {
 			domain.addConstant("step" + i, "stepindex");
@@ -710,6 +726,10 @@ public class CRISPtoPDDL {
 	 */
 	private static String getAttribute(Node node, String attributeName) {
 		return node.getAttributes().getNamedItem(attributeName).getTextContent();
+	}
+
+	private static boolean hasAttribute(Node node, String attributeName) {
+	    return node.getAttributes().getNamedItem(attributeName) != null;
 	}
 
 	/**

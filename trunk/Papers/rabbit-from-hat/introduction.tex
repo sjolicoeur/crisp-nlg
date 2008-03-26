@@ -1,6 +1,84 @@
 \section{Introduction}
 \label{sec:introduction}
 
+In the standard architecture of a natural language generation (NLG)
+system, the problem of sentence generation is split into two separate
+steps -- sentence planning and surface realization
+\cite{reiter00building}.  However, it has been shown that by coupling
+sentence planning and realization more closely, an NLG system such as
+SPUD \cite{Stone2003a} can sometimes generate more succinct
+expressions than a pipelined system could \cite{Stone1998a}.  In order
+to express the instruction to remove the indicated rabbit from the
+indicated hat in Fig.~\ref{fig:rabbits}, a pipelined system would have
+to generate the sentence 
+
+\enumsentence{Take the rabbit in the hat from the hat
+that contains a rabbit.\label{ex:rabbit1}}
+
+  A system that can exploit the fact that the
+two noun phrases are connected via the verb (i.e., which makes
+realization information available while referring expressions are
+generated) could instead generate the more succinct
+
+\enumsentence{Take the rabbit from the hat. \label{ex:rabbit2}}
+
+\newcite{KolSto07} presented an implementation of the core of SPUD as
+a planning problem, and demonstrated that SPUD-style integrated
+sentence planning and realization can be performed efficiently by
+applying modern planning technology.  However, their approach is
+incapable of generating (\ref{ex:rabbit2}) because it requires the
+first NP to distinguish the rabbit from all other things that are
+inside other things, and likewise for the second NP.
+
+In this paper, we will show how to extend their approach to sentence
+generation as planning in such a way that it is capable of generating
+referring expressions that are as succinct as SPUD's.  The relevance
+of this change goes beyond isolated examples such as
+(\ref{ex:rabbit1}): It requires us to model in what way adding
+information to one referring expression constraints the distractors of
+another.  In a first step, we will show how the Koller and Stone model
+can be directly extended to take different divisions of labor between
+the two referring expressions into account.  However, we will then
+show that this leads to unacceptable runtimes.  The reason for this
+slowdown is that the initial state and the universe considered by the
+planner grow, and that the planner must make decisions about how to
+distribute distractors over the different REs top-down, rather than
+letting the different REs constrain each other.
+
+In a second step, we will then present a novel approach to generation
+as planning in which the planning system (in our case, PKS
+\cite{Petrick-Bacchus:02}) is allowed to access external reasoning
+modules.  We now keep track of a constraint network representing the
+distractors of all REs \cite{dale91:_gener_refer_expres_invol_relat}
+in a separate module; the planner can add new information to this
+module and query it.  This allows us to keep the planning state
+manageable and delay the decision about the distractors for each RE
+until these REs are actually being built.  We evaluate the runtime of
+our system \todo{blah}.  Attaching external reasoning modules to a
+planner is a novel technique in planning, and far more general than
+just keeping track of accessing a constraint network; this increase in
+expressive power will be very useful for other applications of
+planning-based generation systems in the future.
+
+\todo{need to explain how distractor sets for the REs are created}
+
+
+The paper is structured as follows. We will first briefly review
+planning (Section~\ref{sec:planning}) and Koller and Stone's
+generation as planning approach (Section~\ref{sec:gen-as-planning}).
+Then we will discuss the examples (\ref{ex:rabbit1}) and
+(\ref{ex:rabbit2}) in more detail and present the first, failed
+attempt to computing (\ref{ex:rabbit1}) by planning, in
+Section~\ref{sec:problem}.  Section~\ref{sec:howto} then describes how
+we get a more efficient encoding of the generation problem by
+attaching external modules to the planner.  Finally,
+Section~\ref{sec:evaluation} evaluates the performance of our system,
+and Section~\ref{sec:conclusion} concludes.
+
+
+
+
+
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: "rabbit-from-hat"

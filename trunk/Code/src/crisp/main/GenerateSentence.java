@@ -2,7 +2,7 @@ package crisp.main;
 
 import java.util.List;
 
-import crisp.converter.CRISPtoPDDL;
+import crisp.converter.CRISPConverter;
 import crisp.planner.lazygp.Plan;
 import crisp.planner.lazygp.Planner;
 import crisp.planningproblem.Domain;
@@ -33,7 +33,7 @@ public class GenerateSentence {
 
 		/*** read CRISP problem specification and convert it to PDDL domain/problem ***/
 		long start = System.currentTimeMillis();
-		CRISPtoPDDL.convert(problemFile, domain, problem);
+		CRISPConverter.convert(problemFile, domain, problem);
 		long end = System.currentTimeMillis();
 
 		new PddlOutputCodec().writeToDisk(domain, problem, "./", domain.getName());

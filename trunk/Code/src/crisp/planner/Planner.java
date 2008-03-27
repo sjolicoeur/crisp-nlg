@@ -58,7 +58,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import crisp.tools.GecodeUtil;
+import crisp.tools.gecode.GecodeUtil;
 
 import org.gecode.BoolVar;
 import org.gecode.DFSSearch;

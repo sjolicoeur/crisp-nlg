@@ -5,7 +5,7 @@
  *  
  */
 
-package crisp.tools;
+package crisp.tools.gecode;
 
 import java.util.ArrayList;
 import java.util.List;

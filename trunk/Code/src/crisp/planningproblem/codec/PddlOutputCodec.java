@@ -15,7 +15,7 @@ import crisp.planningproblem.goal.Goal;
 import de.saar.basic.StringTools;
 import de.saar.chorus.term.Term;
 
-public class PddlOutputCodec {
+public class PddlOutputCodec extends OutputCodec {
     /**
      * Writes the PDDL domain and problem to disk.
      *
@@ -24,6 +24,7 @@ public class PddlOutputCodec {
      * @throws XPathExpressionException
      * @throws IOException
      */
+    @Override
     public void writeToDisk(Domain domain, Problem problem, String filenamePrefix, String problemname) throws IOException {
         System.err.println("Writing domain file ...");
         PrintWriter dw = new PrintWriter(new FileWriter(filenamePrefix + problemname + "-domain.lisp"));

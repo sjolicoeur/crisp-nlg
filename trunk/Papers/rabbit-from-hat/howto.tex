@@ -13,12 +13,45 @@ action \textbf{S-takefrom-1} alone has $31 \cdot 15^3 \cdot 4 =
 more realistic sizes, it is easy to imagine how the number of
 instances might run into the trillions.
 
-\begin{itemize}
-\item PKS: don't have to instantiate
-\item new PKS: can build names on the fly by function application
-\item external modules seem a comparatively small part, but if nothing
-  else, they save an argument slot.
-\end{itemize}
+A second problem is that FF, which is a forward planner, must choose
+an instance of \textbf{S-takefrom-1} before it generates the referring
+expressions that will be realized in the two noun phrases.  However,
+at this point the planner doesn't know yet what choices of distractor
+sets will be convenient to realize in the REs.  In the above example,
+the only choice that can be realized easily is $s_3$ -- in the three
+other cases, there is no single noun that will eliminate all
+distractors --, but the planner must still try all three
+instances. \todo{is this true? or can ff do something clever with the
+  heuristic?}  In a sense, we have replaced the problems that arise
+from a pipeline model which sequences sentence planning before
+realization with the converse problems of performing realization
+before the sentence planner had a chance to suggest REs.
+
+Finally, a significant amount of runtime is spent on actually
+computing the different splits before the planner itself is run.  In
+the worst case, a domain with $n$ individuals may require us to
+distinguish \todo{what?} different splits.  These not only blow up the
+size of the initial state, but they also take \todo{a long} time to
+compute.  In our implementation, computing the initial state for four
+rabbits, hats, flowers, and bathtubs each takes about 40 minutes.
+This problem is due to the fact that we don't know for what
+individuals and relations we will need to know the splits during the
+planning process, and so we must compute all of them to be on the safe
+side.
+
+We will now solve both of these problems by switching from FF to the
+PKS planner \cite{Petrick-Bacchus:02} and extending PKS in two
+different ways: allowing terms including functions in the effects, and
+attaching external reasoning modules to the planner.  PKS computes
+instances of actions and literals only by need, when they are actually
+used by the planner, and thus automatically avoids the first problem
+mentioned above.  Furthermore, by moving all the bookkeeping about
+distractors into an external module which maintains a constraint
+network, we avoid the second and third problem as well.  The search
+for a realization is still driven by the planner; the planner then
+queries the constraint network as an external module.
+
+\todo{now we have to talk about how to actually do it}
 
 
 

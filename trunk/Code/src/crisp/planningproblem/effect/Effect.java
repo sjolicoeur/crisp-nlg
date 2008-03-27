@@ -1,8 +1,8 @@
 /*
  * @(#)Effect.java created 30.09.2006
- * 
+ *
  * Copyright (c) 2006 Alexander Koller
- *  
+ *
  */
 
 package crisp.planningproblem.effect;
@@ -22,17 +22,17 @@ public abstract class Effect {
         List<Literal> eff = new ArrayList<Literal>();
 
         computeEffectList(eff, problem);
-        
+
         return eff;
     }
-    
+
     /*
     public List<Literal> getNegativeEffects() {
         List<Literal> pos = new ArrayList<Literal>();
         List<Literal> neg = new ArrayList<Literal>();
-        
+
         computeEffectList(pos, neg);
-        
+
         return neg;
     }
     */
@@ -41,5 +41,4 @@ public abstract class Effect {
 
 	public abstract boolean mentionsPredicate(Predicate pred);
 
-	public abstract String toPddlString();
 }

@@ -1,8 +1,8 @@
 /*
  * @(#)Conjunction.java created 30.09.2006
- * 
+ *
  * Copyright (c) 2006 Alexander Koller
- *  
+ *
  */
 
 package crisp.planningproblem.goal;
@@ -18,28 +18,30 @@ import de.saar.chorus.term.Substitution;
 
 
 public class Conjunction extends Goal {
-    private List<Goal> conjuncts;
-    
+    private final List<Goal> conjuncts;
+
     public Conjunction() {
         this.conjuncts = new ArrayList<Goal>();
     }
-    
+
     public Conjunction(List<Goal> conjuncts) {
         this.conjuncts = conjuncts;
     }
-    
-    
 
+
+
+    @Override
     public Goal instantiate(Substitution subst) {
         Conjunction ret = new Conjunction();
-        
+
         for( Goal g : conjuncts ) {
             ret.conjuncts.add(g.instantiate(subst));
         }
 
         return ret;
     }
-    
+
+    @Override
     public String toString() {
         return "and(" + StringTools.join(conjuncts, ",") + ")";
     }
@@ -53,7 +55,7 @@ public class Conjunction extends Goal {
         for( Goal sub : conjuncts ) {
             sub.computeGoalList(goals, problem);
         }
-        
+
     }
 
     @Override
@@ -63,7 +65,7 @@ public class Conjunction extends Goal {
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -74,20 +76,8 @@ public class Conjunction extends Goal {
                 return false;
             }
         }
-        
+
         return true;
     }
 
-    @Override
-	public String toPddlString() {
-		StringBuffer buf = new StringBuffer("(and");
-		
-		for( Goal conjunct : conjuncts ) {
-			buf.append(" " + conjunct.toPddlString());
-		}
-		
-		buf.append(")");
-		
-		return buf.toString();
-	}
 }

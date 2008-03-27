@@ -7,6 +7,7 @@ import crisp.planner.lazygp.Plan;
 import crisp.planner.lazygp.Planner;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
+import crisp.planningproblem.codec.PddlOutputCodec;
 
 public class Generate {
 	public static void main(String[] args) throws Exception {
@@ -18,7 +19,7 @@ public class Generate {
 		CRISPtoPDDL.convert(args[0], domain, problem);
 		long end = System.currentTimeMillis();
 
-		CRISPtoPDDL.writeToDisk(domain, problem, "./");
+		new PddlOutputCodec().writeToDisk(domain, problem, "./", domain.getName());
 
 
 

@@ -1,8 +1,8 @@
 /*
  * @(#)Conjunction.java created 30.09.2006
- * 
+ *
  * Copyright (c) 2006 Alexander Koller
- *  
+ *
  */
 
 package crisp.planningproblem.effect;
@@ -17,26 +17,28 @@ import de.saar.chorus.term.Substitution;
 
 
 public class Conjunction extends Effect {
-    private List<Effect> conjuncts;
-    
+    private final List<Effect> conjuncts;
+
     public Conjunction() {
         this.conjuncts = new ArrayList<Effect>();
     }
-    
+
     public Conjunction(List<Effect> conjuncts) {
         this.conjuncts = conjuncts;
     }
-    
+
+    @Override
     public Effect instantiate(Substitution subst) {
         Conjunction ret = new Conjunction();
-        
+
         for( Effect g : conjuncts ) {
             ret.conjuncts.add(g.instantiate(subst));
         }
 
         return ret;
     }
-    
+
+    @Override
     public String toString() {
         return "and(" + StringTools.join(conjuncts, ",") + ")";
     }
@@ -59,19 +61,8 @@ public class Conjunction extends Effect {
 		return false;
 	}
 
-	@Override
-	public String toPddlString() {
-		StringBuffer buf = new StringBuffer("(and");
-		
-		for( Effect conjunct : conjuncts ) {
-			buf.append(" " + conjunct.toPddlString());
-		}
-		
-		buf.append(")");
-		
-		return buf.toString();
-	}
-	
-	
+    public List<Effect> getConjuncts() {
+        return conjuncts;
+    }
 
 }

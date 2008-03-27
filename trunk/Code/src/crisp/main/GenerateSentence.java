@@ -3,22 +3,21 @@ package crisp.main;
 import java.util.List;
 
 import crisp.converter.CRISPtoPDDL;
-import crisp.planner.lazygp.ActionInstance;
 import crisp.planner.lazygp.Plan;
 import crisp.planner.lazygp.Planner;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
+import crisp.planningproblem.codec.PddlOutputCodec;
 import crisp.result.DerivationTree;
 import crisp.result.Grammar;
 import crisp.result.TreeNode;
-import de.saar.chorus.term.Substitution;
 
 /**
  * This is Mark Wilding's version of Generate. This alternative front-end
- * extends the original project to allow the final sentence to be 
- * output, rather than just a plan. This is done using classes in 
+ * extends the original project to allow the final sentence to be
+ * output, rather than just a plan. This is done using classes in
  * the package crisp.sentence.
- * 
+ *
  * @author Mark Wilding
  *
  */
@@ -37,7 +36,7 @@ public class GenerateSentence {
 		CRISPtoPDDL.convert(problemFile, domain, problem);
 		long end = System.currentTimeMillis();
 
-		CRISPtoPDDL.writeToDisk(domain, problem, "./");
+		new PddlOutputCodec().writeToDisk(domain, problem, "./", domain.getName());
 
 		/*** run the planner ***/
 
@@ -52,7 +51,7 @@ public class GenerateSentence {
     	long endPlanner2 = System.currentTimeMillis();
 
     	/*
-    	 * Here we use crisp.result to produce the final 
+    	 * Here we use crisp.result to produce the final
     	 * sentence and the derivation tree.
     	 */
     	Grammar grammar = new Grammar(problemFile);
@@ -64,11 +63,11 @@ public class GenerateSentence {
     		// Build the derivation tree
     		DerivationTree derivation = new DerivationTree("S", plan, grammar);
     		System.out.println("\nBuilt derivation tree:\n"+derivation);
-    		
+
     		// Derive the TAG tree from the derivation tree
     		TreeNode derived = derivation.buildDerivedTree();
     		System.out.println("\nBuilt derived tree:\n"+derived);
-    		
+
     		// Output the sentence
     		System.out.println("\nFinal sentence:");
     		System.out.println(derived.getSentenceString());

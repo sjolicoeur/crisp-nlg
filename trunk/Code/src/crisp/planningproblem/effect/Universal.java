@@ -1,8 +1,8 @@
 /*
  * @(#)Universal.java created 01.10.2006
- * 
+ *
  * Copyright (c) 2006 Alexander Koller
- *  
+ *
  */
 
 package crisp.planningproblem.effect;
@@ -23,37 +23,39 @@ import de.saar.chorus.term.Variable;
 
 
 public class Universal extends Effect {
-    private TypedList variables;
-    private Effect effect;
-    
+    private final TypedList variables;
+    private final Effect effect;
+
     public Universal(TypedList variables, Effect effect ) {
         this.variables = variables;
         this.effect = effect;
     }
-    
-    
 
+
+
+    @Override
     public Effect instantiate(Substitution subst) {
         Map<Variable,Term> valuesForBoundVariables = new HashMap<Variable,Term>();
-        
+
         for( String var : variables ) {
             Variable v = new Variable(var);
-            
+
             if( subst.appliesTo(v) ) {
                 valuesForBoundVariables.put(v, subst.apply(v));
                 subst.remove(v);
             }
         }
-        
+
         Universal ret = new Universal(variables, effect.instantiate(subst));
-        
+
         for( Map.Entry<Variable,Term> entry : valuesForBoundVariables.entrySet() ) {
             subst.addSubstitution(entry.getKey(), entry.getValue());
         }
-        
+
         return ret;
     }
-    
+
+    @Override
     public String toString() {
         return "forall(" + variables + ", " + effect + ")";
     }
@@ -63,7 +65,7 @@ public class Universal extends Effect {
     void computeEffectList(List<Literal> eff, Problem problem) {
         Domain domain = problem.getDomain();
     	Iterator<Substitution> substitutions = new SubstitutionIterator(variables, domain.getUniverse(), domain.getTypeHierarchy());
-    	
+
     	while( substitutions.hasNext() ) {
     		effect.instantiate(substitutions.next()).computeEffectList(eff, problem);
     	}
@@ -78,10 +80,16 @@ public class Universal extends Effect {
 
 
 
-	@Override
-	public String toPddlString() {
-		return "(forall (" + variables.toLispString() + ") " + effect.toPddlString() + ")";
-	}
+    public TypedList getVariables() {
+        return variables;
+    }
+
+
+
+    public Effect getScope() {
+        return effect;
+    }
+
 
 
 }

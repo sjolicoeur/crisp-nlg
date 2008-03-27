@@ -1,8 +1,8 @@
 /*
  * @(#)Literal.java created 30.09.2006
- * 
+ *
  * Copyright (c) 2006 Alexander Koller
- *  
+ *
  */
 
 package crisp.planningproblem.goal;
@@ -20,11 +20,11 @@ import de.saar.chorus.term.Term;
 public class Literal extends Goal {
     private Term atom;
     private boolean polarity;
-    
+
     private Literal() {
-        
+
     }
-    
+
     public Literal(Term atom, boolean polarity) {
         this.atom = atom;
         this.polarity = polarity;
@@ -35,15 +35,17 @@ public class Literal extends Goal {
     	this.polarity = polarity;
     }
 
+    @Override
     public Goal instantiate(Substitution subst) {
         Literal ret = new Literal();
-        
+
         ret.atom = subst.apply(atom);
         ret.polarity = polarity;
-        
+
         return ret;
     }
-    
+
+    @Override
     public String toString() {
         return (polarity ? "" : "~") + atom.toString();
     }
@@ -60,13 +62,13 @@ public class Literal extends Goal {
     void computeGoalList(List<Literal> goals, Problem problem) {
         goals.add(this);
     }
-    
+
     @Override
     public boolean isStaticallySatisfied(Problem problem, Collection<Predicate> staticPredicates) {
         if( isStatic(problem, staticPredicates)) {
             return problem.getInitialState().contains(atom) == polarity;
         }
-        
+
         return false;
     }
 
@@ -77,12 +79,8 @@ public class Literal extends Goal {
                 return true;
             }
         }
-        
+
         return false;
     }
 
-	@Override
-	public String toPddlString() {
-		return (polarity?"":"(not ") + atom.toLispString().replace("**equals**", "=") + (polarity?"":")");
-	}
 }

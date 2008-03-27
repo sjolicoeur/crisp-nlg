@@ -9,8 +9,8 @@ import de.saar.chorus.term.Substitution;
 
 
 public class Negation extends Goal {
-	private Goal subformula;
-	
+	private final Goal subformula;
+
 
 	public Goal getSubformula() {
 		return subformula;
@@ -43,14 +43,11 @@ public class Negation extends Goal {
 			Collection<Predicate> staticPredicates) {
 		return ! subformula.isStaticallySatisfied(problem, staticPredicates);
 	}
-	
-	public String toString() {
+
+	@Override
+    public String toString() {
 		return "~" + subformula.toString();
 	}
 
-	@Override
-	public String toPddlString() {
-		return "(not " + subformula.toPddlString() + ")";
-	}
 
 }

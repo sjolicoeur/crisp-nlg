@@ -1,8 +1,8 @@
 /*
  * @(#)Conditional.java created 01.10.2006
- * 
+ *
  * Copyright (c) 2006 Alexander Koller
- *  
+ *
  */
 
 package crisp.planningproblem.effect;
@@ -16,10 +16,10 @@ import crisp.planningproblem.goal.Goal;
 import de.saar.chorus.term.Substitution;
 
 public class Conditional extends Effect {
-    Goal condition;
-    Effect effect;
-    
-    
+    private final Goal condition;
+    private final Effect effect;
+
+
 
     public Conditional(Goal condition, Effect effect) {
         super();
@@ -29,10 +29,12 @@ public class Conditional extends Effect {
     }
 
 
+    @Override
     public Effect instantiate(Substitution subst) {
         return new Conditional(condition.instantiate(subst), effect.instantiate(subst));
     }
-    
+
+    @Override
     public String toString() {
         return "when(" + condition + ", " + effect + ")";
     }
@@ -41,9 +43,9 @@ public class Conditional extends Effect {
     @Override
     void computeEffectList(List<Literal> eff, Problem problem) {
         Collection<Predicate> staticPredicates = problem.getDomain().getStaticPredicates();
-        
+
         //System.err.println("Static predicates: " + staticPredicates);
-        
+
         if( condition.isStatic(problem, staticPredicates)) {
             if( condition.isStaticallySatisfied(problem, staticPredicates)) {
                 effect.computeEffectList(eff, problem);
@@ -60,9 +62,14 @@ public class Conditional extends Effect {
 	}
 
 
-	@Override
-	public String toPddlString() {
-		return "(when " + condition.toPddlString() + " " + effect.toPddlString() + ")";
-	}
+    public Goal getCondition() {
+        return condition;
+    }
+
+
+    public Effect getEffect() {
+        return effect;
+    }
+
 
 }

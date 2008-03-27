@@ -1,9 +1,7 @@
 package crisp.converter;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,6 +29,7 @@ import crisp.planningproblem.Domain;
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.TypedList;
+import crisp.planningproblem.codec.PddlOutputCodec;
 import crisp.planningproblem.effect.Effect;
 import crisp.planningproblem.goal.Goal;
 import crisp.termparser.TermParser;
@@ -480,9 +479,9 @@ public class CRISPtoPDDL {
 		domain.clear();
 		problem.clear();
 
-		domain.setName("crispdomain");
-		problem.setName("crispproblem");
-		problem.setDomain("crispdomain");
+		domain.setName(xp("/crispproblem/@name"));
+		problem.setName(xp("/crispproblem/@name"));
+		problem.setDomain(xp("/crispproblem/@name"));
 
 		domain.addRequirement(":strips");
 		domain.addRequirement(":equality");
@@ -561,29 +560,6 @@ public class CRISPtoPDDL {
 		grammardoc = builder.parse(grammarFile);
 	}
 
-	/**
-	 * Writes the PDDL domain and problem to disk.
-	 *
-	 * @param domain
-	 * @param problem
-	 * @throws XPathExpressionException
-	 * @throws IOException
-	 */
-	public static void writeToDisk(Domain domain, Problem problem, String filenamePrefix) throws XPathExpressionException, IOException {
-		String problemname = xp("/crispproblem/@name");
-
-		System.err.println("Writing domain file ...");
-		PrintWriter dw = new PrintWriter(new FileWriter(filenamePrefix + problemname + "-domain.lisp"));
-		domain.writePddl(dw);
-		dw.close();
-
-		System.err.println("Writing problem file ...");
-		PrintWriter pw = new PrintWriter(new FileWriter(filenamePrefix + problemname + "-problem.lisp"));
-		problem.writePddl(pw);
-		pw.close();
-
-		System.err.println("Done.");
-	}
 
 	/**
 	 * Main program.  When running the converter from the command line, pass
@@ -605,7 +581,7 @@ public class CRISPtoPDDL {
 		System.out.println("Domain: " + domain);
 		System.out.println("Problem: " + problem);
 
-		writeToDisk(domain, problem, "");
+		new PddlOutputCodec().writeToDisk(domain, problem, "", xp("/crispproblem/@name"));
 	}
 
 

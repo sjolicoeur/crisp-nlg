@@ -129,6 +129,21 @@ public class Domain {
         actions.add(a);
     }
 
+    public void removeAction(Predicate p) {
+        Action a = null;
+
+        for( Action ac : actions ) {
+            if( ac.getPredicate().equals(p)) {
+                a = ac;
+                break;
+            }
+        }
+
+        if( a != null ) {
+            actions.remove(a);
+        }
+    }
+
     @Override
     public String toString() {
         StringBuffer buf = new StringBuffer("Domain " + name + ":\n");

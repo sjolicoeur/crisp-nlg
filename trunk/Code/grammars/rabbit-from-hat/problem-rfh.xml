@@ -17,10 +17,8 @@
 
   <world>in(r1,h1)</world>
   <world>in(r3,b1)</world> 
-<!--  <world>in(r3,h3)</world> -->
   <world>in(f2,h1)</world>
   <world>in(f1,h3)</world>
-
 
   <world>name(p,peter)</world>
   <world>animate(p)</world>

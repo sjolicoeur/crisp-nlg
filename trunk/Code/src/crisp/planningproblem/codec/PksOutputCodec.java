@@ -17,10 +17,12 @@ import de.saar.chorus.term.Term;
 public class PksOutputCodec extends OutputCodec {
     private static class PksReplacingWriter extends Writer {
         private final Writer original;
+	private StringBuffer buf;
 
         protected PksReplacingWriter(Writer original) {
             super();
             this.original = original;
+	    buf = new StringBuffer();
         }
 
         @Override
@@ -35,13 +37,22 @@ public class PksOutputCodec extends OutputCodec {
 
         @Override
         public void write(char[] cbuf, int off, int len) throws IOException {
-            for( int i = off; i < off+len; i++ ) {
-                if( cbuf[i] == '-' ) {
-                    cbuf[i] = '_';
-                }
-            }
+	    buf.delete(0, buf.length());
+	    buf.append(cbuf, off, len);
+	    
+            for( int i = 0; i < buf.length(); ) {
+		if( buf.charAt(i) == '-' ) {
+		    buf.replace(i, i+1, "_");
+		    i++;
+		} else if( buf.charAt(i) == '*' && buf.charAt(i+1) == '*' ) {
+		    buf.replace(i, i+2, "");
+		    // i keeps its value
+		} else {
+		    i++;
+		}
+	    }
 
-            original.write(cbuf, off, len);
+            original.write(buf.toString());
         }
 
     }
@@ -51,7 +62,7 @@ public class PksOutputCodec extends OutputCodec {
         System.err.println("Writing PKS file ...");
         PrintWriter dw = new PrintWriter(new PksReplacingWriter(new FileWriter(filenamePrefix + problemname + ".pks")));
 
-        dw.println("<?xml version='1.0'?>\n");
+        dw.println("<?xml version=\"1.0\"?>\n");
         dw.println("<pks>");
 
         printDomain(domain, dw);
@@ -66,7 +77,7 @@ public class PksOutputCodec extends OutputCodec {
     }
 
     private void printProblem(Problem problem, PrintWriter writer) {
-        writer.println("  <problem name='" + problem.getName() + "' domain='" + problem.getDomain().getName() + "'>");
+        writer.println("  <problem name=\"" + problem.getName() + "\" domain=\"" + problem.getDomain().getName() + "\">");
 
         writer.println("    <init>");
         for( Term t : problem.getInitialState() ) {
@@ -88,7 +99,7 @@ public class PksOutputCodec extends OutputCodec {
     private void printDomain(Domain domain, PrintWriter writer) {
         int i;
 
-        writer.println("  <domain name='" + domain.getName() + "'>");
+        writer.println("  <domain name=\"" + domain.getName() + "\">");
 
         writer.println("    <symbols>");
         writer.println("      <predicates>");
@@ -106,7 +117,7 @@ public class PksOutputCodec extends OutputCodec {
                 writer.println();
             }
         }
-
+	writer.println(", rolename/1, treename/1");
         writer.println("      </predicates>");
 
         writer.println("      <constants>");
@@ -126,7 +137,7 @@ public class PksOutputCodec extends OutputCodec {
     private void writeAsPks(Action action, PrintWriter writer) {
         int i;
 
-        writer.println("      <action name='" + action.getPredicate().getLabel() + "'>");
+        writer.println("      <action name=\"" + action.getPredicate().getLabel() + "\">");
         writer.println("        <params>"
                 + StringTools.join(action.getPredicate().getVariables().getItems(), ",")
                 + "</params>");
@@ -139,7 +150,7 @@ public class PksOutputCodec extends OutputCodec {
         writer.println("        <effects>");
         writer.print("          ");
         printAsPks(action.getEffect(), writer);
-        writer.println();
+        writer.println(";");
         writer.println("        </effects>");
 
         writer.println("      </action>");
@@ -148,10 +159,11 @@ public class PksOutputCodec extends OutputCodec {
     private void printAsPks(Effect effect, PrintWriter writer) {
         if( effect instanceof crisp.planningproblem.effect.Conjunction ) {
             crisp.planningproblem.effect.Conjunction conj = (crisp.planningproblem.effect.Conjunction) effect;
+	    boolean first = true;
 
             for( Effect conjunct : conj.getConjuncts() ) {
+		if( first ) first = false; else writer.print(" ^ ");
                 printAsPks(conjunct, writer);
-                writer.print(" ");
             }
         } else if( effect instanceof crisp.planningproblem.effect.Conditional ) {
             crisp.planningproblem.effect.Conditional cond = (crisp.planningproblem.effect.Conditional) effect;
@@ -165,19 +177,19 @@ public class PksOutputCodec extends OutputCodec {
             crisp.planningproblem.effect.Universal univ = (crisp.planningproblem.effect.Universal) effect;
 
             for( String var : univ.getVariables().getItems() ) {
-                writer.print("forallK(" + var + ") K(" + univ.getVariables().getType(var) + "(" + var + ")) => (");
+                writer.print("(forallK(" + var + ") K(" + univ.getVariables().getType(var) + "(" + var + ")) => (");
             }
             printAsPks(univ.getScope(), writer);
             for( String var : univ.getVariables().getItems() ) {
-                writer.print(")");
+                writer.print("))");
             }
         } else if( effect instanceof crisp.planningproblem.effect.Literal ) {
             crisp.planningproblem.effect.Literal lit = (crisp.planningproblem.effect.Literal) effect;
 
             if( lit.getPolarity() ) {
-                writer.print("add(Kf, " + lit.getAtom().toString() + ");");
+                writer.print("add(Kf, " + lit.getAtom().toString() + ")");
             } else {
-                writer.print("del(Kf, "+ lit.getAtom().toString() + ");");
+                writer.print("del(Kf, "+ lit.getAtom().toString() + ")");
             }
         }
     }
@@ -199,11 +211,11 @@ public class PksOutputCodec extends OutputCodec {
             crisp.planningproblem.goal.Universal univ = (crisp.planningproblem.goal.Universal) goal;
 
             for( String var : univ.getVariables().getItems() ) {
-                writer.print("forallK(" + var + ") K(" + univ.getVariables().getType(var) + "(" + var + ")) => (");
+                writer.print("(forallK(" + var + ") K(" + univ.getVariables().getType(var) + "(" + var + ")) => (");
             }
             printAsPks(univ.getScope(), writer);
             for( String var : univ.getVariables().getItems() ) {
-                writer.print(")");
+                writer.print("))");
             }
         } else if( goal instanceof crisp.planningproblem.goal.Negation ) {
             crisp.planningproblem.goal.Negation neg = (crisp.planningproblem.goal.Negation) goal;

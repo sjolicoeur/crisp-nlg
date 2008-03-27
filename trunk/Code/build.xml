@@ -28,6 +28,14 @@
                 <attribute name="Main-Class" value="crisp.main.Generate" />
             </manifest>
       </jar>
+      <jar jarfile="dist/lazygp.jar"
+	   basedir="build/classes"
+	   includes="${classfiles}">
+            <manifest>
+                <attribute name="Main-Class" value="crisp.planner.lazygp.Planner" />
+            </manifest>
+      </jar>
+
       <jar jarfile="dist/pddl-converter.jar"
 	   basedir="build/classes"
 	   includes="${classfiles}">

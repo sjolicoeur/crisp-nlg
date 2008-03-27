@@ -220,7 +220,7 @@ public class CRISPConverter {
                 String w = xpath.evaluate("@word", auxAnchor);
 
                 //System.err.println("auxiliary word: " + pos + ":" + w);
-                actionNameBuf.append("-" + pos + "-" + w);
+                actionNameBuf.append("-" + pos + "_" + w);
             }
 
 

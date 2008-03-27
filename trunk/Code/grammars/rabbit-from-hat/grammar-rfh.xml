@@ -52,7 +52,7 @@
   </tree>
 
 
-  <tree id="i.trans-imperative">
+  <tree id="i.transimperative">
     <node cat="S" index="r" sem="self">
       <node cat="VP" sem="self">
         <leaf cat="V" type="anchor" sem="self"/>
@@ -132,7 +132,7 @@
 -->
 
   <entry word='take' pos='V'>
-    <tree refid="i.trans-imperative">
+    <tree refid="i.transimperative">
       <lex pos="P" word="from" />
       <semcontent>takefrom(self,obj,ppobj)</semcontent>
       <semreq>in(obj,ppobj)</semreq>

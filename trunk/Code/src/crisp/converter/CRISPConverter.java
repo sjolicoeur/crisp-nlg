@@ -494,6 +494,8 @@ public class CRISPConverter {
         domain.addSubtype("syntaxnode", "object");
         domain.addSubtype("stepindex", "object");
         domain.addSubtype("predicate", "object");
+        domain.addSubtype("rolename", "object");
+        domain.addSubtype("treename", "object");
 
         Predicate predSubst = new Predicate(); predSubst.setLabel("subst");
         predSubst.addVariable("?x", "category"); predSubst.addVariable("?y", "syntaxnode");

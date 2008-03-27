@@ -17,7 +17,7 @@ import de.saar.chorus.term.Term;
 public class PksOutputCodec extends OutputCodec {
     private static class PksReplacingWriter extends Writer {
         private final Writer original;
-	private StringBuffer buf;
+	private final StringBuffer buf;
 
         protected PksReplacingWriter(Writer original) {
             super();
@@ -39,7 +39,7 @@ public class PksOutputCodec extends OutputCodec {
         public void write(char[] cbuf, int off, int len) throws IOException {
 	    buf.delete(0, buf.length());
 	    buf.append(cbuf, off, len);
-	    
+
             for( int i = 0; i < buf.length(); ) {
 		if( buf.charAt(i) == '-' ) {
 		    buf.replace(i, i+1, "_");
@@ -117,7 +117,7 @@ public class PksOutputCodec extends OutputCodec {
                 writer.println();
             }
         }
-	writer.println(", rolename/1, treename/1");
+
         writer.println("      </predicates>");
 
         writer.println("      <constants>");
@@ -162,7 +162,11 @@ public class PksOutputCodec extends OutputCodec {
 	    boolean first = true;
 
             for( Effect conjunct : conj.getConjuncts() ) {
-		if( first ) first = false; else writer.print(" ^ ");
+		if( first ) {
+            first = false;
+        } else {
+            writer.print(" ^ ");
+        }
                 printAsPks(conjunct, writer);
             }
         } else if( effect instanceof crisp.planningproblem.effect.Conditional ) {

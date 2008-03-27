@@ -9,6 +9,18 @@
 
 \newcommand{\todo}[1]{\textbf{(#1)}}
 
+\newcommand{\actionname}[3]{\mathbf{\mathtt{#1}\mbox{-}\mathtt{#2}\mbox{-}\mathtt{#3}}}
+
+\newcommand{\identity}{\mathsf{id}}
+\newcommand{\Ref}{\mathsf{ref}}
+
+\newcommand{\action}[4]{\textbf{Action \texttt{#1}$(#2)$.}\\
+\strut\quad   Precond:$\;$ \parbox[t]{12cm}{\ensuremath{#3}}\\
+\strut\quad   Effect:$\;$ \parbox[t]{12cm}{\ensuremath{#4}}}
+\newcommand{\actionc}[4]{\textbf{Action \texttt{#1}$(#2)$.}
+Precond:$\;$ \parbox[t]{3cm}{\ensuremath{#3}}\\
+\strut\quad   Effect:$\;$ \parbox[t]{12cm}{\ensuremath{#4}}}
+
 
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
 

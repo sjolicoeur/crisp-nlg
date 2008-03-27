@@ -1,5 +1,26 @@
-\section{Generating succinct expressions}
+\section{Succinct expressions in planning}
 \label{sec:howto}
+
+The primary reason for FF's failure to compute a plan is due to the
+fact that it computes all instances of all actions and literals before
+it starts the search.  This heuristic allows it to avoid performing
+unifications during the search, and is thus a good idea on the
+planning competition benchmarks, whose domain sizes are not very
+large.  However, in our case FF has to deal with potentially huge
+numbers of instances.  If we assume a maximum plan size of 10, the
+action \textbf{S-takefrom-1} alone has $31 \cdot 15^3 \cdot 4 =
+418,500$ instances -- and there are ten copies of it!  For grammars of
+more realistic sizes, it is easy to imagine how the number of
+instances might run into the trillions.
+
+\begin{itemize}
+\item PKS: don't have to instantiate
+\item new PKS: can build names on the fly by function application
+\item external modules seem a comparatively small part, but if nothing
+  else, they save an argument slot.
+\end{itemize}
+
+
 
 %%% Local Variables: 
 %%% mode: latex

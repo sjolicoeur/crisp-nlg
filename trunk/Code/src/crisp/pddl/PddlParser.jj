@@ -146,12 +146,14 @@ TOKEN: /* Reserved Words and Literals */
 		 |   <EFFECT: ":effect">
 
 		 /* Time-related terms */
+		 /*
 		 |   <AT: "at">
 		 |   <START: "start">
 		 |   <END: "end">
 		 |   <OVER: "over">
 		 |   <ALL: "all">
 		 |   <TIME_VAR: "#t">
+		 */
 
 		 /* Logical relations */
 		 |   <AND: "and">
@@ -395,7 +397,11 @@ void Problem() :
 }
 {
 	<OPENBRACE> <DEFINE> <OPENBRACE> <PROBLEM> t = <NAME> { problem.setName(t.image); } <CLOSEBRACE>
-	( ProblemDomain() | ProblemInit() | ProblemGoal() ) *
+	ProblemDomain() 
+	(ProblemObjects())?
+	ProblemInit() 
+	ProblemGoal()
+	<CLOSEBRACE>
 }
 
 void ProblemDomain() :
@@ -404,6 +410,23 @@ void ProblemDomain() :
 }
 {
 	<OPENBRACE> <DOMAIN_TAG> t = <NAME> { problem.setDomain(t.image); } <CLOSEBRACE>
+}
+
+
+void ProblemObjects() :
+{ 
+	TypedList constants;
+}
+{ 
+	<OPENBRACE> <OBJECT>
+	constants = TypedNameList()
+	<CLOSEBRACE>
+	{
+		for( String constant : constants.getItems() ) {
+			domain.addConstant(constant, constants.getType(constant));
+		}
+	}
+	
 }
 
 void ProblemInit() :
@@ -422,7 +445,7 @@ void ProblemGoal() :
 }
 {
 	<OPENBRACE> <GOAL>
-	g = ActionPrecondition() { problem.setGoal(g); }
+	g = ActionPrecondition() { System.err.println("Found goal: " + g); problem.setGoal(g); }
 	<CLOSEBRACE>
 }
 

@@ -9,52 +9,54 @@ import de.saar.chorus.term.Compound;
 import de.saar.chorus.term.Substitution;
 
 public class ActionInstance {
-	private Action action;
-	private Substitution subst;
-	private Problem problem;
-	
-	private int[] preconditionIndices;
-	private boolean[] preconditionPolarities;
-	
+	private final Action action;
+	private final Substitution subst;
+	private final Problem problem;
+
+	private final int[] preconditionIndices;
+	private final boolean[] preconditionPolarities;
+
 	private int[] effectIndices = null;
 	private boolean[] effectPolarities = null;
-	
+
 	private List<Literal> effects = null;
 	private List<crisp.planningproblem.goal.Literal> preconds = null;
-	
+
+	private final int hashcode;
+
 	public ActionInstance(Action action, Substitution subst, List<Integer> argumentsAsIndices, List<Boolean> argumentPolarities, Problem problem) {
 		super();
 		this.action = action;
 		this.subst = subst;
 		this.problem = problem;
-		
+
 		// store indices and polarities for this action instance's preconditions
 		preconditionIndices = new int[argumentsAsIndices.size()];
 		preconditionPolarities = new boolean[argumentsAsIndices.size()];
-		
+
 		for( int i = 0; i < argumentsAsIndices.size(); i++ ) {
 			preconditionIndices[i] = argumentsAsIndices.get(i);
 			preconditionPolarities[i] = argumentPolarities.get(i);
 		}
-		
-		
+
+		hashcode = toString().hashCode();
 		// effects are analyzed later (see computeEffects)
 	}
-	
+
 	public List<Literal> getEffects() {
 		if( effects == null ) {
 			//System.err.println("compute effects of " + toString());
-			effects = action.instantiate(subst).getEffect().getEffects(problem); 
+			effects = action.instantiate(subst).getEffect().getEffects(problem);
 		}
-		
+
 		return effects;
 	}
-	
+
 	public List<crisp.planningproblem.goal.Literal> getPreconditions() {
 		if( preconds == null ) {
-			preconds = action.instantiate(subst).getPrecondition().getGoalList(problem); 
+			preconds = action.instantiate(subst).getPrecondition().getGoalList(problem);
 		}
-		
+
 		return preconds;
 	}
 
@@ -77,7 +79,8 @@ public class ActionInstance {
 
 
 
-	public String toString() {
+	@Override
+    public String toString() {
 		return action.instantiate(subst).toString();
 	}
 
@@ -85,20 +88,24 @@ public class ActionInstance {
 
 	@Override
 	public int hashCode() {
-		return toString().hashCode();
+		// return toString().hashCode();
+	    return hashcode;
 	}
 
 
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		
+		if (this == obj) {
+            return true;
+        }
+		if (obj == null) {
+            return false;
+        }
+		if (getClass() != obj.getClass()) {
+            return false;
+        }
+
 		return toString().equals(obj.toString());
 	}
 
@@ -143,5 +150,5 @@ public class ActionInstance {
 		}
 	}
 
-	
+
 }

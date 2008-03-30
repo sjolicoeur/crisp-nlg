@@ -1,6 +1,7 @@
 package crisp.planner.lazygp;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -15,20 +16,22 @@ import crisp.planningproblem.goal.Goal;
 import crisp.planningproblem.goal.Literal;
 import crisp.planningproblem.goal.Universal;
 import de.saar.chorus.term.Compound;
+import de.saar.chorus.term.Constant;
 import de.saar.chorus.term.Substitution;
 import de.saar.chorus.term.Term;
+import de.saar.chorus.term.Variable;
 
 public class State {
-	private Domain domain;
-	private Problem problem;
+	private final Domain domain;
+	private final Problem problem;
 
-	private AtomTable table;
-	private ActionInstanceTable actionTable;
+	private final AtomTable table;
+	private final ActionInstanceTable actionTable;
 
-	private Set<String> forbiddenPredicates;
-	private Set<String> staticPredicates;
+	private final Set<String> forbiddenPredicates;
+	private final Set<String> staticPredicates;
 
-	private int step;
+	private final int step;
 
 	private static final boolean EXPLAIN_USELESSNESS = false;
 
@@ -39,7 +42,7 @@ public class State {
 
 	public static final int LIT_POSITIVE = 1, LIT_NEGATIVE = 2; // bitmasks
 
-	private byte[] literals;
+	private final byte[] literals;
 
 	private boolean canBeTrue(int literalIndex) {
 		return (literalIndex < literals.length) && ((literals[literalIndex] & LIT_POSITIVE) == LIT_POSITIVE);
@@ -60,7 +63,8 @@ public class State {
 
 	/*** data structures for mutexes ***/
 
-	private Set<Integer>[] mutexes; // invariant: symmetric relation
+	//private final Set<Integer>[] mutexes; // invariant: symmetric relation
+	private final BitSet[] mutexes; // invariant: symmetric relation
 
 	private static int encodeLiteral(int index, boolean polarity) {
 		return (index << 1) + (polarity ? 0 : 1);
@@ -90,8 +94,8 @@ public class State {
 		} else if( mutexes[index1] == null ) {
 			return false;
 		} else {
-			return mutexes[index1].contains(index2);
-		}	
+			return mutexes[index1].get(index2);
+		}
 	}
 
 	public boolean isMutex(int literal1, boolean polarity1, int literal2, boolean polarity2) {
@@ -106,36 +110,36 @@ public class State {
 		int index2 = encodeLiteral(literal2, polarity2);
 
 		if( mutexes[index1] == null ) {
-			mutexes[index1] = new HashSet<Integer>();
+			mutexes[index1] = new BitSet(literals.length << 1);
 		}
 
 		if( isMutex ) {
-			mutexes[index1].add(index2);
+			mutexes[index1].set(index2);
 		} else {
-			mutexes[index1].remove(index2);
+			mutexes[index1].clear(index2);
 		}
 
 		if( mutexes[index2] == null ) {
-			mutexes[index2] = new HashSet<Integer>();
+			mutexes[index2] = new BitSet(literals.length << 1);
 		}
 
 		if( isMutex ) {
-			mutexes[index2].add(index1);
+			mutexes[index2].set(index1);
 		} else {
-			mutexes[index2].remove(index1);
+			mutexes[index2].clear(index1);
 		}
 	}
 
 
 	/*** set of applicable action instances; only keep one copy of this around because
 	 * it grows monotonically from state to state ***/
-	//private static Set<ActionInstance> applicableInstances = new HashSet<ActionInstance>(); 
+	//private static Set<ActionInstance> applicableInstances = new HashSet<ActionInstance>();
 
 
 	/*** data structures for linking this state to the previous action layer ***/
 
-	private ActionLayer previousLayer;
-	private List<Integer>[] causes;
+	private final ActionLayer previousLayer;
+	private final List<Integer>[] causes;
 
 	private static final List<Integer> NO_CAUSES = new ArrayList<Integer>();
 
@@ -178,7 +182,7 @@ public class State {
 		table = oldState.table;
 		actionTable = oldState.actionTable;
 		causes = new List[2*table.size()]; // table contains all literals for the new state at this point
-		mutexes = new Set[2*table.size()]; 
+		mutexes = new BitSet[2*table.size()];
 
 		literals = updateLiterals(oldState.literals, previousLayer);
 
@@ -203,7 +207,7 @@ public class State {
 
 		// ASSUMPTION: initial state consists only of true literals
 		literals = table.setTrueLiterals(problem.getInitialState());
-		mutexes = new Set[2*table.size()];
+		mutexes = new BitSet[2*table.size()];
 		causes = new List[2*table.size()];
 
 		forbiddenPredicates = new HashSet<String>();
@@ -255,10 +259,10 @@ public class State {
 					}
 				}
 
-				throw new RuntimeException("Can't handle this goal!");
+				throw new RuntimeException("Can't handle this goal: " + conj);
 			}
 		} else {
-			throw new RuntimeException("Can't handle this goal!");
+			throw new RuntimeException("Can't handle this goal: " + goal);
 		}
 	}
 
@@ -296,52 +300,100 @@ public class State {
 		return maxActionIndex;
 	}
 
-	private int computeApplicableInstances(List<Literal> goalList, Substitution subst, List<Integer> indicesSoFar, List<Boolean> polaritiesSoFar, Action a) {
-		if( goalList.isEmpty() ) {
-			return actionTable.ensureKnown(new ActionInstance(a, subst, indicesSoFar, polaritiesSoFar, problem));
-		} else {
-			Literal goal = goalList.remove(goalList.size()-1);
-			Compound c = (Compound) subst.apply(goal.getAtom());
-			int ret = 0;
 
-			if( goal.getPolarity() ) {
-				literalsLoop:
-					for( int i = 0; i < literals.length; i++ ) {
-						// OPTIMIZATION: only look at atoms for correct predicate.
-						if( canBeTrue(i) ) {
-							// skip i if it is mutex with any precondition we have picked so far
-							for( Integer j : indicesSoFar ) {
-								if( isMutex(i, true, j, true) ) {
-									continue literalsLoop;
-								}
-							}
+    private int computeApplicableInstances(List<Literal> goalList, Substitution subst, List<Integer> indicesSoFar, List<Boolean> polaritiesSoFar, Action a) {
+        if( goalList.isEmpty() ) {
+            return actionTable.ensureKnown(new ActionInstance(a, (Substitution) subst.clone(), indicesSoFar, polaritiesSoFar, problem));
+        } else {
+            Literal goal = goalList.remove(goalList.size()-1);
+            Compound c = (Compound) goal.getAtom();
+            int ret = 0;
 
-							Compound trueAtom = table.get(i);
-							Substitution unifier = trueAtom.getUnifier(c);
+            if( goal.getPolarity() ) {
+                List<Variable> addedToSubstHere = new ArrayList<Variable>();
 
-							if( unifier != null ) {
-								indicesSoFar.add(i);
-								polaritiesSoFar.add(Boolean.TRUE);
+                literalsLoop:
+                    for( int i = 0; i < literals.length; i++ ) {
+                        Compound trueAtom = table.get(i);
 
-								int candidate = computeApplicableInstances(goalList, subst.concatenate(unifier), indicesSoFar, polaritiesSoFar, a);
-								if( candidate > ret ) {
-									ret = candidate;
-								}
+                        if( ! trueAtom.getLabel().equals(c.getLabel())) {
+                            continue literalsLoop;
+                        }
 
-								indicesSoFar.remove(indicesSoFar.size()-1);
-								polaritiesSoFar.remove(polaritiesSoFar.size()-1);
-							}
-						}
-					}
-			} else {
-				throw new RuntimeException("I don't know how to deal with negative preconditions!");
-			}
+                        if( canBeTrue(i) ) {
+                            // skip i if it is mutex with any precondition we have picked so far
+                            for( Integer j : indicesSoFar ) {
+                                if( isMutex(i, true, j, true) ) {
+                                    continue literalsLoop;
+                                }
+                            }
 
-			goalList.add(goal);
+                            boolean unifiable = updateGroundSubstitution(c, trueAtom, subst, addedToSubstHere);
 
-			return ret;
-		}
-	}
+                            if( unifiable ) {
+                                indicesSoFar.add(i);
+                                polaritiesSoFar.add(Boolean.TRUE);
+
+                                int candidate = computeApplicableInstances(goalList, subst, indicesSoFar, polaritiesSoFar, a);
+                                if( candidate > ret ) {
+                                    ret = candidate;
+                                }
+
+                                indicesSoFar.remove(indicesSoFar.size()-1);
+                                polaritiesSoFar.remove(polaritiesSoFar.size()-1);
+                            }
+
+
+                            for( int p = 0; p < addedToSubstHere.size(); p++ ) {
+                                subst.remove(addedToSubstHere.get(p));
+                            }
+                            addedToSubstHere.clear();
+                        }
+                    }
+            } else {
+                throw new RuntimeException("I don't know how to deal with negative preconditions!");
+            }
+
+            goalList.add(goal);
+
+            return ret;
+        }
+    }
+
+	private boolean updateGroundSubstitution(Compound atom, Compound groundAtom, Substitution subst, List<Variable> addedToSubstHere) {
+	    if( ! atom.getLabel().equals(groundAtom.getLabel()) ) {
+	        return false;
+	    } else if( atom.getSubterms().size() != groundAtom.getSubterms().size() ) {
+	        return false;
+	    } else {
+	        for( int i = 0; i < atom.getSubterms().size(); i++ ) {
+	            Term t = atom.getSubterms().get(i);
+	            Term gt = groundAtom.getSubterms().get(i);
+
+	            if( t instanceof Constant ) {
+	                if( ! t.equals(gt)) {
+	                    addedToSubstHere.clear();
+                        return false;
+	                }
+	            } else {
+	                Variable v = (Variable) t;
+	                if( subst.appliesTo(v) ) {
+	                    if( ! subst.apply(v).equals(gt) ) {
+	                        addedToSubstHere.clear();
+	                        return false;
+	                    }
+	                } else {
+	                    subst.addSubstitution(v, gt);
+	                    addedToSubstHere.add(v);
+	                }
+	            }
+
+	        }
+
+	        return true;
+	    }
+    }
+
 
 
 	/*** action effects ***/
@@ -439,15 +491,15 @@ public class State {
 								// iterate over all pairs of action instances; if we find a non-mutex action
 								// pair, then the literals are not mutex
 								if( isMutex ) {
-									INSTANCE_PAIRS:
-										for( Integer inst1 : getCauses(i1, pol1) ) {
-											for( Integer inst2 : getCauses(i2, pol2) ) {
-												if( ! previousLayer.isMutex(inst1, inst2) ) {
-													isMutex = false;
-													break INSTANCE_PAIRS;
-												}
-											}
-										}
+								    INSTANCE_PAIRS:
+								        for( Integer inst1 : getCauses(i1, pol1) ) {
+								            for( Integer inst2 : getCauses(i2, pol2) ) {
+								                if( ! previousLayer.isMutex(inst1, inst2) ) {
+								                    isMutex = false;
+								                    break INSTANCE_PAIRS;
+								                }
+								            }
+								        }
 								}
 
 								if( isMutex ) {
@@ -521,7 +573,8 @@ public class State {
 	}
 
 
-	public String toString() {
+	@Override
+    public String toString() {
 		StringBuilder buf = new StringBuilder();
 
 		buf.append("State after " + step + " steps:\n");
@@ -599,85 +652,7 @@ public class State {
 		return actionTable;
 	}
 
-	/*
-	public Collection<ActionInstance> getUsefulActionInstances(Set<Integer> goals) {
-		Set<ActionInstance> ret = new HashSet<ActionInstance>();
-		Set<Integer> goalsCopy = new HashSet<Integer>(goals);
-		Set<Integer> deleted = new HashSet<Integer>();
 
-		if( previousLayer == null ) {
-			// first state
-			return ret;
-		}
-
-		State previousState = previousLayer.getPreviousState();
-
-
-		for( Integer goal : goals ) {
-			//System.err.println("\nmutexes of canadj(o-1): " + decodeLiterals(previousState.mutexes[encodeLiteral(106, true)], new HashSet<Integer>()));
-
-			if( goal < causes.length && causes[goal] != null ) {
-				for( Integer instix : causes[goal] ) {
-					ActionInstance inst = actionTable.get(instix);
-					boolean isUseful = true; 
-
-					//System.err.println("consider: " + inst);
-
-					// temporarily remove goals that are achieved by inst
-					deleted.clear();
-					for( int i = 0; i < inst.getEffectIndices().length; i++ ) {
-						int index = encodeLiteral(inst.getEffectIndices()[i], inst.getEffectPolarities()[i]);
-
-						if( goalsCopy.contains(index)) {
-							goalsCopy.remove(index);
-							deleted.add(index);
-						}
-					}
-
-					// check that inst is independent of all no-op actions that are
-					// necessary to establish the remaining goals
-					for( int i = 0; isUseful && i < inst.getPreconditionIndices().length; i++ ) {
-						if( goalsCopy.contains(encodeLiteral(inst.getPreconditionIndices()[i], !inst.getPreconditionPolarities()[i])) ) {
-							//System.err.println(" - precondition " + table.get(inst.getPreconditionIndices()[i]) + " contradicts a goal");
-							isUseful = false;
-						}
-					}
-
-					for( int i = 0; isUseful && i < inst.getEffectIndices().length; i++ ) {
-						if( goalsCopy.contains(encodeLiteral(inst.getEffectIndices()[i], !inst.getEffectPolarities()[i])) ) {
-							//System.err.println(" - effect " + table.get(inst.getEffectIndices()[i]) + " contradicts a goal");
-							isUseful = false;
-						}
-					}
-
-					// check that no precondition of inst is mutex with any of the
-					// remaining goals
-					// OPT then experiment with iterating over the goal elements first instead
-					for( int i = 0; isUseful && i < inst.getPreconditionIndices().length; i++ ) {
-						int index = encodeLiteral(inst.getPreconditionIndices()[i], inst.getPreconditionPolarities()[i]);
-
-						if( previousState.mutexes[index] != null && !Collections.disjoint(previousState.mutexes[index], goalsCopy) ) {
-							//System.err.println(" - precondition " + decodeLiteral(index) + " is mutex with a goal");
-							//System.err.println("   * atom index: " + inst.getPreconditionIndices()[i]);
-							//System.err.println("   * polarity: " + inst.getPreconditionPolarities()[i]);
-							//System.err.println("   * mutexes of this precondition were: " + decodeLiterals(previousState.mutexes[index], goalsCopy));
-							isUseful = false;
-						}
-					}
-
-					// put the goals back in
-					goalsCopy.addAll(deleted);
-
-					if( isUseful ) {
-						ret.add(inst);
-					}
-				}
-			}
-		}
-
-		return ret;
-	}
-	 */
 
 	public Collection<ActionInstance> getUsefulActionInstances(Set<Integer> goalsAsSet, int len) {
 		if( previousLayer == null ) {
@@ -715,7 +690,7 @@ public class State {
 							consideredAction.add(instix);
 
 							ActionInstance inst = actionTable.get(instix);
-							boolean isUseful = true; 
+							boolean isUseful = true;
 
 							if( EXPLAIN_USELESSNESS ) {
 								System.err.println("\nconsider: " + inst);
@@ -769,7 +744,7 @@ public class State {
 							// check that no precondition of inst is mutex with any of the
 							// remaining goals
 							// OPT then experiment with iterating over the goal elements first instead
-							if( EXPLAIN_USELESSNESS ) { 
+							if( EXPLAIN_USELESSNESS ) {
 								if( isUseful ) {
 									System.err.println("  check preconditions of " + inst + " for mutex goals");
 								}
@@ -780,7 +755,7 @@ public class State {
 
 								if( EXPLAIN_USELESSNESS ) {
 									System.err.println("    precond: " + decodeLiteral(index));
-									System.err.println("    mutexes of this precondition : " + (previousState.mutexes[index] == null ? null : decodeLiterals(previousState.mutexes[index], new HashSet<Integer>())));
+									//System.err.println("    mutexes of this precondition : " + (previousState.mutexes[index] == null ? null : decodeLiterals(previousState.mutexes[index], new HashSet<Integer>())));
 								}
 
 								if( previousState.mutexes[index] != null ) {
@@ -795,7 +770,7 @@ public class State {
 													isUseful = false;
 												}
 											} else {
-												if( previousState.mutexes[index].contains(j) ) {
+												if( previousState.mutexes[index].get(j) ) {
 													if( EXPLAIN_USELESSNESS ) {
 														System.err.println("    -> mutex with goal " + decodeLiteral(j));
 													}
@@ -937,20 +912,20 @@ public class State {
 			return getPreviousState().getFirstPossibleState(atom, polarity);
 		}
 	}
-	
+
 	public int getFirstPossibleStateWithPreconditions(ActionInstance inst) {
 		int ret = -1;
-		
+
 		for( int i = 0; i < inst.getPreconditionIndices().length; i++ ) {
 			int s = getFirstPossibleState(inst.getPreconditionIndices()[i], inst.getPreconditionPolarities()[i]);
-			
+
 			if( s == -1 ) {
 				return -1;
 			} else if( s > ret ) {
 				ret = s;
 			}
 		}
-		
+
 		return ret;
 	}
 }

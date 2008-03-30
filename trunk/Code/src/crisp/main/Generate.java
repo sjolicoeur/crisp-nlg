@@ -10,6 +10,8 @@ import crisp.planningproblem.Problem;
 import crisp.planningproblem.codec.PddlOutputCodec;
 
 public class Generate {
+    private static final int PLANNER_ITERATIONS = 1;
+
 	public static void main(String[] args) throws Exception {
 		Domain domain = new Domain();
 		Problem problem = new Problem();
@@ -25,27 +27,29 @@ public class Generate {
 
 		/*** run the planner ***/
 
-        problem.addEqualityLiterals();
+		problem.addEqualityLiterals();
 
-		long startPlanner = System.currentTimeMillis();
-    	Planner p = new Planner(domain, problem);
-    	boolean success = p.computeGraph();
-    	long endPlanner = System.currentTimeMillis();
+		for( int i = 0; i < PLANNER_ITERATIONS; i++ ) {
+		    long startPlanner = System.currentTimeMillis();
+		    Planner p = new Planner(domain, problem);
+		    boolean success = p.computeGraph();
+		    long endPlanner = System.currentTimeMillis();
 
-    	List<Plan> plans = p.backwardsSearch();
-    	long endPlanner2 = System.currentTimeMillis();
+		    List<Plan> plans = p.backwardsSearch();
+		    long endPlanner2 = System.currentTimeMillis();
 
 
-    	System.out.println("\n\n\nFound " + plans.size() + " plan(s):");
-    	for( Plan plan : plans ) {
-    		System.out.println("\n" + plan);
-    	}
+		    System.out.println("\n\n\nFound " + plans.size() + " plan(s):");
+		    for( Plan plan : plans ) {
+		        System.out.println("\n" + plan);
+		    }
 
-    	System.err.println("\n\nRuntime:");
-		System.err.println("  conversion:        " + (end-start) + "ms\n");
-    	System.out.println("  graph computation: " + (endPlanner-startPlanner) + " ms");
-    	System.out.println("  search:            " + (endPlanner2-endPlanner) + " ms");
-    	System.out.println("  total planning:    " + (endPlanner2-startPlanner) + " ms");
+		    System.err.println("\n\nRuntime:");
+		    System.err.println("  conversion:        " + (end-start) + "ms\n");
+		    System.out.println("  graph computation: " + (endPlanner-startPlanner) + " ms");
+		    System.out.println("  search:            " + (endPlanner2-endPlanner) + " ms");
+		    System.out.println("  total planning:    " + (endPlanner2-startPlanner) + " ms");
+		}
 	}
 
 }

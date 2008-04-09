@@ -62,7 +62,7 @@ public class AtomTable {
 		return indexToInstance.get(i);
 	}
 
-	public void add(Compound a) {
+	public int add(Compound a) {
 		String label = a.getLabel();
 
 		Map<Compound,Integer> instanceToInt = labelToInstanceToIndex.get(label);
@@ -77,7 +77,7 @@ public class AtomTable {
 
 		// System.err.println("Atom table: add " + a + " with index " + nextIndex);
 
-		nextIndex++;
+		return nextIndex++;
 	}
 
 	public int size() {
@@ -100,9 +100,12 @@ public class AtomTable {
 		return ret;
 	}
 
-	void ensureAtomKnown(Compound c) {
-		if( getIndexForAtom(c) == -1 ) {
-			add(c);
+	int ensureAtomKnown(Compound c) {
+	    int ret = getIndexForAtom(c);
+		if( ret == -1 ) {
+			return add(c);
+		} else {
+		    return ret;
 		}
 	}
 

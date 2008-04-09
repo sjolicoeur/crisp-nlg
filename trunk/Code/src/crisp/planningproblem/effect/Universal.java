@@ -16,17 +16,17 @@ import crisp.planningproblem.Domain;
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.SubstitutionIterator;
-import crisp.planningproblem.TypedList;
+import crisp.planningproblem.TypedVariableList;
 import de.saar.chorus.term.Substitution;
 import de.saar.chorus.term.Term;
 import de.saar.chorus.term.Variable;
 
 
 public class Universal extends Effect {
-    private final TypedList variables;
+    private final TypedVariableList variables;
     private final Effect effect;
 
-    public Universal(TypedList variables, Effect effect ) {
+    public Universal(TypedVariableList variables, Effect effect ) {
         this.variables = variables;
         this.effect = effect;
     }
@@ -37,9 +37,7 @@ public class Universal extends Effect {
     public Effect instantiate(Substitution subst) {
         Map<Variable,Term> valuesForBoundVariables = new HashMap<Variable,Term>();
 
-        for( String var : variables ) {
-            Variable v = new Variable(var);
-
+        for( Variable v : variables ) {
             if( subst.appliesTo(v) ) {
                 valuesForBoundVariables.put(v, subst.apply(v));
                 subst.remove(v);
@@ -80,7 +78,7 @@ public class Universal extends Effect {
 
 
 
-    public TypedList getVariables() {
+    public TypedVariableList getVariables() {
         return variables;
     }
 

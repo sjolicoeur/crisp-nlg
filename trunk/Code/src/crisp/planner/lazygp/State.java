@@ -37,6 +37,11 @@ public class State {
 	private static final boolean EXPLAIN_USELESSNESS = false;
 	private static final boolean DEBUG = false;
 
+	private final List<Integer> positiveGoalLiterals;  // a list of ground atoms that must be true in the goal state
+	private final Set<String> negativeGoalPredicates; // a list of predicates such that forall(... ~pred(x...)) must be true in goal
+	private final List<Compound> negativeGoalLiterals; // a list of compounds such that there may be no instances of these in  goal
+
+
 
 
 
@@ -181,6 +186,10 @@ public class State {
 		// this.forbiddenPredicates = oldState.forbiddenPredicates;
 		this.staticPredicates = oldState.staticPredicates;
 
+		positiveGoalLiterals = oldState.positiveGoalLiterals;
+		negativeGoalLiterals = oldState.negativeGoalLiterals;
+		negativeGoalPredicates = oldState.negativeGoalPredicates;
+
 		table = oldState.table;
 		actionTable = oldState.actionTable;
 		causes = new List[2*table.size()]; // table contains all literals for the new state at this point
@@ -208,6 +217,12 @@ public class State {
 		actionTable = new ActionInstanceTable();
 
 		table.ensureAtomsKnown(problem.getInitialState());
+
+
+		positiveGoalLiterals = new ArrayList<Integer>();
+		negativeGoalLiterals = new ArrayList<Compound>();
+		negativeGoalPredicates = new HashSet<String>();
+
 		analyzeGoal(problem.getGoal(), new Substitution());
 
 		// ASSUMPTION: initial state consists only of true literals
@@ -238,26 +253,69 @@ public class State {
 	/*** checking for goal state ***/
 
 	public boolean isGoalState() {
-	    Set<Integer> literals = getGoalLiterals();
+	    List<Integer> allGoalLiterals = new ArrayList<Integer>();
 
-	    // check that all literals can be true individually ...
-	    for( Integer lit : literals ) {
-	        if( !canBe(getLiteralAtom(lit), getLiteralPolarity(lit)) ) {
+	    System.err.println("** isGoalState **");
+
+	    /*
+	    System.err.println("poslit: " + positiveGoalLiterals);
+	    System.err.println("negpred: " + negativeGoalPredicates);
+	    System.err.println("neglit: " + negativeGoalLiterals);
+	    System.exit(0);
+	    */
+
+	    // check positive literals individually
+	    for( Integer poslit : positiveGoalLiterals ) {
+	        if( !canBeTrue(getLiteralAtom(poslit)) ) {
 	            return false;
+	        } else {
+	            allGoalLiterals.add(poslit);
 	        }
 	    }
 
-	    // .. and are not mutex with each other
-	    for( Integer lit1 : literals ) {
-	        for( Integer lit2 : literals ) {
-	            if( isMutex(lit1, lit2) ) {
+	    // check negative predicates individually
+	    for( int i = 0; i < literals.length; i++ ) {
+	        if( isForbiddenLiteral(i) ) {
+	            if( !canBeFalse(i) ) {
+	                return false;
+	            } else {
+	                allGoalLiterals.add(encodeLiteral(i, false));
+	            }
+	        }
+	    }
+
+	    // check negative (non-ground) literals individually
+	    for( int i = 0; i < literals.length; i++ ) {
+            for( Compound template : negativeGoalLiterals ) {
+                if( matches(table.get(i), template) ) {
+                    if( !canBeFalse(i) ) {
+                        return false;
+	                } else {
+	                    allGoalLiterals.add(encodeLiteral(i, false));
+	                }
+	            }
+	        }
+	    }
+
+	    // now check mutexes
+	    for( int i : allGoalLiterals ) {
+	        for( int j : allGoalLiterals ) {
+	            if( isMutex(i,j) ) {
 	                return false;
 	            }
 	        }
 	    }
 
+
+
 	    return true;
 	}
+
+	// index is an atom index (not literal index)
+    private boolean isForbiddenLiteral(int index) {
+            return negativeGoalPredicates.contains(table.get(index).getLabel());
+    }
+
 
 	private void analyzeGoal(Goal goal, Substitution subst) {
 	    if (goal instanceof Conjunction) {
@@ -277,11 +335,30 @@ public class State {
 	            analyzeGoal(scope, s);
 	        }
 	    } else if( goal instanceof Literal ) {
-	        Literal lit = (Literal) goal.instantiate(subst);
+	        Literal lit = (Literal) goal;
 
-	        // make sure that all positive atoms are known
 	        if( lit.getPolarity() ) {
-	            table.ensureAtomKnown((Compound) subst.apply(lit.getAtom()));
+	            // make sure that all positive atoms are known
+	            Compound c = (Compound) subst.apply(lit.getAtom());
+	            int atom = table.ensureAtomKnown(c);
+	            positiveGoalLiterals.add(encodeLiteral(atom, lit.getPolarity()));
+	        } else {
+	            // negative literals with only variables: add to forbidden predicates;
+	            // add all other negative literals to negative goal literals
+	            Compound c = (Compound) lit.getAtom();
+	            boolean allArgumentsVariables = true;
+
+	            for( int i = 0; i < c.getSubterms().size(); i++ ) {
+	                if( ! (c.getSubterms().get(i) instanceof Variable) ) {
+	                    allArgumentsVariables = false;
+	                }
+	            }
+
+	            if( allArgumentsVariables ) {
+	                negativeGoalPredicates.add(c.getLabel());
+	            } else {
+	                negativeGoalLiterals.add(c);
+	            }
 	        }
 	    }
 	}
@@ -322,10 +399,36 @@ public class State {
 
 
     public Set<Integer> getGoalLiterals() {
-        Set<Integer> ret = new HashSet<Integer>();
+        Set<Integer> allGoalLiterals = new HashSet<Integer>();
 
-        collectGoalLiterals(problem.getGoal(), new Substitution(), ret);
-        return ret;
+        System.err.println("** getGoalLiterals **");
+
+
+        // positive literals individually
+        for( Integer poslit : positiveGoalLiterals ) {
+            if( !isTrivialGoal(poslit)) {
+                allGoalLiterals.add(poslit);
+            }
+        }
+
+        // check negative predicates individually
+        for( int i = 0; i < literals.length; i++ ) {
+            int lit = encodeLiteral(i, false);
+
+            if( !isTrivialGoal(lit)) {
+                if( isForbiddenLiteral(i) ) {
+                    allGoalLiterals.add(lit);
+                }
+
+                for( Compound template : negativeGoalLiterals ) {
+                    if( matches(table.get(i), template) ) {
+                        allGoalLiterals.add(lit);
+                    }
+                }
+            }
+        }
+
+        return allGoalLiterals;
     }
 
 
@@ -494,6 +597,36 @@ public class State {
     }
 
 
+    /**
+     * Checks whether a given ground atom matches a template atom.
+     * The method assumes that the template atom is linear, i.e. no variable
+     * occurs twice.
+     *
+     * @param groundAtom
+     * @param template
+     * @return
+     */
+    private boolean matches(Compound groundAtom, Compound template) {
+        if( ! template.getLabel().equals(groundAtom.getLabel()) ) {
+            return false;
+        } else if( template.getSubterms().size() != groundAtom.getSubterms().size() ) {
+            return false;
+        } else {
+            for( int i = 0; i < template.getSubterms().size(); i++ ) {
+                Term t = template.getSubterms().get(i);
+                Term gt = groundAtom.getSubterms().get(i);
+
+                if( t instanceof Constant ) {
+                    if( ! t.equals(gt)) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+    }
+
 
 	/*** action effects ***/
 
@@ -529,23 +662,13 @@ public class State {
 
 	private void computeMutexes() {
 		for( int i1 = 0; i1 < literals.length; i1++ ) {
-			/*
-			if( table.get(i1).getLabel().equals("**equals**")) {
-				continue;
-			}
-			 */
-
 			for( int b1 = 0; b1 <= 1; b1++ ) {
 				boolean pol1 = (b1 == 0);
 
 				if( canBe(i1, pol1) ) {
-					for( int i2 = 0; i2 < literals.length; i2++ ) {
-						/*
-						if( table.get(i2).getLabel().equals("**equals**")) {
-							continue;
-						}
-						 */
-
+				    // only compute mutex pairs with i2 > i1; the other side will
+				    // be added symmetrically by setMutex/isMutex
+					for( int i2 = i1; i2 < literals.length; i2++ ) {
 						for( int b2 = 0; b2 <= 1; b2++ ) {
 							boolean pol2 = (b2 == 0);
 

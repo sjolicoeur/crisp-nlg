@@ -13,6 +13,7 @@ import crisp.planningproblem.effect.Effect;
 import crisp.planningproblem.goal.Goal;
 import de.saar.basic.StringTools;
 import de.saar.chorus.term.Term;
+import de.saar.chorus.term.Variable;
 
 public class PksOutputCodec extends OutputCodec {
     private static class PksReplacingWriter extends Writer {
@@ -180,11 +181,11 @@ public class PksOutputCodec extends OutputCodec {
         } else if( effect instanceof crisp.planningproblem.effect.Universal ) {
             crisp.planningproblem.effect.Universal univ = (crisp.planningproblem.effect.Universal) effect;
 
-            for( String var : univ.getVariables().getItems() ) {
+            for( Variable var : univ.getVariables().getItems() ) {
                 writer.print("(forallK(" + var + ") K(" + univ.getVariables().getType(var) + "(" + var + ")) => (");
             }
             printAsPks(univ.getScope(), writer);
-            for( String var : univ.getVariables().getItems() ) {
+            for( Variable var : univ.getVariables().getItems() ) {
                 writer.print("))");
             }
         } else if( effect instanceof crisp.planningproblem.effect.Literal ) {
@@ -214,11 +215,11 @@ public class PksOutputCodec extends OutputCodec {
         } else if( goal instanceof crisp.planningproblem.goal.Universal ) {
             crisp.planningproblem.goal.Universal univ = (crisp.planningproblem.goal.Universal) goal;
 
-            for( String var : univ.getVariables().getItems() ) {
+            for( Variable var : univ.getVariables().getItems() ) {
                 writer.print("(forallK(" + var + ") K(" + univ.getVariables().getType(var) + "(" + var + ")) => (");
             }
             printAsPks(univ.getScope(), writer);
-            for( String var : univ.getVariables().getItems() ) {
+            for( Variable var : univ.getVariables().getItems() ) {
                 writer.print("))");
             }
         } else if( goal instanceof crisp.planningproblem.goal.Negation ) {

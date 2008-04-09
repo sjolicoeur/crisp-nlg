@@ -225,7 +225,7 @@ void Requirements() :
 
 void Types() :
 { 
-	TypedList types;
+	TypedNameList types;
 }
 { 
 	<OPENBRACE> <TYPES>
@@ -241,7 +241,7 @@ void Types() :
 
 void Constants() :
 { 
-	TypedList constants;
+	TypedNameList constants;
 }
 { 
 	<OPENBRACE> <CONSTANTS>
@@ -265,7 +265,7 @@ void Predicates() :
 void Predicate() :
 {
 	Predicate pred = new Predicate();
-	TypedList arguments = new TypedList();
+	TypedVariableList arguments = new TypedVariableList();
 	Token t;
 	
 }
@@ -275,7 +275,7 @@ void Predicate() :
 	  arguments = TypedVarList()
 	<CLOSEBRACE>
 	{
-		for( String arg : arguments.getItems() ) {
+		for( Variable arg : arguments.getItems() ) {
 			pred.addVariable( arg, arguments.getType(arg) );
 		}
 		
@@ -306,14 +306,14 @@ void Action() :
 
 void ActionParameters(Predicate pred) :
 {
-	TypedList parameters = new TypedList();
+	TypedVariableList parameters = new TypedVariableList();
 }
 {
 	<PARAMETERS> <OPENBRACE>
 	parameters = TypedVarList()
 	<CLOSEBRACE>
 	{
-		for( String parameter : parameters.getItems() ) {
+		for( Variable parameter : parameters.getItems() ) {
 	 		pred.addVariable(parameter, parameters.getType(parameter));
 	 	}
 	}
@@ -325,7 +325,7 @@ Goal ActionPrecondition() :
 	List<Goal> conjuncts = new ArrayList<Goal>();
 	Term term;
 	
-	TypedList variables = new TypedList();
+	TypedVariableList variables = new TypedVariableList();
 }
 {
 	<OPENBRACE> <AND> (sub = ActionPrecondition() { conjuncts.add(sub); })* <CLOSEBRACE>
@@ -360,7 +360,7 @@ Effect ActionEffect() :
 	List<Effect> conjuncts = new ArrayList<Effect>();
 	Term term;
 
-	TypedList variables = new TypedList();
+	TypedVariableList variables = new TypedVariableList();
 	Goal condition;
 }
 {
@@ -380,14 +380,12 @@ Effect ActionEffect() :
 	  <CLOSEBRACE>
 	 { return new crisp.planningproblem.effect.Universal(variables, sub); }
 	 
-	 /* can't deal with conditional effects
 	 // TODO: allow only if :conditional-effects	 	 
 	| <OPENBRACE> <WHEN> 
 	     condition = ActionPrecondition() 
 	     sub = ActionEffect()
 	  <CLOSEBRACE>
 	  { return new crisp.planningproblem.effect.Conditional(condition, sub); }
-	  */
 }
 
 
@@ -418,7 +416,7 @@ void ProblemDomain() :
 
 void ProblemObjects() :
 { 
-	TypedList constants;
+	TypedNameList constants;
 }
 { 
 	<OPENBRACE> <OBJECT>
@@ -479,15 +477,15 @@ Term Atom() :
 	}
 }
 
-TypedList TypedVarList() :
+TypedVariableList TypedVarList() :
 {
-	List<String> variables = new ArrayList<String>();
+	List<Variable> variables = new ArrayList<Variable>();
 	Token t, v, type_tok = null;
 	String type;
-	TypedList ret = new TypedList();
+	TypedVariableList ret = new TypedVariableList();
 }
 {
-	((v = <VAR> { variables.add(v.image); })+
+	((v = <VAR> { variables.add(new Variable(v.image)); })+
 	 (<DASH> type_tok = <NAME>) ?
 	 {
 	 	if( type_tok == null ) {
@@ -496,7 +494,7 @@ TypedList TypedVarList() :
 	 		type = type_tok.image;
 	 	}
 	 	
-	 	for( String variable : variables ) {
+	 	for( Variable variable : variables ) {
 	 		ret.addItem(variable, type);
 	 	}
 	 	
@@ -508,12 +506,12 @@ TypedList TypedVarList() :
 	}
 }
 
-TypedList TypedNameList() :
+TypedNameList TypedNameList() :
 {
 	List<String> names = new ArrayList<String>();
 	Token t, v, type_tok = null;
 	String type;
-	TypedList ret = new TypedList();
+	TypedNameList ret = new TypedNameList();
 }
 {
 	((v = <NAME> { names.add(v.image); })+

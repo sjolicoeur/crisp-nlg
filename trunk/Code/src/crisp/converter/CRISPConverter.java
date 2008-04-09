@@ -28,7 +28,7 @@ import crisp.planningproblem.Action;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
-import crisp.planningproblem.TypedList;
+import crisp.planningproblem.TypedVariableList;
 import crisp.planningproblem.effect.Effect;
 import crisp.planningproblem.goal.Goal;
 import crisp.termparser.TermParser;
@@ -101,13 +101,13 @@ public class CRISPConverter {
      * @param problem
      */
     private static void computeGoal(Domain domain, Problem problem) {
-        TypedList tlNodeIndiv = new TypedList();
-        tlNodeIndiv.addItem("?u", "syntaxnode");
-        tlNodeIndiv.addItem("?x", "individual");
+        TypedVariableList tlNodeIndiv = new TypedVariableList();
+        tlNodeIndiv.addItem(new Variable("?u"), "syntaxnode");
+        tlNodeIndiv.addItem(new Variable("?x"), "individual");
 
-        TypedList tlCatNode = new TypedList();
-        tlCatNode.addItem("?a", "category");
-        tlCatNode.addItem("?u", "syntaxnode");
+        TypedVariableList tlCatNode = new TypedVariableList();
+        tlCatNode.addItem(new Variable("?a"), "category");
+        tlCatNode.addItem(new Variable("?u"), "syntaxnode");
 
         // collect all goals in this list
         List<Goal> finalStateGoals = new ArrayList<Goal>();
@@ -130,8 +130,8 @@ public class CRISPConverter {
 
         // no positive needtoexpress-* literals, for any arity
         for( int i = 1; i <= maximumArity; i++ ) {
-            TypedList tlPredicate = new TypedList();
-            tlPredicate.addItem("?P", "predicate");
+            TypedVariableList tlPredicate = new TypedVariableList();
+            tlPredicate.addItem(new Variable("?P"), "predicate");
 
             Predicate predNTE = new Predicate();
             predNTE.setLabel("needtoexpress-" + i);
@@ -141,7 +141,7 @@ public class CRISPConverter {
             subterms.add(new Variable("?P"));
 
             for( int j = 1; j <= i; j++ ) {
-                tlPredicate.addItem("?x" + j, "individual");
+                tlPredicate.addItem(new Variable("?x" + j), "individual");
                 subterms.add(new Variable("?x" + j));
 
                 predNTE.addVariable("?x" + j, "individual");
@@ -320,8 +320,8 @@ public class CRISPConverter {
                 if( hasContent ) {
                     Variable distractorVar = new Variable("?y");
                     Substitution distractorSubst = new Substitution(new Variable("?x1"), distractorVar);
-                    TypedList distractorQuantifierVars = new TypedList();
-                    distractorQuantifierVars.addItem("?y", "individual");
+                    TypedVariableList distractorQuantifierVars = new TypedVariableList();
+                    distractorQuantifierVars.addItem(distractorVar, "individual");
 
                     List<crisp.planningproblem.goal.Goal> literals = new ArrayList<crisp.planningproblem.goal.Goal>();
                     for( Term t : contentWithVariables ) {
@@ -344,8 +344,8 @@ public class CRISPConverter {
 
                     if( "uniqueref".equals(effect.getLabel())) {
                         String roleN = n.get(effect.getSubterms().get(0).toString());
-                        TypedList vars = new TypedList();
-                        vars.addItem("?y", "individual");
+                        TypedVariableList vars = new TypedVariableList();
+                        vars.addItem(new Variable("?y"), "individual");
 
                         effects.add(new crisp.planningproblem.effect.Universal(vars,
                                 new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", false)));
@@ -371,8 +371,8 @@ public class CRISPConverter {
                     // distractors
                     Variable distractorVar = new Variable("?y");
                     Substitution distractorSubst = new Substitution(new Variable(I.get(roleN)), distractorVar);
-                    TypedList distractorQuantifierVars = new TypedList();
-                    distractorQuantifierVars.addItem("?y", "individual");
+                    TypedVariableList distractorQuantifierVars = new TypedVariableList();
+                    distractorQuantifierVars.addItem(distractorVar, "individual");
 
                     // TODO - it's a bit of a hack that we use the same semantic requirement
                     // (modulo substitution) for each substitution node, even if it is irrelevant

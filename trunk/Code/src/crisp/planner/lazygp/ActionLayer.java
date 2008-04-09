@@ -41,7 +41,9 @@ public class ActionLayer {
 	public void computeMutexActionInstances() {
 		// TODO perhaps this can be done more efficiently than quadratic
 		for( int inst1 = 0; inst1 <= maxApplicableAction; inst1++ ) {
-			for( int inst2 = 0; inst2 <= maxApplicableAction; inst2++ ) {
+		    // only look at pairs with inst1 < inst2; the other half will be
+		    // filled in by setMutex/isMutex.  Also skip self-mutexes here
+			for( int inst2 = inst1+1; inst2 <= maxApplicableAction; inst2++ ) {
 				if( computeIsMutex(inst1, inst2)) {
 					setMutex(inst1, inst2);
 				}
@@ -50,10 +52,12 @@ public class ActionLayer {
 	}
 
 	private boolean computeIsMutex(int inst1ix, int inst2ix) {
+	    /*
 		// not interested in self-mutexness
 		if( inst1ix == inst2ix ) {
 			return false;
 		}
+		*/
 
 		// dependent actions are mutex
 		if( isDependent(inst1ix, inst2ix) || isDependent(inst2ix, inst1ix) ) {

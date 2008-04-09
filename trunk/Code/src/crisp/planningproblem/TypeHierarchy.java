@@ -34,7 +34,6 @@ public class TypeHierarchy {
         } else if( subtype.equals(supertype)) {
             return true;
         } else {
-            System.err.println("sub: " + subtype + ", sup: " + supertype);
             return isSubtypeOf(subtypes.get(subtype), supertype);
         }
     }

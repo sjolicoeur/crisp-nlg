@@ -19,17 +19,17 @@ import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.SubstitutionIterator;
 import crisp.planningproblem.TypeHierarchy;
-import crisp.planningproblem.TypedList;
+import crisp.planningproblem.TypedVariableList;
 import de.saar.chorus.term.Constant;
 import de.saar.chorus.term.Substitution;
 import de.saar.chorus.term.Term;
 import de.saar.chorus.term.Variable;
 
 public class Universal extends Goal {
-    private TypedList variables;
+    private TypedVariableList variables;
     private Goal goal;
 
-    public Universal(TypedList variables, Goal goal ) {
+    public Universal(TypedVariableList variables, Goal goal ) {
         this.variables = variables;
         this.goal = goal;
     }
@@ -39,9 +39,7 @@ public class Universal extends Goal {
     public Goal instantiate(Substitution subst) {
         Map<Variable,Term> valuesForBoundVariables = new HashMap<Variable,Term>();
 
-        for( String var : variables ) {
-            Variable v = new Variable(var);
-
+        for( Variable v : variables ) {
             if( subst.appliesTo(v) ) {
                 valuesForBoundVariables.put(v, subst.apply(v));
                 subst.remove(v);
@@ -125,12 +123,12 @@ public class Universal extends Goal {
 	}
 
 
-	public TypedList getVariables() {
+	public TypedVariableList getVariables() {
 		return variables;
 	}
 
 
-	public void setVariables(TypedList variables) {
+	public void setVariables(TypedVariableList variables) {
 		this.variables = variables;
 	}
 
@@ -175,7 +173,7 @@ public class Universal extends Goal {
             int carry = 0;
 
             for( int i = variables.size() - 1; i >= 0; i-- ) {
-                subst.setSubstitution(new Variable(variables.get(i)),
+                subst.setSubstitution(variables.get(i),
                         new Constant(valuesForVariables.get(i).get(index[i])));
 
                 if( i == variables.size() - 1 ) {

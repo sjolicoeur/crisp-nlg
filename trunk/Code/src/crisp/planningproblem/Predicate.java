@@ -25,17 +25,17 @@ import de.saar.chorus.term.Variable;
 
 public class Predicate {
     private String label;
-    private final TypedList variables;
+    private final TypedVariableList variables;
 
     public Predicate() {
-        variables = new TypedList();
+        variables = new TypedVariableList();
     }
 
     public String getLabel() {
         return label;
     }
 
-    public TypedList getVariables() {
+    public TypedVariableList getVariables() {
         return variables;
     }
 
@@ -43,14 +43,18 @@ public class Predicate {
         this.label = label;
     }
 
-    public void addVariable(String var, String type) {
+    public void addVariable(Variable var, String type) {
         variables.addItem(var, type);
+    }
+
+    public void addVariable(String var, String type) {
+        variables.addItem(new Variable(var), type);
     }
 
     @Override
     public String toString() {
         StringBuffer buf = new StringBuffer(label + "(");
-        for( String var : variables.getItems() ) {
+        for( Variable var : variables.getItems() ) {
             buf.append(var + ":" + variables.getType(var) + " ");
         }
         buf.append(")");
@@ -59,8 +63,8 @@ public class Predicate {
 
     public Term toTerm() {
         List<Term> tvariables = new ArrayList<Term>();
-        for( String var : variables.getItems() ) {
-            tvariables.add(new Variable(var));
+        for( Variable var : variables.getItems() ) {
+            tvariables.add(var);
         }
 
         return new Compound(label, tvariables);
@@ -77,7 +81,7 @@ public class Predicate {
     public boolean equals(Object o) {
     	if (o instanceof Predicate) {
 			Predicate pred = (Predicate) o;
-			List<String> items1 = variables.getItems(), items2 = pred.variables.getItems();
+			List<Variable> items1 = variables.getItems(), items2 = pred.variables.getItems();
 
 			if( !label.equals(pred.label)) {
 				return false;
@@ -87,7 +91,7 @@ public class Predicate {
 				return false;
 			}
 
-			for( String item : items1 ) {
+			for( Variable item : items1 ) {
 				if( ! variables.getType(item).equals(pred.variables.getType(item)) ) {
 					return false;
 				}

@@ -1,8 +1,8 @@
 /*
  * @(#)TypedList.java created 01.10.2006
- * 
+ *
  * Copyright (c) 2006 Alexander Koller
- *  
+ *
  */
 
 package crisp.planningproblem;
@@ -14,33 +14,33 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class TypedList implements Iterable<String> {
-    private List<String> items;
-    private Map<String,String> types;
-    
-    public TypedList() {
-        items = new ArrayList<String>();
-        types = new HashMap<String,String>();
-    }
-    
+abstract public class TypedList<E> implements Iterable<E> {
+    private final List<E> items;
+    private final Map<E,String> types;
 
-    public void addItem(String var, String type) {
+    public TypedList() {
+        items = new ArrayList<E>();
+        types = new HashMap<E,String>();
+    }
+
+
+    public void addItem(E var, String type) {
         items.add(var);
         types.put(var,type);
     }
 
-    public List<String> getItems() {
+    public List<E> getItems() {
         return items;
     }
-    
-    public String getType(String item) {
+
+    public String getType(E item) {
         return types.get(item);
     }
-    
-    
-    
+
+
+
     /** access to underlying list **/
-    
+
     public boolean contains(String arg0) {
         return items.contains(arg0);
     }
@@ -51,7 +51,7 @@ public class TypedList implements Iterable<String> {
     }
 
 
-    public String get(int arg0) {
+    public E get(int arg0) {
         return items.get(arg0);
     }
 
@@ -61,33 +61,34 @@ public class TypedList implements Iterable<String> {
     }
 
 
+    @Override
     public String toString() {
         StringBuffer buf = new StringBuffer();
-        
-        for( String var : getItems() ) {
+
+        for( E var : getItems() ) {
             buf.append(var + ":" + getType(var) + " ");
         }
-        
+
         return buf.toString();
     }
-    
+
     public String toLispString() {
     	StringBuffer buf = new StringBuffer();
-    	
-    	for( String var : getItems() ) {
+
+    	for( E var : getItems() ) {
             buf.append(var + " - " + getType(var) + "  ");
         }
-        
+
         return buf.toString();
     }
 
 
-    public Iterator<String> iterator() {
+    public Iterator<E> iterator() {
         return items.iterator();
     }
 
 
-	
-    
-    
+
+
+
 }

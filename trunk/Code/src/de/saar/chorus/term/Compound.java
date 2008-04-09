@@ -17,11 +17,12 @@ import de.saar.basic.StringTools;
 public class Compound extends Term {
     private final String label;
     private final List<Term> subterms;
-
+    private final int hashcode;
 
     public Compound(String label, List<Term> subterms) {
         this.label = label;
         this.subterms = subterms;
+        hashcode = toString().hashCode();
     }
 
     public Compound(String label, Term[] subterms) {
@@ -86,8 +87,7 @@ public class Compound extends Term {
 
     @Override
 	public int hashCode() {
-        // this used to be toLispString() -- is this important?
-    	return toString().hashCode();
+        return hashcode;
 	}
 
 	@Override

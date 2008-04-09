@@ -17,9 +17,10 @@ import crisp.planningproblem.Problem;
 
 public class Planner {
 	private static final boolean DEBUG = false;
-	private static final int PLANSIZE_LIMIT = 100; // max. number of steps in the plan graph
+	private static final boolean SHOW_STATES = false;
+	private static final int PLANSIZE_LIMIT = 10; // max. number of steps in the plan graph
 	private static final int MIN_PLAN_DEPTH = 0;  // min. number of steps in the plan graph
-	private static final int RUNS = 10;
+	private static final int RUNS = 1;
 	private static final boolean WAIT_FOR_SHARK = false;
 	private static final boolean SHOW_SEARCH_TRACE = false;
 	private static final boolean SHOW_TIMES_PER_DEPTH = false;
@@ -63,11 +64,15 @@ public class Planner {
 		if( DEBUG ) {
 			System.out.println("\nAction layer in step " + step + ":");
 			System.out.println(layer.toString());
+		}
 
+		if( SHOW_STATES ) {
 			System.out.println("\nState after step " + step + ":");
 			System.out.println(newState.toString());
 		}
 
+
+		//System.exit(0);
 		return newState;
 	}
 

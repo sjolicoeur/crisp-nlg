@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -28,12 +29,13 @@ public class State {
 	private final AtomTable table;
 	private final ActionInstanceTable actionTable;
 
-	private final Set<String> forbiddenPredicates;
+	// private final Set<String> forbiddenPredicates;
 	private final Set<String> staticPredicates;
 
 	private final int step;
 
 	private static final boolean EXPLAIN_USELESSNESS = false;
+	private static final boolean DEBUG = false;
 
 
 
@@ -176,7 +178,7 @@ public class State {
 		step = oldState.step + 1;
 
 		this.previousLayer = previousLayer;
-		this.forbiddenPredicates = oldState.forbiddenPredicates;
+		// this.forbiddenPredicates = oldState.forbiddenPredicates;
 		this.staticPredicates = oldState.staticPredicates;
 
 		table = oldState.table;
@@ -205,14 +207,29 @@ public class State {
 		table = new AtomTable(problem);
 		actionTable = new ActionInstanceTable();
 
+		table.ensureAtomsKnown(problem.getInitialState());
+		analyzeGoal(problem.getGoal(), new Substitution());
+
 		// ASSUMPTION: initial state consists only of true literals
 		literals = table.setTrueLiterals(problem.getInitialState());
 		mutexes = new BitSet[2*table.size()];
 		causes = new List[2*table.size()];
 
-		forbiddenPredicates = new HashSet<String>();
-		analyzeGoal();
+		/*
+		System.err.println("State after init: " + this);
+		System.exit(0);
+		*/
 	}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -221,54 +238,104 @@ public class State {
 	/*** checking for goal state ***/
 
 	public boolean isGoalState() {
-		for( int i = 0; i < literals.length; i++ ) {
-			if( isForbiddenLiteral(i) ) {
-				// forbidden literals must be able to be false
-				if( !canBeFalse(i) ) {
-					return false;
-				}
+	    Set<Integer> literals = getGoalLiterals();
 
-				// ... and must be false at the same time as all other forbidden literals
-				for( int j = i+1; j < literals.length; j++ ) {
-					if( isForbiddenLiteral(j) && isMutex(i, false, j, false) ) {
-						return false;
-					}
-				}
-			}
-		}
+	    // check that all literals can be true individually ...
+	    for( Integer lit : literals ) {
+	        if( !canBe(getLiteralAtom(lit), getLiteralPolarity(lit)) ) {
+	            return false;
+	        }
+	    }
 
-		return true;
+	    // .. and are not mutex with each other
+	    for( Integer lit1 : literals ) {
+	        for( Integer lit2 : literals ) {
+	            if( isMutex(lit1, lit2) ) {
+	                return false;
+	            }
+	        }
+	    }
+
+	    return true;
 	}
 
-	private void analyzeGoal() {
-		Goal goal = problem.getGoal();
-
-		if (goal instanceof Conjunction) {
+	private void analyzeGoal(Goal goal, Substitution subst) {
+	    if (goal instanceof Conjunction) {
 			List<Goal> goals = ((Conjunction) goal).getConjuncts();
 
 			for( Goal conj : goals ) {
-				if( conj instanceof Universal ) {
-					Goal scope = ((Universal) conj).getScope();
-
-					if( scope instanceof Literal ) {
-						Literal lit = ((Literal) scope);
-						if( lit.getPolarity() == false ) {
-							forbiddenPredicates.add(((Compound) lit.getAtom()).getLabel());
-							continue;
-						}
-					}
-				}
-
-				throw new RuntimeException("Can't handle this goal: " + conj);
+			    analyzeGoal(conj, subst);
 			}
-		} else {
-			throw new RuntimeException("Can't handle this goal: " + goal);
-		}
+	    } else if( goal instanceof Universal ) {
+	        Universal u = (Universal) goal;
+	        Goal scope = u.getScope();
+
+	        Iterator<Substitution> it = u.getDestructiveGroundSubstitutions(problem, subst);
+
+	        while( it.hasNext() ) {
+	            Substitution s = it.next();
+	            analyzeGoal(scope, s);
+	        }
+	    } else if( goal instanceof Literal ) {
+	        Literal lit = (Literal) goal.instantiate(subst);
+
+	        // make sure that all positive atoms are known
+	        if( lit.getPolarity() ) {
+	            table.ensureAtomKnown((Compound) subst.apply(lit.getAtom()));
+	        }
+	    }
 	}
 
-	private boolean isForbiddenLiteral(int index) {
-		return forbiddenPredicates.contains(table.get(index).getLabel());
+
+	private void collectGoalLiterals(Goal goal, Substitution subst, Collection<Integer> literals) {
+	    if( goal instanceof Literal ) {
+	        Literal lit = ((Literal) goal.instantiate(subst));
+	        int atomIndex = table.getIndexForAtom((Compound) lit.getAtom());
+
+	        // If atom was unknown, then it was a negative atom that can't be true yet,
+	        // and we can just ignore it.
+	        if( atomIndex > -1 ) {
+	            int literalIndex = encodeLiteral(atomIndex, lit.getPolarity());
+
+	            if( !isTrivialGoal(literalIndex) ) {
+	                literals.add(literalIndex);
+	            }
+	        }
+	    } else if (goal instanceof Conjunction) {
+            List<Goal> goals = ((Conjunction) goal).getConjuncts();
+
+            for( Goal conj : goals ) {
+                collectGoalLiterals(conj, subst, literals);
+            }
+        } else if( goal instanceof Universal ) {
+            Universal u = (Universal) goal;
+            Goal scope = u.getScope();
+
+            Iterator<Substitution> it = u.getDestructiveGroundSubstitutions(problem, subst);
+
+            while( it.hasNext() ) {
+                Substitution s = it.next();
+                collectGoalLiterals(scope, s, literals);
+            }
+        }
 	}
+
+
+    public Set<Integer> getGoalLiterals() {
+        Set<Integer> ret = new HashSet<Integer>();
+
+        collectGoalLiterals(problem.getGoal(), new Substitution(), ret);
+        return ret;
+    }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -277,6 +344,10 @@ public class State {
 	public ActionLayer getNextActionLayer() {
 		int maxActionIndex = getMaxApplicableActionInstance();
 		ActionLayer ret = new ActionLayer(this, maxActionIndex);
+
+		// TODO: maxActionIndex = -1 means that no actions are applicable.
+		// React correctly to this.
+
 
 		for( int i = 0; i <= maxActionIndex; i++ ) {
 			actionTable.get(i).computeEffects(table);
@@ -288,7 +359,7 @@ public class State {
 	}
 
 	public int getMaxApplicableActionInstance() {
-		int maxActionIndex = 0;
+		int maxActionIndex = -1;
 
 		for( Action a : problem.getDomain().getActions() ) {
 			int newActionIndex = computeApplicableInstances(a.getPrecondition().getGoalList(problem), new Substitution(), new ArrayList<Integer>(), new ArrayList<Boolean>(), a);
@@ -303,11 +374,19 @@ public class State {
 
     private int computeApplicableInstances(List<Literal> goalList, Substitution subst, List<Integer> indicesSoFar, List<Boolean> polaritiesSoFar, Action a) {
         if( goalList.isEmpty() ) {
+            if( DEBUG ) {
+                System.err.println("  -> " + a.instantiate(subst) + " is applicable!");
+            }
             return actionTable.ensureKnown(new ActionInstance(a, (Substitution) subst.clone(), indicesSoFar, polaritiesSoFar, problem));
         } else {
             Literal goal = goalList.remove(goalList.size()-1);
             Compound c = (Compound) goal.getAtom();
-            int ret = 0;
+            int ret = -1;
+
+            if( DEBUG ) {
+                System.err.println("\nAction " + a.instantiate(subst) + ", precondition " + subst.apply(c));
+            }
+
 
             if( goal.getPolarity() ) {
                 List<Variable> addedToSubstHere = new ArrayList<Variable>();
@@ -321,9 +400,17 @@ public class State {
                         }
 
                         if( canBeTrue(i) ) {
+                            if( DEBUG ) {
+                                System.err.print(" " + trueAtom + ":");
+                            }
+
+
                             // skip i if it is mutex with any precondition we have picked so far
                             for( Integer j : indicesSoFar ) {
                                 if( isMutex(i, true, j, true) ) {
+                                    if( DEBUG ) {
+                                        System.err.print("M");
+                                    }
                                     continue literalsLoop;
                                 }
                             }
@@ -334,6 +421,10 @@ public class State {
                                 indicesSoFar.add(i);
                                 polaritiesSoFar.add(Boolean.TRUE);
 
+                                if( DEBUG ) {
+
+                                    System.err.print("OK");
+                                }
                                 int candidate = computeApplicableInstances(goalList, subst, indicesSoFar, polaritiesSoFar, a);
                                 if( candidate > ret ) {
                                     ret = candidate;
@@ -341,6 +432,10 @@ public class State {
 
                                 indicesSoFar.remove(indicesSoFar.size()-1);
                                 polaritiesSoFar.remove(polaritiesSoFar.size()-1);
+                            } else {
+                                if( DEBUG ) {
+                                    System.err.print("U");
+                                }
                             }
 
 
@@ -348,6 +443,10 @@ public class State {
                                 subst.remove(addedToSubstHere.get(p));
                             }
                             addedToSubstHere.clear();
+                        } else {
+                            if( DEBUG ) {
+                                System.err.print("F");
+                            }
                         }
                     }
             } else {
@@ -836,21 +935,6 @@ public class State {
 		return ret.toString();
 	}
 
-	public Set<Integer> getGoalLiterals() {
-		Set<Integer> ret = new HashSet<Integer>();
-
-		for( int i = 0; i < literals.length; i++ ) {
-			int negativeLiteral = encodeLiteral(i, false);
-			if( isForbiddenLiteral(i) && ! isTrivialGoal(negativeLiteral) ) {
-				// don't bother to look at literals that couldn't be true in the first place
-				ret.add(negativeLiteral);
-			}
-		}
-
-		//System.err.println("Goal literals: " + decodeLiterals(ret, new HashSet<Integer>()));
-
-		return ret;
-	}
 
 	public Set<Integer> updateGoals(Set<Integer> goals, ActionInstance inst) {
 		Set<Integer> ret = new HashSet<Integer>(goals);

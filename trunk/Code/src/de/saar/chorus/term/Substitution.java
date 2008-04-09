@@ -41,6 +41,19 @@ public class Substitution implements Cloneable {
         copy(concatenate(new Substitution(v,t)), this);
     }
 
+    /**
+     * Sets the substitution for v to t.  Use this method with care:
+     * It has the potential for destroying the internal invariant that
+     * variables on the LHS of substitutions don't occur on the RHS.  However,
+     * it is correct for ground substitutions, and much more efficient than
+     * addSubstitution in this case.
+     *
+     * @param v
+     * @param t
+     */
+    public void setSubstitution(Variable v, Term t) {
+        subst.put(v, t);
+    }
 
 
     public Term apply(Term t) {

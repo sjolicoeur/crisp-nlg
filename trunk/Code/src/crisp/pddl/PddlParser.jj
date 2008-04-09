@@ -329,7 +329,8 @@ Goal ActionPrecondition() :
 }
 {
 	<OPENBRACE> <AND> (sub = ActionPrecondition() { conjuncts.add(sub); })* <CLOSEBRACE>
-	 { return new crisp.planningproblem.goal.Conjunction(conjuncts); }
+	 { Collections.reverse(conjuncts); 
+	   return new crisp.planningproblem.goal.Conjunction(conjuncts); }
 	 
 	| term = Atom() 
 	 { return new crisp.planningproblem.goal.Literal(term, true); }
@@ -379,12 +380,14 @@ Effect ActionEffect() :
 	  <CLOSEBRACE>
 	 { return new crisp.planningproblem.effect.Universal(variables, sub); }
 	 
+	 /* can't deal with conditional effects
 	 // TODO: allow only if :conditional-effects	 	 
 	| <OPENBRACE> <WHEN> 
 	     condition = ActionPrecondition() 
 	     sub = ActionEffect()
 	  <CLOSEBRACE>
 	  { return new crisp.planningproblem.effect.Conditional(condition, sub); }
+	  */
 }
 
 
@@ -517,7 +520,7 @@ TypedList TypedNameList() :
 	 (<DASH> type_tok = <NAME>) ?
 	 {
 	 	if( type_tok == null ) {
-	 		type = "object";
+	 		type = TypeHierarchy.TOP;
 	 	} else {
 	 		type = type_tok.image;
 	 	}

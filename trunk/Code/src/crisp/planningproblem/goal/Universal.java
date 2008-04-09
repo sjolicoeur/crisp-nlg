@@ -7,6 +7,7 @@
 
 package crisp.planningproblem.goal;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,7 +18,9 @@ import crisp.planningproblem.Domain;
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.SubstitutionIterator;
+import crisp.planningproblem.TypeHierarchy;
 import crisp.planningproblem.TypedList;
+import de.saar.chorus.term.Constant;
 import de.saar.chorus.term.Substitution;
 import de.saar.chorus.term.Term;
 import de.saar.chorus.term.Variable;
@@ -60,9 +63,13 @@ public class Universal extends Goal {
     }
 
 
-    private Iterator<Substitution> getSubstitutions(Problem problem) {
+    public Iterator<Substitution> getSubstitutions(Problem problem) {
         Domain domain = problem.getDomain();
         return new SubstitutionIterator(variables, domain.getUniverse(), domain.getTypeHierarchy());
+    }
+
+    public Iterator<Substitution> getDestructiveGroundSubstitutions(Problem problem, Substitution subst) {
+        return new DestructiveGroundSubstitutionIterator(problem, subst);
     }
 
 
@@ -128,5 +135,74 @@ public class Universal extends Goal {
 	}
 
 
+	private class DestructiveGroundSubstitutionIterator implements Iterator<Substitution> {
+	    private final Substitution subst;
+	    private final List<List<String>> valuesForVariables;
+	    private final int[] index; // each in 0 .. vfv[i].size()-1
+	    private boolean finished;
+
+	    protected DestructiveGroundSubstitutionIterator(Problem problem, Substitution subst) {
+            super();
+            this.subst = subst;
+
+            Map<String,String> universe = problem.getDomain().getUniverse();
+            TypeHierarchy types = problem.getDomain().getTypeHierarchy();
+
+            valuesForVariables = new ArrayList<List<String>>(variables.size());
+            for( int i = 0; i < variables.size(); i++ ) {
+                List<String> thisUniverse = new ArrayList<String>();
+
+                for( String individual : universe.keySet() ) {
+                    if( types.isSubtypeOf(universe.get(individual), variables.getType(variables.get(i))) ) {
+                        thisUniverse.add(individual);
+                    }
+                }
+
+                valuesForVariables.add(thisUniverse);
+            }
+
+            index = new int[variables.size()];
+            // all initialized with 0
+
+            finished = false;
+        }
+
+        public boolean hasNext() {
+            return !finished;
+        }
+
+        public Substitution next() {
+            int carry = 0;
+
+            for( int i = variables.size() - 1; i >= 0; i-- ) {
+                subst.setSubstitution(new Variable(variables.get(i)),
+                        new Constant(valuesForVariables.get(i).get(index[i])));
+
+                if( i == variables.size() - 1 ) {
+                    index[i]++;
+                } else {
+                    index[i] += carry;
+                }
+
+                if( index[i] > valuesForVariables.get(i).size() - 1 ) {
+                    index[i] = 0;
+                    carry = 1;
+                } else {
+                    carry = 0;
+                }
+            }
+
+            if( carry == 1 ) {
+                finished = true;
+            }
+
+            return subst;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+	}
 
 }

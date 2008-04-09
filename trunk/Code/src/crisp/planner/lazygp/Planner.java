@@ -87,7 +87,9 @@ public class Planner {
 		}
 
 		while( !getFinalState().isGoalState() || getPlanGraphSize() < MIN_PLAN_DEPTH ) {
-			System.err.print(".");
+			if( VERBOSE ) {
+                System.err.print(".");
+            }
 			expandGraphOneStep();
 
 			// TODO: recognize if we're not making further progress
@@ -97,7 +99,9 @@ public class Planner {
 			}
 		}
 
-		System.err.println(" done.");
+		if( VERBOSE ) {
+            System.err.println(" done.");
+        }
 
 
 		if( DEBUG && getFinalState().isGoalState() ) {

@@ -1,6 +1,5 @@
 package crisp.planningproblem.codec;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -10,6 +9,7 @@ import crisp.planningproblem.Action;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
+import crisp.planningproblem.TypeHierarchy;
 import crisp.planningproblem.effect.Effect;
 import crisp.planningproblem.goal.Goal;
 import de.saar.basic.StringTools;
@@ -25,18 +25,9 @@ public class PddlOutputCodec extends OutputCodec {
      * @throws IOException
      */
     @Override
-    public void writeToDisk(Domain domain, Problem problem, String filenamePrefix, String problemname) throws IOException {
-        System.err.println("Writing domain file ...");
-        PrintWriter dw = new PrintWriter(new FileWriter(filenamePrefix + problemname + "-domain.lisp"));
-        writeDomain(domain, dw);
-        dw.close();
-
-        System.err.println("Writing problem file ...");
-        PrintWriter pw = new PrintWriter(new FileWriter(filenamePrefix + problemname + "-problem.lisp"));
-        writeProblem(problem, pw);
-        pw.close();
-
-        System.err.println("Done.");
+    public void writeToDisk(Domain domain, Problem problem, PrintWriter domainWriter, PrintWriter problemWriter) throws IOException {
+        writeDomain(domain, domainWriter);
+        writeProblem(problem, problemWriter);
     }
 
     private void writeProblem(Problem problem, PrintWriter pw) {
@@ -59,7 +50,12 @@ public class PddlOutputCodec extends OutputCodec {
 
         dw.print("        (:types");
         for( String type : domain.getTypeHierarchy().getTypes() ) {
-            dw.print("  " + type + " - " + domain.getTypeHierarchy().getDirectSupertype(type));
+            if( !type.equals(TypeHierarchy.TOP) ) {
+                dw.print("  " + type);
+                if( ! domain.getTypeHierarchy().getDirectSupertype(type).equals(TypeHierarchy.TOP) ) {
+                    dw.print(" - " + domain.getTypeHierarchy().getDirectSupertype(type));
+                }
+            }
         }
         dw.println(")");
 

@@ -1,6 +1,5 @@
 package crisp.planningproblem.codec;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -59,10 +58,7 @@ public class PksOutputCodec extends OutputCodec {
     }
 
     @Override
-    public void writeToDisk(Domain domain, Problem problem, String filenamePrefix, String problemname) throws IOException {
-        System.err.println("Writing PKS file ...");
-        PrintWriter dw = new PrintWriter(new PksReplacingWriter(new FileWriter(filenamePrefix + problemname + ".pks")));
-
+    public void writeToDisk(Domain domain, Problem problem, PrintWriter dw, PrintWriter pw) throws IOException {
         dw.println("<?xml version=\"1.0\"?>\n");
         dw.println("<pks>");
 
@@ -70,11 +66,6 @@ public class PksOutputCodec extends OutputCodec {
         printProblem(problem, dw);
 
         dw.println("</pks>");
-
-        dw.flush();
-        dw.close();
-
-        System.err.println("Done.");
     }
 
     private void printProblem(Problem problem, PrintWriter writer) {

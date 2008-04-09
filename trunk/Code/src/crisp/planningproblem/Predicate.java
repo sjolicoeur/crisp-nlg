@@ -31,6 +31,11 @@ public class Predicate {
         variables = new TypedVariableList();
     }
 
+    public Predicate(String label) {
+        variables = new TypedVariableList();
+        setLabel(label);
+    }
+
     public String getLabel() {
         return label;
     }

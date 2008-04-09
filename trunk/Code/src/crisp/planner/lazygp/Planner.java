@@ -24,6 +24,7 @@ public class Planner {
 	private static final boolean WAIT_FOR_SHARK = true;
 	private static final boolean SHOW_SEARCH_TRACE = false;
 	private static final boolean SHOW_TIMES_PER_DEPTH = false;
+	private static final boolean VERBOSE = false;
 
 	private final Domain domain;
 	private final Problem problem;
@@ -81,7 +82,9 @@ public class Planner {
 			System.out.println(state.get(0));
 		}
 
-		System.err.print("\nBuilding initial planning graph: ");
+		if( VERBOSE ) {
+		    System.err.print("\nBuilding initial planning graph: ");
+		}
 
 		while( !getFinalState().isGoalState() || getPlanGraphSize() < MIN_PLAN_DEPTH ) {
 			System.err.print(".");

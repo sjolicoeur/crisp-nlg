@@ -51,8 +51,8 @@ public class Domain {
         // "equals" hack
         Predicate equals = new Predicate();
         equals.setLabel("**equals**");
-        equals.addVariable("x", "object");
-        equals.addVariable("y", "object");
+        equals.addVariable("x", TypeHierarchy.TOP);
+        equals.addVariable("y", TypeHierarchy.TOP);
         predicates.add(equals);
     }
 

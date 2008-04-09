@@ -446,7 +446,7 @@ void ProblemGoal() :
 }
 {
 	<OPENBRACE> <GOAL>
-	g = ActionPrecondition() { System.err.println("Found goal: " + g); problem.setGoal(g); }
+	g = ActionPrecondition() { problem.setGoal(g); }
 	<CLOSEBRACE>
 }
 
@@ -460,6 +460,7 @@ Term Atom() :
 {
 	Token t,v,x,y;
 	List<Term> subterms = new ArrayList<Term>();
+	Term t1, t2;
 }
 {
 	<OPENBRACE> t = <NAME> 
@@ -470,11 +471,20 @@ Term Atom() :
 		return new Compound(t.image, subterms);
 	}
 	
-	| <OPENBRACE> <EQ> x = <VAR> y = <VAR> <CLOSEBRACE> {
-		subterms.add(new Variable(x.image));
-		subterms.add(new Variable(y.image));
+	| <OPENBRACE> <EQ> t1 = Term() t2 = Term() <CLOSEBRACE> {
+		subterms.add(t1);
+		subterms.add(t2);
 		return new Compound("**equals**", subterms);
 	}
+}
+
+Term Term() :
+{
+	Token t;
+}
+{
+	t = <VAR> { return new Variable(t.image); }
+	| t = <NAME> { return new Constant(t.image); }
 }
 
 TypedVariableList TypedVarList() :
@@ -489,7 +499,7 @@ TypedVariableList TypedVarList() :
 	 (<DASH> type_tok = <NAME>) ?
 	 {
 	 	if( type_tok == null ) {
-	 		type = "object";
+	 		type = TypeHierarchy.TOP;
 	 	} else {
 	 		type = type_tok.image;
 	 	}

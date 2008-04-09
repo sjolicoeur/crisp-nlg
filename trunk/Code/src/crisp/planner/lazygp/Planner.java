@@ -20,8 +20,8 @@ public class Planner {
 	private static final boolean SHOW_STATES = false;
 	private static final int PLANSIZE_LIMIT = 100; // max. number of steps in the plan graph
 	private static final int MIN_PLAN_DEPTH = 0;  // min. number of steps in the plan graph
-	private static final int RUNS = 10;
-	private static final boolean WAIT_FOR_SHARK = false;
+	private static final int RUNS = 1;
+	private static final boolean WAIT_FOR_SHARK = true;
 	private static final boolean SHOW_SEARCH_TRACE = false;
 	private static final boolean SHOW_TIMES_PER_DEPTH = false;
 

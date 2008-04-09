@@ -255,15 +255,6 @@ public class State {
 	public boolean isGoalState() {
 	    List<Integer> allGoalLiterals = new ArrayList<Integer>();
 
-	    System.err.println("** isGoalState **");
-
-	    /*
-	    System.err.println("poslit: " + positiveGoalLiterals);
-	    System.err.println("negpred: " + negativeGoalPredicates);
-	    System.err.println("neglit: " + negativeGoalLiterals);
-	    System.exit(0);
-	    */
-
 	    // check positive literals individually
 	    for( Integer poslit : positiveGoalLiterals ) {
 	        if( !canBeTrue(getLiteralAtom(poslit)) ) {
@@ -364,45 +355,8 @@ public class State {
 	}
 
 
-	private void collectGoalLiterals(Goal goal, Substitution subst, Collection<Integer> literals) {
-	    if( goal instanceof Literal ) {
-	        Literal lit = ((Literal) goal.instantiate(subst));
-	        int atomIndex = table.getIndexForAtom((Compound) lit.getAtom());
-
-	        // If atom was unknown, then it was a negative atom that can't be true yet,
-	        // and we can just ignore it.
-	        if( atomIndex > -1 ) {
-	            int literalIndex = encodeLiteral(atomIndex, lit.getPolarity());
-
-	            if( !isTrivialGoal(literalIndex) ) {
-	                literals.add(literalIndex);
-	            }
-	        }
-	    } else if (goal instanceof Conjunction) {
-            List<Goal> goals = ((Conjunction) goal).getConjuncts();
-
-            for( Goal conj : goals ) {
-                collectGoalLiterals(conj, subst, literals);
-            }
-        } else if( goal instanceof Universal ) {
-            Universal u = (Universal) goal;
-            Goal scope = u.getScope();
-
-            Iterator<Substitution> it = u.getDestructiveGroundSubstitutions(problem, subst);
-
-            while( it.hasNext() ) {
-                Substitution s = it.next();
-                collectGoalLiterals(scope, s, literals);
-            }
-        }
-	}
-
-
     public Set<Integer> getGoalLiterals() {
         Set<Integer> allGoalLiterals = new HashSet<Integer>();
-
-        System.err.println("** getGoalLiterals **");
-
 
         // positive literals individually
         for( Integer poslit : positiveGoalLiterals ) {

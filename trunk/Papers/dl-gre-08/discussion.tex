@@ -30,7 +30,7 @@ expressions obtained in the experiment, only 15 use relations.
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.25\textwidth]{drawers.png}
+\includegraphics[width=0.2\textwidth]{drawers.png}
 \end{center}\vspace*{-3ex}
 \caption{A schematic view of the filing cabinets.}\label{fig:drawers}\vspace*{-3ex}
 \end{figure}
@@ -64,23 +64,32 @@ possible) orderings.  This is because the two algorithms perform
 essentially the same computations if there are no relations.
 
 
-To evaluate the relational case, we first removed the
-$\mathsf{column}$ and $\mathsf{row}$ predicates from the domain,
-because these predicates make it possible to uniquely identify each
-drawer with non-relational descriptions, and our algorithm would
-always prefer these.  Using three (of the 240 possible) different
-orderings, our algorithm was able to generate 10 of the 15
-human-produced relational descriptions correctly.  This is shown in
-more detail in Fig.~\ref{fig:example_outputs}; notice that four of the
-15 descriptions occurred twice in the corpus.  Of the five
+%To evaluate the relational case, we first removed the
+%$\mathsf{column}$ and $\mathsf{row}$ predicates from the domain,
+%because these predicates make it possible to uniquely identify each
+%drawer with non-relational descriptions, and our algorithm would
+%always prefer these.  Using three (of the 240 possible) different
+%orderings, our algorithm was able to generate 10 of the 15
+%human-produced relational descriptions correctly.  This is shown in
+%more detail in Fig.~\ref{fig:example_outputs}; notice that four of the
+%15 descriptions occurred twice in the corpus.  
+
+When we add relations, our algorithm is able to generate 10 of the 15
+human-produced relational descriptions correctly (in addition to the
+98 non-relational descriptions). This is shown in more detail in
+Fig.~\ref{fig:example_outputs}, which gives example outputs of the
+\el\ algorithm for three different orderings. (Notice that four of the
+15 descriptions occurred twice in the corpus.) Of the five
 human-produced descriptions that the \el\ algorithm cannot generate,
-two mention column information, which we excluded from our domain, and
 three involve references to sets (\textit{the two blues ones in
-  horizontal sequence}/\textit{the two yellow drawers}). While our
+  horizontal sequence}/\textit{the two yellow drawers}), and two
+contain so much redundant information that our algorithm, which stops
+once it has found a distinguishing description, cannot
+reproduce it. While the
 algorithm cannot reproduce those descriptions, it does generate other,
 simpler descriptions for them.
 
-
+%two mention column information, which we excluded from our domain, and
 
 
 

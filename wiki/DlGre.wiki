@@ -1,4 +1,5 @@
 #summary Generating referring expressions with description logics.
+#labels Featured
 
 = Introduction =
 

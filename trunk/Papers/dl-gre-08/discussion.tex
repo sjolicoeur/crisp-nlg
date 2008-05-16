@@ -100,8 +100,8 @@ simpler descriptions for them.
 
 Both the \el\ and the \alc\ algorithms took about 15 milliseconds to
 compute distinguishing formulas for all 16 individuals in the Viethen
-and Dale dataset.\footnote{Runtimes are meassured on a MacBook Pro
-  (Intel Core 2 Duo, 2.16 GHz) running Java 1.6 beta, and we allowed the
+and Dale dataset.\footnote{Runtimes were measured on a MacBook Pro
+  (Intel Core 2 Duo, 2.16 GHz) running Java 1.6 beta.  We allowed the
   Java VM to warm up, i.e., just-in-time compile all bytecode, before
   taking the measurements.}
 
@@ -120,11 +120,11 @@ about 140 ms for the model of size 100.  As far as we know, these are
 by far the fastest published runtimes for any relational GRE algorithm
 in the literature.
 
-Another encouraging aspect of both runtime graphs is that they seem to
-be approximated well by quadratic functions.  So although the
-worst-case runtime of the \el\ algorithm might be exponential, both
-algorithms empirically exhibit (low) polynomial runtime on the inputs
-we considered.
+% Another encouraging aspect of both runtime graphs is that they seem to
+% be approximated well by quadratic functions.  So although the
+% worst-case runtime of the \el\ algorithm might be exponential, both
+% algorithms empirically exhibit (low) polynomial runtime on the inputs
+% we considered.
 
 
 
@@ -151,7 +151,7 @@ in a post-processing step.  However, another problem arises from the
 massive use of negation in the \alc\ algorithm; it will be hard for
 any realizer to find a reasonable way of expressing a formula like
 $\neg \exists R.(\neg P \sqcap \neg Q)$ as a smooth noun phrase.
-Although we agree with \newcite{deemter01:_gener_refer_expres} and
+Although we agree with \newcite{deemter02:_gener_refer_expres} and
 others that the careful use of negation and disjunction can improve
 REs, these connectives must not be overused.  Thus we consider the
 formulas computed by the \el\ algorithm ``safer'' with respect to

@@ -2,7 +2,7 @@
 
 
 Viewing GRE as a problem of generating DL formulas offers a unified
-perspective of the GRE problem: It is the problem of computing a DL
+perspective: It is the problem of computing a DL
 formula with a given extension.  Many existing approaches can be
 subsumed under this view; we have summarized this for some of them in
 Fig.~\ref{fig:related}, along with the DL fragment they use.  We
@@ -27,7 +27,7 @@ However, unlike
 such as \newcite{kelleher06:_increm_gener_of_spatial_refer},
 we do not have to take special precautions to avoid infinite
 regress. While Dale and Haddock's algorithm attempts to generate a RE
-for a single individual for successive individuals in the model, our
+for a single individual, for successive individuals in the model, our
 algorithms consider all individuals in parallel.  It monotonically
 refines a partition of the model and never needs to backtrack, and
 therefore is always guaranteed to terminate.
@@ -50,7 +50,7 @@ therefore is always guaranteed to terminate.
   \label{fig:related}\vspace*{-1.5ex}
 \end{figure}
 
-Perhaps closest in spirit to our approach is Krahmer et al.'s graph
+Perhaps closest in spirit to our approach is Krahmer et al.\ graph
 algorithm~\shortcite{Krahmer2003}, which also computes REs by
 extending them successively.  However, their subgraphs go beyond the
 expressive power of \alc\ in that they can distinguish between ``the
@@ -60,7 +60,7 @@ worst-case complexity.  Interestingly, Krahmer et al.\ themselves
 discuss the possibility of seeing their subgraphs as formulas of
 hybrid logic which are satisfied at the points where the subgraph can
 be embedded; and hybrid logics can be seen as very expressive
-description logics as well \cite{arec:hybr05b}.
+description logics \cite{arec:hybr05b}.
 
 %The graphs  use to represent referring
 %expressions go beyond DL in that they can express equality between

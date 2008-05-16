@@ -39,7 +39,7 @@ expressions obtained in the experiment, only 15 use relations.
 \newcite{viethen06:_algor_for_gener_refer_expres} describe the data in
 more detail and present results of evaluating the Full Brevity
 algorithm, the Incremental Algorithm (both by \newcite{Dale1995}), and
-the relational algorithm \cite{dale91:_gener_refer_expres_invol_relat}
+the Relational Algorithm \cite{dale91:_gener_refer_expres_invol_relat}
 on this corpus. The Incremental Algorithm is dependent on a predefined
 ordering in which properties are added to the description. Viethen and
 Dale, therefore, try all possible orderings and evaluate what
@@ -48,7 +48,7 @@ them. The Full Brevity and the Relational Algorithms choose properties
 based on their discriminatory power and only use the orderings as tie
 breakers. Viethen and Dale found that the Incremental Algorithm is
 capable of generating 98 of the 103 non-relational
-descriptions. However, the Dale and Haddock algorithm was unable to
+descriptions. However, the Relational Algorithm was unable to
 generate even a single one of the human-generated relational
 descriptions.
 
@@ -113,7 +113,7 @@ pair of individuals had a 10\% chance to be related by a relational
 symbol.  The results (averaged over 10 runs for each model size) are
 shown in Fig.~\ref{fig:runtimes}.  The \el\
 algorithm takes about 350 ms on average to generate relational REs for
-all individuals in the model of size 100, i.e.\ less than 4 ms on
+all individuals in the model of size 100, i.e., less than 4 ms on
 average for each individual.  The \alc\ algorithm is even faster, at
 about 140 ms for the model of size 100.  As far as we know, these are
 by far the fastest published runtimes for any relational GRE algorithm
@@ -159,9 +159,8 @@ realization.
 
 
 Of course, we share the problem of interfacing GRE and realization
-with every other approach that separates these two modules, i.e.\
-almost the entire GRE literature (notable exceptions are e.g.\
-\newcite{Horacek1997} and SPUD \cite{Stone1998a}).  In principle, we
+with every other approach that separates these two modules, i.e.,
+almost the entire GRE literature (notable exceptions are, e.g.,~\newcite{Horacek1997} and SPUD \cite{Stone1998a}).  In principle, we
 believe that it is a good idea to handle sentence planning and
 realization in a single module; for instance, SPUD can use its
 awareness of the syntactic context to generate succinct REs as in

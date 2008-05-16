@@ -32,7 +32,7 @@ approaches with respect to the variant of DL they use in
 Section~\ref{sec:related}.
 
 For the rest of this paper, we assume that we are generating a
-singular RE, i.e.\ the target set $A$ will be singleton.  In this
+singular RE, i.e., the target set $A$ will be a singleton.  In this
 case, we will only be able to generate a formula that denotes exactly
 $A = \{a\}$ (i.e., a RE that uniquely refers to $a$) if there is no
 other individual $b$ to which $a$ is similar; otherwise, any formula
@@ -70,7 +70,7 @@ danger of infinite regress.
 It can be shown that for \alc, the similarity sets of a finite model
 coincide exactly with the \emph{simulation classes} of this model.
 Simulation classes have been studied extensively in the literature
-(see e.g. \newcite{blac:moda01}; \newcite{kurt:expr99}), and there are several
+(see e.g.,~\newcite{blac:moda01}; \newcite{kurt:expr99}), and there are several
 efficient algorithms for computing \alc-simulation classes
 \cite{hopc:algo71,paig:thre87,dovier04:_effic_algor_for_comput_bisim_equiv}.
 However, these algorithms will only compute the simulation classes
@@ -129,7 +129,7 @@ more formulas at the same time in the \el\ algorithm than in the \alc\
 algorithm.  Given that $\Delta$ has an exponential number of subsets,
 there is a risk that the \el\ algorithm might have worst-case
 exponential runtime (although we are not aware of such worst-case
-examples).  We leave a more careful runtime analysis for future work.
+examples).  We leave a more careful complexity analysis for future work.
 
 \begin{algorithm}[t]
 \dontprintsemicolon
@@ -158,14 +158,9 @@ $\RE \leftarrow \{\top\}$
 \end{algorithm}
 
 
-Notice that both algorithms try to refine $\RE$ first according to the
+Notice that we presented both algorithms as first refining $\RE$  according to the
 propositional symbols, and then by relational expressions of
-increasing depth.  The algorithms would remain correct if we
-interleaved the addition of propositional and relational symbols;
-however, the algorithms would become slower because the propositional
-refinements would have to be percolated through the relational chains
-in subsequent iterations.
-
+increasing depth. But propositional symbols can easily be encoded by means of new relation symbols (e.g., we could represent that $f_1$ is a flower in Fig.~\ref{fig:dale-haddock} as a reflexive loop labeled  $\mathsf{flower}$). By means of this encoding, any arbitrary ordering of preference can be used when generating $\RE$, and we don't need to distinguish between propositions and relations.
 
 
 \subsection{Some examples}\label{sec:examples}

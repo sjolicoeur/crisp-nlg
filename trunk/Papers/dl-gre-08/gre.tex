@@ -169,18 +169,13 @@ in subsequent iterations.
 
 \subsection{Some examples}\label{sec:examples}
 
-We will now see what our algorithms do for some interesting
-examples. Consider the model shown in Fig.~\ref{fig:dale-haddock}a,
-which is taken from \newcite{dale91:_gener_refer_expres_invol_relat},
-and let's run the $\el$ algorithm.
-
-
-
-
-The algorithm starts with $\RE = \{\top\}$.  In the first loop, it
-adds the formulas $\mathsf{floor}$, $\mathsf{bowl}$, $\mathsf{cup}$,
-and $\mathsf{table}$, and then removes $\top$ because it is now
-subsumed.  Not all of these formulas denote singletons; for instance,
+Let's try our algorithms on some examples.  We first run the \el\
+algorithm on the model shown in Fig.~\ref{fig:dale-haddock}a, which is
+taken from \newcite{dale91:_gener_refer_expres_invol_relat}.  The
+algorithm starts with $\RE = \{\top\}$.  In the first loop, it adds
+the formulas $\mathsf{floor}$, $\mathsf{bowl}$, $\mathsf{cup}$, and
+$\mathsf{table}$, and then removes $\top$ because it is now subsumed.
+Not all of these formulas denote singletons; for instance,
 $\interp{\mathsf{cup}}$ contains two individuals.  So we iterate over
 the relations to refine our formulas.  After the first iteration over
 the relations, we have $\RE = \{ \mathsf{floor}, \mathsf{bowl} \sqcap

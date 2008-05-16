@@ -32,7 +32,7 @@ expressions obtained in the experiment, only 15 use relations.
 \begin{center}
 \includegraphics[width=0.2\textwidth]{drawers.png}
 \end{center}\vspace*{-3ex}
-\caption{A schematic view of the filing cabinets.}\label{fig:drawers}\vspace*{-3ex}
+\caption{A schematic view of the filing cabinets.}\label{fig:drawers}\vspace*{-1.5ex}
 \end{figure}
 
 
@@ -76,18 +76,17 @@ essentially the same computations if there are no relations.
 
 When we add relations, our algorithm is able to generate 10 of the 15
 human-produced relational descriptions correctly (in addition to the
-98 non-relational descriptions). This is shown in more detail in
-Fig.~\ref{fig:example_outputs}, which gives example outputs of the
-\el\ algorithm for three different orderings. (Notice that four of the
-15 descriptions occurred twice in the corpus.) Of the five
-human-produced descriptions that the \el\ algorithm cannot generate,
-three involve references to sets (\textit{the two blues ones in
-  horizontal sequence}/\textit{the two yellow drawers}), and two
-contain so much redundant information that our algorithm, which stops
-once it has found a distinguishing description, cannot
-reproduce it. While the
-algorithm cannot reproduce those descriptions, it does generate other,
-simpler descriptions for them.
+98 non-relational descriptions).  Fig.~\ref{fig:example_outputs} gives
+example outputs of the \el\ algorithm for three different orderings,
+which together achieve this coverage.  Of the five human-produced
+descriptions that the \el\ algorithm cannot generate, three involve
+references to sets (\textit{the two blues ones in horizontal
+sequence}/\textit{the two yellow drawers}), and two contain so much
+redundant information that our algorithm, which similar to the
+Incremental Algorithm allows for some redundancy but stops once it has
+found a distinguishing description, cannot reproduce them. It does,
+however, generate other, simpler descriptions for all of the
+human-produced descriptions that cannot be reproduced exactly.
 
 %two mention column information, which we excluded from our domain, and
 
@@ -112,7 +111,7 @@ propositional and four relational symbols; each individual had a 10\%
 chance to be in the extension of each propositional symbol, and each
 pair of individuals had a 10\% chance to be related by a relational
 symbol.  The results (averaged over 10 runs for each model size) are
-shown in Fig.~\ref{fig:runtimes}.  As the figure shows, the \el\
+shown in Fig.~\ref{fig:runtimes}.  The \el\
 algorithm takes about 350 ms on average to generate relational REs for
 all individuals in the model of size 100, i.e.\ less than 4 ms on
 average for each individual.  The \alc\ algorithm is even faster, at
@@ -174,13 +173,13 @@ sentence planning and realization, such as in \newcite{KolSto07}.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{runtimes}
+  \includegraphics[width=\columnwidth]{runtimes}\vspace*{-2ex}
   \caption{Average runtimes (in ms) of the two algorithms on random
-    models with different numbers of individuals.}%%of different sizes.} 
-  \label{fig:runtimes}
+    models with different numbers of individuals.}
+  \label{fig:runtimes}\vspace*{-1.5ex}
 \end{figure}
 
-One problem that arises in our approach specifically is that both
+One problem that arises in our approach is that both
 algorithms derive some measure of efficiency from their freedom to
 build formulas without having to respect any linguistic constraints.
 It seems straightforward, for instance, to extend Krahmer et al.'s

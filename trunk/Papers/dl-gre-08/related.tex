@@ -21,16 +21,16 @@ these previous approaches.
 Where our approach breaks new ground is in the way these formulas are
 computed: It successively refines a decomposition of the domain into
 subsets.  In this way, it is reminiscent of the Incremental Algorithm,
-which in fact can be seen as the special case of the \el\ algorithm.
-However, unlike
-\newcite{dale91:_gener_refer_expres_invol_relat} and its successors,
-such as \newcite{kelleher06:_increm_gener_of_spatial_refer},
-we do not have to take special precautions to avoid infinite
-regress. While Dale and Haddock's algorithm attempts to generate a RE
-for a single individual, for successive individuals in the model, our
-algorithms consider all individuals in parallel.  It monotonically
-refines a partition of the model and never needs to backtrack, and
-therefore is always guaranteed to terminate.
+which in fact can be seen as a special case of the \el\ algorithm.
+However, unlike \newcite{dale91:_gener_refer_expres_invol_relat} and
+its successors, such as
+\newcite{kelleher06:_increm_gener_of_spatial_refer}, we do not have to
+take special precautions to avoid infinite regress. While Dale and
+Haddock's algorithm attempts to generate a RE for a single individual,
+for successive individuals in the model, our algorithms consider all
+individuals in parallel.  It monotonically refines a partition of the
+model and never needs to backtrack, and therefore is always guaranteed
+to terminate.
 
 
 \begin{figure}

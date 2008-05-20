@@ -1,0 +1,29 @@
+\section{RMRS comparison as entailment}
+\label{sec:entailment}
+
+Now that we have the formal tools in place, let's go back to the
+problem of checking compatibility of semantic outputs.  We can phrase
+this as RMRS entailment.  This is progress already.
+
+Then show the representation theorem of entailment as solved form
+comparison:
+
+\begin{thm}
+  Let $\varphi, \varphi'$ be two RMRSs.  Then $\varphi \models
+  \varphi'$ iff for every solved form $S$ of $\varphi$, there is a
+  solved form $S'$ of $\varphi'$ such that $S$ is an extension of
+  $S'$.
+\end{thm}
+
+(Of course, this doesn't give us an efficient algorithm for entailment
+checking, because the number of solved forms may be exponential on
+each side.  And we still don't know the complexity of deciding
+entailment (even for normal dominance constraints).  Nevertheless,
+this is nice, because it illustrates that our model theory is both
+pretty and useful for proving stuff.)
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "rmrs-08"
+%%% End: 

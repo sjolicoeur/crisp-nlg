@@ -86,7 +86,6 @@
   </entry>
 
 
-
   <entry word='rabbit' pos='N'>
     <tree refid="i.N">
       <semcontent>rabbit(self)</semcontent>

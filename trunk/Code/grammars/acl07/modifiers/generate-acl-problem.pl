@@ -83,15 +83,6 @@ print GRAMMAR <<'EOP';
     </tree>
   </entry>
 
-  <entry word='takes' pos='V'>
-    <tree refid="i.nx0Vnx1Pnx2">
-      <lex pos="P" word="from" />
-      <semcontent>takefrom(self,subj,obj,ppobj)</semcontent>
-      <semreq>animate(subj)</semreq>
-      <semreq>in(obj,ppobj)</semreq>
-    </tree>
-  </entry>
-
 
 
   <entry word='rabbit' pos='N'>

@@ -1,19 +1,48 @@
 \documentclass[a4,11pt]{article}
 
 \usepackage{acl08}
-\usepackage{url,amsthm}
+\usepackage{times,examples, url,amsthm, amssymb, graphicx}
+
+\input{QobiTree}
 
 \newtheorem{thm}{Theorem}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{claim}{Claim}[section]
+\newtheorem{lemma}[theorem]{Lemma}
 
+\newcommand{\core}{Core-RMRS}
 
+\newcommand{\ovar}{\ensuremath{\mathsf{BVar}}}
+\newcommand{\nvar}{\ensuremath{\mathsf{NVar}}}
+\newcommand{\pred}{\ensuremath{\mathsf{Pred}}}
 
-\title{Combining deep and shallow semantic construction via RMRS}
+\newcommand{\vocab}{\ensuremath{\mathsf{v}}}
 
-\author{Alexander Koller \\ \url{a.koller@ed.ac.uk} \\ University of Edinburgh
+\newcommand{\Neq}{{:}}
+\newcommand{\dom}{\lhd^*}
+
+\newcommand{\spec}{\sqsubseteq}
+\newcommand{\ep}[3]{#1 {:} #2 {:} #3}
+\newcommand{\ARG}{\mathsf{ARG}}
+\newcommand{\qeq}{=_q}
+\newcommand{\qeqdom}{\lhd^*_q}
+\newcommand{\wedgedom}{\lhd^*_\wedge}
+
+\newcommand{\N}{\mathbb{N}}
+
+\newcommand{\handel}{\colon\!}
+
+\newcommand{\hidden}[1]{}
+
+\title{A Logic of Semantic Representations for Shallow Parsing}
+
+\author{Alexander Koller \\ {\small \url{a.koller@ed.ac.uk}} \\ University of Edinburgh
 \And
-Alex Lascarides \\ \url{alex@inf.ed.ac.uk} \\ University of Edinburgh
+Alex Lascarides \\ {\small \url{alex@inf.ed.ac.uk}} \\ University of Edinburgh
 \And
-Ann Copestake \\ \url{Ann.Copestake@cl.cam.ac.uk} \\ University of
+Ann Copestake \\ {\small \url{Ann.Copestake@cl.cam.ac.uk}} \\ University of
 Cambridge}
 \date{}
 
@@ -32,7 +61,7 @@ Cambridge}
 
 
 \bibliographystyle{acl}
-\bibliography{bibliography}
+\bibliography{lascarides}
 
 
 \end{document}

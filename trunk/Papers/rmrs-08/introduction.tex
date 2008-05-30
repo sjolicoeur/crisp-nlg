@@ -1,14 +1,88 @@
-\section{Introduction} \label{sec:introduction}
+\section{Introduction} \label{sec:intro}
 
-What we'll do here.  Problem: integrate semantic representations
-computed by deep and shallow parsing.  We represent both in RMRS,
-which we define cleanly here for the first time.  We also introduce a
-model theory for RMRS.  This allows us to define ``compatibility'' of
-deep and shallow semantic representations as entailment of RMRS
-representations; we define entailment and characterize it
-syntactically as extension of solved forms.
+% What we'll do here.  Problem: RMRS is designed to support building
+% semantic components to shallow parsers, and is intended to offer a way
+% of integrating semantic representations
+% computed by deep and shallow parsing.  We demonstrate the feasibility
+% of this for the first time, by introducing a model theory for RMRS,
+% defining entailment among RMRS representations and characterising this
+% entailment relation 
+% syntactically as extension of solved forms (ref to solved forms).  
+% We show that the ``compatability'' of
+% deep and shallow semantic representations is definable in terms of the
+% entailment 
+% relation between the RMRS
+% representations.
 
-just so we have a citation here: \cite{Copestake_etal:MRS}
+% just so we have a citation here: \cite{Copestake_etal:MRS}
+
+Representing semantics as a logical form that supports automated
+inference and model construction is vital for deeper language
+engineering tasks, such as dialogue systems.
+These need access to the vast array of
+semantic information that is captured in conventional logical forms,
+including (but not limited to) information about semantic scope and
+predicate argument structure.  Hand-crafted grammars yield detailed
+logical forms (e.g., \cite{butt:etal:1999,copestake:flickinger:2000}), but deep parsing tends to lack
+robustness: hand-crafted grammars fail to cover all words and
+linguistic constructions; and unedited text and speech contains
+ill-formed phrases, which by design deep grammars do not handle.  
+\hidden{
+Deep
+parsers on their own also lack ambiguity resolution techniques,
+producing all possible analyses.  Integration of statistical parse
+selection with deep parsing is promising (e.g.,
+\cite{toutanova:etal:2004}), but is not a solved problem.
+}
+
+Robost language processors that produce a single conventional logical
+form for a given natural language string are beginning to emerge
+(e.g.,
+\cite{bos:etal:2004,rupp:etal:2000,wong:mooney:2006,zettlemoyer:collins:2005}).
+But the output of these systems don't relate to any gold standard deep
+parse as produced by expert grammar developers (for instance, while
+the training corpus used in \cite{zettlemoyer:collins:2005} features
+control phenomena in the language strings, their logical forms don't
+represent it).  This makes it hard to judge the logical forms that the
+models derive from a linguistic perspective; nor can one integrate
+their output with that of a hand-crafted grammar when desired.
+
+This paper focusses on a particular approach to producing semantic
+information from robust parsers, exemplified in
+\cite{copestake:2003,frank:2004}, among others.  Their strategy is to
+utilise semantic underspecification to semi-automatically build
+semantic components to shallow parsers, so that the output neither
+over-determines nor under-determines the semantic information that is
+revealed by the (shallow) syntactic analysis.  The semantic formalism
+used to express this is Robust Minimal Recursion Semantics ({\sc
+  rmrs}, \cite{copestake:2003}); this is an extension of {\sc mrs}
+\cite{copestake:etal:2005} that is designed to be maximally flexible
+in the type of semantic information that can be left underspecified:
+it can express partial information about semantic scope, the values of
+arguments to predicate symbols and/or their argument position, the
+arity of the predicate symbols and the sorts of arguments they take.
+We show in Section~\ref{sec:motivation} that all these features are
+needed when information about lexical subcategorisation or
+syntactic dependencies is missing---a characteristic feature of
+shallow parsers.  Several researchers have demonstrated that {\sc
+  rmrs} is a suitable framework on which to semi-automatically
+construct semantic components to shallow parsers, ranging in depth
+from {\sc pos} taggers (refs) to chunk parsers (frank ref) and
+intermediate parsers ({\sc rasp} ref).
+
+A major motivation for adopting {\sc rmrs} over other techniques for
+robustly deriving logical forms is the promise that it can form the
+basis for integrating the output of several parsers, and be compared
+in particular with the output of a hand-crafted grammar.  This paper
+demonstrates the feasibility of this integration for the first time,
+by introducing a model theory for {\sc rmrs}, that in turn defines
+entailment among {\sc rmrs} representations.  This entailment relation
+is also characterised syntactically as an extension of solved forms
+(ref to solved forms).  We show that the proof theory and model theory
+of {\sc rmrs} that results provides a formal basis for integrating the
+semantic output of several shallow parsers, for checking the
+satisfiability of a shallow parse, and for testing its compatibility
+with a deep parse.
 
 %%% Local Variables: 
 %%% mode: latex

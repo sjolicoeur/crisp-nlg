@@ -1,12 +1,361 @@
 \section{Robust Minimal Recursion Semantics}
 \label{sec:rmrs}
 
-Define syntax of RMRS; model theory of RMRS; solved forms.  Explain
-the role of the RMRS models (= trees) in the semantic construction
-pipeline, in particular with respect to decoding trees into semantic
-representations of the base language formalism.  Present examples in
-MRS syntax first, then in our RMRS language.  Finally, compare our
-version of RMRS against MRS and dominance constraints.
+% Define syntax of RMRS; model theory of RMRS; solved forms.  Explain
+% the role of the RMRS models (= trees) in the semantic construction
+% pipeline, in particular with respect to decoding trees into semantic
+% representations of the base language formalism.  Present examples in
+% MRS syntax first, then in our RMRS language.  Finally, compare our
+% version of RMRS against MRS and dominance constraints.
+
+\subsection{RMRS Syntax}
+
+To formalise the basic ideas from Section~\ref{sec:motivation}, 
+we start by defining the syntax of the {\sc rmrs} language.
+We adopt a
+syntax in the style of {\sc clls} (ref), in that labels, anchors and
+holes are all represented as {\em node variables}
+$\nvar=\{X,Y,X_1,\ldots\}$---the distinction among them comes
+from their position in the formulae of an {\sc rmrs} description (see
+Definition~\ref{defn:rmrs-syntax}). 
+The {\sc rmrs} vocabulary also includes
+base variables $\ovar$, consisting of
+individual variables $\{x,x_1,y,\ldots\}$ and event variables
+$\{e_1,\ldots\}$ (one can also include supersorts to
+these, but we forego doing so here).  Finally, the vocabulary includes
+0-ary predicate symbols $\pred=\{P,Q,P_1,\ldots\}$.  
+
+\begin{definition}\label{defn:rmrs-syntax}
+An {\sc rmrs} is an underspecified description $\varphi$ consisting of a
+finite set of atoms 
+of the forms in (\ref{eg:atomic-forms}), such that $\varphi$
+satisfies the
+following three constraints:
+\begin{enumerate}
+\item   If $\ep{X}{Y}{P}, \ep{Z}{Y}{Q}\in \varphi$, then $X=Z$ and $P=Q$
+  (i.e., each predication in $\varphi$ has a unique anchor);
+\item   If $\ARG_S(X,v)\in \varphi$, then $X:Y:P\not\in \varphi$ and
+  $ARG_{S'}(Y,X)\not\in \varphi$ for any $Y\in \nvar$ and
+  $P\in \pred$ (i.e., the first argument to an ARG-relation must be an
+  anchor).
+\item   If $\ep{X}{Y}{P}\in \varphi$, then $\ep{Y}{Z}{Q},
+  \ep{Z}{X}{Q}\not\in \varphi$ for all 
+  $Z\in \nvar$ or $Q\in \pred$ (i.e., an anchor cannot be a label, or
+  {\em vice versa}).
+\end{enumerate}
+\begin{examples}
+\item   \label{eg:atomic-forms}
+$\begin{array}{rrll}
+\varphi &::= &\ep{X}{Y}{P} \\ %& \mbox{labelled elementary predication} \\
+&| &\ARG_S(X,v) \\ % & \mbox{ARG relation for base variables} \\
+&| &\ARG_S(X,Y) \\ % & \mbox{ARG relation for node variables} \\
+&| &X \qeq Y \\ % & \mbox{QEQ} \\
+&| &v_1 = v_2 \;|\; v_1 \neq v_2 \\ % & \mbox{base variable
+                                % (in)equality} \\
+&| &X = Y \;|\; X \neq Y \\ % & \mbox{node variable (in)equality} \\
+&| &P \spec Q % & \mbox{SPEC relation between predicate symbols}
+\end{array}
+$
+\end{examples}
+\end{definition}
+
+The subscript $S$ in the ARG relations stands for a subset of $\N$ which
+is either finite or $\N$ 
+itself.  The original {\sc rmrs} syntax $\ARG_i$ is 
+an abbreviation of $\ARG_{\{i\}}$ and $\ARG_n$ is an abbreviation of
+$\ARG_\N$.  Furthermore, $l:a:P(v)$ in the {\sc rmrs}s from
+Section~\ref{sec:motivation} and earlier papers (e.g.,
+\cite{copestake:2003}) 
+is a notational variant of $\{X:Y:P, ARG_{\{0\}}(v)\}$ in
+Definition~\ref{defn:rmrs-syntax}.  
+
+\subsection{Model Theory}
+
+The model theory formalises the relationship between an {\sc rmrs} and
+the fully specific, alternative logical forms that it describes, as
+expressed in the base language.
+As suggested in Section~\ref{sec:motivation},  each model $\tau$
+corresponds to a unique formula of the base language, conceived as a
+tree (see Figure~\ref{fig:1}).  {\em Satisfaction} must then give rise
+to a notion of {\em 
+  truth} and {\em entailment} that respectively correspond to an {\sc
+  rmrs} $\varphi$ being a partial description of $\tau$, and one {\sc
+  rmrs} $\varphi$ being more specific than another $\varphi'$ (in the sense that
+$\varphi$ imposes more
+constraints than $\varphi'$ on the possible fully-specific logical forms).
+
+Since each model corresponds to a (unique) base language formula, defining
+models depends on the base-language's vocabulary $\Sigma$.  More
+formally, $\Sigma$ is a sorted signature of
+base-language constructors $f$ of sorts $s_1\times\ldots
+s_n\rightarrow s$,
+where $s,s_1,\ldots,s_n\in {\cal S}$, ${\cal S}$ being the sort
+hierarchy for $\Sigma$.  We call $n\geq 0$ the {\em arity} of $f$, and
+we write $\Sigma_i$ and $\Sigma_{\geq i}$ for the constructors in $\Sigma$
+with arity exactly $i$ and at least $i$ respectively.
+
+The models of {\sc rmrs} are then defined to be finite constructor
+trees:
+\begin{definition}\label{defn:models}
+A {\em finite constructor tree} $\tau$ is
+a function $\tau:D
+\rightarrow \Sigma$ such that $D$ is a \emph{tree domain} (i.e., a subset of
+$\N^*$ which is closed under prefix and left sibling) and the number
+of children of each node $u \in D$ is equal to the arity of $\tau(u)$.
+We define the \emph{sort} $s(u)$ of each node $u$ in $\tau$ bottom-up
+by saying that if $u$ has children $u_1,\ldots,u_n$ and $s(\tau(u)) =
+s_1 \times \ldots \times s_n \rightarrow s$, then $s(u) = s$ iff
+$s(u_i) \leq s_i$ for all $i$.  $\tau$ is \emph{well-sorted} if
+all nodes can be assigned sorts in this way.  In what follows, we only consider
+well-sorted finite constructor trees.
+\end{definition}
+
+The same tree $\tau$ can
+represent formulas from different-style base languages (e.g.,
+extensional and modal languages, {\sc drt}, etc) by 
+leaving the encoding flexible.  But for reasons 
+of space, we don't
+explore this here; for simplicity, we
+assume a sort hierarchy ${\cal S}$ for $\Sigma$ that is
+closely related to the sorts of {\sc rmrs} descriptions
+themselves.  So ${\cal S}$ contains the sorts
+$h$ (for subformulas), $x$ (for individual variables) and $e$ (for event
+variables).
+We also
+assume that $\Sigma$ contains conjunction constructors
+$\wedge_i: h\times\ldots h\rightarrow h$ of arity $i$ for every
+$i\in \N$.  We write $D(\tau)$ for the tree domain of a
+constructor tree $\tau$, and further define the following relations
+between nodes in a finite constructor tree:
+
+\begin{definition}\label{defn:dominance}
+$u \qeqdom v$ iff $v = u \cdot 2^k$ for some $k \geq 0$ and all
+  symbols $\tau(u), \tau(u \cdot 2), \ldots, \tau(u \cdot 2^{k-1})$
+  are quantifiers.
+
+$u \wedgedom v$ iff $u \leq v$ (i.e.\ it is a prefix), and all
+  symbols on the path from $u$ to $v$ (not including $v$) are one of
+  the $\wedge_i \in \Sigma$.
+\end{definition}
+
+The {\em satisfaction} relation between an {\sc rmrs} description $\varphi$
+and a finite constructor tree $\tau$ is defined in terms of several
+assignment functions.  The need for a 
+node variable
+assignment function
+$\alpha:
+\nvar
+\rightarrow D(\tau)$ is clear; the
+constraints on scope defined by the {\sc rmrs} must be resolvable to
+$\tau$'s specific
+specific scope information, and for any given $\tau$ there may be more
+than one way to do this.
+Secondly, to ensure that, for
+instance, the predications corresponding to {\em every} and {\em cat}
+in the {\sc rmrs}
+(\ref{eg:cat-pos}b)  partially describe fully-specific
+logical forms that accurately record the semantic dependency between
+these lexemes in (\ref{eg:cat}a) as well as partially describing
+fully-specific logical forms where they are not semantically
+dependent (e.g., as required when the same predications are produced
+from the {\sc pos} tagged sentence {\em every dog chased some cat}),
+the relationship of satisfaction 
+should ensure that the variables from $\ovar$ in an
+{\sc rmrs} description can
+map in a many-to-one way to variables in $D(\tau)$.  So
+satisfaction must also be defined in
+terms of 
+a (0-ary) variable assignment function
+$g:\ovar \rightarrow \Sigma_0$ from {\sc rmrs} variables to 
+base-language variables that respects the sorts, i.e.\
+$s(g(v)) \leq s(v)$ for all $v \in \ovar$.  Finally, satisfaction must
+be defined in terms of a relation $\sigma \subseteq
+\pred \times \Sigma_{\geq 1}$ that maps each
+{\sc rmrs} predicate symbol to a set of constructors from $\Sigma$.
+
+\begin{definition}\label{defn:satisfaction}
+Satisfaction of atoms is defined as follows:
+$$
+\begin{array}{l}
+  \tau, \alpha, g, \sigma \models  \ep{X}{Y}{P}
+\mbox{ iff}\\
+\qquad \tau(\alpha(Y)) \in \sigma(P) \mbox{ and } \alpha(X) \wedgedom
+  \alpha(Y) \\
+  \tau, \alpha, g, \sigma \models \ARG_S(X,a)
+\mbox{ iff exists  $i \in S$ s.t.}\\
+\qquad  \alpha(X) \cdot i \in D(\tau) \mbox{ and }
+  \tau(\alpha(X) \cdot 
+  i) = g(a) \\
+  \tau, \alpha, g, \sigma \models \ARG_S(X,Y)
+\mbox{ iff  exists $i \in S$ s.t.}\\
+\qquad \alpha(X) \cdot i \in D(\tau), \alpha(X) \cdot
+  i = \alpha(Y) \mbox{ and }\\
+\qquad
+s(\alpha(X) \cdot i) = h \\
+  \tau, \alpha, g, \sigma \models X \qeq Y
+\mbox{ iff } \alpha(X) \qeqdom \alpha(Y) \\
+  \tau, \alpha, g, \sigma \models X ={/}\neq Y
+\mbox{ iff } \\
+\qquad \alpha(X) ={/}\neq \alpha(Y) \\
+  \tau, \alpha, g, \sigma \models v_1 ={/}\neq v_2
+\mbox{ iff}\\
+\qquad g(v_1) ={/}\neq g(v_2) \\
+  \tau, \alpha, g, \sigma \models P \spec Q
+\mbox{iff $\sigma(P) \subseteq \sigma(Q)$}
+\end{array}
+$$
+A 4-tuple $\tau,\alpha,g,\sigma$ satisfies an underspecified
+representation $\varphi$ (written $\tau,\alpha,g,\sigma \models \varphi$)
+iff it satisfies all of its
+elements.
+\end{definition}
+Satisfaction encapsulates information about
+semantic scope ambiguities, missing
+information about 
+semantic dependencies and/or missing information about lexical
+subcategorisation and lexical senses.   For $j=\{1,2\}$, suppose that
+$\tau_j,\alpha_j,g_j,\sigma\models \varphi$ and let $\vocab(\varphi)$
+be the vocabulary that features in $\varphi$.  Then 
+$\varphi$ exhibits a semantic scope
+ambiguity if there is a $Y,Y'\in \vocab(\varphi)$ such that $\alpha_1(Y) \qeqdom
+\alpha_1(Y')$ and $\alpha_2(Y')\qeqdom \alpha_2(Y)$.   It exhibits
+missing information about semantic dependencies if $\exists v,v'\in
+\ovar$ in $\vocab(\varphi)$ such that $g_1(v)=g_1(v')$ and
+$g_2(v)\neq g_2(v')$.  It 
+exhibits missing lexical subcategorisation information if $\exists
+Y\in \vocab(\varphi)$ such that $\tau_1(\alpha_1(Y))$ is a constructor of a
+different type from $\tau_2(\alpha_2(Y))$.  And it exhibits missing
+lexical sense information if $\tau_1(\alpha_1(Y))$ and
+$\tau_2(\alpha_2(Y))$ are different base-language constructors, but of
+the same type.
+
+Truth, validity and entailment can now be defined in terms of
+satisfiability 
+in the usual way:
+\begin{definition}\label{defn:entailment}
+Let $\tau$ be a model, $\alpha$ a node variable assignment function,
+$g$ a 0-ary variable assignment function, $\sigma$ a mapping from
+$\pred$ to the powerset of $\Sigma$, and $\varphi,\varphi'$ {\sc rmrs}
+descriptions.  Then:
+\begin{description}
+\item   [truth:] $\tau\models \varphi$ iff $\exists \alpha,g,\sigma$  such
+  that $\tau,\alpha,g,\sigma\models \varphi$
+\item   [validity:] $\models \varphi$ iff $\forall \tau$, $\tau\models \varphi$.
+\item   [entailment:] $\varphi\models \varphi'$ iff $\forall \tau$, if
+  $\tau\models \varphi$ then $\tau\models \varphi'$.
+\end{description}
+\end{definition}
+% NOTE: This definition of entailment isn't right, because it allows
+% the assignment $\sigma$ from predicates to constructors to vary
+% when testing the satisfiability of $\varphi$ vs. $\varphi'$ with
+% respect to $\tau$.  I think that to get the notion of entailment we
+% want, $\sigma$ should actually be part of the {\sc rmrs} *model*.
+% In other words, an {\sc rmrs} model $M$ is a tuple $\langle \tau,
+% \sigma\rangle$, where $\tau$ is a finte constructor tree and
+% $\sigma$ is a mapping from $\Pred$ to the power set of $\Sigma$.
+% Then truth and entailment are defined correctly.  I believe our
+% proofs of things like Theorem~\ref{thm:big-one} actually assumes
+% that $\sigma$ is constant when interpreting $\varphi$ vs.\
+% $\varphi'$, no?
+
+\subsection{Solved Forms}
+
+Following the framework of dominance constraints, one can define a fragment
+of {\sc rmrs} descriptions, known as {\em solved forms}, which are
+guaranteed to be satisfiable.  For dominance constraints, solved forms
+are sets of constraints whose node variables form a forrest under the
+dominance relation $\dom$.  Solved forms for {\sc rmrs} must impose
+additional constraints, so as to ensure that all the (underspecified)
+ARG relations are satisfiable.  Indeed, we help to ensure this by
+substituting assuming that {\sc rmrs} solved forms have any variable
+equalities substituted into the ARG relations themselves.
+
+\begin{definition}\label{defn:solved-forms}
+  An RMRS $\varphi$ is \emph{in solved form} iff:
+  \begin{enumerate}
+  \item every variable in $\varphi$ is either a hole, a label or an
+    anchor (but not two of 
+    these);
+%% NOTE: The more constrained definition of an {\sc rmrs} description
+%% that we have now makes the set of labels and anchors mutually
+%% exclusive.  It does not make labels and holes mutually exclusive;
+%% nor anchors and holes mutually exclusive
+%% however.  
+  \item $\varphi$ doesn't contain equality, inequality, and SPEC
+    ($\sqsubseteq$) atoms;
+%   \item no downward-looking label occurs on the left-hand side of two
+%    different EPs;
+  \item if $\ARG_S(Y,i)$ is in $\varphi$, then $|S| = 1$;
+  \item for any label $Y$ and index set $S$, there
+    are no two atoms $\ARG_S(Y,i)$ and $\ARG_S(Y,i')$ in $\varphi$;
+  \item no label occurs on the right-hand side of two
+    different $\qeqdom$ atoms.
+  \end{enumerate}
+\end{definition}
+
+\begin{claim}
+  Every RMRS in solved form is satisfiable.
+\end{claim}
+\begin{proof}
+by constructing a model $\tau$ that
+contains for each predicate $P\in \varphi$ a member of $\sigma(P)$ with
+maximum arity, and that satisfies the ARGs and dominances in $\varphi$.
+\end{proof}
+
+One can now define the solved forms of an {\sc rmrs}
+description:
+\begin{definition}  \label{defn:solved-form-of}
+  The \emph{syntactic dominance relation} in an {\sc  rmrs} $\varphi$ is the
+  reflexive, transitive closure of the binary relation $$
+\begin{array}{r c l}
+\{(X,Y) & \mid &  \mbox{$\varphi$ contains $X \qeqdom Y$ or}\\
+&& \mbox{$ARG_S(X,Y)$ for some
+    $S$}\}
+\end{array}
+$$  
+We write $D(\varphi)$ for the syntactic dominance
+  relation of $\varphi$.
+
+  An RMRS $\varphi'$ is \emph{a solved form of} the RMRS $\varphi$
+  iff $\varphi'$ is in solved form and there is a substitution $s$
+  that maps the  node and base variables of $\varphi$ to the node and
+  base variables of $\varphi'$ such that
+  \begin{enumerate}
+  \item $\varphi'$ contains the EP $\ep{X'}{Y'}{P}$ iff there are
+    variables $X,Y$ such that $\ep{X}{Y}{P}$ is in $\varphi$, $X' =
+    s(X)$, and $Y' = s(Y)$;
+  \item for every atom $\ARG_S(X,i)$ in $\varphi$, there is exactly
+    one atom $\ARG_{S'}(X',i')$ in $\varphi$ with $X' = s(X)$, $i' =
+    s(i)$, and $S' \subseteq S$;
+  \item $D(\varphi') \supseteq s(D(\varphi))$.
+  \end{enumerate}
+\end{definition}
+
+\begin{claim}
+  For every model $\tau$ of some {\sc rmrs} $\varphi$, there is a solved form
+  $\varphi'$ of $\varphi$ such that $\tau$ is also a model of $\varphi'$.
+\end{claim}
+\begin{proof}
+  will be by constructing a solved form that respects the equalities,
+  ARGs, and dominances in $\tau$.
+\end{proof}
+
+\begin{prop}
+  Every {\sc rmrs} $\varphi$ has only a finite number of solved forms, up to
+  renaming of variables.
+\end{prop}
+\begin{proof}
+  Up to renaming of variables, there is only a finite number of
+  substitutions on the node and base variables of $\varphi$.  Let $s$
+  be such a substitution.  This fixes the set of EPs of any solved
+  form of $\varphi$ that is based on $s$ uniquely.  There is only a
+  finite set of choices for the subsets $S'$ in condition 2 of
+  Def.~\ref{defn:solved-form-of}, and there is only a finite set of
+  choices of new $\qeqdom$ atoms that satisfy condition 3.  Therefore,
+  the set of solved forms of $\varphi$ is finite.
+\end{proof}
+
+
 
 
 %%% Local Variables: 

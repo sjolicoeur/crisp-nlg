@@ -34,7 +34,7 @@ developing systems to participate in the challenge.
 
 \begin{figure}
 \centering
-\ldots 
+\includegraphics[width=1 \columnwidth]{give_world_no_expl}
 \caption{Map of the GIVE development world.}
   \label{fig:give-development-world}
 \end{figure}
@@ -52,11 +52,11 @@ pos-2-2, west)$, $manipulate-b_1-off-on(pos-2-2)$,
 $turn-right(west,north)$, \todo{complete this} and so on.  Under the
 current implementation of the planning problem, the shortest plan for
 getting the player from the initial state to the goal (in which they
-are holding the trophy) has \todo{107} steps, most of which are
-``move'' actions.  The bulk of the GIVE problem is therefore a variant
-of the Gridworld problem, which also involves finding a route through
-a world with discrete positions -- but with the need to press buttons
-in the right order and with somewhat more complicated room shapes.
+are holding the trophy) has 104 steps, most of which are ``move''
+actions.  The bulk of the GIVE problem is therefore a variant of the
+Gridworld problem, which also involves finding a route through a world
+with discrete positions -- but with the need to press buttons in the
+right order and with somewhat more complicated room shapes.
 
 It is interesting to note that although the task of a GIVE NLG system
 could be seen as mapping a domain plan to a sequence of NL
@@ -86,7 +86,7 @@ such instruction sequences must be tightly integrated with the planner
 in order to exploit the simultaneous effect of the first two
 instructions on the world and on the communicative situation.
 
-\todo{equivalent plans; plan recognition}
+\todo{equivalent plans; plan recognition; real-time requirements}
 
 
 %%% Local Variables: 

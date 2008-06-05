@@ -1,16 +1,50 @@
 \section{Discussion} \label{sec:discussion}
 
+The positive conclusion we can draw from the experiments reported
+above is that for the most part, modern planners are pretty good at
+controlling the search for the NLG-related inputs that we looked at.
+This is particularly true for FF in the sentence generation domain,
+which generates nontrivial 14-word sentences in about two seconds.
+There is still room for improvement (a special-purpose algorithm for
+referring expressions could generate ten of these 14 words in a few
+milliseconds), and the search becomes slower -- for obvious reasons --
+in the almost completely unconstrained world of Experiment 2, but
+search is not the main efficiency bottleneck.
 
-planning competition makes for great starting point for users
+The most restrictive bottleneck in the two domains we have looked at
+in this paper is the initial grounding step that almost all modern
+planners perform.  Our conclusion from the experiments reported above
+is that this is a good strategy in domains where the typical plan
+length dominates the typical universe size, i.e.\ where the initial
+investment into grounding pays off in saved unifications during the
+search.  However, as we have shown, there are natural planning domains
+in which relatively short plans must be computed in large universes;
+it is not unrealistic for the universe in the sentence generation
+domain to consist of thousands of domain individuals and tens of
+thousands of actions, some of which take three domain individuals as
+parameters.  The common strategy of splitting the universe over
+several types of individuals will not be very effective here.
 
-grounding only makes sense if the plans are long, compared to the
-domain size
+We believe that if planning is to become a mature technology which
+real-world users will believe in, it must find a way to deal with the
+grounding problem more gracefully than current systems do.  The
+research focus in developing planning algorithms has quite rightfully
+been on dealing with the search, and for this it is convenient --
+depending on the particular algorithm, necessary -- to ground out all
+predicates and actions before starting the search itself.  However, we
+think that the domains presented here are not that unusual in their
+ratio of plan length against universe size.  At the end of the day,
+real-world users will care about the \emph{total} runtime of a
+planner, and this is more than just the search.
 
-all sorts of minor problems: discovered bugs both in SGPLAN and FF;
-FF input files limited to about 10.000 lines
-
-typed domain is not a silver bullet -- sometimes we just have lots of
-things of the same kind
+By and large, it is a relatively pleasant experience to come as a
+``customer'' to the planning community: Thanks to the competitions, it
+is easy to identify and download a fast implementation, at least for
+Linux.  However, in the course of our experiments we found (and
+reported) bugs in both SGPLAN and FF.  And as our experiments have
+shown, there is no one silver bullet: Even planners as closely related
+as FF and SGPLAN can differ significantly in their performance on
+different domains.
 
 %%% Local Variables: 
 %%% mode: latex

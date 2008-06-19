@@ -40,15 +40,17 @@ in these domains. In particular, we explore the efficiency of FF
 varying-sized instances of our planning domains. We also compare these
 results against an ad-hoc Java implementation of GraphPlan.  Our findings
 are mixed. On the one hand, it turns out that modern planners handle some
-of the search problems that arise in NLG quite easily. (Large problem
-instances remain a challenge.) On the other hand, these same planners spend
-tremendous amounts of time on preprocessing. For instance, FF spends 90\%
-of its runtime in the sentence generation domain on grounding out literals
-and actions, and ends up slower than our version of GraphPlan that avoids
-grounding. For domains like ours, which are dominated by the number of
-actions and the universe size rather than the combinatorics of the search
-problem, this observation suggests that the overall runtime of a planner
-could be improved by grounding more selectively.
+of the search problems that arise in NLG quite easily (although large
+problem instances remain a challenge). On the other hand, these same
+planners spend tremendous amounts of time on preprocessing. For instance,
+FF spends 90\% of its runtime in the sentence generation domain on
+grounding out literals and actions, and ends up slower than our version of
+GraphPlan that avoids grounding. For domains like ours, which are dominated
+by the number of actions and the universe size, rather than the
+combinatorics of the search problem, this observation suggests that the
+overall runtime of a planner could be improved by grounding more
+selectively. We therefore offer these domains as challenges for the
+planning community.
 
 
 %Natural language generation (NLG; \citeauthor{reiter00building} 2000)

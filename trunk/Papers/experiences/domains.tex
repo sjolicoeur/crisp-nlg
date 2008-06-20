@@ -124,10 +124,7 @@ The object of the GIVE Challenge (``Generating Instructions in Virtual
 Environments''; Koller et al.\
 \citeyear{alexander07:_shared_task_propos}) is to build an NLG system
 which is able to give natural-language instructions which will guide a
-human user in performing some task in a virtual environment.  A map of
-an example world is shown in Fig.~\ref{fig:give-development-world};
-instructions for the first steps could be ``turn left; press the
-button; turn right and walk through the door;'' and so forth.  From an
+human user in performing some task in a virtual environment.  From an
 NLG perspective, GIVE makes for an interesting challenge because it is
 a theory-neutral task that exercises all components of an NLG system,
 and emphasizes the study of communication in a (simulated) physical
@@ -136,7 +133,7 @@ system can be physically in different places, as long as the 3D client
 and the NLG system are connected over a network.  This makes it
 possible to evaluate GIVE NLG systems on a large scale over the
 Internet.  The first GIVE evaluation will take place in late 2008;
-currently seven research teams from five countries are working on
+currently eight research teams from five countries are working on
 developing systems to participate in the challenge.
 
 \begin{figure}
@@ -146,52 +143,59 @@ developing systems to participate in the challenge.
   \label{fig:give-development-world}
 \end{figure}
 
-\todo{explain world? -- yes, definitely}
+A map of an example world is shown in
+Fig.~\ref{fig:give-development-world}.  In this world, the user's task
+is to pick up a trophy in the top left room.  The trophy is hidden in
+a safe behind a picture, and the user must therefore first move the
+picture away and open the safe by pushing a sequence of buttons (the
+small square boxes on the walls) in the correct order.  In order to
+get to all these buttons, they must also open the lower door and
+deactivate the alarm tile by pushing further buttons.  To simplify
+both the planning and the NLG task, the world is discretized into
+tiles of equal size; the user can turn by 90 degree steps in either
+direction, and can move from the center of one tile to the center of
+the next.  Some actions that the user can take are shown in
+Fig.~\ref{fig:give-planning}.  The first few steps of one shortest
+plan to achieve the goal are:
+\begin{enumerate}
+\item $\mathsf{turn-left}(\mathsf{north}, \mathsf{west})$
+\item $\mathsf{move}(\mathsf{pos\_5\_2}, \mathsf{pos\_4\_2}, \mathsf{west})$
+\item $\mathsf{manipulate-b1-off-on}(\mathsf{pos\_5\_2})$
+\item $\mathsf{turn-right}(\mathsf{west}, \mathsf{north})$
+\end{enumerate}
 
+\begin{figure}
+  \centering
+  xxxxx
+  \caption{Excerpt from the GIVE planning problem.}
+  \label{fig:give-planning}
+\end{figure}
 
-One crucial component of a GIVE system is a planner which will compute
-a domain plan that consists of the actions the user has to execute to
-achieve the goal.  For these purposes, the virtual world is
-discretized into a planning problem in which each object has a
-symbolic position and orientation.  The first few action instances in
-the example domain could be $turn-left(north,west)$, $move(pos-3-2,
-pos-2-2, west)$, $manipulate-b_1-off-on(pos-2-2)$,
-$turn-right(west,north)$, \todo{complete this} and so on.  Under the
-current implementation of the planning problem, the shortest plan for
-getting the player from the initial state to the goal (in which they
-are holding the trophy) has 104 steps, most of which are ``move''
-actions.  The bulk of the GIVE problem is therefore a variant of the
-Gridworld problem, which also involves finding a route through a world
-with discrete positions -- but with the need to press buttons in the
-right order and with somewhat more complicated room shapes.
-
-It is interesting to note that although the task of a GIVE NLG system
-could be seen as mapping a domain plan to a sequence of NL
-instructions, this mapping is not trivial.  It would be
-\emph{possible} to express the last part of the above example plan as
-``turn right; walk forward; walk forward; turn right; walk forward;
-walk forward; turn left; walk forward'', but this is a very clumsy way
-of phrasing the instruction ``turn around and walk through the door''
-that will frustrate users and lead to bad evaluation results.  In
-other words, it is important to aggregate multiple movement actions
-into a single NL instruction.  On the other hand, it may be necessary
-to generate instructions that don't correspond to domain actions.  For
-instance, it will be necessary to find a correct referring expression
-for $b_1$ in order to express the action
-$manipulate-b_1-off-on(pos-2-2)$.  The interaction between referring
-and instructing can go much deeper than that.  Imagine, for example,
-that the user just entered the top right room, and we want to instruct
-them to press $b_4$.  At that point in time, the user can see six
-different buttons, and generating a single instruction of the form
-``push X'' is difficult.  However, an instruction sequence like ``walk
-forward; turn left; now press the button right in front of you'' will
-be successful and natural.  Here the first two instructions do double
-duty by preparing the simple referring expression ``the button right
-in front of you'', which is only valid after the user's position and
-orientation changed.  A generation system that is supposed to generate
-such instruction sequences must be tightly integrated with the planner
-in order to exploit the simultaneous effect of the first two
-instructions on the world and on the communicative situation.
+This shortest plan consists of 108 action instances, most of which are
+``move'' actions.  The bulk of the GIVE problem is therefore a variant
+of the Gridworld problem, which also involves finding a route through
+a world with discrete positions -- but with the need to press buttons
+in the right order and with somewhat more complicated room shapes.  In
+this example, the NLG system could generate an instruction sequence
+starting with ``turn left; walk forward; press the button; turn right;
+walk forward; walk forward; turn right; walk forward; walk forward;
+turn left; walk forward''.  However, this would be clumsy and boring,
+and it is to be expected that frustrated users will quickly cancel an
+interaction with such a system, resulting in a bad evaluation score.
+Having just pressed the button, it would be much better to say ``turn
+around and walk through the door''.  This means that the mapping from
+action instances to natural language instructions is not trivial.
+Conversely, it may also be necessary to express a single planning step
+with several instructions.  Having just entered the top left room, it
+may be easier for the user to understand the instruction ``walk to the
+center of the room; turn right; now press the green button in front of
+you'' than the instruction ``press the green button on the wall to
+your right''.  To plan the referring expression ``the green button in
+front of you'' at a time when the button is not yet in front of the
+user, the NLG system must keep track of the hypothetical changes in
+what objects are visible to the user.  Thus the acts of referring and
+instructing, and the modules for planning and NLG, must be integrated
+tightly.
 
 \todo{equivalent plans; plan recognition; real-time requirements}
 

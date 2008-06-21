@@ -8,7 +8,7 @@ for FF in the sentence generation domain, which generates nontrivial
 improvement, however. For instance, by comparison a special-purpose
 algorithm for referring expressions could generate ten of these 14-word
 sentences in a few milliseconds. Although search efficiency is not the main
-performance concern in these domains, it nevertheless becomes a factor in
+performance metric in these domains, it nevertheless becomes a factor in
 scenarios like Experiment~2, where the world is almost completely
 unconstrained and (unsurprisingly) the search becomes much slower.
 
@@ -51,26 +51,54 @@ types of individuals will not be very effective here.
 %parameters.  The common strategy of splitting the universe over
 %several types of individuals will not be very effective here.
 
-We believe that if planning is to become a mature technology which
-real-world users will believe in, it must find a way to deal with the
-grounding problem more gracefully than current systems do.  The
-research focus in developing planning algorithms has quite rightfully
-been on dealing with the search, and for this it is convenient --
-depending on the particular algorithm, necessary -- to ground out all
-predicates and actions before starting the search itself.  However, we
-think that the domains presented here are not that unusual in their
-ratio of plan length against universe size.  At the end of the day,
-real-world users will care about the \emph{total} runtime of a
-planner, and this is more than just the search.
+The recent trend in planning research has (rightfully) focused on the
+development of alorithms that control search in sophisticated ways,
+resulting in a host of planners that are more powerful and more successful
+than their predecessors. Depending on the particular algorithm, however,
+these planners often ground out sets of predicates and actions before
+starting the search itself, which has a very pronounced effect on domains
+such as those described above. Since our domains are not that unusual in
+their structure and composition, we hope that the lessons learnt from our
+experiences can help improve the performance of current systems. We believe
+that such improvements are necessary if planning is to become a more mature
+technology that can offer tools to a wider community of users. At the end
+of the day, real-world users will care about the \emph{total} runtime of a
+planner, and this is more than just the search time.
+%We offer our larger problem instances as future challenges for the
+%planning community.
 
-By and large, it is a relatively pleasant experience to come as a
-``customer'' to the planning community: Thanks to the competitions, it
-is easy to identify and download a fast implementation, at least for
-Linux.  However, in the course of our experiments we found (and
-reported) bugs in both SGPLAN and FF.  And as our experiments have
-shown, there is no one silver bullet: Even planners as closely related
-as FF and SGPLAN can differ significantly in their performance on
-different domains.
+%We believe that if planning is to become a mature technology which
+%real-world users will believe in, it must find a way to deal with the
+%grounding problem more gracefully than current systems do.  The
+%research focus in developing planning algorithms has quite rightfully
+%been on dealing with the search, and for this it is convenient --
+%depending on the particular algorithm, necessary -- to ground out all
+%predicates and actions before starting the search itself.  However, we
+%think that the domains presented here are not that unusual in their
+%ratio of plan length against universe size.  At the end of the day,
+%real-world users will care about the \emph{total} runtime of a
+%planner, and this is more than just the search.
+
+By and large, our experiences with the planning community from the point of
+view of a ``customer'' (one of the authors is not a planning researcher)
+have been relatively pleasant. Thanks to the planning competitions, it is
+easy to identify and download a fast implementation, at least for Linux.
+However, in the course of our experiments we found (and reported) bugs in
+both SGPLAN and FF. We also discovered that deciding between the range of
+available planners is not always straightforward. As our experiments have
+shown, even planners as closely related as FF and SGPLAN can differ
+significantly in their performance on different domains.
+
+%By and large, it is a relatively pleasant experience to come as a
+%``customer'' to the planning community: Thanks to the competitions, it
+%is easy to identify and download a fast implementation, at least for
+%Linux.  However, in the course of our experiments we found (and
+%reported) bugs in both SGPLAN and FF.  And as our experiments have
+%shown, there is no one silver bullet: Even planners as closely related
+%as FF and SGPLAN can differ significantly in their performance on
+%different domains.
+
+
 
 %%% Local Variables: 
 %%% mode: latex

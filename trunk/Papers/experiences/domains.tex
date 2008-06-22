@@ -7,30 +7,34 @@ generation domain and the instruction giving domain.
 \subsection{Sentence generation as planning}
 
 Sentence generation is the problem of computing, from a grammar and a
-semantic representation, a single sentence that expresses this piece
-of meaning.  This problem is traditionally split into several steps
-\cite{reiter00building}.  In a first step, called \emph{sentence
-  planning}, the semantic representation is first enriched with more
-information; for instance, \emph{referring expressions}, which refer
-to individuals that we want to talk about, are determined at this
-point.  In a second step, called \emph{surface realization}, this
-enriched representation is then translated into a natural-language
-sentence, using the grammar.
+semantic representation, a single sentence that expresses this piece of
+meaning.  This problem is traditionally split into several steps
+\cite{reiter00building}.  In a first step, called \emph{sentence planning},
+the semantic representation is first enriched with more information; for
+instance, \emph{referring expressions}, which refer to individuals
+that we want to talk about, are determined at this point. In a second
+step, called \emph{surface realization}, this enriched representation is
+then translated into a natural-language sentence, using the grammar.
 
-However, determining referring expressions (REs) and realization
-interact, so it would be beneficial to perform both steps together.
-This was the goal of the SPUD system \cite{Stone2003a}, which
-performed both steps together using a top-down generation algorithm
-based on tree-adjoining grammars \cite{joshi;etal1997} whose lexical
-entries were equipped with semantic and pragmatic information.
-Unfortunately, SPUD suffered from having to explore a huge search
-space, and had to resort to a non-optimal greedy search strategy to
-retain reasonable efficiency.
+In practice, the process of determining referring expressions typically
+interacts with the realization step and so it turns out to be beneficial to
+perform both of these steps together. This was the goal of the SPUD system
+\cite{Stone2003a}, which performed both steps together using a top-down
+generation algorithm based on tree-adjoining grammars \cite{joshi;etal1997}
+whose lexical entries were equipped with semantic and pragmatic
+information. Unfortunately, SPUD suffered from having to explore a huge
+search space, and had to resort to a non-optimal greedy search strategy to
+retain reasonable efficiency. 
 
-\cite{KolSto07} attempt to improve the efficiency by translating the
-SPUD sentence generation problem into a planning problem and using a
-planning algorithm for generation.  We will now illustrate how they do
-this by a (simplified) example.
+%However, determining referring expressions and realization
+%interact, so it would be beneficial to perform both steps together.
+%This was the goal of the SPUD system \cite{Stone2003a}, which
+%performed both steps together using a top-down generation algorithm
+%based on tree-adjoining grammars \cite{joshi;etal1997} whose lexical
+%entries were equipped with semantic and pragmatic information.
+%Unfortunately, SPUD suffered from having to explore a huge search
+%space, and had to resort to a non-optimal greedy search strategy to
+%retain reasonable efficiency.
 
 \begin{figure}
   \centering
@@ -46,36 +50,40 @@ this by a (simplified) example.
   \label{fig:white-rabbit-sleeps-deriv}
 \end{figure}
 
-Consider a knowledge base containing the individuals $r_1$ and $r_2$;
-$r_1$ and $r_2$ are rabbits, $r_1$ is white and $r_2$ is brown, and
-$r_1$ sleeps.  Let's say we want to express the information
-$\{\mathsf{sleep}(r_1)\}$ using the tree-adjoining grammar shown in
-Fig.~\ref{fig:white-rabbit-sleeps-grammar}.  This grammar consists of
-\emph{elementary trees}, each of which contributes certain
-\emph{semantic content}.  We can instantiate these trees by
-substituting individuals for \emph{semantic roles}, such as
-$\mathsf{self}$ and $\mathsf{subj}$, and then combine the tree
-instances as shown in Fig.~\ref{fig:white-rabbit-sleeps-deriv} to
-obtain the sentence ``The white rabbit sleeps''.  The SPUD algorithm
-computes this grammatical derivation by starting with the elementary
-tree for ``sleeps''; this satisfies the need to convey the semantic
-information, but introduces a need to generate a noun phrase (NP) for
-the subject, which also refers uniquely to the target referent $r_1$.
-In a second step, it substitutes the tree for ``the rabbit'' into the
-open NP leaf, which makes the derivation grammatically complete; but
-as there are two different individuals that could be described as
-``the rabbit'' -- technically, $r_2$ is still a \emph{distractor} for
-the referring expression --, we are still not finished.  This is why
-we add the tree for ``white'' to the derivation by the
-\emph{adjunction} operation.  This makes the derivation syntactically
-and semantically complete, and we are done.
+%\citeauthor{KolSto07}~\shortcite{KolSto07} attempt to improve the
+%efficiency by translating the SPUD sentence generation problem into a
+%planning problem and using a planning algorithm for generation.  We will
+%now illustrate how they do this by a (simplified) example.
 
-\begin{figure}
-  \centering
-  xxxx
-  \caption{Generating ``The white rabbit sleeps'' as a planning problem.}
-  \label{fig:white-rabbit-as-planning}
-\end{figure}
+To improve on the efficiency of SPUD,
+\citeauthor{KolSto07}~\shortcite{KolSto07} translate the sentence
+generation problem into a planning problem and use a planning algorithm for
+generation. We illustrate this process on a simplified example.
+
+Consider a knowledge base containing the individuals $r_1$ and $r_2$, and a
+set of attributes encoding the fact that $r_1$ and $r_2$ are rabbits, $r_1$
+is white and $r_2$ is brown, and $r_1$ sleeps.  Say that we want to express
+the information $\{\mathsf{sleep}(r_1)\}$ using the tree-adjoining grammar
+shown in Fig.~\ref{fig:white-rabbit-sleeps-grammar}. This grammar consists
+of \emph{elementary trees} (i.e., the disjoint trees in the figure), each
+of which contributes certain \emph{semantic content}. We can instantiate
+these trees by substituting individuals for \emph{semantic roles}, such as
+$\mathsf{self}$ and $\mathsf{subj}$, and then combine the tree instances as
+shown in Fig.~\ref{fig:white-rabbit-sleeps-deriv} to obtain the sentence
+``The white rabbit sleeps''. The SPUD algorithm computes this grammatical
+derivation by starting with the elementary tree for ``sleeps''. This tree
+satisfies the need to convey the semantic information, but introduces a
+need to generate a noun phrase (NP) for the subject, which also refers
+uniquely to the target referent $r_1$. In a second step, SPUD substitutes
+the tree for ``the rabbit'' into the open NP leaf, which makes the
+derivation grammatically complete. Since there are two different
+individuals that could be described as ``the rabbit''---technically, $r_2$
+is still a \emph{distractor} (i.e., a \todo{one line definition here}) for
+the referring expression---we are still not finished. To complete the
+derivation, the tree for ``white'' is added to the existing structure by
+the \emph{adjunction} operation, making the derivation syntactically and
+semantically complete.
+
 
 \begin{figure}[t]
 \centering
@@ -119,44 +127,46 @@ and semantically complete, and we are done.
          (not (distractor ?u ?y)))))
 \end{verbatim}}%
 \caption{PDDL actions for generating the sentence ``The white rabbit
-sleeps''.}
-\label{fig:pddl-crisp}
+sleeps.''}
+%\caption{Generating ``The white rabbit sleeps'' as a planning problem.}
+\label{fig:white-rabbit-as-planning}
 \end{figure}
 
 
-This process has clear parallels to planning: We manipulate a state by
-applying actions in order to achieve a goal.  We can make this
-connection precise by translating the SPUD problem into a planning
-problem; the relevant excerpt of this problem is shown in
-Fig.~\ref{fig:white-rabbit-as-planning}.  Each action in this planning
-problem corresponds to the addition of a single elementary tree to the
-derivation; the first parameter of the action is a node name in the
-derivation tree, and the further parameters stand for the individuals
-to which the semantic roles will be instantiated.  The syntactic
-preconditions and effects are encoded using $\mathsf{open}$ and
-$\mathsf{canadjoin}$ literals; the status of each referring expression
-is tracked using $\mathsf{distractor}$ literals.  Notice that the
-action effects contain terms of the form $\mathsf{subj}(u)$, which
-construct new node names.  In order to represent the planning problem
-in PDDL, these terms can be eliminated by estimating an upper bound
-$n$ for the plan length, making $n$ copies of each action, ensuring
-that copy $i$ can only be applied in step $i$, and replacing the term
-$\mathsf{subj}(u)$ in an action copy by the constant
-$\mathsf{subj}_i$.
+The process described above has clear parallels to planning: we manipulate
+a state by applying actions in order to achieve a goal. We can make this
+connection even more precise by translating the SPUD problem into a
+planning problem. For instance, Fig.~\ref{fig:white-rabbit-as-planning}
+shows the corresponding PDDL actions for the above generation task, where
+each action corresponds to an operation that adds a single elementary tree
+to the derivation.  In each case, the first parameter of the action is a
+node name in the derivation tree, and the remaining parameters stand for
+the individuals to which the semantic roles will be instantiated.  The
+syntactic preconditions and effects are encoded using $\mathsf{open}$ and
+$\mathsf{canadjoin}$ literals; the status of each referring expression is
+tracked using $\mathsf{distractor}$ literals. Notice that the action
+effects contain terms of the form $\mathsf{subj}(u)$, which construct new
+node names. In order to meet the syntactic requirements of PDDL, these
+terms can be eliminated by estimating an upper bound $n$ for the plan
+length, making $n$ copies of each action, ensuring that copy $i$ can only
+be applied in step $i$, and replacing the term $\mathsf{subj}(u)$ in an
+action copy by the constant $\mathsf{subj}_i$.
 
-In the example, the following plan solves the planning problem:
+Once we've defined appropriate actions, we can solve the generation
+problem as an ordinary planning problem. For instance, the following plan
+solves our previous example:
+%
 \begin{enumerate}
 \item $\mathsf{sleeps}(\mathsf{root}, r_1)$
 \item $\mathsf{rabbit}(\mathsf{subj}(\mathsf{root}), r_1)$
 \item $\mathsf{white}(\mathsf{subj}(\mathsf{root}), r_1)$
 \end{enumerate}
-
-The grammatical derivation in
+%
+Using this plan, the grammatical derivation in
 Fig.~\ref{fig:white-rabbit-sleeps-deriv}, and therefore the generated
-sentence, can be systematically reconstructed from this plan.
-Therefore we can solve the sentence generation problem via the detour
-through planning and bring current search heuristics for planning to
-bear on generation.
+sentence, can be systematically reconstructed. Thus, we can solve the
+sentence generation problem via the detour through planning and bring
+current search heuristics for planning to bear on generation.
 
 
 

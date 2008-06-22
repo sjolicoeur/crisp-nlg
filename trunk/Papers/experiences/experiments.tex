@@ -3,15 +3,15 @@
 As a first impression, it is a good idea to use planning in both of
 these domains.  In the GIVE domain, SGPLAN 5.2.2 computes a domain
 plan from the initial state to the goal in 0.3 seconds, which is fast
-enough for the application.\footnote{All runtimes reported here were
-  measured on a Pentium 4 CPU at 3 GHz.  Java programs were allowed to
-  ``warm up'', i.e.\ the planner was run five times in a row and the
-  first four measurements discarded to ensure that the JVM had
-  just-in-time compiled all relevant bytecode.}  In the sentence
-generation domain, FF dramatically outperforms the best previously
-known algorithm for the same problem (a reimplementation of
-\cite{Stone2003a}), although the latter is a greedy search algorithm
-with a heuristic that is hand-tailored to the domain.
+enough for the application.\footnote{All reported runtimes were
+  measured on a Pentium 4 CPU running at 3 GHz. Java programs were allowed
+  to ``warm up'', i.e.\ the planner was run five times in a row and the
+  first four measurements discarded to ensure that the JVM had just-in-time
+  compiled all relevant bytecode.}  In the sentence
+generation domain, FF dramatically outperforms the best previously known
+algorithm for the same problem (a reimplementation of \cite{Stone2003a}),
+although the latter is a greedy search algorithm with a heuristic that is
+hand-tailored to the domain.
 
 However, we also observed that although FF manages the search for a
 plan very efficiently, it spends comparatively large amounts of time

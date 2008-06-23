@@ -1,7 +1,7 @@
 \section{Planning in NLG} \label{sec:domains}
 
-In this section, we present our planning domains: the sentence
-generation domain and the instruction giving domain.
+We begin by presenting our two planning domains: the sentence generation
+domain and the instruction giving domain.
 
 
 \subsection{Sentence generation as planning}
@@ -16,19 +16,18 @@ that we want to talk about, are determined at this point. In a second
 step, called \emph{surface realization}, this enriched representation is
 then translated into a natural-language sentence, using the grammar.
 
-In practice, the process of determining referring expressions
-typically interacts with the realization step and so it turns out to
-be beneficial to perform both of these steps together. This was the
-goal of the SPUD system \cite{Stone2003a}, which did this using a
-top-down generation algorithm based on tree-adjoining grammars
-\cite{joshi;etal1997} whose lexical entries were equipped with
-semantic and pragmatic information. Unfortunately, SPUD suffered from
-having to explore a huge search space, and had to resort to a
-non-optimal greedy search strategy to retain reasonable efficiency.
-To improve on the efficiency of SPUD,
+In practice, the process of determining referring expressions typically
+interacts with the realization step and so it turns out to be beneficial to
+perform both of these steps together. This was the goal of the SPUD system
+\cite{Stone2003a}, which performed this task using a top-down generation
+algorithm based on tree-adjoining grammars \cite{joshi;etal1997} whose
+lexical entries were equipped with semantic and pragmatic information.
+Unfortunately, SPUD suffered from having to explore a huge search space,
+and had to resort to a non-optimal greedy search strategy to retain
+reasonable efficiency.  To improve on the efficiency of SPUD,
 \citeauthor{KolSto07}~\shortcite{KolSto07} translate the sentence
-generation problem into a planning problem and use a planning
-algorithm for generation.
+generation problem into a planning problem and use a planning algorithm for
+generation.
 
 \begin{figure}
   \centering
@@ -60,20 +59,19 @@ combine the tree instances as shown in
 Figure~\ref{fig:white-rabbit-sleeps-deriv} to obtain the sentence
 ``The white rabbit sleeps''.
 
-We compute this grammatical derivation top-down by starting with the
-elementary tree for ``sleeps''. This tree satisfies the need to convey
-the semantic information, but introduces a need to generate a noun
-phrase (NP) for the subject; this NP must refer uniquely to the target
-referent $r_1$. In a second step, we substitute the tree for ``the
-rabbit'' into the open NP leaf, which makes the derivation
-grammatically complete. Since there are two different individuals that
-could be described as ``the rabbit''---technically, $r_2$ is still a
-\emph{distractor} (i.e., based on the description ``the rabbit'', the
-hearer might erroneously think that we're talking about $r_2$ and not
-$r_1$)---we are still not finished. To complete the derivation, the
-tree for ``white'' is added to the existing structure by the
-\emph{adjunction} operation, making the derivation syntactically and
-semantically complete.
+We compute this grammatical derivation in a top-down manner, starting with
+the elementary tree for ``sleeps''. This tree satisfies the need to convey
+the semantic information, but introduces a need to generate a noun phrase
+(NP) for the subject; this NP must refer uniquely to the target referent
+$r_1$. In a second step, we substitute the tree for ``the rabbit'' into the
+open NP leaf, which makes the derivation grammatically complete. Since
+there are two different individuals that could be described as ``the
+rabbit''---technically, $r_2$ is still a \emph{distractor} (i.e., based on
+the description ``the rabbit'', the hearer might erroneously think that
+we're talking about $r_2$ and not $r_1$)---we are still not finished. To
+complete the derivation, the tree for ``white'' is added to the existing
+structure by an \emph{adjunction} operation, making the derivation
+syntactically and semantically complete.
 
 
 \begin{figure}[t]
@@ -143,7 +141,7 @@ length, making $n$ copies of each action, ensuring that copy $i$ can only
 be applied in step $i$, and replacing the term $\mathsf{subj}(u)$ in an
 action copy by the constant $\mathsf{subj}_i$.
 
-Once we've defined appropriate actions, we can solve the generation
+Once the appropriate actions are defined, we can solve the generation
 problem as an ordinary planning problem. For instance, the following plan
 solves our previous example:
 %
@@ -171,7 +169,7 @@ virtual environment. From an NLG perspective, GIVE makes for an
 interesting challenge because it is a theory-neutral task that exercises
 all components of an NLG system, and emphasizes the study of communication
 in a (simulated) physical environment. It also has the advantage that the
-user and the NLG system can be physically in different places, as long as
+user and the NLG system can be in physically different places, as long as
 the 3D client and the NLG system are connected over a network. This makes
 it possible to evaluate GIVE NLG systems on a large scale over the
 Internet. The first GIVE evaluation will take place in late 2008;
@@ -270,7 +268,7 @@ somewhat more complicated room shapes.
 The GIVE task comes with a number of interesting research challenges
 both for the NLG and the planning communities.  On the NLG side, one
 major problem is that the natural language instruction sequences can't
-simply be obtained by verbalising each action instance in the plan in
+simply be obtained by verbalising each action instance in a plan in
 turn.  For instance, the NLG system could generate an instruction
 sequence starting with ``turn left; walk forward; press the button;
 turn right; walk forward; walk forward; turn right; walk forward; walk
@@ -292,34 +290,35 @@ changes in what objects are visible to the user.  Thus the acts of
 referring and instructing, and the modules for planning and NLG, must
 be tightly integrated.
 
-From a planning perspective, the use of planning in GIVE imposes very
-strict runtime requirements on the planner: Planning must happen in
-real time, because if the system takes too much time between deciding
-to give an instruction and actually giving this instruction, the user
-may have walked or turned away, thus making the instruction invalid.
-Furthermore, plan execution monitoring also plays an important role in
-the GIVE problem.  At a high level, the system needs to monitor a
-user's actions and compare them against the generated instruction set
-to determine if the user has correctly followed directions or not. In
-the case of the latter, new instructions may have to be generated. In
-practice, the situation can be quite complicated since the mental
-state of the user is not known and so the system must observe the
-user's actions in real time. For example, a user directed to ``turn
-around and walk through the door'' may not necessarily perform these
-actions to the letter, i.e., immediately turning 180 degrees and
-proceeding directly to the door. Instead, the user might take a
-roundabout route through the room, eventually exiting out the
-door. Although the user's actions do not match the generated
-instructions exactly, they meet the intended goal. The system must be
-able to identify such ``equivalent'' plans and not immediately
-generate new instructions as soon as the user's actions have gone off
-course. Furthermore, a user can communicate certain intentions to the
-system, both through action and inaction. For instance, the system
-should infer that a user has failed to follow instructions if the user
-exits a room when given a directive to ``walk to the centre of the
-room''. However, the system should also make a similar conclusion if a
-user simply does nothing when given the instruction.
+From a planning perspective, GIVE imposes very strict runtime requirements
+on the planner and its associated modules: planning must happen in real
+time and the system must respond to a user in a timely fashion.  If the
+system takes too much time deliberating over an instruction to give, rather
+than actually giving this instruction, the user may have walked or turned
+away, thus making the instruction invalid.  Furthermore, plan execution
+monitoring also plays an important role in the GIVE problem.  At a high
+level, the system needs to monitor a user's actions and compare them
+against the generated instruction set to determine if the user has
+correctly followed directions or not. In the case of the latter, new
+instructions may have to be generated. In practice, the situation can be
+quite complicated since the mental state of the user is not known and so
+the system must observe the user's actions in real time. For example, a
+user directed to ``turn around and walk through the door'' may not
+necessarily perform these actions to the letter, i.e., immediately turning
+180 degrees and proceeding directly to the door. Instead, the user might
+take a roundabout route through the room, eventually exiting out the door.
+Although the user's actions do not match the generated instructions
+exactly, they meet the intended goal. The system must be able to identify
+such ``equivalent'' plans and not immediately generate new instructions as
+soon as the user's actions have gone off course. Furthermore, a user can
+communicate certain intentions to the system, both through action and
+inaction. For instance, the system should infer that a user has failed to
+follow instructions if the user exits a room when given a directive to
+``walk to the centre of the room''. The system should also make a
+similar conclusion if a user simply does nothing when given the
+instruction.
 
+%between deciding to give an instruction and
 
 %%% Local Variables: 
 %%% mode: latex

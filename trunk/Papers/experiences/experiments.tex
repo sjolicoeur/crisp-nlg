@@ -50,7 +50,7 @@ the grammar).
 
 The results of this experiment are shown in
 Figure~\ref{fig:runtimes-crisp}. The input parameters $(m,n)$ are plotted
-(in lexicographic order) on the horizontal axis and the runtime is shown in
+in lexicographic order on the horizontal axis and the runtime is shown in
 milliseconds on the vertical axis. These results reveal a number of
 interesting insights. First, FF significantly outperforms
 SGPLAN in this domain.\footnote{Experiments with SGPLAN use a
@@ -66,21 +66,19 @@ this application.\footnote{The
   ``grounding'' time reported here is what FF reports as ``time spent:
   instantiating action templates''.} 
 
-In fact, FF spends so much time on grounding that it is consistently
+In fact, the time spent by FF on grounding is such that it is consistently
 outperformed by an ad-hoc Java implementation of GraphPlan which only
-computes instances of predicates and actions as they are discovered,
-while the planning graph is being built -- despite the fact that FF is
-consistently much faster as far as pure search time is concerned.
-Looking at the difference from a different angle, FF's performance is
-much more sensitive to the domain size: if we fix $n=1$, FF takes 60
-ms to compute a plan at $m=1$, but 2.4 seconds (for the same plan) at
-$m=10$; our GraphPlan implementation takes 30 ms at $m=1$ and still
-only 50 ms at $m=10$.  Conversely, GraphPlan's runtime grows much
-faster with the plan size (i.e., with growing values of $n$ for a
-fixed $m$).  Larger (but still realistically-sized) instances of the
-sentence generation problem are still problematic for the planners we
-tested.
-
+computes instances of predicates and actions as they are discovered (i.e.,
+while the planning graph is being built)---despite the fact that FF is
+consistently much faster as far as pure search time is concerned.  Looking
+at the difference from another angle, FF's performance is much more
+sensitive to the domain size: if we fix $n=1$, FF takes 60 ms to compute a
+plan at $m=1$, but 2.4 seconds (for the same plan) at $m=10$; our GraphPlan
+implementation takes 30 ms at $m=1$ and still only requires 50 ms at
+$m=10$.  Conversely, GraphPlan's runtime grows much faster with the plan
+size (i.e., with growing values of $n$ for a fixed $m$).  Larger (but still
+realistically-sized) instances of the sentence generation problem are still
+problematic for the planners we tested.
 
 
 \subsection{Experiment 2: Minimal GIVE worlds}
@@ -91,11 +89,11 @@ on problems arising in the GIVE domain. We construct a series of test
 worlds, similar to the one illustrated in
 Figure~\ref{fig:give-minimal}. These worlds consist of a $2n$ by $h$
 grid of positions, such that there are buttons at positions $(2i-1,1)$
-and $(2i,h)$ for $1 \leq i \leq n$. The player starts in position
-$(1,1)$ and must press all buttons in order to successfully complete
-the game. The world is generated as a GIVE world description, and then
-automatically converted into a planning problem as in
-Fig.~\ref{fig:give-planning} by the GIVE software.
+and $(2i,h)$ for $1 \leq i \leq n$. The player starts in position $(1,1)$
+and must press all the buttons in order to successfully complete the game.
+The world is generated as a GIVE world description, and then automatically
+converted into a planning problem (as in Figure~\ref{fig:give-planning}) by
+the GIVE software.
 
 \begin{figure}
   \centering
@@ -126,14 +124,14 @@ optimal plan for the problem $n=40$ has a length of about 1600 steps.
 \label{sec:experiment-3:-give}
 
 In the final experiment, we vary the structure of the GIVE world in order
-to judge the effect that universe size has on the planning problem in this
+to judge the effect of universe size on the planning problem in this
 domain.  Starting with the ordinary GIVE world described in Experiment~2,
 we add another $w$ by $h$ empty ``junk'' positions to the right of the
 minimal world (see Figure~\ref{fig:give-junk}). These new positions are not
 actually needed in any plan, but approximate the situation in the actual
-GIVE domain, where most grid positions never need to be used. We leave the
-initial state and goal untouched. As before, we generate a GIVE world
-description and then convert it into a planning problem.
+GIVE domain, where most grid positions are never used. We leave the initial
+state and goal untouched. As before, we generate a GIVE world description
+and then convert it into a planning problem.
 
 \begin{figure}
   \centering

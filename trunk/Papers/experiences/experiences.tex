@@ -25,17 +25,32 @@ Edinburgh \ EH8 9AB, Scotland, UK \\
 
 \maketitle
 
+
 \begin{abstract}
-  lkajsd
+We investigate the application of modern planning techniques to domains
+arising from problems in natural language generation (NLG). In particular,
+we consider two novel NLG-inspired planning problems, the sentence
+generation domain and the GIVE (``Generating Instructions in Virtual
+Environment'') domain, and investigate the efficiency of FF and SGPLAN in
+these domains. We also compare our results against an ad-hoc implementation
+of GraphPlan in Java. Our results are mixed. While modern planners are able
+to quickly solve many moderately-sized instances of the NLG problems, the
+overall planning time is dominated by grounding, rather than search, which
+has a pronounced effect on our domains which require relatively short plans
+in large universes.
+
+
+
+
+We offer these domains as challenges for the planning community.
 \end{abstract}
+
 
 \input introduction
 \input domains
 \input experiments
 \input discussion
 \input conclusion
-
-
 
 
 \bibliography{bibliography}

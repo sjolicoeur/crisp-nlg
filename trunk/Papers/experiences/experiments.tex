@@ -1,7 +1,7 @@
 \section{Experiments} \label{sec:experiments}
 
-We now describe the results of a set of experiments designed to evaluate
-the suitability of particular planners (FF, SGPLAN, and an ad-hoc
+We now describe the results of three simple experiments designed to
+evaluate the suitability of particular planners (FF, SGPLAN, and an ad-hoc
 implementation of GraphPlan) in our two NLG domains. As a first impression,
 our results indicate that planning is a promising tool for both domains. In
 the GIVE domain, SGPLAN 5.2.2 computes a domain plan from the initial state
@@ -89,13 +89,14 @@ generation problem are still problematic for the planners we tested.
 
 In the second experiment, we evaluate the performance of the planners on
 problems arising in the GIVE domain. We construct a series of test worlds,
-similar to the one illustrated in Figure~\ref{fig:give-minimal}. These worlds
-consist of a $2n$ by $h$ grid of positions, such that there are buttons at
-positions $(2i-1,1)$ and $(2i,h)$ for $1 \leq i \leq n$. The player starts
-in position $(1,1)$ and must press all buttons in order to complete the
-game. The world is generated as a GIVE world description, and then
-automatically converted into a planning problem by the GIVE software.  (We
-refer the reader to \todo{cite?} for more details about this process.)
+similar to the one illustrated in Figure~\ref{fig:give-minimal}. These
+worlds consist of a $2n$ by $h$ grid of positions, such that there are
+buttons at positions $(2i-1,1)$ and $(2i,h)$ for $1 \leq i \leq n$. The
+player starts in position $(1,1)$ and must press all buttons in order to
+successfully complete the game. The world is generated as a GIVE world
+description, and then automatically converted into a planning problem by
+the GIVE software. (We refer the reader to \todo{add citation} for more
+details about this process.)
 
 \begin{figure}
   \centering
@@ -104,15 +105,14 @@ refer the reader to \todo{cite?} for more details about this process.)
   \label{fig:give-minimal}
 \end{figure}
 
-Some results from this experiment (for $h=20$, with $n$ ranging from
-$1$ to $40$) are shown in Figure~\ref{fig:give-runtime-minimal}.  The
-most obvious result is that FF is unable to solve any problems beyond
-$n=13$ on the experimentation machine within the memory limit of 1 GB.
-SGPLAN, on the other hand, solves instances beyond $n=40$ without
-major problems.  The time spent on grounding is not a major factor in
-either planner, probably because the planners need more time to
-actually compute the plan -- at $n=40$, the optimal plan has a length
-of about 1600!
+Results for the $h=20$ case, with $n$ ranging from $1$ to $40$, are shown
+in Figure~\ref{fig:give-runtime-minimal}.  The most obvious result is that
+FF is unable to solve any problems beyond $n=13$ on our experimentation
+machine within the memory limit of 1 GB.  SGPLAN, on the other hand, solves
+instances beyond $n=40$ without major problems.  The time spent on
+grounding is not a major factor in either planner, probably because the
+planners need more time to actually compute the plan---for instance, the
+optimal plan for the problem $n=40$ has a length of about 1600 steps.
 
 \begin{figure}
   \centering
@@ -121,36 +121,40 @@ of about 1600!
   \label{fig:give-runtime-minimal}
 \end{figure}
 
+
 \subsection{Experiment 3: GIVE worlds with extra positions}
 \label{sec:experiment-3:-give}
 
-Finally, we varied the GIVE world in order to judge the effect of the
-universe size in the GIVE domain (see Figure~\ref{fig:give-junk}).  We
-added another $w$ by $h$ positions to the right of a minimal world as
-in Experiment 2.  Other than that, we left the initial state and goal
-untouched, i.e.\ the new positions were not needed in any plan; this
-approximates the situation in the actual GIVE domain, where most grid
-positions never need to be used.  As before, we generate a GIVE world
+In the final experiment, we vary the structure of the GIVE world in order
+to judge the effect that universe size has on the planning problem in this
+domain.  Starting with the ordinary GIVE world described in Experiment~2,
+we add another $w$ by $h$ empty ``junk'' positions to the right of the
+minimal world (see Figure~\ref{fig:give-junk}). These new positions are not
+actually needed in any plan, but approximate the situation in the actual
+GIVE domain, where most grid positions never need to be used. We leave the
+initial state and goal untouched. As before, we generate a GIVE world
 description and then convert it into a planning problem.
 
 \begin{figure}
   \centering
   \includegraphics[width=1\columnwidth]{pic-empty-buttons}
-  \caption{GIVE world with extra positions.}
+  \caption{GIVE world with extra ``junk'' positions.}
   \label{fig:give-junk}
 \end{figure}
 
-Some results for $h=20$ and $n=5$ (with $w$ ranging from $1$ to $70$)
-are shown in Figure~\ref{fig:give-runtime-junk}.  Again, FF runs out of
-memory, this time at $w=17$, whereas SGPLAN happily solved inputs
-beyond $w=70$.  However, unlike in Experiment 2, both planners now
-spend a substantial propertion of their time on grounding again.  In
-SGPLAN, this translates to a ``parsing time'' (which
-\todo{presumably} includes grounding) which grows from 180 ms to 21.7
-seconds as $w$ grows from $1$ to $75$; the rest of the runtime (which
-includes the search) only grows from 400 ms to 2.3 seconds.  This
-difference is particularly dramatic given that the actual optimal plan
-is an identical plan of about 100 steps for each $w$.
+Results for the $h=20$, $n=5$ case (with $w$ ranging from $1$ to $70$) are
+shown in Figure~\ref{fig:give-runtime-junk}. As in Experiment~2, FF again
+runs out of memory, this time at $w=17$. SGPLAN happily solves inputs
+beyond $w=70$. However, unlike in Experiment 2, both planners now spend a
+substantial propertion of their time on grounding. In SGPLAN, this
+translates to a ``parsing time'' (which \todo{presumably} includes
+grounding) which grows from 180 ms to 21.7 seconds as $w$ grows from $1$ to
+$75$. The rest of the runtime (which also includes the search time) only
+grows from 400 ms to 2.3 seconds. This difference is particularly dramatic
+given that the actual optimal plan in each case is an identical plan of
+about 100 steps. The overall runtimes in these instances is also concerning
+since runtimes over a couple seconds negatively affect the response time of
+the GIVE system.
 
 \begin{figure}
   \centering

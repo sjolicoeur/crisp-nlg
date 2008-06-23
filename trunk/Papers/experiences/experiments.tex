@@ -64,39 +64,38 @@ particular, the ratio of grounding time to total runtime is generally above
 85\%, and rises to above 99\% at $m=11$, which is still a small universe in
 this application.\footnote{The
   ``grounding'' time reported here is what FF reports as ``time spent:
-  instantiating action templates''.}  This is also reflected in the
-much higher sensitivity of FF to the domain size: if we fix $n=1$, FF takes
-60 ms to compute a plan at $m=1$, but 2.4 seconds at $m=10$. By contrast,
-our naive GraphPlan implementation takes 30 ms at $m=1$ and still only 50
-ms at $m=10$.
+  instantiating action templates''.} 
 
-Our results illustrate that FF is outperformed quite clearly by an ad-hoc
-Java implementation of GraphPlan which only computes instances of
-predicates and actions as they are discovered, while the planning graph is
-being built. On the other hand, the runtime that FF actually spends on
-search is again considerably lower than that of our GraphPlan
-implementation, and for any given $m$, GraphPlan's runtime grows much
-faster with $n$ (i.e., the plan size) than FF's. As a result, for
-moderately-sized instances of the sentence planning domain FF does very
-well on search, but spends about ten times as much runtime again on
-grounding. Larger (but still realistically-sized) instances of the sentence
-generation problem are still problematic for the planners we tested.
+In fact, FF spends so much time on grounding that it is consistently
+outperformed by an ad-hoc Java implementation of GraphPlan which only
+computes instances of predicates and actions as they are discovered,
+while the planning graph is being built -- despite the fact that FF is
+consistently much faster as far as pure search time is concerned.
+Looking at the difference from a different angle, FF's performance is
+much more sensitive to the domain size: if we fix $n=1$, FF takes 60
+ms to compute a plan at $m=1$, but 2.4 seconds (for the same plan) at
+$m=10$; our GraphPlan implementation takes 30 ms at $m=1$ and still
+only 50 ms at $m=10$.  Conversely, GraphPlan's runtime grows much
+faster with the plan size (i.e., with growing values of $n$ for a
+fixed $m$).  Larger (but still realistically-sized) instances of the
+sentence generation problem are still problematic for the planners we
+tested.
 
 
 
 \subsection{Experiment 2: Minimal GIVE worlds}
 \label{sec:exper-2:-minim}
 
-In the second experiment, we evaluate the performance of the planners on
-problems arising in the GIVE domain. We construct a series of test worlds,
-similar to the one illustrated in Figure~\ref{fig:give-minimal}. These
-worlds consist of a $2n$ by $h$ grid of positions, such that there are
-buttons at positions $(2i-1,1)$ and $(2i,h)$ for $1 \leq i \leq n$. The
-player starts in position $(1,1)$ and must press all buttons in order to
-successfully complete the game. The world is generated as a GIVE world
-description, and then automatically converted into a planning problem by
-the GIVE software. (We refer the reader to \todo{add citation} for more
-details about this process.)
+In the second experiment, we evaluate the performance of the planners
+on problems arising in the GIVE domain. We construct a series of test
+worlds, similar to the one illustrated in
+Figure~\ref{fig:give-minimal}. These worlds consist of a $2n$ by $h$
+grid of positions, such that there are buttons at positions $(2i-1,1)$
+and $(2i,h)$ for $1 \leq i \leq n$. The player starts in position
+$(1,1)$ and must press all buttons in order to successfully complete
+the game. The world is generated as a GIVE world description, and then
+automatically converted into a planning problem as in
+Fig.~\ref{fig:give-planning} by the GIVE software.
 
 \begin{figure}
   \centering
@@ -143,19 +142,20 @@ description and then convert it into a planning problem.
   \label{fig:give-junk}
 \end{figure}
 
-Results for the $h=20$, $n=5$ case (with $w$ ranging from $1$ to $70$) are
-shown in Figure~\ref{fig:give-runtime-junk}. As in Experiment~2, FF again
-runs out of memory, this time at $w=17$. SGPLAN happily solves inputs
-beyond $w=70$. However, unlike in Experiment 2, both planners now spend a
-substantial proportion of their time on grounding. In SGPLAN, this
-translates to a ``parsing time'' (which \todo{presumably} includes
-grounding) which grows from 180 ms to 21.7 seconds as $w$ grows from $1$ to
-$75$. The rest of the runtime (which also includes the search time) only
-grows from 400 ms to 2.3 seconds. This difference is particularly dramatic
-given that the actual optimal plan in each case is an identical plan of
-about 100 steps. The planning times for these instances are also concerning
-since times over a couple seconds negatively affect the overall response
-time of the system, which must react in real time to user actions.
+Results for the $h=20$, $n=5$ case (with $w$ ranging from $1$ to $70$)
+are shown in Figure~\ref{fig:give-runtime-junk}. As in Experiment~2,
+FF again runs out of memory, this time at $w=17$. SGPLAN happily
+solves inputs beyond $w=70$. However, unlike in Experiment 2, both
+planners now spend a substantial proportion of their time on
+grounding. In SGPLAN, this translates to a ``parsing time'' (which we
+assume includes grounding) which grows from 180 ms to 21.7 seconds as
+$w$ grows from $1$ to $75$. The rest of the runtime (which also
+includes the search time) only grows from 400 ms to 2.3 seconds. This
+difference is particularly dramatic given that the actual optimal plan
+in each case is an identical plan of about 100 steps. The planning
+times for these instances are also concerning since times over a
+couple seconds negatively affect the overall response time of the
+system, which must react in real time to user actions.
 
 \begin{figure}
   \centering

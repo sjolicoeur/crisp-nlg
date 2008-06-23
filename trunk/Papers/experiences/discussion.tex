@@ -1,14 +1,14 @@
 \section{Discussion} \label{sec:discussion}
 
-The positive conclusion we can draw from the simple experiments reported
-above is that modern planners are fairly good at controlling the search for
-many of the moderately-sized NLG problems we looked at. This is
-particularly true for FF in the sentence generation domain, which generates
-nontrivial 14-word sentences in about two seconds. There is still room for
-improvement, however. For instance, by comparison a special-purpose
-algorithm for referring expressions could generate ten of these 14-word
-sentences in a few milliseconds. Although search efficiency is not the main
-performance metric in these domains, it nevertheless becomes a factor in
+The positive conclusion we can draw from the simple experiments
+reported above is that modern planners are fairly good at controlling
+the search for many of the moderately-sized NLG problems we looked
+at. This is particularly true for FF in the sentence generation
+domain, which generates nontrivial 14-word sentences in about two
+seconds. There is still room for improvement, however; special-purpose
+algorithms generate much larger referring expressions in milliseconds
+\cite{AreKolStr08}.  Although search efficiency is not the main
+concern in these domains, it nevertheless becomes a factor in
 scenarios like Experiment~2, where the world is almost completely
 unconstrained and (unsurprisingly) the search becomes much slower.
 
@@ -53,17 +53,18 @@ types of individuals will not be very effective here.
 
 The recent trend in planning research has (rightfully) focused on the
 development of algorithms that control search in sophisticated ways,
-resulting in a host of planners that are more powerful and more successful
-than their predecessors. Depending on the particular algorithm, however,
-these planners often ground out sets of predicates and actions before
-starting the search itself, which has a very pronounced effect on domains
-such as those described above. Since our domains are not that unusual in
-their structure and composition, we hope that the lessons learnt from our
-experiences can help improve the performance of current systems. We believe
-that such improvements are necessary if planning is to become a more mature
-technology that can offer tools to a wider community of users. At the end
-of the day, real-world users will care about the \emph{total} runtime of a
-planner, and this is more than just the search time.
+resulting in a host of planners that are more powerful and more
+successful than their predecessors. However, the common strategy of
+grounding out sets of predicates and actions in implementations of
+these algorithms has a very pronounced effect on domains such as those
+described above. Since our domains are not that unusual in their
+structure and composition, we hope that the lessons learnt from our
+experiences can help improve the performance of current systems. We
+believe that such improvements are necessary if planning is to become
+a more mature technology that can offer tools to a wider community of
+users. At the end of the day, real-world users will care about the
+\emph{total} runtime of a planner, and this is more than just the
+search time.
 %We offer our larger problem instances as future challenges for the
 %planning community.
 

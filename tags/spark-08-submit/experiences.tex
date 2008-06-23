@@ -1,0 +1,61 @@
+\documentclass[letterpaper]{article}
+
+\usepackage{aaai} 
+\usepackage{times} 
+\usepackage{helvet} 
+\usepackage{courier} 
+
+\usepackage{graphicx}
+\usepackage{url}
+
+\newcommand{\todo}[1]{\textbf{(#1)}}
+
+
+\title{Experiences with Planning for Natural Language Generation}
+\author{Alexander Koller \and Ronald Petrick \\
+School of Informatics \\
+University of Edinburgh \\
+Edinburgh \ EH8 9AB, Scotland, UK \\
+\texttt{\{a.koller,r.petrick\}@ed.ac.uk}}
+
+\nocopyright
+
+
+\begin{document}
+
+\maketitle
+
+
+\begin{abstract}
+We investigate the application of modern planning techniques to domains
+arising from problems in natural language generation (NLG). In particular,
+we consider two novel NLG-inspired planning problems, the sentence
+generation domain and the GIVE (``Generating Instructions in Virtual
+Environment'') domain, and investigate the efficiency of FF and SGPLAN in
+these domains. We also compare our results against an ad-hoc implementation
+of GraphPlan in Java. Our results are mixed. While modern planners are able
+to quickly solve many moderately-sized instances of our problems, the
+overall planning time is dominated by the grounding step that these
+planners perform (rather than search). This has a pronounced effect on our
+domains which require relatively short plans but have large universes. We
+share our experiences and offer these domains as challenges for the
+planning community.
+\end{abstract}
+
+
+\input introduction
+\input domains
+\input experiments
+\input discussion
+\input conclusion
+
+
+\bibliography{bibliography}
+\bibliographystyle{aaai}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

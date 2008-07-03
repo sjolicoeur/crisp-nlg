@@ -12,15 +12,15 @@
 % variable names.  But I don't know how to extract this figure
 % techinically; nor whether we have room.
 
-We motivate and describe the main features of {\sc rmrs} with a (toy)
+We motivate and describe the main features of {\sc rmrs} with a toy
 example.  Sentence 
 (\ref{eg:cat}a) features a semantic scope ambiguity that, according to
 most deep grammars, syntax
 doesn't resolve.    The {\sc mrs} (\ref{eg:cat}b) derived by the
 English Resource Grammar ({\sc erg}, \cite{copestake:flickinger:2000})
-reflects this by underspecifying socpe: (i) each predication is
+reflects this: (i) each predication is
 labelled ($l_1$, $l_4$, etc); (ii) scopal arguments are indicated by
-holes (e.g., $h_2$ and $h_3$ in the quantifier {\em every}); and (iii)
+holes (e.g., $h_2$ and $h_3$ in the quantifier {\em every}); (iii)
 constraints on scope are expressed by the qeq conditions (roughly, $h
 =_q l$ means that only zero or more quantifiers lie between the scopal
 argument $h$ and the predication labelled by $l$ in any fully-resolved
@@ -28,7 +28,7 @@ logical form); and (iv) these scope
 constraints allow for more than one way of `plugging' the holes with
 labels.\footnote{The event variable in the predicate symbol
   corresponding to the adjective is motivated by copulas---{\em The
-    cat is fat} arguably has the logical form 
+    cat is fat} has logical form 
   $\mbox{\_the\_q\_1}(x,\mbox{\_cat\_n\_1}(x),\mbox{\_fat\_j\_1}(e,x))$.}
 \begin{examples}
 \item   \label{eg:cat}
@@ -48,10 +48,10 @@ Every fat cat chased some dog.
 \item   $l_1\handel\mbox{\_every\_q\_1}(x,h_2,h_3)$\\
 $l_4\handel\mbox{\_fat\_j\_1}(e',x)$\\
 $l_4\handel\mbox{\_cat\_n\_1}(x)$\\
-$l_5\handel\mbox{\_some\_n\_1}(y,h_6,h_7)$\\
-$l_8\handel\mbox{\_dog\_n\_1}(y)$\\
-$l_9\handel\mbox{\_chased\_n\_1}(e,x,y)$\\
-$h_0 =_q l_9, h_2 =_q l_4, h_6 =_q l_9$
+$l_5\handel\mbox{\_chased\_n\_1}(e,x,y)$\\
+$l_6\handel\mbox{\_some\_n\_1}(y,h_7,h_8)$\\
+$l_9\handel\mbox{\_dog\_n\_1}(y)$\\
+$h_2 =_q l_4, h_7 =_q l_9$
 \end{subexamples}
 \end{examples}
 (\ref{eg:cat}b) also exhibits {\sc mrs}' compact description of
@@ -64,7 +64,7 @@ Conceptually, this {\sc mrs} is a partial description of all its
 possible (fully specific) interpretations in context.  
 These are expressed in a so-called {\em base language}, where each
 predicate symbol in the {\sc mrs} is a proxy for one or more
-base-language constructors of the same arity
+base-language constructors of the same arity.
 Assuming a very close
 correspondence between the {\sc mrs} predicate symbols and the
 base-language constructors they 
@@ -103,16 +103,16 @@ $l_1:a_1\handel\mbox{\_every\_q\_1}(x_1),$\\
 \mbox{BODY}(a_1,h_3)$\\ 
 $l_{41}:a_{41}\handel\mbox{\_fat\_j\_1}(e'), \mbox{ARG1}(a_{41},x_2)$\\
 $l_{42}:a_{42}\handel\mbox{\_cat\_n\_1}(x_3)$\\
-$l_5:a_5\handel\mbox{\_some\_q\_1}(x_4)$,\\
-\hspace*{0.1in}$\mbox{RSTR}(a_5,h_6),
-\mbox{BODY}(a_5,h_7)$\\ 
-$l_8:a_8\handel\mbox{\_dog\_n\_1}(x_5)$\\
-$l_9:a_9\handel\mbox{\_chase\_v\_1}(e_{spast})$,\\
-\hspace*{0.1in}$\mbox{ARG1}(a_9,x_6),
-\mbox{ARG2}(a_9,x_7)$\\ 
-$h_2=_q l_{42}, l_{41}=l_{42}, h_6 =_q l_8, h_0=_q l_9$\\
-$x_1=x_2,x_2=x_3, x_4=x_5,$\\
-$x_3=x_6, x_5=x_7$
+$l_5:a_5\handel\mbox{\_chase\_v\_1}(e_{spast})$,\\
+\hspace*{0.1in}$\mbox{ARG1}(a_5,x_4),
+\mbox{ARG2}(a_5,x_5)$\\ 
+$l_6:a_6\handel\mbox{\_some\_q\_1}(x_6)$,\\
+\hspace*{0.1in}$\mbox{RSTR}(a_6,h_7),
+\mbox{BODY}(a_6,h_8)$\\ 
+$l_9:a_9\handel\mbox{\_dog\_n\_1}(x_7)$\\
+$h_2=_q l_{42}, l_{41}=l_{42}, h_7 =_q l_9$\\
+$x_1=x_2, x_2=x_3, x_3=x_4,$\\
+$x_5=x_6, x_5=x_7$
 \end{subexamples}
 \end{examples}
 
@@ -131,9 +131,9 @@ argument, as given in (\ref{eg:cat-pos}):
 \item   $l_1:a_1:\mbox{\_every\_q}(x)$, \\
 $l_{41}:a_{41}:\mbox{\_fat\_a}(e')$,\\
 $l_{42}:a_{42}:\mbox{\_cat\_n}(x_3)$\\
-$l_9:a_9:\mbox{\_chased\_v}(e_{past})$, \\
-$l_5:a_5:\mbox{\_some\_q}(x_4)$, \\
-$l_8:a_8:\mbox{\_dog\_n}(x_5)$
+$l_5:a_5:\mbox{\_chased\_v}(e_{past})$, \\
+$l_6:a_6:\mbox{\_some\_q}(x_4)$, \\
+$l_9:a_9:\mbox{\_dog\_n}(x_5)$
 \end{subexamples}
 \end{examples}
 Semantic relations, sense tags and the arity of the base-language
@@ -147,7 +147,7 @@ specific than the latter.  At least, this holds so long as the
 base-language constructors that the {\sc rmrs} predicate symbol
 {\_name\_t\_s} corresponds to is a 
 subset of those corresponding to the predicate symbol {\em \_name\_t},
-for any word lemma {\em name} and {\sc pos} tag $t$ (written 
+for any word lemma {\em name}, {\sc pos} tag $t$ and sense $s$ (written 
 $\mbox{{\em \_name\_t\_s}} \sqsubset \mbox{{\em name\_t}}$). 
 
 The values of non-scopal arguments are underspecified through the
@@ -176,10 +176,11 @@ in (\ref{eg:which-dog}b).
 \end{subexamples}
 \end{examples}
 Thus to maximise the semantic contribution
-of the parser while not overdetermining it, one should express that
-the argument position of the noun phrases in {\em give the bone} vs.\
-{\em give the dog} are underspecified between the second and third
-position, as shown in Figure~\ref{fig:2}.   This will be expressed in
+of the parser while not overdetermining it, the phrases
+{\em give the bone} vs.\
+{\em give the dog} should whether the semantic index of the noun
+phrase is the second or third argument to {\em give},
+as shown in Figure~\ref{fig:2}.   This will be expressed in
 {\sc rmrs} via the binary relation  $\mbox{{\em ARG}}_{\{2,3\}}(a,x)$
 between the anchor $a$ of the predicate symbol for {\em give} and the
 individual $x$.   More generally, $\mbox{{\em ARG}}_n(a,x)$ means that

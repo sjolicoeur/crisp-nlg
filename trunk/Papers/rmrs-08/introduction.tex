@@ -1,7 +1,7 @@
 \section{Introduction} \label{sec:intro}
 
 Representing semantics as a logical form that supports automated
-inference and model generation is vital for deeper language
+inference and model construction is vital for deeper language
 engineering tasks, such as dialogue systems.  Such detailed semantic
 representations can be obtained from hand-crafted deep grammars (e.g.,
 \cite{butt:etal:1999,copestake:flickinger:2000}), but deep parsing
@@ -12,32 +12,64 @@ handle.
 
 On the other hand, there has been a recent trend towards systems for
 robust wide-coverage semantic construction.  For instance,
-\cite{bos:etal:2004} build upon a statistical CCG parser, exploiting
-the elegant syntax-semantics interface that CCG provides;
-\cite{zettlemoyer:collins:2007} and others combine syntactic analyses
-with shallow features to learn string-to-semantics mappings; and
-\todo{say something about RASP and Anette's work}.
+\cite{bos:etal:2004} exploit
+{\sc ccg}'s elegant syntax-semantics interface to produce a unique
+logical form for each derivation of
+a statistical {\sc ccg} parser;
+\cite{zettlemoyer:collins:2007} and others learn
+string-to-logical-form mappings, exploting informative features from
+the output of
+shallow language processors; and \cite{copestake:2003} and
+\cite{frank:2004}, among others,
+endow robust language processors with semantic components.
 
-However, there are certain semantic phenomena that such shallow
-approaches can't capture, including quantifier scope, optional
-arguments, and long-distance dependencies.  Forcing a shallow parser
-to make a decision about these phenomena is therefore a major source
+However, there are certain semantic
+phenomena that such shallow
+approaches can't capture reliably, including quantifier scope, optional
+arguments,
+% COMMENT: this issue about optional arguments is really too cryptic.
+% Basically, there is no way for assessing by *any* learned language
+% processor whether a single word form that appears in
+% a number of different syntactic valencies is an example of lexical
+% sense ambiguity, or they are all examples of the same sense being
+% used in syntactically different ways (i.e., we have optional
+% arguments).  Only hand-crafted grammars can tell you this.  So, for
+% example, Bos et al (2004) would get bet(x,y) for "I bet 5 pounds",
+% and bet(x,y,z) for "I bet you 5 pounds" and bet(x,p) for "I bet it's
+% going to rain": I.e., the vocab of the semantic formalism is
+% constructed automatically from NL word forms, and the predicate
+% symbols in that automatically constructed vocab vary in (a) valency,
+% and (b) the semantic dependencies represented by a given argument
+% position (e.g., the second argument of "bet" in "I bet 5 pounds" is
+% 5 pounds, and for "I bet it's raining" it's "it's raining".
+% 
+and long-distance dependencies.  
+% TODO: search Steedman and Clark EMNLP 2004 for the performance
+% figures on object relative clauses (which is constructions like
+% "The man that I met", "the man that I think likes me", but not "the
+% man that likes me"; they get about 50% of them exactly right; this
+% is impressive but shows it's error prone.
+Forcing a shallow parser
+to make a decision about these phenomena therefore can be a major source
 of errors.  It would be preferrable to give the parser the option to
 declare itself not sufficiently informed to make the decision, and
-leave the decision open -- i.e., to compute a partial semantic
+to leave the decision open -- i.e., to compute a partial semantic
 representation that neither over-determines nor under-determines the
 semantic information revealed by the (shallow) syntactic analysis, and
-can later be completed by further inferences.
+to complete the semantic information later, via inferences that
+exploit information extraneous to the shallow parser.
 
 In this paper, we focus on one particular approach to representing
-partial semantic information and producing it from robust parsers:
+partial semantic information:
 Robust Minimal Recursion Semantics ({\sc rmrs},
 \cite{copestake:2003}).  {\sc rmrs} is a generalisation of {\sc mrs}
-\cite{copestake:etal:2005} designed to support underspecification both
-of scope relations and of the predicate-argument structure, and has
-been demonstrated to support semantic constructions of shallow parsers
-ranging in depth from {\sc pos} taggers (refs) to chunk parsers (frank
-ref) and intermediate parsers ({\sc rasp} ref).  {\sc mrs} analyses
+\cite{copestake:etal:2005}, designed to support underspecification both
+of scope relations and of the predicate-argument structure.
+\cite{copestake:2003, frank:2004} use it to
+support semantic constructions by shallow parsers
+ranging in depth from {\sc pos} taggers to chunk parsers  
+and intermediate parsers such as {\sc rasp}
+\cite{briscoe:etal:2006}.  {\sc mrs} analyses
 derived from deep grammars, such as the English Resource Grammar
 \cite{copestake:flickinger:2000} can also be seen as special cases of
 {\sc rmrs} representations.

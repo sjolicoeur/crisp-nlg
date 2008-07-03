@@ -4,7 +4,7 @@ Representing semantics as a logical form that supports automated
 inference and model construction is vital for deeper language
 engineering tasks, such as dialogue systems.  Such detailed semantic
 representations can be obtained from hand-crafted deep grammars (e.g.,
-\cite{butt:etal:1999,copestake:flickinger:2000}), but deep parsing
+\cite{butt:etal:1999,copestake:flickinger:2000}), but this
 tends to lack robustness: hand-crafted grammars fail to cover all
 words and linguistic constructions; and unedited text and speech
 contains ill-formed phrases, which by design deep grammars do not
@@ -24,8 +24,8 @@ shallow language processors; and \cite{copestake:2003} and
 endow robust language processors with semantic components.
 
 However, there are certain semantic
-phenomena that such shallow
-approaches can't capture reliably, including quantifier scope, optional
+phenomena that these robust
+approaches don't capture reliably, including quantifier scope, optional
 arguments,
 % COMMENT: this issue about optional arguments is really too cryptic.
 % Basically, there is no way for assessing by *any* learned language
@@ -43,17 +43,18 @@ arguments,
 % position (e.g., the second argument of "bet" in "I bet 5 pounds" is
 % 5 pounds, and for "I bet it's raining" it's "it's raining".
 % 
-and long-distance dependencies.  
-% TODO: search Steedman and Clark EMNLP 2004 for the performance
-% figures on object relative clauses (which is constructions like
-% "The man that I met", "the man that I think likes me", but not "the
-% man that likes me"; they get about 50% of them exactly right; this
-% is impressive but shows it's error prone.
+and long-distance dependencies (for instance, \cite{clark:etal:2004}
+report that the parser used in \cite{bos:etal:2004} 
+yields semantic dependencies from the unbounded
+dependencies borne from
+object extraction---e.g., {\em the man that I met\dots}---with 63\%
+accuracy).
 Forcing a shallow parser
 to make a decision about these phenomena therefore can be a major source
-of errors.  It would be preferrable to give the parser the option to
+of errors.  Depending on the application, it may be preferrable to
+give the parser the option to 
 declare itself not sufficiently informed to make the decision, and
-to leave the decision open -- i.e., to compute a partial semantic
+to leave the decision open---i.e., to compute a partial semantic
 representation that neither over-determines nor under-determines the
 semantic information revealed by the (shallow) syntactic analysis, and
 to complete the semantic information later, via inferences that
@@ -63,9 +64,9 @@ In this paper, we focus on one particular approach to representing
 partial semantic information:
 Robust Minimal Recursion Semantics ({\sc rmrs},
 \cite{copestake:2003}).  {\sc rmrs} is a generalisation of {\sc mrs}
-\cite{copestake:etal:2005}, designed to support underspecification both
+\cite{copestake:etal:2005} that is designed to support underspecification both
 of scope relations and of the predicate-argument structure.
-\cite{copestake:2003, frank:2004} use it to
+\cite{copestake:2003,frank:2004} use it to
 support semantic constructions by shallow parsers
 ranging in depth from {\sc pos} taggers to chunk parsers  
 and intermediate parsers such as {\sc rasp}
@@ -77,7 +78,7 @@ derived from deep grammars, such as the English Resource Grammar
 The key contribution we make is to cast {\sc rmrs}, for the first
 time, as a logic with a clearly defined model theory.  This has a
 number of advantages.  First, it allows us to formally relate \rmrs\ to
-other framework such as \mrs\ and predicate logic in order to
+other frameworks such as \mrs\ and predicate logic in order to
 establish the compatibility of \rmrs\ with the approaches to robust
 semantic analysis mentioned above.  Second, it provides us with a
 notion of logical entailment, which we can use to verify the
@@ -85,8 +86,8 @@ compatibility of \rmrs\ representations computed from different
 parsers, such as a deep and a shallow parser.  Finally, it is only
 through rigid formalisation that we can give users of \rmrs\ access to
 inference systems and to algorithms for efficiently computing the
-possible fully specific semantic representations described by a
-partial \rmrs.
+possible fully specific semantic representations described by the \rmrs
+output of a shallow parser.
 
 We will first illustrate the differences and challenges with deep and
 shallow semantic construction in an example in

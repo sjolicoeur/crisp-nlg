@@ -102,14 +102,31 @@ the GIVE software.
   \label{fig:give-minimal}
 \end{figure}
 
-Results for the $h=20$ case, with $n$ ranging from $1$ to $40$, are shown
-in Figure~\ref{fig:give-runtime-minimal}.  The most obvious result is that
-FF is unable to solve any problems beyond $n=13$ on our experimentation
-machine within the memory limit of 1 GB.  SGPLAN, on the other hand, solves
-instances beyond $n=40$ without major problems.  The time spent on
-grounding is not a major factor in either planner, probably because the
-planners need more time to actually compute the plan---for instance, the
-optimal plan for the problem $n=40$ has a length of about 1600 steps.
+Results for the $h=20$ case, with $n$ ranging from $1$ to $40$, are
+shown in Figure~\ref{fig:give-runtime-minimal}.  The most obvious
+result is that FF is unable to solve any problems beyond $n=13$ on our
+experimentation machine within the memory limit of 1 GB.  SGPLAN, on
+the other hand, solves instances beyond $n=40$ without major
+problems.\footnote{Our ad-hoc implementation of GraphPlan is unable to
+  find any of these plans.}  The time spent on grounding is not a
+major factor in either planner, probably because the planners need
+more time to actually compute the plan---for instance, the optimal
+plan for the problem $n=40$ has a length of about 1600 steps.  As an
+example, the plan for $n=h=1$ looks as follows:
+
+\begin{enumerate}
+\item $\mathsf{move}(\mathsf{pos\_1\_1},\mathsf{pos\_1\_2}, \mathsf{north})$
+\item $\mathsf{manipulate}\textsf{-}\mathsf{u1}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{pos\_1\_2})$
+\item $\mathsf{turn}\textsf{-}\mathsf{right}(\mathsf{north}, \mathsf{east})$
+\item $\mathsf{move}(\mathsf{pos\_1\_2}, \mathsf{pos\_2\_2},
+  \mathsf{east})$
+\item $\mathsf{turn}\textsf{-}\mathsf{right}(\mathsf{east}, \mathsf{south})$
+\item $\mathsf{move}(\mathsf{pos\_2\_2}, \mathsf{pos\_2\_1}, \mathsf{south})$
+\item $\mathsf{manipulate}\textsf{-}\mathsf{l1}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{pos\_2\_1})$
+\end{enumerate}
+
+
+
 
 \begin{figure}
   \centering
@@ -150,10 +167,11 @@ assume includes grounding) which grows from 180 ms to 21.7 seconds as
 $w$ grows from $1$ to $75$. The rest of the runtime (which also
 includes the search time) only grows from 400 ms to 2.3 seconds. This
 difference is particularly dramatic given that the actual optimal plan
-in each case is an identical plan of about 100 steps. The planning
-times for these instances are also concerning since times over a
-couple seconds negatively affect the overall response time of the
-system, which must react in real time to user actions.
+in each case is an identical plan of about 100 steps (namely, the one
+we would have found in Experiment 2 for $h=20$ and $n=5$). The
+planning times for these instances are also concerning since times
+over a couple seconds negatively affect the overall response time of
+the system, which must react in real time to user actions.
 
 \begin{figure}
   \centering

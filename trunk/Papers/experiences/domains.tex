@@ -122,24 +122,28 @@ sleeps.''}
 \end{figure}
 
 
-The process described above has clear parallels to planning: we manipulate
-a state by applying actions in order to achieve a goal. We can make this
-connection even more precise by translating the SPUD problem into a
-planning problem. For instance, Figure~\ref{fig:white-rabbit-as-planning}
-shows the corresponding PDDL actions for the above generation task, where
-each action corresponds to an operation that adds a single elementary tree
-to the derivation.  In each case, the first parameter of the action is a
-node name in the derivation tree, and the remaining parameters stand for
-the individuals to which the semantic roles will be instantiated.  The
-syntactic preconditions and effects are encoded using $\mathsf{open}$ and
-$\mathsf{canadjoin}$ literals; the status of each referring expression is
-tracked using $\mathsf{distractor}$ literals. Notice that the action
-effects contain terms of the form $\mathsf{subj}(u)$, which construct new
-node names. In order to meet the syntactic requirements of PDDL, these
-terms can be eliminated by estimating an upper bound $n$ for the plan
-length, making $n$ copies of each action, ensuring that copy $i$ can only
-be applied in step $i$, and replacing the term $\mathsf{subj}(u)$ in an
-action copy by the constant $\mathsf{subj}_i$.
+The process described above has clear parallels to planning: we
+manipulate a state by applying actions in order to achieve a goal. We
+can make this connection even more precise by translating the SPUD
+problem into a planning problem.\footnote{See
+  \url{http://code.google.com/p/crisp-nlg/} for the CRISP system, in
+  which this conversion is implemented.}  For instance,
+Figure~\ref{fig:white-rabbit-as-planning} shows the corresponding PDDL
+actions for the above generation task, where each action corresponds
+to an operation that adds a single elementary tree to the derivation.
+In each case, the first parameter of the action is a node name in the
+derivation tree, and the remaining parameters stand for the
+individuals to which the semantic roles will be instantiated.  The
+syntactic preconditions and effects are encoded using $\mathsf{open}$
+and $\mathsf{canadjoin}$ literals; the status of each referring
+expression is tracked using $\mathsf{distractor}$ literals. Notice
+that the action effects contain terms of the form $\mathsf{subj}(u)$,
+which construct new node names. In order to meet the syntactic
+requirements of PDDL, these terms can be eliminated by estimating an
+upper bound $n$ for the plan length, making $n$ copies of each action,
+ensuring that copy $i$ can only be applied in step $i$, and replacing
+the term $\mathsf{subj}(u)$ in an action copy by the constant
+$\mathsf{subj}_i$.
 
 Once the appropriate actions are defined, we can solve the generation
 problem as an ordinary planning problem. For instance, the following plan
@@ -152,31 +156,33 @@ solves our previous example:
 \end{enumerate}
 %
 Using this plan, the grammatical derivation in
-Figure~\ref{fig:white-rabbit-sleeps-deriv}, and therefore the generated
-sentence, can be systematically reconstructed. Thus, we can solve the
-sentence generation problem via the detour through planning and bring
-current search heuristics for planning to bear on generation.
+Figure~\ref{fig:white-rabbit-sleeps-deriv}, and therefore the
+generated sentence ``the white rabbit sleeps'', can be systematically
+reconstructed. Thus, we can solve the sentence generation problem via
+the detour through planning and bring current search heuristics for
+planning to bear on generation.
 
 
 
 \subsection{Planning in instruction giving}
 
 The object of the GIVE Challenge (``Generating Instructions in Virtual
-Environments''; Koller et al.\ \citeyear{alexander07:_shared_task_propos})
-is to build an NLG system which is able to produce natural-language
-instructions which will guide a human user in performing some task in a
-virtual environment. From an NLG perspective, GIVE makes for an
-interesting challenge because it is a theory-neutral task that exercises
-all components of an NLG system, and emphasizes the study of communication
-in a (simulated) physical environment. It also has the advantage that the
-user and the NLG system can be in physically different places, as long as
-the 3D client and the NLG system are connected over a network. This makes
-it possible to evaluate GIVE NLG systems on a large scale over the
-Internet. The first GIVE evaluation will take place in late 2008;
-currently eight research teams from five countries are working on
-developing systems to participate in the challenge.\footnote{See the GIVE
- website for more details about this project:
- \url{homepages.inf.ed.ac.uk/v1akolle/proj/give/}.}
+Environments''; Koller et al.\
+\citeyear{alexander07:_shared_task_propos}) is to build an NLG system
+which is able to produce natural-language instructions which will
+guide a human user in performing some task in a virtual
+environment. From an NLG perspective, GIVE makes for an interesting
+challenge because it is a theory-neutral task that exercises all
+components of an NLG system, and emphasizes the study of communication
+in a (simulated) physical environment. It also has the advantage that
+the user and the NLG system can be in physically different places, as
+long as the 3D client and the NLG system are connected over a
+network. This makes it possible to evaluate GIVE NLG systems on a
+large scale over the Internet. The first GIVE evaluation will take
+place in late 2008; currently eight research teams from five countries
+are working on developing systems to participate in the
+challenge.\footnote{See the GIVE website for more details about this
+  project: \url{http://www.give-challenge.org/}.}
 
 \begin{figure}
 \centering
@@ -276,9 +282,10 @@ forward; turn left; walk forward''.  However, this would be clumsy and
 boring, and it is to be expected that frustrated users will quickly
 cancel an interaction with such a system, resulting in a bad
 evaluation score.  Having just pressed the button, it would be much
-better to say ``turn around and walk through the door''; i.e.,
-multiple action instances should be merged into a single
-instruction. Conversely, it may also be necessary to express a single
+better to say ``turn around and walk through the door''. That is,
+multiple action instances should be merged into a single instruction;
+plans must be \emph{summarised} in order to present them to the
+user. Conversely, it may also be necessary to express a single
 planning step with several instructions.  Having just entered the top
 left room, it may be easier for the user to understand the instruction
 ``walk to the centre of the room; turn right; now press the green

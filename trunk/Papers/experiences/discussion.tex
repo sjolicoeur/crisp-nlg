@@ -12,44 +12,20 @@ concern in these domains, it nevertheless becomes a factor in
 scenarios like Experiment~2, where the world is almost completely
 unconstrained and (unsurprisingly) the search becomes much slower.
 
-%The positive conclusion we can draw from the experiments reported
-%above is that for the most part, modern planners are pretty good at
-%controlling the search for the NLG-related inputs that we looked at.
-%This is particularly true for FF in the sentence generation domain,
-%which generates nontrivial 14-word sentences in about two seconds.
-%There is still room for improvement (a special-purpose algorithm for
-%referring expressions could generate ten of these 14 words in a few
-%milliseconds), and the search becomes slower -- for obvious reasons --
-%in the almost completely unconstrained world of Experiment 2, but
-%search is not the main efficiency bottleneck.
-
-The most restrictive bottleneck in the two domains we investigated is the
-initial grounding step that many modern planners perform. While this may be
-a good strategy for traditional planning benchmarks and IPC domains---where
-plan length often dominates universe size, and an initial investment into
-grounding pays off in saved instantiations during the search---this
-approach is less effective in the domains we've considered. As our
-experiments have shown, there are natural planning domains in which
-relatively short plans must be computed in large universes. For instance,
-in the case of the sentence generation domain, it is not unrealistic for
-the universe to consist of thousands of domain individuals and tens of
-thousands of actions, some of which require three domain individuals as
-parameters. The common strategy of splitting the universe over several
-types of individuals will not be very effective here.
-
-%The most restrictive bottleneck in the two domains we have looked at
-%in this paper is the initial grounding step that almost all modern
-%planners perform.  Our conclusion from the experiments reported above
-%is that this is a good strategy in domains where the typical plan
-%length dominates the typical universe size, i.e.\ where the initial
-%investment into grounding pays off in saved unifications during the
-%search.  However, as we have shown, there are natural planning domains
-%in which relatively short plans must be computed in large universes;
-%it is not unrealistic for the universe in the sentence generation
-%domain to consist of thousands of domain individuals and tens of
-%thousands of actions, some of which take three domain individuals as
-%parameters.  The common strategy of splitting the universe over
-%several types of individuals will not be very effective here.
+The most restrictive bottleneck in the two domains we investigated is
+the initial grounding step that many modern planners perform. While
+this may be a good strategy for traditional planning benchmarks and
+IPC domains---where plan length often dominates universe size, and an
+initial investment into grounding pays off in saved instantiations
+during the search---this approach is less effective in the domains
+we've considered. As our experiments have shown, there are natural
+planning domains in which relatively short plans must be computed in
+large universes. For instance, in the case of the sentence generation
+domain, it is not unrealistic to look for plans of length 20 over a
+universe consisting of thousands of domain individuals and tens of
+thousands of actions, some of which require three domain individuals
+as parameters. The common strategy of splitting the universe over
+several types of individuals will not be very effective here.
 
 The recent trend in planning research has (rightfully) focused on the
 development of algorithms that control search in sophisticated ways,
@@ -57,28 +33,16 @@ resulting in a host of planners that are more powerful and more
 successful than their predecessors. However, the common strategy of
 grounding out sets of predicates and actions in implementations of
 these algorithms has a very pronounced effect on domains such as those
-described above. Since our domains are not that unusual in their
-structure and composition, we hope that the lessons learnt from our
-experiences can help improve the performance of current systems. We
-believe that such improvements are necessary if planning is to become
-a more mature technology that can offer tools to a wider community of
-users. At the end of the day, real-world users will care about the
-\emph{total} runtime of a planner, and this is more than just the
-search time.
-%We offer our larger problem instances as future challenges for the
-%planning community.
-
-%We believe that if planning is to become a mature technology which
-%real-world users will believe in, it must find a way to deal with the
-%grounding problem more gracefully than current systems do.  The
-%research focus in developing planning algorithms has quite rightfully
-%been on dealing with the search, and for this it is convenient --
-%depending on the particular algorithm, necessary -- to ground out all
-%predicates and actions before starting the search itself.  However, we
-%think that the domains presented here are not that unusual in their
-%ratio of plan length against universe size.  At the end of the day,
-%real-world users will care about the \emph{total} runtime of a
-%planner, and this is more than just the search.
+described above. Reachability analysis has the potential to help---we
+could gain a lot by only computing reachable instances---, but this
+too is typically done on the grounded problem. \todo{check if this is
+  true} Since our domains are not that unusual in their structure and
+composition, we hope that the lessons learnt from our experiences can
+help improve the performance of current systems. We believe that such
+improvements are necessary if planning is to become a more mature
+technology that can offer tools to a wider community of users. At the
+end of the day, real-world users will care about the \emph{total}
+runtime of a planner, and this is more than just the search time.
 
 By and large, our experiences with the planning community from the point of
 view of a ``customer'' (one of the authors is not a planning researcher)
@@ -89,15 +53,6 @@ both SGPLAN and FF. We also discovered that deciding between the range of
 available planners is not always straightforward. As our experiments have
 shown, even planners as closely related as FF and SGPLAN can differ
 significantly in their performance on different domains.
-
-%By and large, it is a relatively pleasant experience to come as a
-%``customer'' to the planning community: Thanks to the competitions, it
-%is easy to identify and download a fast implementation, at least for
-%Linux.  However, in the course of our experiments we found (and
-%reported) bugs in both SGPLAN and FF.  And as our experiments have
-%shown, there is no one silver bullet: Even planners as closely related
-%as FF and SGPLAN can differ significantly in their performance on
-%different domains.
 
 
 

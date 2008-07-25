@@ -274,57 +274,59 @@ somewhat more complicated room shapes.
 
 The GIVE task comes with a number of interesting research challenges
 both for the NLG and the planning communities.  On the NLG side, one
-major problem is that the natural language instruction sequences can't
-simply be obtained by verbalising each action instance in a plan in turn.
-For instance, the NLG system could generate an instruction sequence
-starting with ``turn left; walk forward; press the button; turn right; walk
-forward; walk forward; turn right; walk forward; walk forward; turn left;
-walk forward''.  However, such directions would be clumsy and boring, and
+major problem is that verbalising each action instance in the plan in
+turn makes for very poor natural-language instructions.  For instance,
+the NLG system could generate an instruction sequence starting with
+``turn left; walk forward; press the button; turn right; walk forward;
+walk forward; turn right; walk forward; walk forward; turn left; walk
+forward''.  However, such directions would be clumsy and boring, and
 it is to be expected that frustrated users will quickly cancel an
 interaction with such a system, resulting in a bad evaluation score.
 Having just pressed the button, it would be much better to say ``turn
 around and walk through the door''. That is, plans must be
 \emph{summarised} by merging multiple action instances into a single
-instruction, in order to present them to the
-user.\footnote{This task is similar to the construction of ``macro''
-actions, but is primarily intended for plan presentation.}
-Conversely, it may also be necessary to \emph{elaborate} on a single
-planning step by expressing it with several instructions.  Having just
-entered the top left room, it may be easier for the user to understand the
-instruction ``walk to the centre of the room; turn right; now press the
-green button in front of you'', rather than the instruction ``press the
-green button on the wall to your right''.  To plan the referring expression
-``the green button in front of you'' at a time when the button is not yet
-in front of the user, the NLG system must keep track of the hypothetical
-changes in what objects are visible to the user.  Thus the acts of
-referring and instructing, and the modules for planning and NLG, must be
-tightly integrated.
+instruction, in order to present them to the user.\footnote{This task
+  is similar to the construction of ``macro'' actions, but is
+  primarily intended for plan presentation.}  Conversely, it may also
+be necessary to \emph{elaborate} on a single planning step by
+expressing it with several instructions.  Having just entered the top
+left room, it may be easier for the user to understand the instruction
+``walk to the centre of the room; turn right; now press the green
+button in front of you'', rather than the instruction ``press the
+green button on the wall to your right''.  To plan the referring
+expression ``the green button in front of you'' at a time when the
+button is not yet in front of the user, the NLG system must keep track
+of the hypothetical changes in what objects are visible to the user.
+Thus the acts of referring and instructing, and the modules for
+planning and NLG, must be tightly integrated.
 
-From a planning perspective, GIVE imposes very strict runtime requirements
-on the planner and its associated modules: planning must happen in real
-time and the system must respond to a user in a timely fashion.  If the
-system takes too much time deliberating over an instruction to give, rather
-than actually giving this instruction, the user may have walked or turned
-away, thus making the instruction invalid.  Furthermore, plan execution
-monitoring also plays an important role in the GIVE problem.  At a high
-level, the system needs to monitor a user's actions and compare them
-against the generated instruction set to determine if the user has
-correctly followed directions or not. In the case of the latter, new
-instructions may have to be generated. In practice, the situation can be
-quite complicated since the mental state of the user is not known and so
-the system must observe the user's actions in real time. For example, a
-user directed to ``turn around and walk through the door'' may not
-necessarily perform these actions to the letter, i.e., immediately turning
-180 degrees and proceeding directly to the door. Instead, the user might
-take a roundabout route through the room, eventually exiting out the door.
-Although the user's actions do not match the generated instructions
-exactly, they meet the intended goal. The system must be able to identify
-such ``equivalent'' plans and not immediately generate new instructions as
-soon as the user's actions have gone off course. Furthermore, a user can
-communicate certain intentions to the system, both through action and
-inaction. For instance, the system should infer that a user has failed to
-follow instructions if the user exits a room when given a directive to
-``walk to the centre of the room''. The system should also make a
+From a planning perspective, GIVE imposes very strict runtime
+requirements on the planner and its associated modules: planning must
+happen in real time and the system must respond to a user in a timely
+fashion.  If the system takes too much time deliberating over an
+instruction to give, rather than actually giving this instruction, the
+user may have walked or turned away, thus making the instruction
+invalid.  Furthermore, plan execution monitoring also plays an
+important role in the GIVE problem.  At a high level, the system needs
+to monitor a user's actions and compare them against the generated
+instruction set to determine if the user has correctly followed
+directions or not. In the case of the latter, new instructions may
+have to be generated. In practice, the situation can be quite
+complicated since the mental state of the user is not known and so the
+system must be inferred from observing the user's actions in real
+time. For example, a user directed to ``turn around and walk through
+the door'' may not necessarily perform these actions to the letter,
+i.e., immediately turning 180 degrees and proceeding directly to the
+door. Instead, the user might take a roundabout route through the
+room, eventually exiting out the door.  Although the user's actions do
+not match the generated instructions exactly, they meet the intended
+goal. The system must be able to identify such ``equivalent'' plans
+and not immediately generate new instructions as soon as the user's
+actions have gone off course. Furthermore, a user can communicate
+certain intentions to the system, both through action and
+inaction. For instance, the system should infer that a user has failed
+to follow instructions if the user exits a room when given a directive
+to ``walk to the centre of the room''. The system should also make a
 similar conclusion if a user simply does nothing when given the
 instruction.
 

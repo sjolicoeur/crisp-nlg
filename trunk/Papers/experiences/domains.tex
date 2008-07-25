@@ -285,17 +285,20 @@ interaction with such a system, resulting in a bad evaluation score.
 Having just pressed the button, it would be much better to say ``turn
 around and walk through the door''. That is, plans must be
 \emph{summarised} by merging multiple action instances into a single
-instruction, in order to present them to the user. Conversely, it may also
-be necessary to \emph{elaborate} on a single planning step by expressing it
-with several instructions.  Having just entered the top left room, it may
-be easier for the user to understand the instruction ``walk to the centre
-of the room; turn right; now press the green button in front of you'',
-rather than the instruction ``press the green button on the wall to your
-right''.  To plan the referring expression ``the green button in front of
-you'' at a time when the button is not yet in front of the user, the NLG
-system must keep track of the hypothetical changes in what objects are
-visible to the user.  Thus the acts of referring and instructing, and the
-modules for planning and NLG, must be tightly integrated.
+instruction, in order to present them to the
+user.\footnote{This task is similar to the construction of ``macro''
+actions, but is primarily intended for plan presentation.}
+Conversely, it may also be necessary to \emph{elaborate} on a single
+planning step by expressing it with several instructions.  Having just
+entered the top left room, it may be easier for the user to understand the
+instruction ``walk to the centre of the room; turn right; now press the
+green button in front of you'', rather than the instruction ``press the
+green button on the wall to your right''.  To plan the referring expression
+``the green button in front of you'' at a time when the button is not yet
+in front of the user, the NLG system must keep track of the hypothetical
+changes in what objects are visible to the user.  Thus the acts of
+referring and instructing, and the modules for planning and NLG, must be
+tightly integrated.
 
 From a planning perspective, GIVE imposes very strict runtime requirements
 on the planner and its associated modules: planning must happen in real

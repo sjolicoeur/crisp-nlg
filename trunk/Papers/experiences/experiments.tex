@@ -27,7 +27,7 @@ below seek to improve our understanding of this situation.
 \subsection{Experiment 1: Sentence generation}
 \label{sec:exper-1:-sent}
 
-In the first experiment, we generate a series of sentence generation
+In the first experiment, we construct a series of sentence generation
 problems which require the planner to compute a plan representing the
 sentence ``Mary likes the Adj$_1$ \ldots Adj$_n$ rabbit.''  Each problem
 instance assumes a certain number $m$ of rabbits that were distinguished by
@@ -67,19 +67,19 @@ this application.\footnote{The
   ``grounding'' time reported here is what FF reports as ``time spent:
   instantiating action templates''.} 
 
-In fact, the time spent by FF on grounding is such that it is consistently
-outperformed by an ad-hoc Java implementation of GraphPlan which only
-computes instances of predicates and actions as they are discovered (i.e.,
-while the planning graph is being built)---despite the fact that FF is
-consistently much faster as far as pure search time is concerned.  Looking
-at the difference from another angle, FF's performance is much more
-sensitive to the domain size: if we fix $n=1$, FF takes 60 ms to compute a
-plan at $m=1$, but 2.4 seconds (for the same plan) at $m=10$; our GraphPlan
-implementation takes 30 ms at $m=1$ and still only requires 50 ms at
-$m=10$.  Conversely, GraphPlan's runtime grows much faster with the plan
-size (i.e., with growing values of $n$ for a fixed $m$).  Larger (but still
-realistically-sized) instances of the sentence generation problem are still
-problematic for the planners we tested.
+In our examples, the time spent by FF on grounding is such that it is
+consistently outperformed by an ad-hoc Java implementation of GraphPlan
+which only computes instances of predicates and actions as they are
+discovered (i.e., while the planning graph is being built)---despite the
+fact that FF is consistently much faster as far as pure search time is
+concerned.  Looking at this difference from another angle, FF's performance
+is much more sensitive to the domain size: if we fix $n=1$, FF takes 60 ms
+to compute a plan at $m=1$, but 2.4 seconds to compute the same plan at
+$m=10$; our GraphPlan implementation takes 30 ms at $m=1$ and still only
+requires 50 ms at $m=10$.  Conversely, GraphPlan's runtime grows much
+faster with the plan size (i.e., with growing values of $n$ for a fixed
+$m$).  Larger, but still realistically-sized, instances of the sentence
+generation problem are still problematic for the planners we tested.
 
 
 \subsection{Experiment 2: Minimal GIVE worlds}
@@ -112,18 +112,18 @@ problems.\footnote{Our ad-hoc implementation of GraphPlan is unable to
   find any of these plans.}  The time spent on grounding is not a
 major factor in either planner, probably because the planners need
 more time to actually compute the plan---for instance, the optimal
-plan for the problem $n=40$ has a length of about 1600 steps.  As an
-example, the plan for $n=h=1$ looks as follows:
+plan for the problem $n=40$ has a length of about 1600 steps.  As a
+concrete example, the following is a plan for $n=h=1$:
 
 \begin{enumerate}
-\item $\mathsf{move}(\mathsf{pos\_1\_1},\mathsf{pos\_1\_2}, \mathsf{north})$
-\item $\mathsf{manipulate}\textsf{-}\mathsf{u1}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{pos\_1\_2})$
-\item $\mathsf{turn}\textsf{-}\mathsf{right}(\mathsf{north}, \mathsf{east})$
+\item $\mathsf{move}(\mathsf{pos\_1\_1},\mathsf{pos\_1\_2}, \mathsf{north})$,
+\item $\mathsf{manipulate}\textsf{-}\mathsf{u1}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{pos\_1\_2})$,
+\item $\mathsf{turn}\textsf{-}\mathsf{right}(\mathsf{north}, \mathsf{east})$,
 \item $\mathsf{move}(\mathsf{pos\_1\_2}, \mathsf{pos\_2\_2},
-  \mathsf{east})$
-\item $\mathsf{turn}\textsf{-}\mathsf{right}(\mathsf{east}, \mathsf{south})$
-\item $\mathsf{move}(\mathsf{pos\_2\_2}, \mathsf{pos\_2\_1}, \mathsf{south})$
-\item $\mathsf{manipulate}\textsf{-}\mathsf{l1}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{pos\_2\_1})$
+  \mathsf{east})$,
+\item $\mathsf{turn}\textsf{-}\mathsf{right}(\mathsf{east}, \mathsf{south})$,
+\item $\mathsf{move}(\mathsf{pos\_2\_2}, \mathsf{pos\_2\_1}, \mathsf{south})$,
+\item $\mathsf{manipulate}\textsf{-}\mathsf{l1}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{pos\_2\_1})$.
 \end{enumerate}
 
 

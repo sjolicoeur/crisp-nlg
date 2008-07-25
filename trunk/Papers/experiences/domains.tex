@@ -150,9 +150,9 @@ problem as an ordinary planning problem. For instance, the following plan
 solves our previous example:
 %
 \begin{enumerate}
-\item $\mathsf{sleeps}(\mathsf{root}, r_1)$
-\item $\mathsf{rabbit}(\mathsf{subj}(\mathsf{root}), r_1)$
-\item $\mathsf{white}(\mathsf{subj}(\mathsf{root}), r_1)$
+\item $\mathsf{sleeps}(\mathsf{root}, r_1)$,
+\item $\mathsf{rabbit}(\mathsf{subj}(\mathsf{root}), r_1)$,
+\item $\mathsf{white}(\mathsf{subj}(\mathsf{root}), r_1)$.
 \end{enumerate}
 %
 Using this plan, the grammatical derivation in
@@ -201,7 +201,7 @@ buttons (the small square boxes on the walls) in the correct order.
 In order to get to all these buttons, the user must also open the door
 in the centre of the map and deactivate the alarm tile by pushing
 further buttons.  To simplify both the planning and the NLG task, the
-world is discretized into tiles of equal size; the user can turn by 90
+world is discretised into tiles of equal size; the user can turn by 90
 degree steps in either direction, and can move from the centre of one
 tile to the centre of the next. Figure~\ref{fig:give-planning} shows
 some of the available actions in PDDL syntax.
@@ -254,14 +254,15 @@ some of the available actions in PDDL syntax.
 \end{figure}
 
 The plans generated in the GIVE domain are often nontrivial. For instance,
-in the example above the shortest plan consists of 108 action steps; the
+in the above example the shortest plan consists of 108 action steps; the
 first few steps are as follows:
 %
 \begin{enumerate}
-\item $\mathsf{turn}\textsf{-}\mathsf{left}(\mathsf{north}, \mathsf{west})$
-\item $\mathsf{move}(\mathsf{pos\_5\_2}, \mathsf{pos\_4\_2}, \mathsf{west})$
-\item $\mathsf{manipulate}\textsf{-}\mathsf{b1}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{pos\_5\_2})$
-\item $\mathsf{turn}\textsf{-}\mathsf{right}(\mathsf{west}, \mathsf{north})$
+\item $\mathsf{turn}\textsf{-}\mathsf{left}(\mathsf{north},
+\mathsf{west})$,
+\item $\mathsf{move}(\mathsf{pos\_5\_2}, \mathsf{pos\_4\_2}, \mathsf{west})$,
+\item $\mathsf{manipulate}\textsf{-}\mathsf{b1}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{pos\_5\_2})$,
+\item $\mathsf{turn}\textsf{-}\mathsf{right}(\mathsf{west}, \mathsf{north})$.
 \end{enumerate}
 
 Most of the actions in this plan are ``move'' actions.  This makes the
@@ -274,28 +275,27 @@ somewhat more complicated room shapes.
 The GIVE task comes with a number of interesting research challenges
 both for the NLG and the planning communities.  On the NLG side, one
 major problem is that the natural language instruction sequences can't
-simply be obtained by verbalising each action instance in a plan in
-turn.  For instance, the NLG system could generate an instruction
-sequence starting with ``turn left; walk forward; press the button;
-turn right; walk forward; walk forward; turn right; walk forward; walk
-forward; turn left; walk forward''.  However, this would be clumsy and
-boring, and it is to be expected that frustrated users will quickly
-cancel an interaction with such a system, resulting in a bad
-evaluation score.  Having just pressed the button, it would be much
-better to say ``turn around and walk through the door''. That is,
-multiple action instances should be merged into a single instruction;
-plans must be \emph{summarised} in order to present them to the
-user. Conversely, it may also be necessary to express a single
-planning step with several instructions.  Having just entered the top
-left room, it may be easier for the user to understand the instruction
-``walk to the centre of the room; turn right; now press the green
-button in front of you'' than the instruction ``press the green button
-on the wall to your right''.  To plan the referring expression ``the
-green button in front of you'' at a time when the button is not yet in
-front of the user, the NLG system must keep track of the hypothetical
-changes in what objects are visible to the user.  Thus the acts of
-referring and instructing, and the modules for planning and NLG, must
-be tightly integrated.
+simply be obtained by verbalising each action instance in a plan in turn.
+For instance, the NLG system could generate an instruction sequence
+starting with ``turn left; walk forward; press the button; turn right; walk
+forward; walk forward; turn right; walk forward; walk forward; turn left;
+walk forward''.  However, such directions would be clumsy and boring, and
+it is to be expected that frustrated users will quickly cancel an
+interaction with such a system, resulting in a bad evaluation score.
+Having just pressed the button, it would be much better to say ``turn
+around and walk through the door''. That is, plans must be
+\emph{summarised} by merging multiple action instances into a single
+instruction, in order to present them to the user. Conversely, it may also
+be necessary to \emph{elaborate} on a single planning step by expressing it
+with several instructions.  Having just entered the top left room, it may
+be easier for the user to understand the instruction ``walk to the centre
+of the room; turn right; now press the green button in front of you'',
+rather than the instruction ``press the green button on the wall to your
+right''.  To plan the referring expression ``the green button in front of
+you'' at a time when the button is not yet in front of the user, the NLG
+system must keep track of the hypothetical changes in what objects are
+visible to the user.  Thus the acts of referring and instructing, and the
+modules for planning and NLG, must be tightly integrated.
 
 From a planning perspective, GIVE imposes very strict runtime requirements
 on the planner and its associated modules: planning must happen in real

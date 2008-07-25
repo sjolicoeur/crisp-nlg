@@ -4,11 +4,11 @@ The positive conclusion we can draw from the simple experiments
 reported above is that modern planners are fairly good at controlling
 the search for many of the moderately-sized NLG problems we looked
 at. This is particularly true for FF in the sentence generation
-domain, which generates nontrivial 14-word sentences in about two
-seconds. There is still room for improvement, however; special-purpose
-algorithms generate much larger referring expressions in milliseconds
-\cite{AreKolStr08}.  Although search efficiency is not the main
-concern in these domains, it nevertheless becomes a factor in
+domain, which generates nontrivial 14-word sentences in about two seconds.
+There is still room for improvement, however: special-purpose
+algorithms generate much larger referring expressions in
+milliseconds \cite{AreKolStr08}.  Although search efficiency is not the
+main concern in these domains, it nevertheless becomes a factor in
 scenarios like Experiment~2, where the world is almost completely
 unconstrained and (unsurprisingly) the search becomes much slower.
 
@@ -18,7 +18,7 @@ this may be a good strategy for traditional planning benchmarks and
 IPC domains---where plan length often dominates universe size, and an
 initial investment into grounding pays off in saved instantiations
 during the search---this approach is less effective in the domains
-we've considered. As our experiments have shown, there are natural
+we've considered. As our experiments show, there are natural
 planning domains in which relatively short plans must be computed in
 large universes. For instance, in the case of the sentence generation
 domain, it is not unrealistic to look for plans of length 20 over a
@@ -31,18 +31,21 @@ The recent trend in planning research has (rightfully) focused on the
 development of algorithms that control search in sophisticated ways,
 resulting in a host of planners that are more powerful and more
 successful than their predecessors. However, the common strategy of
-grounding out sets of predicates and actions in implementations of
-these algorithms has a very pronounced effect on domains such as those
-described above. Reachability analysis has the potential to help---we
-could gain a lot by only computing reachable instances---, but this
-too is typically done on the grounded problem. \todo{check if this is
-  true} Since our domains are not that unusual in their structure and
-composition, we hope that the lessons learnt from our experiences can
-help improve the performance of current systems. We believe that such
-improvements are necessary if planning is to become a more mature
-technology that can offer tools to a wider community of users. At the
-end of the day, real-world users will care about the \emph{total}
-runtime of a planner, and this is more than just the search time.
+grounding out sets of predicates and actions in implementations of these
+algorithms has a very pronounced effect on domains such as those described
+above. More sophisticated techniques based on reachability analysis may
+have the potential to help improve this situation, provided such
+approaches can avoid the drawbacks resulting from unnecessary grounding.
+Since our domains are not that unusual in their structure and composition,
+we hope that the lessons learnt from our experiences can help improve the
+performance of current systems.  We believe that such improvements are
+necessary if planning is to become a more mature technology that can offer
+tools to a wider community of users.  At the end of the day, real-world
+users will care about the \emph{total} runtime of a planner, and this is
+more than just the search time.
+%has the potential to help---we could gain a lot by only computing
+%reachable instances---, but this too is typically done on the grounded
+%problem.  \todo{check if this is true} 
 
 By and large, our experiences with the planning community from the point of
 view of a ``customer'' (one of the authors is not a planning researcher)

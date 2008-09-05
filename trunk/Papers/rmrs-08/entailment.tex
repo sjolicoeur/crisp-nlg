@@ -22,12 +22,12 @@ basis for such parser integration:
 
 This theorem doesn't provide 
 efficient
-algorithms for entailment checking, and of course this would be
-required to make parser comparison and integration with {\sc rmrs}
+algorithms for entailment checking, and this is needed
+for parser comparison and integration to be
 practical.  Computing the solved forms of $\varphi$ and $\varphi'$ may
 be exponential, and the complexity of the {\sc rmrs} validity problem
-is still unknown.  However, the above theorem illustrates that our
-model theory for {\sc rmrs} functions in the way it should for parser
+is unknown.  However, the above theorem illustrates that our
+model theory functions in the way it should for parser
 comparison and integration, and it can thus be used to prove important
 logical properties of shallow parsing systems that adopt {\sc rmrs}.
 
@@ -41,7 +41,7 @@ The outline proof of Theorem~\ref{thm:big-one} is as follows:
   $M,\alpha \models \varphi'$.
 
   ``$\Rightarrow$'': Assume that $\varphi \models \varphi'$, and let
-  $s$ be an arbitrary solved form of $\varphi$.  We need to show that
+  $s$ be a solved form of $\varphi$.  We need to show that
   we can remove atoms from $s$ such that $s$ remains an extension of
   the resulting $s'$ and $s'$ is a solved form of $\varphi'$.
 
@@ -50,15 +50,15 @@ The outline proof of Theorem~\ref{thm:big-one} is as follows:
   such that $X$ and $Y$ occur in $\varphi'$ and $(X,Y) \in D(s)$.
 
   It is obvious that $s$ is an extension of $s'$.  Furthermore, $s'$
-  is in solved form, because $s$ was a tree already and we didn't
+  is in solved form, because $s$ was a tree and we didn't
   introduce new edges.  The tricky part is to show that $s'$ is a
   solved form of $\varphi'$.  $s'$ contains all labeling atoms of
   $\varphi'$ according to
   Lemma~\ref{lem:entailment-preserves-labeling-atoms}; a similar
   argument holds for inequality atoms.  Finally, $D(\varphi')
   \subseteq D(s')$ because $M,\alpha \models s'$ and $s'$ is
-  tree-shaped and normal and therefore contains all statements about
-  dominance that are true in $M$.
+  tree-shaped and normal and therefore contains all dominance statements
+  that are true in $M$.
 \end{proof}
 
 \begin{lemma} \label{lem:entailment-preserves-labeling-atoms}

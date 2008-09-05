@@ -12,22 +12,22 @@
 % variable names.  But I don't know how to extract this figure
 % techinically; nor whether we have room.
 
-We motivate and describe the main features of {\sc rmrs} with a toy
+We motivate and describe {\sc rmrs} with a toy
 example.  Sentence 
 (\ref{eg:cat}a) features a semantic scope ambiguity that, according to
 most deep grammars, syntax
 doesn't resolve.    The {\sc mrs} (\ref{eg:cat}b) derived by the
-English Resource Grammar ({\sc erg}, \cite{copestake:flickinger:2000})
+{\sc erg} \cite{copestake:flickinger:2000}
 reflects this: (i) each predication is
 labelled ($l_1$, $l_4$, etc); (ii) scopal arguments are indicated by
-holes (e.g., $h_2$ and $h_3$ in the quantifier {\em every}); (iii)
+holes (e.g., $h_2$, $h_3$); (iii)
 constraints on scope are expressed by the qeq conditions (roughly, $h
 =_q l$ means that only zero or more quantifiers lie between the scopal
 argument $h$ and the predication labelled by $l$ in any fully-resolved
 logical form); and (iv) these scope
 constraints allow for more than one way of `plugging' the holes with
-labels.\footnote{The event variable in the predicate symbol
-  corresponding to the adjective is motivated by copulas---{\em The
+labels.\footnote{The event variable in $\_\mbox{{\em fat}}\_j\_1$ is 
+  for copulas. {\em The
     cat is fat} has logical form 
   $\mbox{\_the\_q\_1}(x,\mbox{\_cat\_n\_1}(x),\mbox{\_fat\_j\_1}(e,x))$.}
 \begin{examples}
@@ -55,10 +55,11 @@ $h_2 =_q l_4, h_7 =_q l_9$
 \end{subexamples}
 \end{examples}
 (\ref{eg:cat}b) also exhibits {\sc mrs}' compact description of
-conjunction through label sharing (see $l_4$ above), and the {\sc
-  erg}'s naming convention for predicate symbols: each predicate is
+conjunction through label sharing (see $l_4$), and the {\sc
+  erg}'s naming convention for predicate symbols: each lexical predicate is
 constructed from the word lemma, its syntactic category and a sense
-number, and the leading underscore identifies lexical predicates.
+number, and the leading underscore distinguishes lexical predicates
+from non-lexical ones.
 
 Conceptually, this {\sc mrs} is a partial description of all its
 possible (fully specific) interpretations in context.  
@@ -89,13 +90,13 @@ Put trees in here
 \label{fig:1}
 \end{figure}
 
-The {\sc mrs} (\ref{eg:cat}c) is a notational variant of the {\sc
-  rmrs} (\ref{eg:cat}d). {\sc rmrs}s offer a more factorised
-representation: its predicate symbols are all unary and the other
-arguments to the (base-language) constructor that it corresponds to
+The {\sc mrs} (\ref{eg:cat}b) is a notational variant of the {\sc
+  rmrs} (\ref{eg:cat}c). {\sc rmrs}s offer a more factorised
+representation: each predicate symbol is unary and the other
+arguments to its corresonding base-language constructor
 are represented by separate binary relations on the unique {\em
   anchor} of the predicate symbol ($a_1, a_{41},\ldots$) together with
-variable and label equalities (e.g., $x=x_1$, $l_{41}=l_{42}$).
+variable equalities (e.g., $x=x_1$).
 \begin{examples}
 \item   [\ref{eg:cat}]
 \begin{subexamples}
@@ -122,9 +123,9 @@ This factored representation allows one to build semantic components
 to shallow parsers where lexical or syntactic information is absent.
 An extreme example would be a {\sc 
   pos} tagger: one can build its semantic component simply by deriving
-lexical predicate symbols from the word lemmas and their tags and ensuring
-that the predication for each word receives a unique label, anchor and
-argument, as given in (\ref{eg:cat-pos}):
+lexical predicate symbols from the word lemmas and tags and assigning each
+predication a unique label, anchor and
+argument, as in (\ref{eg:cat-pos}):
 \begin{examples}
 \item   \label{eg:cat-pos}
 \begin{subexamples}
@@ -138,9 +139,6 @@ $l_6:a_6:\mbox{\_some\_q}(x_4)$, \\
 $l_9:a_9:\mbox{\_dog\_n}(x_5)$
 \end{subexamples}
 \end{examples}
-
-\todo{The syntax used in this RMRS is incompatible with the later
-  definition.} 
 
 Semantic relations, sense tags and the arity of the base-language
 constructors are

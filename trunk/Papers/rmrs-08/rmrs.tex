@@ -60,20 +60,22 @@ following conditions:
 \end{definition}
 
 \rmrs\ as presented here combines similarities to earlier definitions
-of \rmrs\ (e.g., \cite{copestake:2003}) and to dominance constraints
-\cite{egg:etal:2001}.  Compared to earlier versions of \rmrs, we write
+of \rmrs\ (e.g., \cite{copestake:2003}) as illustrated in
+(\ref{eg:cat}c) and
+to dominance constraints
+\cite{egg:etal:2001}.  We
 $\ARG_{\{i\}}$ (with a singleton set $S$) instead of $\ARG_i$, and
-$\ARG_\N$ instead of $\ARG_n$.  Furthermore, we can express the
-elementary predication $\ep{l}{a}{P(v)}$ with the atoms
-$\{\ep{a}{l}{P}, \ARG_{\{0\}}(l,v)\}$; note that the positions of the
-anchor and label have changed.  In other words, the syntax defined
+$\ARG_\N$ instead of $\ARG_n$.  Furthermore, the
+elementary predication $\ep{l}{a}{P(v)}$ is a notational variant of
+$\{\ep{l}{a}{P}, \ARG_{\{0\}}(l,v)\}$.
+In other words, the syntax defined
 here differs in some details, but is more general. The primary
 differences to dominance constraints are the distinction of labels and
-anchors to support EP conjunctions directly, the separation of
-atoms for specifying the labelling and the parent-child relations, and
-the use of $\qeq$ instead of dominance.  One could thus see our
-version of \rmrs\ as a redefinition of classical \rmrs\ in the
-dominance constraints style, which will simplify the formal work
+anchors that will separate the
+labelling and the parent-child relations, and
+the use of $\qeq$ instead of dominance.  Redefining
+\rmrs\ in the
+style of dominance constraints will simplify the formal work
 below.
 
 \todo{don't split stuff up into tuple parts}
@@ -85,25 +87,27 @@ below.
 The model theory formalises the relationship between an {\sc rmrs} and
 the fully specific, alternative logical forms that it describes,
 expressed in the base language.  We represent such a logical form as a
-tree $\tau$.  The models of the \rmrs\ will then be such trees, and we
-can define notions such as satisfaction and entailment over these
-models in the usual way.  Satisfaction corresponds to the relation
-between an \rmrs\ and a fully specific semantic representation that it
-describes, whereas entailment corresponds to the relation between
+tree $\tau$ (see Figure~\ref{fig:1}).  So models of the \rmrs\ are
+such trees, and we 
+can define satisfaction and entailment over these
+models in the usual way.  Satisfaction corresponds to 
+an \rmrs\ being a partial description of the (unique) fully specific
+semantic representation that the model corresponds to, whereas
+entailment corresponds to the relation between
 a more and a less specific \rmrs.
 
 In this paper, we assume for simplicity that the base language is
 predicate logic; in this case, $\tau$ is simply the structure tree of
-the predicate logic formula.  Other base languages may require
-different mappings between formulas and trees.  We assume that
-$\Sigma$ is a ranked signature consisting of the symbols of the base
-language with appropriate arities.  To encode predicate logic, we
-assume the unary constructor $\neg$ and binary constructors $\wedge$,
+the predicate logic formula.  We assume that
+$\Sigma$ is a ranked signature consisting of predicate logic's
+symbols:
+a unary constructor $\neg$ and binary constructors $\wedge$,
 $\rightarrow$, etc.; the binary constructors $\forall x$ and $\exists
 x$ for all base-language variables $x$; all the constants and
 base-language variables as nullary constructors; and, for each
 predicate symbol $P$ of arity $n$, a constructor $P$ of arity $n$.
-For other base languages, a different signature could be chosen; we
+Other base languages may require a different signature $\Sigma$ and/or
+a different mapping between formulas and trees.  We
 only assume for convenience that the signature contains a binary
 constructor $\wedge$ to represent conjunction.  We write $\Sigma_i$
 for the set of all constructors in $\Sigma$ that have arity $i$.
@@ -145,8 +149,8 @@ representing variables in the base language.  This function enables us
 to map two variables that seem different in the \rmrs\ to the same
 base-language variable, introducing e.g.\ semantic dependencies that a
 POS tagger didn't catch.  For instance, $g$ might map $x_4$ and $x_5$
-in (\ref{eg:cat-pos}b) to $y$ to specify the restrictor of the
-quantifier.  Finally, we assume a relation $\sigma \subseteq \pred
+in (\ref{eg:cat-pos}b) to $y$ to specify a variable binding.  Finally,
+we assume a relation $\sigma \subseteq \pred 
 \times \Sigma_{\geq 1}$ that maps each {\sc rmrs} predicate symbol to
 a set of constructors from $\Sigma$.  This relation allows us to
 underspecify lexical ambiguities; for instance,
@@ -209,9 +213,8 @@ if $\tau_1(\alpha_1(Y))$ and $\tau_2(\alpha_2(Y))$ are different
 base-language constructors, but of the same type.
 
 Let's look at the \rmrs\ in (\ref{eg:cat-pos}b) by way of example.
-This \rmrs\ is normal, and it is of a particularly simple form because
-it consists only of elementary predications.  The \rmrs\ is satisfied
-(among others) by the tree in Fig.~\ref{fig:1} together with some
+This \rmrs\ is satisfied
+by the tree in Fig.~\ref{fig:1} (among others) together with some
 particular $\alpha$, $g$, and $\sigma$.  The assignment $\alpha$ will
 map the variables $l_1$ and $a_1$ to the root node; $l_{41}$ and
 $l_{42}$ to its second child (labeled with ``$\wedge$''); $a_{41}$ to
@@ -259,13 +262,12 @@ One feature which the above definition of \rmrs\ shares with dominance
 constraints is that any satisfiable \rmrs\ has an infinite number of
 models which only differ in the areas that the \rmrs\ didn't ``talk
 about''.  An example is shown in Fig.~\ref{fig:fat-black-cat}.  This
-tree, which represents the meaning of ``the fat black cat chased the
+tree, which represents the meaning of ``every fat black cat chased some
 dog'', differs from the model in Fig.~\ref{fig:1} in the subtree below
 the restrictor of the universal quantifier.  It is still a model of
-(\ref{eg:cat-pos}b) -- all the EPs are satisfied.  However, there is
-more ``semantic material'' (the ``black'' subformula) in the space
-between the labels $l_{41}$ and $l_{42}$ and the anchors $a_{41}$ and
-$a_{42}$.  The \rmrs\ didn't specify that this material should be
+(\ref{eg:cat-pos}b)---all the EPs are satisfied.  However, there is
+more ``semantic material'' (the ``black'' subformula).
+The \rmrs\ didn't specify that this material should be
 there; but it also didn't specify that it can't be there, and indeed
 there is no way in which the \rmrs\ can enforce that no extra material
 can be added.
@@ -287,10 +289,11 @@ models further and further towards the semantic representation we are
 trying to reconstruct.  However, the fact that all satisfiable \rmrs s
 have an infinite number of models is a problem for algorithms that try
 to decide satisfiability or compute the fully specific semantic
-representations -- how can this be done in finite time?
+representations---how can this be done in finite time?
 
-In this paper, we follow the dominance constraint tradition in
-defining a fragment of \rmrs s called \emph{solved forms}.  All \rmrs
+In this paper, we follow the dominance constraint strategy for
+resolving this dilemma; we
+define a fragment of \rmrs s called \emph{solved forms}.  All \rmrs
 s in solved form are guaranteed to be satisfiable, and thus each
 solved form represents an infinite class of models.  However, we will
 set it up in such a way that each satisfiable \rmrs\ has only a finite
@@ -301,9 +304,8 @@ can then enumerate the solved forms rather than all models.
 Intuitively, we expect that an \rmrs\ in solved form is fully
 specified with respect to scope ambiguities and the predicate-argument
 structure, all variable equalities and inequalities have been
-resolved, and only contains lexical ambiguities that are ``harmless'',
-inthat any choice of a constructor for the predicate symbol will
-satisfy the \rmrs.  This is made precise below.
+resolved, and only lexical sense ambiguities remain.  This is made
+precise below.
 
 \todo{Note: We don't really talk about SPEC anywhere else.}
 
@@ -415,11 +417,11 @@ We write $D(\varphi)$ for the syntactic dominance
 In the earlier \rmrs\ literature, each term of an \rmrs\ is equipped
 with a \emph{sort}.  For instance, individual variables are typically
 assigned the sort $x$, event variables the sort $e$, and holes the
-4sort $h$; sometimes subsorts of these are considered (e.g.\ $e_{PAST}$
+sort $h$; sometimes subsorts of these are considered (e.g.\ $e_{PAST}$
 for events in the past tense), and all the sorts arranged in a sort
 hierarchy ${\cal S}$.
 
-While we have defined \rmrs\ without sorts above to simplify the
+While we have defined \rmrs\ without sorts to simplify the
 presentation, it is straightforward to add sorts to the definition.
 For this, one assumes that the signature $\Sigma$ is sorted, i.e.\
 assigns a sort $s_1\times\ldots s_n\rightarrow s$ to each constructor,
@@ -430,15 +432,15 @@ the usual sense, i.e.\ those in which we can infer a sort for each
 subtree, and require that the variable assignment functions likewise
 respect the sorts.  If we then modify Def.~\ref{defn:solved-forms}
 such that the constructor $p$ of sufficiently high arity is also
-consistent with the sorts of the known arguments -- i.e., if $p$ has
+consistent with the sorts of the known arguments---i.e., if $p$ has
 sort $s_1 \times \ldots \times s_n \rightarrow s$ and the \rmrs\
 contains an atom $\ARG_{\{k\}}(Y,i)$ and $i$ is of sort $s'$, then
-$s'$ is a subsort of $s_k$ --, all the above propositions about solved
+$s'$ is a subsort of $s_k$---all the above propositions about solved
 forms remain true.
 
-Another extension that is worth discussing is the idea of replacing
-the qeq atom, $X \qeqdom Y$, by ordinary dominance $X \dom Y$ in the
-sense of dominance constraints, which is satisfied iff there is a path
+Another extension is to replace
+the qeq atom $X \qeqdom Y$ with dominance $X \dom Y$, 
+which is satisfied iff there is a path
 from $\alpha(X)$ to $\alpha(Y)$ in the tree.  Dominance is clearly a
 less restrictive condition than qeq, but it has been shown that the
 distinction between the two relations is irrelevant in \mrs s that were

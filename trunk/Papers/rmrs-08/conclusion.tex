@@ -1,6 +1,27 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
+In this paper we have motivated and described \rmrs---a semantic
+framework that can be used to specify
+semantic components to robust shallow parsers.  Accordingly, \rmrs\
+is designed to be
+maximally flexible on the type of semantic information
+that can be left underspecified, so that the semantic output of a
+shallow parser needn't over-determine or under-determine the semantic
+information that can be extracted from the shallow syntactic analysis.
+
+We defined its syntax and model-theoretic semantics, and following the
+tradition from dominance constraints, we defined a syntactic criterion
+for characterising entailment.  The syntactic notion of {\em solved
+  forms} is useful because it means that even when an underspecified
+\rmrs\ corresonds to an infinite number of possible fully-specific
+interpretations in context, there is a finite way of identifying all
+the `relevant' differences among those fully-specific interpretations.
+We showed that the model theory supports theorems that allow one to
+use \rmrs\ representations as a way of comparing and even integrating
+the semantic output of different parses of the same natural language
+string, even when they vary in depth.
+
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: "rmrs-08"

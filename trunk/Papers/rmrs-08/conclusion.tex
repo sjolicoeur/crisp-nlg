@@ -1,26 +1,31 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-In this paper we have motivated and described \rmrs---a semantic
-framework that can be used to specify
-semantic components to robust shallow parsers.  Accordingly, \rmrs\
-is designed to be
-maximally flexible on the type of semantic information
-that can be left underspecified, so that the semantic output of a
-shallow parser needn't over-determine or under-determine the semantic
-information that can be extracted from the shallow syntactic analysis.
+In this paper, we have motivated and defined \rmrs---a semantic
+framework that has been used to represent, compare, and combine
+semantic information computed from deep and shallow parsers.  \rmrs\
+is designed to be maximally flexible on the type of semantic
+information that can be left underspecified -- it can underspecify
+lexical ambiguity, predicate-argument relations, and scope --, so that
+the semantic output of a shallow parser needn't over-determine or
+under-determine the semantic information that can be extracted from
+the shallow syntactic analysis.  This lays the formal foundations for
+a semantic representation formalism that is emerging as a standard in
+robust semantic processing.
 
-We defined its syntax and model-theoretic semantics, and following the
-tradition from dominance constraints, we defined a syntactic criterion
-for characterising entailment.  The syntactic notion of {\em solved
-  forms} is useful because it means that even when an underspecified
-\rmrs\ corresonds to an infinite number of possible fully-specific
-interpretations in context, there is a finite way of identifying all
-the `relevant' differences among those fully-specific interpretations.
-We showed that the model theory supports theorems that allow one to
-use \rmrs\ representations as a way of comparing and even integrating
-the semantic output of different parses of the same natural language
-string, even when they vary in depth.
+We then defined the concept of \emph{solved forms} of an \rmrs, in
+analogy to dominance graphs.  Solved forms abstract away from
+irrelevant differences between models, and have been a crucial concept
+in the development of efficient solvers for dominance graphs.  In the
+future, we hope to draw upon that body of literature to develop
+efficient algorithms for processing \rmrs s, including solvers which
+will compute fully specific semantic representations from an \rmrs,
+efficient inference algorithms, and algorithms for entailment
+checking.  We have argued that entailment is a central notion in
+comparing the outputs of different NLP tools, and provided a syntactic
+characterization for \rmrs\ entailment, which we hope will allow us to
+develop efficient entailment algorithms in the future.
+
 
 %%% Local Variables: 
 %%% mode: latex

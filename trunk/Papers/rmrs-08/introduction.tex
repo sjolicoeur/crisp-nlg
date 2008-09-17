@@ -11,20 +11,14 @@ ill-formed phrases.
 
 On the other hand, there has been a recent trend towards systems for
 robust wide-coverage semantic construction.  For instance,
-\cite{bos:etal:2004} exploit
-{\sc ccg}'s elegant syntax-semantics interface to produce a unique
-logical form for each derivation of
-a statistical {\sc ccg} parser;
-\cite{zettlemoyer:collins:2007} and others learn
-string-to-logical-form mappings, exploting informative features from
-shallow language processors; and \cite{copestake:2003} and
-\cite{frank:2004}
-endow robust language processors with semantic components.
+\newcite{bos:etal:2004} exploit {\sc ccg}'s elegant syntax-semantics
+interface to produce a unique logical form for each derivation of a
+statistical {\sc ccg} parser; \newcite{zettlemoyer:collins:2007} and
+others learn string-to-logical-form mappings, exploting informative
+features from shallow language processors; and
+\newcite{copestake:2003} and \newcite{frank:2004} endow robust
+language processors with semantic components.
 
-However, there are certain semantic
-phenomena that these robust
-approaches don't capture reliably, including quantifier scope, optional
-arguments,
 % COMMENT: this issue about optional arguments is really too cryptic.
 % Basically, there is no way for assessing by *any* learned language
 % processor whether a single word form that appears in
@@ -41,59 +35,61 @@ arguments,
 % position (e.g., the second argument of "bet" in "I bet 5 pounds" is
 % 5 pounds, and for "I bet it's raining" it's "it's raining".
 % 
-and long-distance dependencies (for instance, \cite{clark:etal:2004}
-report that the parser used in \cite{bos:etal:2004} yields 63\%
-accuracy on object
-extraction; e.g., {\em the man that I met\dots}).
-Forcing a shallow parser to make a decision about these
-phenomena can therefore be error-prone.  Depending on the
-application, it may be preferrable to give the parser the option to to
-leave the decision open when it's not sufficiently informed---i.e., to
-compute a partial semantic representation that neither over-determines
-nor under-determines the semantic information revealed by the
-(shallow) syntactic analysis, and to complete the semantic information
-later, using information extraneous to the
-parser.
+
+However, there are certain semantic phenomena that these robust
+approaches don't capture reliably, including quantifier scope,
+optional arguments, and long-distance dependencies (for instance,
+\newcite{clark:etal:2004} report that the parser used by
+\newcite{bos:etal:2004} yields only 63\% accuracy on object
+extraction; e.g., {\em the man that I met\dots}).  Forcing a shallow
+parser to make a decision about these phenomena can therefore be
+error-prone.  Depending on the application, it may be preferrable to
+give the parser the option to to leave the decision open when it's not
+sufficiently informed---i.e., to compute a partial semantic
+representation that neither over-determines nor under-determines the
+semantic information revealed by the (shallow) syntactic analysis, and
+to complete the semantic information later, using information
+extraneous to the parser.
 
 In this paper, we focus on one particular approach to representing
-partial semantic information:
-Robust Minimal Recursion Semantics ({\sc rmrs},
-\cite{copestake:2003}).  {\sc rmrs} is a generalisation of {\sc mrs}
-\cite{copestake:etal:2005} that is designed to support underspecification
-of scope and predicate-argument structure.
-\cite{copestake:2003,frank:2004} use it to
-specify semantic components to shallow parsers
-ranging in depth from {\sc pos} taggers to chunk parsers  
-and intermediate parsers such as {\sc rasp}
-\cite{briscoe:etal:2006}.  {\sc mrs} analyses
-derived from deep grammars, such as the English Resource Grammar
-({\sc erg}, \cite{copestake:flickinger:2000}) are
-special cases of 
-{\sc rmrs}.
+partial semantic information: Robust Minimal Recursion Semantics
+(\rmrs, \cite{copestake:2003}).  \rmrs\ is a generalisation of \mrs\
+\cite{copestake:etal:2005} that is designed to support
+underspecification of scope and predicate-argument structure.  It is
+an emerging standard representation language for partial semantic
+information, and has been applied in several implemented systems.  For
+instance, \newcite{copestake:2003} and \newcite{frank:2004} use it to
+specify semantic components to shallow parsers ranging in depth from
+{\sc pos} taggers to chunk parsers and intermediate parsers such as
+{\sc rasp} \cite{briscoe:etal:2006}.  {\sc mrs} analyses derived from
+deep grammars, such as the English Resource Grammar ({\sc erg},
+\cite{copestake:flickinger:2000}) can be seen as special cases of {\sc
+  rmrs}.
 
-The key contribution we make is to cast {\sc rmrs}, for the first
-time, as a logic with a clearly defined model theory.  This has a
-number of advantages.  First, it allows us to formally relate \rmrs\ to
-other frameworks such as \mrs\ and predicate logic in order to
-establish the compatibility of \rmrs\ with the approaches to robust
-semantic analysis mentioned above.  Second, it provides us with a
-notion of logical entailment, which we can use to verify the
-compatibility of \rmrs\ representations computed from different
-parsers, such as a deep and a shallow parser.  Finally, it is only
-through rigid formalisation that we can give users of \rmrs\ access to
-inference systems and to algorithms for efficiently computing the
-possible fully specific semantic representations described by the \rmrs\
-output of a shallow parser.
+However, from a formal perspective, \rmrs\ is somewhat ad-hoc in that
+it has no clearly defined model theory; i.e., it is not defined what,
+exactly, any given \rmrs\ representation actually \emph{means}.  The
+key contribution we make is to cast {\sc rmrs}, for the first time, as
+a logic with a well-defined model theory.  This has a number of
+advantages.  First, it allows us to formally relate \rmrs\ to other
+frameworks such as \mrs\ and predicate logic in order to establish the
+compatibility of \rmrs\ with the approaches to robust semantic
+analysis mentioned above.  \todo{except we don't do this here --
+  perhaps we should} Second, it provides us with a notion of logical
+entailment, which we can use to verify the compatibility of \rmrs\
+representations computed from different parsers, such as a deep and a
+shallow parser.  Finally, it is only through rigid formalisation that
+we can give users of \rmrs\ access to inference systems and to
+algorithms for efficiently computing the possible fully specific
+semantic representations described by the \rmrs\ output of a shallow
+parser.
 
 Section~\ref{sec:motivation} illustrates via example the differences
-and challenges with deep and 
-shallow semantic construction.  
-Section~\ref{sec:rmrs} defines the syntax and
-model-theory of \rmrs\.  In Section~\ref{sec:entailment} we
-demonstrate 
-the practical usefulness of our formalisation 
-by modelling compatibility of
-partial semantic representations as \rmrs\ entailment and by providing a
+and challenges with deep and shallow semantic construction.
+Section~\ref{sec:rmrs} defines the syntax and model-theory of \rmrs\.
+In Section~\ref{sec:entailment} we demonstrate the practical
+usefulness of our formalisation by modelling compatibility of partial
+semantic representations as \rmrs\ entailment and by providing a
 syntactic criterion for characterising entailment.
 Section~\ref{sec:conclusion} concludes and points to future work.
 

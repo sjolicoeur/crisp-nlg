@@ -1,102 +1,77 @@
 \section{RMRS comparison as entailment}
 \label{sec:entailment}
 
-As discussed in Sections~\ref{sec:intro} and~\ref{sec:motivation}, 
-{\sc rmrs}'s design aims to make it possible to compare
-the semantic output of several language processors of varying depth,
-and even combine them when appropriate.  The following theorem 
-demonstrates that {\sc rmrs}-entailment---defined in terms of
-models and or solved forms---provides the logical 
-basis for such parser integration:
+The definitions in the previous section serve an important theoretical
+purpose in that they provide a formal underpinning for \rmrs, which so
+far has been used for partial semantic representations in implemented
+systems despite the lack of a formal definition.  Next to the peace of
+mind that comes with the use of a formally understood formalism, a
+clean definition can also provide a foundation for the development of
+efficient algorithms; this has been shown in the past in the dominance
+graph literature, most recently \newcite{KolRegTha08}.  We hope that
+this paper can likewise provide a starting point for the development
+of efficient solvers and inference mechanisms for \rmrs.
 
-% NOTE: I'm fudging that this applies only to normal dominance
-% constraints that are overlap-free.  We should put this back if there
-% is room!
-%
+On the other hand, the above definition of \rmrs\ provides new
+concepts which can help us phrase questions of practical grammar
+engineering in well-defined formal terms.  For instance, one crucial
+issue in developing a hybrid system that combines the outputs of deep
+and shallow processors is to determine whether the \rmrs s produced by
+the two systems are compatible.  Because we assume that the deep
+grammar is more informative than that of the shallow processor, this
+amounts to checking whether every piece of information in the shallow
+representation is consistent with what the deep grammar said.  In
+general, it isn't even obvious what ``consistency'' is supposed to
+mean exactly, given that variables might be renamed, $\ARG$ roles
+assigned in different ways, and structural relations underspecified.
+But given the formal definition of \rmrs, we can now propose that an
+\rmrs\ $\varphi'$ that was computed by a shallow processor is
+consistent with an \rmrs\ $\varphi$ that was computed by a deep
+grammar amounts to checking \emph{entailment} between the two \rmrs s,
+i.e.\ whether $\varphi \models \varphi'$.  If we could establish
+efficiently that $\varphi'$ is entailed by $\varphi$, this would tell
+us that all models that satisfy $\varphi$ are also models of
+$\varphi'$, i.e.\ the deep representation is formally more specific.
+
+We cannot provide an efficient algorithm for testing entailment in
+this paper.  However, we propose the following novel syntactic
+characterization of entailment.
+
+\begin{definition}
+  We call an \rmrs\ $\varphi'$ an \emph{extension} of an \rmrs\
+  $\varphi$ iff \todo{fill this in -- don't have the def with me right
+    now}.
+\end{definition}
+
 \begin{thm}\label{thm:big-one}
   Let $\varphi, \varphi'$ be two {\sc rmrs}s.  Then $\varphi \models
   \varphi'$ iff for every solved form $S$ of $\varphi$, there is a
   solved form $S'$ of $\varphi'$ such that $S$ is an extension of
-  $S'$.
+  $S'$. \todo{We don't know if this is true for qeq; the proof is
+    written for $\dom$.}  \todo{Also note that this is about a version
+    of entailment in which $\varphi$ and $\varphi'$ contain the same
+    variables, which makes the claim a bit weaker.}
 \end{thm}
+\begin{proof}[Proof (sketch)]
+``$\Leftarrow$'' follows from
+Props.~\ref{prop:solved-forms-are-satisfiable} and
+\ref{prop:models-satisfy-solved-forms}.
 
-This theorem doesn't provide 
-efficient
-algorithms for entailment checking, and this is needed
-for parser comparison and integration to be
-practical.  Computing the solved forms of $\varphi$ and $\varphi'$ may
-be exponential, and the complexity of the {\sc rmrs} validity problem
-is unknown.  However, the above theorem illustrates that our
-model theory functions in the way it should for parser
-comparison and integration, and it can thus be used to prove important
-logical properties of shallow parsing systems that adopt {\sc rmrs}.
-
-The outline proof of Theorem~\ref{thm:big-one} is as follows:
-\begin{proof}
-  ``$\Leftarrow$'': Let $M,\alpha$ an arbitrary model and variable
-  assignment that satisfy $\varphi$.  There is a solved form $s$ of
-  $\varphi$ such that $M,\alpha \models s$.  By assumption, this means
-  that there is a solved form $s'$ of $\varphi'$ such that $s$ is an
-  extension of $s'$.  Therefore, $M,\alpha \models s'$ and hence
-  $M,\alpha \models \varphi'$.
-
-  ``$\Rightarrow$'': Assume that $\varphi \models \varphi'$, and let
-  $s$ be a solved form of $\varphi$.  We need to show that
-  we can remove atoms from $s$ such that $s$ remains an extension of
-  the resulting $s'$ and $s'$ is a solved form of $\varphi'$.
-
-  We construct $s'$ as the conjunction of all atoms in $s$ that only
-  contain variables occurring in $\varphi'$ and all atom $X \dom Y$
-  such that $X$ and $Y$ occur in $\varphi'$ and $(X,Y) \in D(s)$.
-
-  It is obvious that $s$ is an extension of $s'$.  Furthermore, $s'$
-  is in solved form, because $s$ was a tree and we didn't
-  introduce new edges.  The tricky part is to show that $s'$ is a
-  solved form of $\varphi'$.  $s'$ contains all labeling atoms of
-  $\varphi'$ according to
-  Lemma~\ref{lem:entailment-preserves-labeling-atoms}; a similar
-  argument holds for inequality atoms.  Finally, $D(\varphi')
-  \subseteq D(s')$ because $M,\alpha \models s'$ and $s'$ is
-  tree-shaped and normal and therefore contains all dominance statements
-  that are true in $M$.
+``$\Rightarrow$'': The basic idea is to construct a solved form for
+$\varphi'$ by choosing a solved form for $\varphi$ and removing all
+atoms using variables that don't occur in $\varphi'$.  The hard part
+is the proof that the result is a solved form of $\varphi'$; this step
+involves proving that if $\varphi \models \varphi'$, then all EPs in
+$\varphi'$ also occur in $\varphi$.  
 \end{proof}
 
-\begin{lemma} \label{lem:entailment-preserves-labeling-atoms}
-  Under the assumptions of
-  Theorem~\ref{thm:big-one}, if $\varphi \models
-  \varphi'$, then $\varphi'$ only contains labeling atoms that also
-  occur in $\varphi$.  
-\end{lemma}
-\begin{proof}
-  Let $\varphi \models \varphi'$, but let $\varphi'$ contain a
-  labeling atom $X \Neq f(X_1,\ldots,X_n)$ that doesn't occur in
-  $\varphi$.  Call this atom $A$.
-
-  Furthermore, let $M,\alpha \models \varphi$ arbitrary.  Because
-  $M,\alpha \models \varphi'$, we must have $M(\alpha(X)) = f$.
-
-  Now replace the label of $\alpha(X)$ in $M$ by some other symbol $g$
-  of arity $n$.  Call the resulting model $M'$.  We still have
-  $M',\alpha \models \varphi$ because $\varphi$ doesn't contain a
-  labeling atom for $X$.  But now $M',\alpha \not\models \varphi'$.
-  This contradicts the entailment assumption.
-\end{proof}
-
-It is really necessary to state
-Theorem~\ref{thm:big-one} in terms of extensions of
-solved forms.  It is \emph{not} true that $\varphi \models \varphi'$
-implies that $\varphi$ is an extension of $\varphi'$.  A
-counterexample is shown in Fig.~\ref{fig:counterexample}, where the
-right-hand constraint entails the left-hand constraint (they are
-equivalent), but is not an extension of it.
-
-\begin{figure}
-  \centering
-  \includegraphics[scale=0.6]{pic-extension-counterexample}
-  \caption{A counterexample to a simpler version of Theorem~\ref{thm:big-one}.}
-  \label{fig:counterexample}
-\end{figure}
-
+This characterization does not by itself provide an efficient test for
+entailment because the number of solved forms of $\varphi$ and
+$\varphi'$ may be exponential, and thus it is infeasible to compute
+them all and then test for extensions.  Nevertheless, we hope that the
+theorem provides a first step towards an improved understanding of
+entailment that will lead to such an efficient algorithm in the
+future.
 
 
 %%% Local Variables: 

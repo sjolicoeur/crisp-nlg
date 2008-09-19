@@ -179,12 +179,19 @@ information a shallower NLP tool was able to provide.  \rmrs\ is
 designed to serve as a generic formalism for partial semantic
 representations which abstracts over the details of different NLP
 tools and allows us to represent, process, and compare information
-from different tools in the same formalism.  In the long run, it could
-also be a platform for incrementally enriching partial information
+from different tools in the same formalism, and in the long run
+provide a platform for incrementally enriching partial information
 such as (\ref{ex:cat-pos}) in order to eventually approximate more
 detailed representations such as (\ref{ex:cat-partial-parser}).
 
-\todo{Leidensdruck!}
+However, although people have started using \rmrs\ in their
+implemented systems, it is still relatively ad-hoc in that its formal
+syntax is not consistent across different papers, and its formal
+semantics is not defined; we don't know, formally, what an \rmrs\
+\emph{means} in terms of semantic representations like
+(\ref{ex:fat-cat-1}) and (\ref{ex:fat-cat-2}), and this hinders our
+ability to come up with efficient algorithms for processing \rmrs. The
+purpose of this paper is to lay the groundwork for fixing this problem.
 
 %%% Local Variables: 
 %%% mode: latex

@@ -47,10 +47,9 @@ characterization of entailment.
   Let $\varphi, \varphi'$ be two {\sc rmrs}s.  Then $\varphi \models
   \varphi'$ iff for every solved form $S$ of $\varphi$, there is a
   solved form $S'$ of $\varphi'$ such that $S$ is an extension of
-  $S'$. \todo{We don't know if this is true for qeq; the proof is
-    written for $\dom$.}  \todo{Also note that this is about a version
-    of entailment in which $\varphi$ and $\varphi'$ contain the same
-    variables, which makes the claim a bit weaker.}
+  $S'$. \todo{Check proof holds for this version.}
+% Do we have a proof where $\varphi$ and $\varphi'$ can vary on
+% alphabetic variance on nodes and base variables?
 \end{thm}
 \begin{proof}[Proof (sketch)]
 ``$\Leftarrow$'' follows from
@@ -61,7 +60,7 @@ Props.~\ref{prop:solved-forms-are-satisfiable} and
 $\varphi'$ by choosing a solved form for $\varphi$ and removing all
 atoms using variables that don't occur in $\varphi'$.  The hard part
 is the proof that the result is a solved form of $\varphi'$; this step
-involves proving that if $\varphi \models \varphi'$, then all EPs in
+involves proving that if $\varphi \models \varphi'$, then all {\sc ep}s in
 $\varphi'$ also occur in $\varphi$.  
 \end{proof}
 

@@ -44,28 +44,28 @@ optional arguments, and long-distance dependencies (for instance,
 extraction; e.g., {\em the man that I met\dots}).  Forcing a shallow
 parser to make a decision about these phenomena can therefore be
 error-prone.  Depending on the application, it may be preferrable to
-give the parser the option to leave the decision open when it's not
+give the parser the option to leave a semantic decision open when it's not
 sufficiently informed---i.e., to compute a partial semantic
 representation and to complete it later, using information
 extraneous to the parser.
 
-In this paper, we focus on one particular approach to representing
-partial semantic information: Robust Minimal Recursion Semantics
-(\rmrs, \cite{copestake:2003}).  \rmrs\ is a generalisation of \mrs\
-\cite{copestake:etal:2005} that is designed to support
-underspecification of scope and predicate-argument structure.  It is
-an emerging standard representation language for partial semantic
-information, and has been applied in several implemented systems.  For
-instance, \newcite{copestake:2003} and \newcite{frank:2004} use it to
-specify semantic components to shallow parsers ranging in depth from
-{\sc pos} taggers to chunk parsers and intermediate parsers such as
-{\sc rasp} \cite{briscoe:etal:2006}.  {\sc mrs} analyses derived from
-deep grammars, such as the English Resource Grammar ({\sc erg},
-\cite{copestake:flickinger:2000}) are special cases of {\sc
-  rmrs}.
+In this paper, we focus on an approach to representing partial
+semantic information that supports this strategy: Robust Minimal
+Recursion Semantics (\rmrs, \cite{copestake:2003}).  \rmrs\ is a
+generalisation of \mrs\ \cite{copestake:etal:2005} that is designed to
+support underspecification of scope and predicate-argument structure.
+It is an emerging standard for representing partial
+semantic information, and has been applied in several implemented
+systems.  For instance, \newcite{copestake:2003} and
+\newcite{frank:2004} use it to specify semantic components to shallow
+parsers ranging in depth from {\sc pos} taggers to chunk parsers and
+intermediate parsers such as {\sc rasp} \cite{briscoe:etal:2006}.
+{\sc mrs} analyses derived from deep grammars, such as the English
+Resource Grammar ({\sc erg}, \cite{copestake:flickinger:2000}) are
+special cases of {\sc rmrs}.
 
 However, from a formal perspective, \rmrs\ is somewhat ad-hoc in that
-it has no clearly defined model theory; i.e., what exactly, any given
+it has no clearly defined model theory; i.e., what exactly any given
 \rmrs\ representation actually \emph{means} is not defined.  The key
 contribution we make is to cast {\sc rmrs}, for the first time, as a
 logic with a well-defined model theory.  This has a number of
@@ -84,7 +84,7 @@ parser.
 
 Section~\ref{sec:motivation} illustrates via example the differences
 and challenges with deep and shallow semantic construction.
-Section~\ref{sec:rmrs} defines the syntax and model-theory of \rmrs\.
+Section~\ref{sec:rmrs} defines the syntax and model-theory of \rmrs.
 In Section~\ref{sec:entailment} we demonstrate the practical
 usefulness of our formalisation by modelling compatibility of partial
 semantic representations as \rmrs\ entailment and by providing a

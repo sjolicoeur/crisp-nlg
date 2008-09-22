@@ -6,13 +6,13 @@ more precise.  We will first define the syntax of the \rmrs\ language;
 this is a notational variant of earlier definitions in the
 literature.  We will then define a model theory for our version of
 \rmrs, and conclude this section by carrying over the notion of
-\emph{solved forms} from CLLS \cite{egg:etal:2001}.
+\emph{solved forms} from {\sc clls} \cite{egg:etal:2001}.
 
 
 
 \subsection{RMRS Syntax}
 
-We define the syntax of \rmrs\ in the style of CLLS
+We define the syntax of \rmrs\ in the style of {\sc clls}
 \cite{egg:etal:2001}.  We assume an infinite set of {\em node
   variables} $\nvar=\{X,Y,X_1,\ldots\}$, which we will use as labels,
 anchors, and holes; the distinction between these uses will come from
@@ -42,11 +42,13 @@ A &::= &\ep{X}{Y}{P} \\ %& \mbox{labelled elementary predication} \\
 \end{array}
 $
 
-A node variable $X$ is called a \emph{label} in the \rmrs\
-$\varphi$ iff $\varphi$ contains an atom of the form $\ARG_S(X,i)$ or
-an elementary predication of the form $\ep{Y}{X}{P}$; $X$ is called an
-\emph{anchor} iff $\varphi$ contains an atom of the form
-$\ep{X}{Y}{P}$ or $Y \qeq X$; and $X$ is called a \emph{hole} iff
+A node variable $X$ is called a \emph{label} iff $\varphi$ contains an
+atom of the form 
+$\ep{X}{Y}{P}$ or $Y \qeq X$; $X$ is called an
+ a \emph{anchor} in the \rmrs\
+$\varphi$ iff $\varphi$ contains an at atom of the form
+$\ep{Y}{X}{P}$ or $\ARG_S(X,i)$; and $X$ is
+called a \emph{hole} iff 
 $\varphi$ contains an atom of the form $\ARG_S(Y,X)$ or $X \qeq Y$.
 
 An \rmrs\ $\varphi$ is called \emph{normal} iff it satisfies the
@@ -61,7 +63,7 @@ following conditions:
 
 \rmrs\ as presented here combines similarities to earlier
 presentations of \rmrs\ (e.g., \cite{copestake:2003}) and to dominance
-constraints \cite{egg:etal:2001}.  We $\ARG_{\{i\}}$ (with a singleton
+constraints \cite{egg:etal:2001}.  We use $\ARG_{\{i\}}$ (with a singleton
 set $S$) instead of $\ARG_i$, and $\ARG_\N$ instead of $\ARG_n$.
 Furthermore, the elementary predication $\ep{l}{a}{P(v)}$ is a
 notational variant of $\{\ep{l}{a}{P}, \ARG_{\{0\}}(l,v)\}$.  In other
@@ -72,17 +74,12 @@ the parent-child relations, and the use of $\qeq$ instead of
 dominance.  Redefining \rmrs\ in the style of dominance constraints
 will simplify the formal work below.
 
-\todo{we don't split stuff up into tuple parts, which earlier rmrs
-  did}
-
-
-
 \subsection{Model Theory}
 
 The model theory formalises the relationship between an {\sc rmrs} and
 the fully specific, alternative logical forms that it describes,
 expressed in the base language.  We represent such a logical form as a
-tree $\tau$, such as the one in Fig.~\ref{fig:1}.  So models of the
+tree $\tau$, such as the ones in Fig.~\ref{fig:1}.  So models of the
 \rmrs\ are such trees, and we can define satisfaction and entailment
 over these models in the usual way.  Satisfaction corresponds to an
 \rmrs\ being a partial description of the (unique) fully specific
@@ -91,12 +88,14 @@ entailment corresponds to the relation between a more and a less
 specific \rmrs.
 
 In this paper, we assume for simplicity that the base language is
-predicate logic; in this case, $\tau$ is simply the structure tree of
+predicate logic (e.g., see (\ref{ex:fat-cat-1}) and
+(\ref{ex:fat-cat-2})); in this case, $\tau$ is simply the structure
+tree of 
 the predicate logic formula.  We assume that $\Sigma$ is a ranked
 signature consisting of predicate logic's symbols: a unary constructor
 $\neg$ and binary constructors $\wedge$, $\rightarrow$, etc.; the
 binary constructors $\forall x$ and $\exists x$ for all base-language
-variables $x$; all the constants and base-language variables as
+variables $x$; all the constants and base-language variables are
 nullary constructors; and, for each predicate symbol $P$ of arity $n$,
 a constructor $P$ of arity $n$.  Other base languages may require a
 different signature $\Sigma$ and/or a different mapping between
@@ -106,7 +105,7 @@ write $\Sigma_i$ for the set of all constructors in $\Sigma$ that have
 arity $i$.  We will follow the typographical convention that
 non-logical symbols in $\Sigma$ are written in
 $\mathsf{sans{-}serif}$, as opposed to the \rmrs\ predicate symbols
-like ``$\sempred{\_cat\_n}$''.
+like ``$\sempred{\_cat\_n}$'' and ``$\sempred{\_cat\_n\_1}$''.
 
 The models of {\sc rmrs} are then defined to be finite constructor
 trees:
@@ -195,7 +194,8 @@ particular, \rmrs s may represent semantic scope ambiguities, missing
 information about semantic dependencies, and missing information about
 lexical subcategorisation and lexical senses.  For $j=\{1,2\}$,
 suppose that $\tau_j,\alpha_j,g_j,\sigma\models \varphi$ and let
-$\nvar$ be the node variables from which $\varphi$ is built.  Then
+$\nvar$ and $\ovar$ be the node and base variables from which
+$\varphi$ is built.  Then 
 $\varphi$ exhibits a semantic scope ambiguity if there are variables
 $Y,Y'\in \nvar$ such that $\alpha_1(Y) \qeqdom \alpha_1(Y')$ and
 $\alpha_2(Y')\qeqdom \alpha_2(Y)$.  It exhibits missing information
@@ -203,24 +203,28 @@ about semantic dependencies if there are base-language variables $
 v,v'\in \ovar$ such that $g_1(v)=g_1(v')$ and $g_2(v)\neq g_2(v')$.
 It exhibits missing lexical subcategorisation information if there is
 a variable $ Y \in \nvar$ such that $\tau_1(\alpha_1(Y))$ is a
-constructor of a different type from $\tau_2(\alpha_2(Y))$ \todo{what
-  does this mean?}.  And it exhibits missing lexical sense information
+constructor of a different type from $\tau_2(\alpha_2(Y))$  (i.e., the
+constructors are of a different arity or and/or their arguments are).
+And it exhibits missing lexical sense information
 if $\tau_1(\alpha_1(Y))$ and $\tau_2(\alpha_2(Y))$ are different
 base-language constructors, but of the same type.
 
 Let's look at the \rmrs\ in (\ref{ex:cat-pos}) by way of example.
-This \rmrs\ is satisfied by the tree in Fig.~\ref{fig:1} (among
+This \rmrs\ is satisfied by the trees in Fig.~\ref{fig:1} (among
 others) together with some particular $\alpha$, $g$, and $\sigma$.
-The assignment $\alpha$ will map the variables $l_1$ and $a_1$ to the
-root node; $l_{41}$ and $l_{42}$ to its second child (labeled with
-``$\wedge$''); $a_{41}$ to the first child of \emph{that} node (i.e.\
-the node 21, labelled with ``fat'') and $a_{42}$ to the node 22; and
-so forth.  $g$ will map $x$ and $x_3$ to $x$, $e'$ to $e$, and so on.
+For instance, consider the left-hand side tree in Fig.~\ref{fig:1}.
+The \rmrs\ (\ref{ex:cat-pos}) satisfies this tree with an assignment
+function $\alpha$ that maps the variables $l_1$ and $a_1$ to the
+root node, $l_{41}$ and $l_{42}$ to its second child (labeled with
+``$\wedge$''), $a_{41}$ to the first child of \emph{that} node (i.e.\
+the node 21, labelled with ``fat'') and $a_{42}$ to the node 22, and
+so forth.  $g$ will map $x_1$ and $x_3$ to $x$, and $x_6$ and $x_7$ to
+$y$, and so on.  
 And $\sigma$ will map each \rmrs\ predicate symbol (which represents a
 word) to the set of its word senses, e.g.\ \_cat\_n to a set
-containing \_cat\_n\_1 and possibly others.  It is then easy to verify
-that every single atom in the \rmrs\ is satisfied -- most
-interestingly, the EPs $\ep{l_{41}}{a_{41}}{\_fat\_a(e')}$ and
+containing $\sem{\_cat\_n\_1}$ and possibly others.  It is then easy to verify
+that every single atom in the \rmrs\ is satisfied---most
+interestingly, the {\sc ep}s $\ep{l_{41}}{a_{41}}{\_fat\_a(e')}$ and
 $\ep{l_{42}}{a_{42}}{\_cat\_n(x_3)}$ are satisfied because
 $\alpha(l_{41}) \wedgedom \alpha(a_{41})$ and $\alpha(l_{42})
 \wedgedom \alpha(a_{42})$.
@@ -260,7 +264,7 @@ about''.  An example is shown in Fig.~\ref{fig:fat-black-cat}.  This
 tree, which represents the meaning of ``every fat black cat chased
 some dog'', differs from the model in Fig.~\ref{fig:1} in the subtree
 below the restrictor of the universal quantifier.  It is still a model
-of (\ref{ex:cat-pos})---all the EPs are satisfied.  However, there is
+of (\ref{ex:cat-pos})---all the {\sc ep}s are satisfied.  However, there is
 more ``semantic material'' (the ``black'' subformula).  The \rmrs\
 didn't specify that this material should be there; but it also didn't
 specify that it can't be there, and indeed there is no way in which
@@ -296,12 +300,12 @@ into classes with only ``irrelevant'' differences as above.  A solver
 can then enumerate the solved forms rather than all models.
 
 Intuitively, we expect that an \rmrs\ in solved form is fully
-specified with respect to scope ambiguities and the predicate-argument
+specified with respect to the predicate-argument
 structure, all variable equalities and inequalities have been
-resolved, and only lexical sense ambiguities remain.  This is made
+resolved, and only lexical sense ambiguities and (resolvable)
+scope ambiguities remain.  This is made
 precise below.
 
-\todo{Note: We don't really talk about SPEC anywhere else.}
 
 \begin{definition}\label{defn:solved-forms}
   An RMRS $\varphi$ is \emph{in solved form} iff:
@@ -313,7 +317,7 @@ precise below.
   \item if $\ARG_S(Y,i)$ is in $\varphi$, then $|S| = 1$;
   \item for any label $Y$ and index set $S$, there
     are no two atoms $\ARG_S(Y,i)$ and $\ARG_S(Y,i')$ in $\varphi$;
-  \item if $Y$ is an anchor in some EP $\ep{X}{Y}{P}$ and $k$ is the
+  \item if $Y$ is an anchor in some {\sc ep} $\ep{X}{Y}{P}$ and $k$ is the
     maximum number such that $\ARG_{\{k\}}(X,i)$ is in $\varphi$ for
     any $i$, then there is a constructor $p \in \sigma(P)$ whose arity
     is at least $k$;
@@ -332,7 +336,7 @@ off'' a model from the solved form.
 \end{prop}
 \begin{proof}[Proof (sketch; see also
   \cite{Duchier00dominanceconstraints})] 
-  For each EP, we choose to label the anchor with the constructor $p$
+  For each {\sc ep}, we choose to label the anchor with the constructor $p$
   of sufficiently high arity whose existence we assumed; we determine
   the edges between an anchor and its children from the uniquely
   determined $\ARG$ atoms; plugging labels into holes is
@@ -360,7 +364,7 @@ We write $D(\varphi)$ for the syntactic dominance
   that maps the  node and base variables of $\varphi$ to the node and
   base variables of $\varphi'$ such that
   \begin{enumerate}
-  \item $\varphi'$ contains the EP $\ep{X'}{Y'}{P}$ iff there are
+  \item $\varphi'$ contains the {\sc ep} $\ep{X'}{Y'}{P}$ iff there are
     variables $X,Y$ such that $\ep{X}{Y}{P}$ is in $\varphi$, $X' =
     s(X)$, and $Y' = s(Y)$;
   \item for every atom $\ARG_S(X,i)$ in $\varphi$, there is exactly
@@ -395,7 +399,7 @@ We write $D(\varphi)$ for the syntactic dominance
 \begin{proof}
   Up to renaming of variables, there is only a finite number of
   substitutions on the node and base variables of $\varphi$.  Let $s$
-  be such a substitution.  This fixes the set of EPs of any solved
+  be such a substitution.  This fixes the set of {\sc ep}s of any solved
   form of $\varphi$ that is based on $s$ uniquely.  There is only a
   finite set of choices for the subsets $S'$ in condition 2 of
   Def.~\ref{defn:solved-form-of}, and there is only a finite set of
@@ -407,6 +411,7 @@ We write $D(\varphi)$ for the syntactic dominance
 
 
 \subsection{Extensions}
+\label{sec:extensions}
 
 In the earlier \rmrs\ literature, each term of an \rmrs\ is equipped
 with a \emph{sort}.  For instance, individual variables are typically

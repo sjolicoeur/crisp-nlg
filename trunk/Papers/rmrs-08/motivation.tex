@@ -35,13 +35,13 @@ shown in Fig.~\ref{fig:1}.
 \end{examples}
 
 
-\begin{figure*}[t]
-\includegraphics[width=6cm]{pic-cat-chased-dog}
-\hspace{1cm}
-\includegraphics[width=6cm]{pic-cat-chased-dog-2}
+\begin{figure}[t]
+\centering
+\includegraphics[scale=0.8]{pic-cat-chased-dog} \\
+\includegraphics[scale=0.8]{pic-cat-chased-dog-2}
 \caption{Structure trees of the semantic representations (\ref{ex:fat-cat-1}) and
   (\ref{ex:fat-cat-2}). \label{fig:1}}
-\end{figure*}
+\end{figure}
 
 
 Now imagine trying to extract semantic information from
@@ -105,8 +105,8 @@ $l_1:a_1:\sempred{\_every\_q}(x_1)$, \\
 $l_{41}:a_{41}:\sempred{\_fat\_j}(e')$,\\
 $l_{42}:a_{42}:\sempred{\_cat\_n}(x_3)$\\
 $l_5:a_5:\sempred{\_chase\_v}(e)$, \\
-\hspace*{0.1in} $\ARG1(a_5,x_4),
-\ARG2(a_5,x_5)$\\ 
+\hspace*{0.1in} $\ARG_1(a_5,x_4),
+\ARG_2(a_5,x_5)$\\ 
 $l_6:a_6:\sempred{\_some\_q}(x_6)$, \\
 $l_9:a_9:\sempred{\_dog\_n}(x_7)$\\
 $x_3=x_4$, $x_5=x_7$
@@ -137,46 +137,45 @@ arguments to a predicate while underspecifying their position.
 Finally, \rmrs\ (\ref{ex:cat-erg}) is a notational variant of the {\sc
   mrs} derived by the {\sc erg}, a wide-coverage deep grammar:
 \begin{examples}
-\item $l_1:a_1\handel\mbox{\_every\_q\_1}(x_1),$\\
-\hspace*{0.1in}$\mbox{RSTR}(a_1,h_2),
-\mbox{BODY}(a_1,h_3)$\\ 
-$l_{41}:a_{41}\handel\mbox{\_fat\_j\_1}(e'), \ARG1(a_{41},x_2)$\\
-$l_{42}:a_{42}\handel\mbox{\_cat\_n\_1}(x_3)$\\
-$l_5:a_5\handel\mbox{\_chase\_v\_1}(e)$,\\
-\hspace*{0.1in}$\ARG1(a_5,x_4),
-\ARG2(a_5,x_5)$\\ 
-$l_6:a_6\handel\mbox{\_some\_q\_1}(x_6)$,\\
-\hspace*{0.1in}$\mbox{RSTR}(a_6,h_7),
-\mbox{BODY}(a_6,h_8)$\\ 
-$l_9:a_9\handel\mbox{\_dog\_n\_1}(x_7)$\\
+\item $l_1:a_1\handel\sempred{\_every\_q\_1}(x_1),$\\
+\hspace*{0.1in}$\mathsf{RSTR}(a_1,h_2),
+\mathsf{BODY}(a_1,h_3)$\\ 
+$l_{41}:a_{41}\handel\sempred{\_fat\_j\_1}(e'), \ARG_1(a_{41},x_2)$\\
+$l_{42}:a_{42}\handel\sempred{\_cat\_n\_1}(x_3)$\\
+$l_5:a_5\handel\sempred{\_chase\_v\_1}(e)$,\\
+\hspace*{0.1in}$\ARG_1(a_5,x_4),
+\ARG_2(a_5,x_5)$\\ 
+$l_6:a_6\handel\sempred{\_some\_q\_1}(x_6)$,\\
+\hspace*{0.1in}$\mathsf{RSTR}(a_6,h_7),
+\mathsf{BODY}(a_6,h_8)$\\ 
+$l_9:a_9\handel\sempred{\_dog\_n\_1}(x_7)$\\
 $h_2=_q l_{42}, l_{41}=l_{42}, h_7 =_q l_9$\\
 $x_1=x_2, x_2=x_3, x_3=x_4,$\\
 $x_5=x_6, x_5=x_7$
 \label{ex:cat-erg}
 \end{examples}
-RSTR and BODY are conventional names for the scopal arguments to
-predicate symbols corresponding to quantifiers.   
-Atoms like $h_2 \qeq l_{42}$ specify
-a kind of ``outscopes'' relationship between the hole and the label,
-and can be used to underspecify the scope of the two quantifiers.
-Notice also that the labels of the {\sc ep}s for ``fat'' and ``cat'' are
-stipulated to be equal in the \rmrs\ (\ref{ex:cat-erg}), whereas the
-anchors are not. 
+$\mathsf{RSTR}$ and $\mathsf{BODY}$ are conventional names for the
+scopal arguments to predicate symbols corresponding to quantifiers.
+Atoms like $h_2 \qeq l_{42}$ specify a kind of ``outscopes''
+relationship between the hole and the label, and can be used to
+underspecify the scope of the two quantifiers.  Notice also that the
+labels of the {\sc ep}s for ``fat'' and ``cat'' are stipulated to be
+equal in the \rmrs\ (\ref{ex:cat-erg}), whereas the anchors are not.
 In the tree, it is the anchors that are mapped to the nodes with the
 labels $\sem{\_fat\_j\_1}$ and $\sem{\_cat\_n\_1}$; the label is
 mapped to the conjunction node just above them.  In other words, the
 role of the anchor in an {\sc ep} is to connect a predicate to its
-arguments, while the role of the label is to connect the {\sc ep} to the
-surrounding formula.  Representing conjunction with label sharing
+arguments, while the role of the label is to connect the {\sc ep} to
+the surrounding formula.  Representing conjunction with label sharing
 stems from \mrs\ and provides compact semantic representations.
 Finally, (\ref{ex:cat-erg}) intuitively represents more specific
-semantic information than (\ref{ex:cat-pos}), so long as
-the constructors that \_cat\_n\_1 can correspond to is a
-subset of those that \_cat\_n can correspond to (written
-$\mbox{\_cat\_n\_1}\sqsubseteq \mbox{\_cat\_n}$), and similarly for
-\_fat\_j\_1 etc.  This is because with these so-called SPEC relations
-on the predicate symbols in place, (\ref{ex:cat-erg}) simply adds
-ARGs, qeqs and variable equalities to (\ref{ex:cat-pos}).
+semantic information than (\ref{ex:cat-pos}), so long as the
+constructors that \_cat\_n\_1 can correspond to is a subset of those
+that \_cat\_n can correspond to (written
+$\sempred{\_cat\_n\_1}\sqsubseteq \sempred{\_cat\_n}$), and similarly
+for \_fat\_j\_1 etc.  This is because with these so-called SPEC
+relations on the predicate symbols in place, (\ref{ex:cat-erg}) simply
+adds ARGs, qeqs and variable equalities to (\ref{ex:cat-pos}).
 
 In summary, \rmrs\ is a formalism for representing partial information
 about semantic representations.  It can

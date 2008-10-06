@@ -14,14 +14,13 @@ literature.  We will then define a model theory for our version of
 
 We define the syntax of \rmrs\ in the style of {\sc clls}
 \cite{egg:etal:2001}.  We assume an infinite set of {\em node
-  variables} $\nvar=\{X,Y,X_1,\ldots\}$, which we will use as labels,
+  variables} $\nvar=\{X,Y,X_1,\ldots\}$, used as labels,
 anchors, and holes; the distinction between these uses will come from
 their position in the formula.  Furthermore, we assume an infinite set
 of \emph{base variables} $\ovar$, consisting of individual variables
 $\{x,x_1,y,\ldots\}$ and event variables $\{e_1,\ldots\}$.  Finally,
 we assume a vocabulary of \emph{predicate symbols}
-$\pred=\{P,Q,P_1,\ldots\}$, each of which has an \emph{arity} $\ar(P)
-\geq 0$.
+$\pred=\{P,Q,P_1,\ldots\}$.
 
 We can now define formulas of \rmrs\ as follows.
 
@@ -45,8 +44,8 @@ $
 A node variable $X$ is called a \emph{label} iff $\varphi$ contains an
 atom of the form 
 $\ep{X}{Y}{P}$ or $Y \qeq X$; $X$ is called an
- a \emph{anchor} in the \rmrs\
-$\varphi$ iff $\varphi$ contains an at atom of the form
+\emph{anchor} in the \rmrs\
+$\varphi$ iff $\varphi$ contains an atom of the form
 $\ep{Y}{X}{P}$ or $\ARG_S(X,i)$; and $X$ is
 called a \emph{hole} iff 
 $\varphi$ contains an atom of the form $\ARG_S(Y,X)$ or $X \qeq Y$.
@@ -65,14 +64,15 @@ following conditions:
 presentations of \rmrs\ (e.g., \cite{copestake:2003}) and to dominance
 constraints \cite{egg:etal:2001}.  We use $\ARG_{\{i\}}$ (with a singleton
 set $S$) instead of $\ARG_i$, and $\ARG_\N$ instead of $\ARG_n$.
-Furthermore, the elementary predication $\ep{l}{a}{P(v)}$ is a
-notational variant of $\{\ep{l}{a}{P}, \ARG_{\{0\}}(l,v)\}$.  In other
+The elementary predication $\ep{l}{a}{P(v)}$ (see
+(\ref{ex:cat-pos})--(\ref{ex:cat-erg})) is a
+notational variant of $\{\ep{l}{a}{P}, \ARG_{\{0\}}(a,v)\}$.  In other
 words, the syntax defined here differs in some details, but is more
 general. The primary differences to dominance constraints are the
 distinction of labels and anchors that will separate the labelling and
 the parent-child relations, and the use of $\qeq$ instead of
 dominance.  Redefining \rmrs\ in the style of dominance constraints
-will simplify the formal work below.
+simplifies the formal work below.
 
 \subsection{Model Theory}
 
@@ -125,8 +125,8 @@ constructor tree:
 \begin{definition}\label{defn:dominance}
 $u \qeqdom v$ iff $v = u \cdot 2^k$ for some $k \geq 0$ and all
   symbols $\tau(u), \tau(u \cdot 2), \ldots, \tau(u \cdot 2^{k-1})$
-  are quantifiers.  (This is the ``qeq'' relation familiar from the
-  \mrs\ and \rmrs\ literature.)
+  are quantifiers.  (This is the ``qeq'' relation familiar from
+  \newcite{copestake:etal:2005}).
 
   $u \wedgedom v$ iff $u \leq v$ (i.e.\ it is a prefix), and all
   symbols on the path from $u$ to $v$ (not including $v$) are
@@ -168,9 +168,7 @@ $$
   \tau, \alpha, g, \sigma \models \ARG_S(X,Y)
 \mbox{ iff  exists $i \in S$ s.t.}\\
 \qquad \alpha(X) \cdot i \in D(\tau), \alpha(X) \cdot
-  i = \alpha(Y) \mbox{ and }\\
-\qquad
-s(\alpha(X) \cdot i) = h \\
+  i = \alpha(Y)\\
   \tau, \alpha, g, \sigma \models X \qeq Y
 \mbox{ iff } \alpha(X) \qeqdom \alpha(Y) \\
   \tau, \alpha, g, \sigma \models X ={/}\neq Y
@@ -180,7 +178,7 @@ s(\alpha(X) \cdot i) = h \\
 \mbox{ iff}\\
 \qquad g(v_1) ={/}\neq g(v_2) \\
   \tau, \alpha, g, \sigma \models P \spec Q
-\mbox{iff $\sigma(P) \subseteq \sigma(Q)$}
+\mbox{ iff $\sigma(P) \subseteq \sigma(Q)$}
 \end{array}
 $$
 A 4-tuple $\tau,\alpha,g,\sigma$ satisfies an \rmrs\ $\varphi$
@@ -190,8 +188,8 @@ of its elements.
 
 Notice that one \rmrs\ may be satisfied by multiple trees; we can take
 the \rmrs\ to be a partial description of each of these trees.  In
-particular, \rmrs s may represent semantic scope ambiguities, missing
-information about semantic dependencies, and missing information about
+particular, \rmrs s may represent semantic scope ambiguities, and/or missing
+information about semantic dependencies, 
 lexical subcategorisation and lexical senses.  For $j=\{1,2\}$,
 suppose that $\tau_j,\alpha_j,g_j,\sigma\models \varphi$ and let
 $\nvar$ and $\ovar$ be the node and base variables from which
@@ -199,12 +197,12 @@ $\varphi$ is built.  Then
 $\varphi$ exhibits a semantic scope ambiguity if there are variables
 $Y,Y'\in \nvar$ such that $\alpha_1(Y) \qeqdom \alpha_1(Y')$ and
 $\alpha_2(Y')\qeqdom \alpha_2(Y)$.  It exhibits missing information
-about semantic dependencies if there are base-language variables $
-v,v'\in \ovar$ such that $g_1(v)=g_1(v')$ and $g_2(v)\neq g_2(v')$.
+about semantic dependencies if there are base-language variables
+$v,v'\in \ovar$ such that $g_1(v)=g_1(v')$ and $g_2(v)\neq g_2(v')$. 
 It exhibits missing lexical subcategorisation information if there is
-a variable $ Y \in \nvar$ such that $\tau_1(\alpha_1(Y))$ is a
+a $ Y \in \nvar$ such that $\tau_1(\alpha_1(Y))$ is a
 constructor of a different type from $\tau_2(\alpha_2(Y))$  (i.e., the
-constructors are of a different arity or and/or their arguments are).
+constructors are of a different arity and/or their arguments are).
 And it exhibits missing lexical sense information
 if $\tau_1(\alpha_1(Y))$ and $\tau_2(\alpha_2(Y))$ are different
 base-language constructors, but of the same type.
@@ -262,13 +260,15 @@ constraints is that any satisfiable \rmrs\ has an infinite number of
 models which only differ in the areas that the \rmrs\ didn't ``talk
 about''.  An example is shown in Fig.~\ref{fig:fat-black-cat}.  This
 tree, which represents the meaning of ``every fat black cat chased
-some dog'', differs from the model in Fig.~\ref{fig:1} in the subtree
-below the restrictor of the universal quantifier.  It is still a model
+some dog'', is still a model
 of (\ref{ex:cat-pos})---all the {\sc ep}s are satisfied.  However, there is
 more ``semantic material'' (the ``black'' subformula).  The \rmrs\
 didn't specify that this material should be there; but it also didn't
 specify that it can't be there, and indeed there is no way in which
-the \rmrs\ can enforce that no extra material can be added.
+the \rmrs\ can enforce that no extra material can be added (e.g.,
+consider predicate symbols that are introduced by construction rules
+in a deep grammar, which by design are absent from the semantic output
+of a {\sc pos} tagger).
 
 
 \begin{figure}
@@ -387,9 +387,8 @@ We write $D(\varphi)$ for the syntactic dominance
   form of $\varphi$ by construction.
 \end{proof}
 
-\todo{At this point we should have some examples of solved forms.  The
-  running example is a bit lame here because it already is in solved
-  form, and therefore only has one solved form.}
+\todo{Draw a figure for (\ref{ex:cat-erg}), and explain that the trees
+  in Fig 1 are its solved forms.}
 
 
 \begin{prop}  \label{prop:finite-solved-forms}

@@ -14,8 +14,8 @@ Consider the following (toy) sentence:
 
 This sentence exhibits several kinds of ambiguity, including a scope
 ambiguity between ``every fat cat'' and ``some dog'' and lexical
-ambiguities of the words ``cat'' and ``dog'' (which have 8 and 7 noun
-senses according to Wordnet, respectively).  Simplifying slightly by
+ambiguities of the nouns ``cat'' and ``dog'' (which have 8 and 7 
+WordNet senses respectively).  Simplifying slightly by
 ignoring tense information (but see
 Section~\ref{sec:extensions}), two of these readings are
 shown as logical forms below; they can be represented as trees as
@@ -44,14 +44,14 @@ shown in Fig.~\ref{fig:1}.
 \end{figure*}
 
 
-Now imagine that we are trying to extract semantic information from
+Now imagine trying to extract semantic information from
 the output of a part-of-speech tagger by using the word lemmas as
 lexical predicate symbols.  Such a semantic representation is highly
 partial, as it will not say anything about predicate-argument
 relations or resolve lexical ambiguity---it will use predicate
 symbols such as $\sempred{\_cat\_n}$, which might resolve to the
 predicate symbols $\sem{\_cat\_n\_1}$ or $\sem{\_cat\_n\_2}$ in the
-complete semantic representation.  (Notice that we are using different
+complete semantic representation.  (Notice the different
 fonts for the ambiguous and unambiguous predicate symbols.)  
 We can
 express this information in \rmrs\ as follows.
@@ -59,7 +59,7 @@ express this information in \rmrs\ as follows.
 \begin{examples}
 \item \label{ex:cat-pos}
 $l_1:a_1:\sempred{\_every\_q}(x_1)$, \\
-$l_{41}:a_{41}:\sempred{\_fat\_a}(e')$,\\
+$l_{41}:a_{41}:\sempred{\_fat\_j}(e')$,\\
 $l_{42}:a_{42}:\sempred{\_cat\_n}(x_3)$\\
 $l_5:a_5:\sempred{\_chase\_v}(e)$, \\
 $l_6:a_6:\sempred{\_some\_q}(x_6)$, \\
@@ -71,7 +71,7 @@ for each word lemma in the sentence; each of them is prefixed by a
 \emph{label} and an \emph{anchor}, which are essentially variables
 that refer to nodes in the trees in Fig.~\ref{fig:1}.  
 The lack of semantic dependencies rendered by a {\sc pos} tagger
-also means we have unique arguments to each
+means we have unique arguments to each
 predicate symbol (e.g., see $x_1$ and $x_3$ in (\ref{ex:cat-pos}),
 compared with the {\em same} variable $x$ in the semantic
 representations (\ref{ex:fat-cat-1}) and (\ref{ex:fat-cat-2})).
@@ -81,11 +81,11 @@ the labels and anchors into nodes in each tree and variable names like
 $x_1$ and $x_3$ into variable names in the tree in such a way that the
 predication
 of
-the node that labels and anchors are mapped to is consistent with the
+the node that labels and anchors are mapped to is consistent with
 that given in the {\sc ep}s of the {\sc rmrs}.
 For instance, the first tree satisfies
-the \rmrs\ because we can map $l_1$ and $a_1$ to the root of that
-tree, $x_1$ (and $x_3$) are both mapped to $x$, and the root label
+the \rmrs\ because $l_1$ and $a_1$ can map to the root of that
+tree and $x_1$ to $x$, and the root label
 $\sem{\_every\_q\_1}$ is consistent with the 
 {\sc ep} predicate $\sempred{\_every\_q}$.
 
@@ -102,7 +102,7 @@ detailed \rmrs, as follows:
 \begin{examples}
 \item 
 $l_1:a_1:\sempred{\_every\_q}(x_1)$, \\
-$l_{41}:a_{41}:\sempred{\_fat\_a}(e')$,\\
+$l_{41}:a_{41}:\sempred{\_fat\_j}(e')$,\\
 $l_{42}:a_{42}:\sempred{\_cat\_n}(x_3)$\\
 $l_5:a_5:\sempred{\_chase\_v}(e)$, \\
 \hspace*{0.1in} $\ARG1(a_5,x_4),
@@ -163,28 +163,28 @@ Notice also that the labels of the {\sc ep}s for ``fat'' and ``cat'' are
 stipulated to be equal in the \rmrs\ (\ref{ex:cat-erg}), whereas the
 anchors are not. 
 In the tree, it is the anchors that are mapped to the nodes with the
-labels $\sem{\_fat\_a\_1}$ and $\sem{\_cat\_n\_1}$; the label is
+labels $\sem{\_fat\_j\_1}$ and $\sem{\_cat\_n\_1}$; the label is
 mapped to the conjunction node just above them.  In other words, the
 role of the anchor in an {\sc ep} is to connect a predicate to its
 arguments, while the role of the label is to connect the {\sc ep} to the
 surrounding formula.  Representing conjunction with label sharing
 stems from \mrs\ and provides compact semantic representations.
 Finally, (\ref{ex:cat-erg}) intuitively represents more specific
-semantic information than (\ref{ex:cat-partial-parser}), so long as
-the base-language constructors that \_cat\_n\_1 can correspond to is a
+semantic information than (\ref{ex:cat-pos}), so long as
+the constructors that \_cat\_n\_1 can correspond to is a
 subset of those that \_cat\_n can correspond to (written
-$\mbox{\_cat\_n\_1}\sqsubseteq \mbox{\_cat\_n}$), and similalry for
+$\mbox{\_cat\_n\_1}\sqsubseteq \mbox{\_cat\_n}$), and similarly for
 \_fat\_j\_1 etc.  This is because with these so-called SPEC relations
 on the predicate symbols in place, (\ref{ex:cat-erg}) simply adds
-ARGs, qeqs and variable equalities to (\ref{ex:cat-partial-parser}).
+ARGs, qeqs and variable equalities to (\ref{ex:cat-pos}).
 
 In summary, \rmrs\ is a formalism for representing partial information
-about semantic representations.  It generalizes \mrs\ in that it can
+about semantic representations.  It can
 represent the output of a deep grammar in a way that is a notational
 variant of \mrs; but in cases in which a deep grammar is not
 available, it can be used to capture whatever partial semantic
-information a shallower {\sc nlp} tool was able to provide.  \rmrs\ is
-designed to serve as a generic formalism for partial semantic
+information a shallower {\sc nlp} tool can provide.  \rmrs\ is
+designed to be a generic formalism for partial semantic
 representations which abstracts over the details of different {\sc nlp}
 tools and allows us to represent, process, and compare information
 from different tools in the same formalism, and in the long run
@@ -199,7 +199,7 @@ syntax is not consistent across different papers, and its formal
 semantics is not defined; we don't know, formally, what an \rmrs\
 \emph{means} in terms of semantic representations like
 (\ref{ex:fat-cat-1}) and (\ref{ex:fat-cat-2}), and this hinders our
-ability to come up with efficient algorithms for processing \rmrs. The
+ability to design efficient algorithms for processing \rmrs. The
 purpose of this paper is to lay the groundwork for fixing this problem.
 
 %%% Local Variables: 

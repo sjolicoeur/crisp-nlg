@@ -412,13 +412,44 @@ We write $D(\varphi)$ for the syntactic dominance
 \subsection{Extensions}
 \label{sec:extensions}
 
-In the earlier \rmrs\ literature, each term of an \rmrs\ is equipped
+So far we have included the dominance relation from
+\cite{egg:etal:2001} in the syntax and semantics of the formalism and
+not the qeq relation from \cite{copestake:etal:2005}.  This is partly
+because dominance is more expressive than qeq; for instance if a
+dependency parser links a determiner to a noun which in turn is
+linked to a verb, then the dominance relation is required to express
+the fact that
+that the argument to the predicate that's introduced by the verb is bound by
+the quantifier introduced by 
+the determiner (see earlier discussion).  However, it is very
+straightforward to add qeq to the syntax of the language and to extend
+the model theory accordingly.  This extension adds a new atom $X=_q Y$
+to Def.~\ref{defn:rmrs-syntax}, and $\tau,\alpha,g,\sigma$ will
+satisfy $X=_q Y$ iff $\alpha(X)$ and $\alpha(Y)$ are separated by
+zero or more nodes in $\tau$, each of which has a third child that is a
+quantifier.  It is possible to replace dominance by qeq in the above
+definition of \rmrs\ as well; and all the above propositions about
+solved forms still hold if ``dominance'' is systematically replaced
+with ``qeq''.
+
+Furthermore, grammar developers such as those in the {\sc delphin}
+community typically adopt conventions that restrict them to a
+fragment of the language from Def.~\ref{defn:rmrs-syntax} (once
+qeq is added to it), or they restrict attention to only a subset of
+the models (e.g., any variable that equals the variable
+that's bound by a quantifier is also bound by that quantifier). 
+Our formalism provides a general framework
+into which all these various fragments fit, and it's a matter of
+future work to investigate how these fragments afford efficient
+algorithms for performing inference over the \rmrs s.
+
+Another feature of the existing \rmrs\ literature is that each term of
+an \rmrs\ is equipped 
 with a \emph{sort}.  For instance, individual variables are typically
 assigned the sort $x$, event variables the sort $e$, and holes the
 sort $h$; sometimes subsorts of these are considered (e.g.\ $e_{PAST}$
 for events in the past tense), and all the sorts arranged in a sort
 hierarchy ${\cal S}$.
-
 While we have defined \rmrs\ without sorts to simplify the
 presentation, it is straightforward to add sorts to the definition.
 For this, one assumes that the signature $\Sigma$ is sorted, i.e.\
@@ -436,18 +467,6 @@ contains an atom $\ARG_{\{k\}}(Y,i)$ and $i$ is of sort $s'$, then
 $s'$ is a subsort of $s_k$---all the above propositions about solved
 forms remain true.
 
-Another extension is to replace
-the qeq atom $X \qeqdom Y$ with dominance $X \dom Y$, 
-which is satisfied iff there is a path
-from $\alpha(X)$ to $\alpha(Y)$ in the tree.  Dominance is clearly a
-less restrictive condition than qeq, but it has been shown that the
-distinction between the two relations is irrelevant in \mrs s that were
-derived from a corpus by a deep grammar \cite{FucKolNieTha04}.  In our
-above definition of \rmrs, it is possible to replace qeq by dominance;
-this changes \rmrs\ to a different logic (let's call it
-Dominance-\rmrs), for which however all the above propositions about
-solved forms still hold if ``qeq'' is systematically replaced by
-``dominance''. 
 
 
 %%% Local Variables: 

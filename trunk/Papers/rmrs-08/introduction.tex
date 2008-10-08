@@ -27,6 +27,7 @@ robust wide-coverage semantic construction (e.g.,
 % position (e.g., the second argument of "bet" in "I bet 5 pounds" is
 % 5 pounds, and for "I bet it's raining" it's "it's raining".
 % 
+
 But there are certain semantic phenomena that these robust
 approaches don't capture reliably, including quantifier scope,
 optional arguments, and long-distance dependencies (for instance,
@@ -43,46 +44,36 @@ extraneous to the parser.
 In this paper, we focus on an approach to representing partial
 semantic information that supports this strategy: Robust Minimal
 Recursion Semantics (\rmrs, \cite{copestake:2007a,copestake:2007b}).
-\rmrs\ is 
-designed to
-support underspecification of scope and predicate-argument structure.
-It is an emerging standard for representing partial
-semantic information, and has been applied in several implemented
-systems.  For instance, \newcite{copestake:2003} and
-\newcite{frank:2004} use it to specify semantic components to shallow
-parsers ranging in depth from {\sc pos} taggers to chunk parsers and
-intermediate parsers such as {\sc rasp} \cite{briscoe:etal:2006}.
-{\sc mrs} analyses \cite{copestake:etal:2005}
-derived from deep grammars, such as the English
-Resource Grammar ({\sc erg}, \cite{copestake:flickinger:2000}) are
-special cases of {\sc rmrs}.
+\rmrs\ is designed to support underspecification of lexical ambiguity,
+scope, and predicate-argument structure.  It is an emerging standard
+for representing partial semantic information, and has been applied in
+several implemented systems.  For instance, \newcite{copestake:2003}
+and \newcite{frank:2004} use it to specify semantic components to
+shallow parsers ranging in depth from {\sc pos} taggers to chunk
+parsers and intermediate parsers such as {\sc rasp}
+\cite{briscoe:etal:2006}.  {\sc mrs} analyses
+\cite{copestake:etal:2005} derived from deep grammars, such as the
+English Resource Grammar ({\sc erg}, \cite{copestake:flickinger:2000})
+are special cases of {\sc rmrs}.
 
-However, from a formal perspective, \rmrs\ is somewhat ad-hoc in that
-it has no clearly defined model theory; i.e., what exactly any given
-\rmrs\ representation actually \emph{means} is not defined.  The key
-contribution we make is to cast {\sc rmrs}, for the first time, as a
-logic with a well-defined model theory.  This has a number of
-advantages.  First, it allows us to formally relate \rmrs\ to other
-frameworks such as \mrs\ and predicate logic in order to establish the
-compatibility of \rmrs\ with the approaches to robust semantic
-analysis mentioned above.  
-Second, it provides us with a notion of logical
-entailment, which we can use to verify the compatibility of \rmrs\ 
-representations computed from different parsers, such as a deep and a
-shallow parser.  Finally, it is only through rigid formalisation that
-we can give users of \rmrs\ access to inference systems and to
-algorithms for efficiently computing the possible fully specific
-semantic representations described by the \rmrs\ output of a shallow
-parser.
+The key contribution we make is to cast {\sc rmrs}, for the first
+time, as a logic with a well-defined model theory.  Previously, no
+such model theory existed, and so \rmrs\ had to be used in a somewhat
+ad-hoc manner which left it open what exactly any given \rmrs\
+representation actually \emph{means}.  This has hindered quite
+practical progress in terms of understanding the relationship of
+\rmrs\ to other frameworks such as \mrs\ and predicate logic and in
+terms of the development of efficient algorithms.  As one application
+of the formal concepts that come with our definitions, we propose a
+novel way of characterising consistency of \rmrs\ analyses across
+different parsers as entailment.
 
-Section~\ref{sec:motivation} illustrates via example the differences
-and challenges with deep and shallow semantic construction.
+Section~\ref{sec:motivation} introduces \rmrs\ informally and
+illustrates why it is necessary and useful for representing semantic
+information across deep and shallow language processors.
 Section~\ref{sec:rmrs} defines the syntax and model-theory of \rmrs.
-In Section~\ref{sec:entailment} we demonstrate the practical
-usefulness of our formalisation by modelling compatibility of partial
-semantic representations as \rmrs\ entailment and by providing a
-syntactic criterion for characterising entailment.
-Section~\ref{sec:conclusion} concludes and points to future work.
+We finish in Section~\ref{sec:entailment} by pointing out some avenues
+for future research, and conclude in Section~\ref{sec:conclusion}.
 
 
 \hidden{

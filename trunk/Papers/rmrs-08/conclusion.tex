@@ -5,26 +5,21 @@ In this paper, we have motivated and defined \rmrs---a semantic
 framework that has been used to represent, compare, and combine
 semantic information computed from deep and shallow parsers.  \rmrs\
 is designed to be maximally flexible on the type of semantic
-information that can be left underspecified, so that
-the semantic output of a shallow parser needn't over-determine or
-under-determine the semantics that can be extracted from
-the shallow syntactic analysis.  This lays the formal foundations for
-a formalism that is emerging as a standard in
-robust semantic processing.
+information that can be left underspecified, so that the semantic
+output of a shallow parser needn't over-determine or under-determine
+the semantics that can be extracted from the shallow syntactic
+analysis.  The key contribution of this paper was to lay the formal
+foundations for a formalism that is emerging as a standard in robust
+semantic processing.
 
-We then defined the concept of \emph{solved forms} of an \rmrs, in
-analogy to dominance graphs.  Solved forms abstract away from
-irrelevant differences between models, and have been a crucial concept
-in the development of efficient solvers for dominance graphs.  In the
-future, we hope to draw upon that body of literature to develop
-efficient algorithms for processing \rmrs s, including solvers which
-will compute fully specific semantic representations from an \rmrs,
-efficient inference algorithms, and algorithms for entailment
-checking.  We have argued that entailment is a central notion in
-comparing the outputs of different {\sc nlp} tools, and provided a syntactic
-characterisation for \rmrs\ entailment, which we hope will allow us to
-develop efficient entailment algorithms in the future.
-
+Although we have not directly provided new tools for modelling or
+processing language, we believe that a cleanly defined model theory
+for \rmrs\ is a crucial prerequisite for the future development of
+such tools.  We hope that future research will build upon this paper
+to develop efficient algorithms and implementations for solving \rmrs
+s, performing inferences that enrich \rmrs s from shallow analyses
+with deeper information, and checking consistency of \rmrs s that were
+obtained from different parsers.
 
 %%% Local Variables: 
 %%% mode: latex

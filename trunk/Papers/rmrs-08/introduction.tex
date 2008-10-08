@@ -1,5 +1,3 @@
-\todo{AE vs. BE}
-
 \section{Introduction} \label{sec:intro}
 
 Representing semantics as a logical form that supports automated
@@ -7,19 +5,12 @@ inference and model construction is vital for deeper language
 engineering tasks, such as dialogue systems.  Logical forms
 can be obtained from hand-crafted deep grammars
 \cite{butt:etal:1999,copestake:flickinger:2000}, but this
-tends to lack robustness: hand-crafted grammars fail to cover all
-words and linguistic constructions and by design they do not handle
+tends to lack robustness: they fail to cover all
+words and linguistic constructions and by design do not handle
 ill-formed phrases. 
 There has thus been a trend recently towards systems for
-robust wide-coverage semantic construction.  For instance,
-\newcite{bos:etal:2004} exploit {\sc ccg}'s syntax-semantics
-interface to produce a unique logical form for each derivation of a
-statistical {\sc ccg} parser; \newcite{zettlemoyer:collins:2007} and
-others learn string-to-logical-form mappings, exploiting informative
-features from shallow language processors; and
-\newcite{copestake:2003} and \newcite{frank:2004} endow shallow
-language processors with semantic components.
-
+robust wide-coverage semantic construction (e.g., 
+\cite{bos:etal:2004,zettlemoyer:collins:2007}).     
 % COMMENT: this issue about optional arguments is really too cryptic.
 % Basically, there is no way for assessing by *any* learned language
 % processor whether a single word form that appears in
@@ -36,8 +27,7 @@ language processors with semantic components.
 % position (e.g., the second argument of "bet" in "I bet 5 pounds" is
 % 5 pounds, and for "I bet it's raining" it's "it's raining".
 % 
-
-There are certain semantic phenomena that these robust
+But there are certain semantic phenomena that these robust
 approaches don't capture reliably, including quantifier scope,
 optional arguments, and long-distance dependencies (for instance,
 \newcite{clark:etal:2004} report that the parser used by
@@ -52,7 +42,8 @@ extraneous to the parser.
 
 In this paper, we focus on an approach to representing partial
 semantic information that supports this strategy: Robust Minimal
-Recursion Semantics (\rmrs, \cite{copestake:2003}).  \rmrs\ is
+Recursion Semantics (\rmrs, \cite{copestake:2007a,copestake:2007b}).
+\rmrs\ is 
 designed to
 support underspecification of scope and predicate-argument structure.
 It is an emerging standard for representing partial

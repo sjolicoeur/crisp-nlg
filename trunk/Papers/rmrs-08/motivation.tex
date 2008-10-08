@@ -50,15 +50,15 @@ $\sem{\_cat\_n\_1}$ or $\sem{\_cat\_n\_2}$ in the complete semantic
 representation.  (Notice the different fonts for the ambiguous and
 unambiguous predicate symbols.)
 
-Partial semantic information, especially with respect to ambiguity, is
+Partial semantic information is
 typically represented using an underspecification formalism such as
-\mrs\ \cite{copestake:etal:2005} or CLLS \cite{egg:etal:inpress}.  But
+\mrs\ \cite{copestake:etal:2005} or {\sc clls} \cite{egg:etal:inpress}.  But
 most underspecification formalisms are unable to represent semantic
-information that is as partial as what we get from a POS tagger: They
-assume that the complete predicate-argument structure is known and
-there is no lexical ambiguity.  \rmrs\ \cite{copestake:2007a} was
+information that is as partial as what we get from a {\sc pos} tagger: They
+assume that the complete predicate-argument structure is known.
+\rmrs\ \cite{copestake:2007a} was
 designed to address this problem.  In \rmrs, we can express the
-information we get from the POS tagger as follows:
+information we get from the {\sc pos} tagger as follows:
 
 \begin{examples}
 \item \label{ex:cat-pos}
@@ -130,11 +130,14 @@ denotes (or the node that the {\em hole} $h$ denotes).  So unlike
 earlier underspecification formalisms, \rmrs\ can specify the
 predicate of an atom separately from its (scopal and non-scopal)
 arguments; this is necessary for supporting parsers where information
-about lexical subcategorisation is absent). If we also allow atoms of
+about lexical subcategorisation is absent. If we also allow atoms of
 the form $\ARG_{\{2,3\}}(a,x)$ to express uncertainty as to whether
 $x$ is the second or third child of the anchor $a$, then \rmrs\ can
 even specify the arguments to a predicate while underspecifying their
-position.  This is useful for \todo{what?}.
+position.  This is useful for specifying arguments to \_give\_v when a
+parser that is unableto process unbounded dependencies is faced with
+{\em Which bone did you give the dog?} vs.\ {\em To which dog did you
+  give the bone?}
 
 Finally, the \rmrs\ (\ref{ex:cat-erg}) is a notational variant of the
 {\sc mrs} derived by the {\sc erg}, a wide-coverage deep grammar:
@@ -179,7 +182,7 @@ Finally, (\ref{ex:cat-erg}) uses predicate symbols like
 $\sempred{\_dog\_n\_1}$ that are meant to be more specific than the
 symbols like $\sempred{\_dog\_n}$ which the earlier \rmrs s used.
 This reflects the fact that the deep grammar will perform some lexical
-disambiguation, whereas the chunker and POS tagger didn't.  The fact
+disambiguation, whereas the chunker and {\sc pos} tagger didn't.  The fact
 that the former symbol should be more specific than the latter can be
 represented using SPEC atoms like $\sempred{\_dog\_n\_1}\sqsubseteq
 \sempred{\_dog\_n}$), which we have omitted in (\ref{ex:cat-erg}) for
@@ -191,7 +194,7 @@ representation.
 
 In summary, \rmrs\ is a formalism for partial semantic
 representations.  It allows us to represent the semantic information
-that can be extracted from a wide range of NLP tools in a uniform way.
+that can be extracted from a wide range of {\sc nlp} tools in a uniform way.
 This is useful for hybrid systems which fall back to shallower
 analyses if deeper parsing is unsuccessful, or which try to match
 deeply parsed queries against shallow parses of large text corpora;

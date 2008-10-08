@@ -254,13 +254,16 @@ enforce that the tree shouldn't contain those subformulas either.
 
 In the context of robust semantic processing, this is a desirable
 feature of \rmrs, because it means that when we enrich an \rmrs\
-obtained from a shallow processor with more semantic information, we
-don't change the set of models; we only \emph{restrict} the set of
-models further and further towards the semantic representation we are
-trying to reconstruct.  Furthermore, it has been shown in the
-literature that a dominance-constraint style semantics for
-underspecified representations gives us more room to maneuver when
-developing efficient solvers than an \mrs-style semantics
+obtained from a shallow processor with more semantic information --
+such as the relational information introduced by syntactic
+constructions such as appositives, noun-noun compounds, and
+nonrestrictive relative clauses --, we don't change the set of models;
+we only \emph{restrict} the set of models further and further towards
+the semantic representation we are trying to reconstruct.
+Furthermore, it has been shown in the literature that a
+dominance-constraint style semantics for underspecified
+representations gives us more room to maneuver when developing
+efficient solvers than an \mrs-style semantics
 \cite{Althaus_etal:JoA}.
 
 However, enumerating an infinite number of models is of course
@@ -351,76 +354,107 @@ We write $D(\varphi)$ for the syntactic dominance
 \end{prop}
 
 Let's look at an example for all these definitions.  All the \rmrs s
-presented in Section~\ref{sec:motivation}, where we replace $\qeq$ by
-$\dom$, are in solved form; this is least obvious for
+presented in Section~\ref{sec:motivation} (replacing $\qeq$ by
+$\dom$), are in solved form; this is least obvious for
 (\ref{ex:cat-erg}), but becomes clear once we notice that no label is
 on the right-hand side of two dominance atoms.  However, this is
 because the model that we can read off of (\ref{ex:cat-erg}) is
-similar to the one shown in Fig.~\ref{fig:fat-black-cat}; we simply
-take the three subtrees that are specified by ``every fat cat'',
-``some dog'', and ``chased'' and combine them as sisters.  
+similar to the one shown in Fig.~\ref{fig:fat-black-cat}; this model
+is problematic in several ways and in particular contains unbound
+variables.  If we restrict the class of models we consider to those in
+which variables are bound, we can add the information that the
+quantifiers outscope their bound variables to the \rmrs\ without
+changing its models further -- i.e., we add the atoms $h_3 \dom
+l_5$ and $h_8 \dom l_5$.  The extended \rmrs\ is no longer in solved
+form because the label $l_5$ is on the right-hand side of two
+dominance edges.  Instead, it has the following two solved forms:
 
+\begin{examples}
+\item \label{ex:sf-1}
+  $l_1\handel a_1\handel\sempred{\_every\_q\_1}(x_1)$,
+  $\mathsf{RSTR}(a_1,h_2)$, $\mathsf{BODY}(a_1,h_3)$,
+  $l_{41}\handel a_{41}\handel\sempred{\_fat\_j\_1}(e'), \ARG_1(a_{41},x_1)$,
+  $l_{41}\handel a_{42}\handel\sempred{\_cat\_n\_1}(x_1)$,
+  %
+  $l_6\handel a_6\handel\sempred{\_some\_q\_1}(x_6)$,
+  $\mathsf{RSTR}(a_6,h_7)$, $\mathsf{BODY}(a_6,h_8)$,
+  $l_9\handel a_9\handel\sempred{\_dog\_n\_1}(x_6)$,
+  %
+  $l_5\handel a_5\handel\sempred{\_chase\_v\_1}(e)$,
+  $\ARG_1(a_5,x_1)$, $\ARG_2(a_5,x_6)$,
+  $h_2 \dom l_{41}$, $h_3 \dom l_6$,
+  $h_7 \dom l_9$, $h_8 \dom l_5$
+\item \label{ex:sf-2}
+  $l_1\handel a_1\handel\sempred{\_every\_q\_1}(x_1)$,
+  $\mathsf{RSTR}(a_1,h_2)$, $\mathsf{BODY}(a_1,h_3)$,
+  $l_{41}\handel a_{41}\handel\sempred{\_fat\_j\_1}(e'), \ARG_1(a_{41},x_1)$,
+  $l_{41}\handel a_{42}\handel\sempred{\_cat\_n\_1}(x_1)$,
+  %
+  $l_6\handel a_6\handel\sempred{\_some\_q\_1}(x_6)$,
+  $\mathsf{RSTR}(a_6,h_7)$, $\mathsf{BODY}(a_6,h_8)$,
+  $l_9\handel a_9\handel\sempred{\_dog\_n\_1}(x_6)$,
+  %
+  $l_5\handel a_5\handel\sempred{\_chase\_v\_1}(e)$,
+  $\ARG_1(a_5,x_1)$, $\ARG_2(a_5,x_6)$,
+  $h_2 \dom l_{41}$, $h_3 \dom l_5$,
+  $h_7 \dom l_9$, $h_8 \dom l_1$
+\end{examples}
 
+Notice that we have eliminated all equalities by unifying the variable
+names, and we have fixed the relative scope of the two quantifiers.
+Each of these solved forms now stands for a separate class of models;
+for instance, the first model in Fig.~\ref{fig:1} is a model of
+(\ref{ex:sf-1}), whereas the second is a model of (\ref{ex:sf-2}).
 
 
 
 \subsection{Extensions}
 \label{sec:extensions}
 
-So far we have included the dominance relation from
-\cite{egg:etal:2001} in the syntax and semantics of the formalism and
-not the qeq relation from \cite{copestake:etal:2005}.  This is partly
-because dominance is more expressive than qeq; for instance if a
-dependency parser links a determiner to a noun which in turn is
-linked to a verb, then the dominance relation is required to express
-the fact that
-that the argument to the predicate that's introduced by the verb is bound by
-the quantifier introduced by 
-the determiner (see earlier discussion).  However, it is very
-straightforward to add qeq to the syntax of the language and to extend
-the model theory accordingly.  This extension adds a new atom $X=_q Y$
-to Def.~\ref{defn:rmrs-syntax}, and $\tau,\alpha,g,\sigma$ will
-satisfy $X=_q Y$ iff $\alpha(X)$ and $\alpha(Y)$ are separated by
-zero or more nodes in $\tau$, each of which has a third child that is a
-quantifier.  It is possible to replace dominance by qeq in the above
-definition of \rmrs\ as well; and all the above propositions about
-solved forms still hold if ``dominance'' is systematically replaced
-with ``qeq''.
+So far we have based the syntax and semantics of \rmrs\ on the
+dominance relation from \newcite{egg:etal:2001} rather than the qeq
+relation from \newcite{copestake:etal:2005}.  This is partly because
+dominance is a weaker relation than qeq: If a dependency parser links
+a determiner to a noun and this noun to a verb, then we can use
+dominance but not qeq to represent that the predicate introduced by
+the verb is outscoped by the quantifier introduced by the determiner
+(see earlier discussion).  However, it is very straightforward to add
+qeq to the syntax of the language and to extend the model theory
+accordingly.  This extension adds a new atom $X=_q Y$ to
+Def.~\ref{defn:rmrs-syntax}, and $\tau,\alpha,g,\sigma$ will satisfy
+$X=_q Y$ iff $\alpha(X)$ and $\alpha(Y)$ are separated by zero or more
+nodes in $\tau$, each of which has a third child that is a
+quantifier. All the above propositions about solved forms still hold
+if ``dominance'' is systematically replaced with ``qeq''.
 
-Furthermore, grammar developers such as those in the {\sc delphin}
-community typically adopt conventions that restrict them to a
-fragment of the language from Def.~\ref{defn:rmrs-syntax} (once
-qeq is added to it), or they restrict attention to only a subset of
-the models (e.g., any variable that equals the variable
-that's bound by a quantifier is also bound by that quantifier). 
-Our formalism provides a general framework
-into which all these various fragments fit, and it's a matter of
-future work to investigate how these fragments afford efficient
-algorithms for performing inference over the \rmrs s.
+Furthermore, grammar developers such as those in the {\sc delph-in}
+community typically adopt conventions that restrict them to a fragment
+of the language from Def.~\ref{defn:rmrs-syntax} (once qeq is added to
+it), or they restrict attention to only a subset of the models (e.g.,
+ones in which all variables are bound). Our formalism provides a
+general framework into which all these various fragments fit, and it's
+a matter of future work to explore these fragments further.
 
 Another feature of the existing \rmrs\ literature is that each term of
-an \rmrs\ is equipped 
-with a \emph{sort}.  For instance, individual variables are typically
-assigned the sort $x$, event variables the sort $e$, and holes the
-sort $h$; sometimes subsorts of these are considered (e.g.\ $e_{PAST}$
-for events in the past tense), and all the sorts arranged in a sort
-hierarchy ${\cal S}$.
-While we have defined \rmrs\ without sorts to simplify the
-presentation, it is straightforward to add sorts to the definition.
-For this, one assumes that the signature $\Sigma$ is sorted, i.e.\
-assigns a sort $s_1\times\ldots s_n\rightarrow s$ to each constructor,
-where $n$ is the constructor's arity (possibly zero) and
-$s,s_1,\ldots,s_n\in {\cal S}$ are atomic sorts.  We can then
-restrict the models of \rmrs\ to trees that are \emph{well-sorted} in
-the usual sense, i.e.\ those in which we can infer a sort for each
-subtree, and require that the variable assignment functions likewise
-respect the sorts.  If we then modify Def.~\ref{defn:solved-forms}
-such that the constructor $p$ of sufficiently high arity is also
-consistent with the sorts of the known arguments---i.e., if $p$ has
-sort $s_1 \times \ldots \times s_n \rightarrow s$ and the \rmrs\
-contains an atom $\ARG_{\{k\}}(Y,i)$ and $i$ is of sort $s'$, then
-$s'$ is a subsort of $s_k$---all the above propositions about solved
-forms remain true.
+an \rmrs\ is equipped with a \emph{sort}.  For instance, individual
+variables are typically assigned the sort $x$, event variables the
+sort $e$, and holes the sort $h$; these are arranged together with
+their subsorts in a sort hierarchy ${\cal S}$.  While we have defined
+\rmrs\ without sorts to simplify the presentation, it is
+straightforward to add them.  For this, one assumes that the signature
+$\Sigma$ is sorted, i.e.\ assigns a sort $s_1\times\ldots
+s_n\rightarrow s$ to each constructor, where $n$ is the constructor's
+arity (possibly zero) and $s,s_1,\ldots,s_n\in {\cal S}$ are atomic
+sorts.  We restrict the models of \rmrs\ to trees that are
+\emph{well-sorted} in the usual sense, i.e.\ those in which we can
+infer a sort for each subtree, and require that the variable
+assignment functions likewise respect the sorts.  If we then modify
+Def.~\ref{defn:solved-forms} such that the constructor $p$ of
+sufficiently high arity is also consistent with the sorts of the known
+arguments---i.e., if $p$ has sort $s_1 \times \ldots \times s_n
+\rightarrow s$ and the \rmrs\ contains an atom $\ARG_{\{k\}}(Y,i)$ and
+$i$ is of sort $s'$, then $s'$ is a subsort of $s_k$---all the above
+propositions about solved forms remain true.
 
 
 

@@ -27,8 +27,8 @@ We can now define formulas of \rmrs\ as follows.
 \begin{definition}\label{defn:rmrs-syntax}
   An \emph{\rmrs} is a finite set $\varphi$ of atoms of one of the
   following forms; $S \subseteq \N$ is a set of numbers that is either
-  finite or $\N$ itself.\footnote{Throughout the paper, we assume that
-    $0 \in \N$.}
+  finite or $\N$ itself (throughout the paper, we assume 
+    $0 \in \N$).
 
 $\begin{array}{rrll}
 A &::= &\ep{X}{Y}{P} \\ %& \mbox{labelled elementary predication} \\
@@ -52,11 +52,11 @@ or $X \qeq Y$.
 
 \rmrs\ as presented here combines similarities to earlier
 presentations of \rmrs\ \cite{copestake:2003,copestake:2007b} and to
-CLLS/dominance constraints \cite{egg:etal:2001}.  For the most part,
-our syntax generalizes that of older versions of \rmrs: We use
+{\sc clls}/dominance constraints \cite{egg:etal:2001}.  For the most part,
+our syntax generalises that of older versions of \rmrs: We use
 $\ARG_{\{i\}}$ (with a singleton set $S$) instead of $\ARG_i$ and
-$\ARG_\N$ instead of $\ARG_n$, and we take the EP $\ep{l}{a}{P(v)}$
-(as in Section~\ref{sec:motivation}) as an abbreviation of
+$\ARG_\N$ instead of $\ARG_n$, and the{\sc ep} $\ep{l}{a}{P(v)}$
+(as in Section~\ref{sec:motivation}) is an abbreviation of
 $\{\ep{l}{a}{P}, \ARG_{\{0\}}(a,v)\}$.  Similarly, we don't assume
 that labels, anchors, and holes are syntactically different objects;
 they receive their function from their positions in the formula.  One
@@ -82,19 +82,19 @@ in \mrs; essentially, $\tau$ becomes the structure tree of a formula
 of predicate logic.  We assume that $\Sigma$ is a ranked signature
 consisting of the symbols of predicate logic: a unary constructor
 $\neg$ and binary constructors $\wedge$, $\rightarrow$, etc.; a set of
-3-place quantifier symbols such as $\sem{\_forall\_q\_1}$ and
+3-place quantifier symbols such as $\sem{\_every\_q\_1}$ and
 $\sem{\_some\_q\_1}$ (with the children being the bound variable, the
-restrictor, and the scope); and, for each predicate symbol $P$ of
-arity $n$, a constructor $P$ of arity $n$ \todo{$n$ or $n+1$?}.  Other
+restrictor, and the scope); and, constructors of various arities for
+the predicate symbols; e.g., $\sem{\_chase\_v\_1}$ is of arity 3.  Other
 base languages may require a different signature $\Sigma$ and/or a
 different mapping between formulas and trees; the only strict
 requirement we make is that the signature contains a binary
 constructor $\wedge$ to represent conjunction.  We write $\Sigma_i$
-for the set of all constructors in $\Sigma$ that have arity $i$.  We
+for the set of all constructors in $\Sigma$ with arity $i$.  We
 will follow the typographical convention that non-logical symbols in
 $\Sigma$ are written in $\mathsf{sans{-}serif}$, as opposed to the
-\rmrs\ predicate symbols like ``$\sempred{\_cat\_n}$'' and
-``$\sempred{\_cat\_n\_1}$''.
+\rmrs\ predicate symbols like $\sempred{\_cat\_n}$ and
+$\sempred{\_cat\_n\_1}$.
 
 The models of {\sc rmrs} are then defined to be finite constructor
 trees:
@@ -125,13 +125,12 @@ assignment functions.  First, we assume a node variable assignment
 function $\alpha: \nvar \rightarrow D(\tau)$ that maps the node
 variables in an \rmrs\ to the nodes of $\tau$.  Second, we assume a
 base language assignment function $g:\ovar \rightarrow \Sigma_0$ that
-maps the base variables in the \rmrs\ to nullary constructors
+maps the base variables to nullary constructors
 representing variables in the base language. Finally, we assume a
 relation $\sigma \subseteq \pred \times \Sigma_{\geq 1}$ that maps
 each \rmrs\ predicate symbol to a set of constructors from $\Sigma$.
-This relation allows us to underspecify lexical ambiguities; for
-instance, $\sigma(\sempred{\_cat\_n})$ might contain the symbol
-$\sem{\_cat\_n\_1}$ along with symbols for other word senses.
+As we'll see shortly, this relation allows us to underspecify lexical
+ambiguities.
 
 \begin{definition}\label{defn:satisfaction}
 Satisfaction of atoms is defined as follows:
@@ -179,12 +178,13 @@ that $g_1(v)=g_1(v')$ and $g_2(v)\neq g_2(v')$.  It exhibits missing
 lexical subcategorisation information if there is a $ Y \in \nvar$
 such that $\tau_1(\alpha_1(Y))$ is a constructor of a different type
 from $\tau_2(\alpha_2(Y))$ (i.e., the constructors are of a different
-arity and/or their arguments are).  And it exhibits missing lexical
+arity or they differ in whether their arguments are scopal vs.\
+non-scopal).  And it exhibits missing lexical
 sense information if $\tau_1(\alpha_1(Y))$ and $\tau_2(\alpha_2(Y))$
 are different base-language constructors, but of the same type.
 
-Let's look at the \rmrs\ in (\ref{ex:cat-pos}) by way of example.
-This \rmrs\ is satisfied by the trees in Fig.~\ref{fig:1} (among
+Let's look again at the \rmrs\ (\ref{ex:cat-pos}).
+This is satisfied by the trees in Fig.~\ref{fig:1} (among
 others) together with some particular $\alpha$, $g$, and $\sigma$.
 For instance, consider the left-hand side tree in Fig.~\ref{fig:1}.
 The \rmrs\ (\ref{ex:cat-pos}) satisfies this tree with an assignment
@@ -194,7 +194,7 @@ node, $l_{41}$ and $l_{42}$ to its second child (labeled with
 the node 21, labelled with ``fat'') and $a_{42}$ to the node 22, and
 so forth.  $g$ will map $x_1$ and $x_3$ to $x$, and $x_6$ and $x_7$ to
 $y$, and so on.  And $\sigma$ will map each \rmrs\ predicate symbol
-(which represents a word) to the set of its word senses, e.g.\
+(which represents a word) to the set of its fully resolved meanings, e.g.\
 \_cat\_n to a set containing $\sem{\_cat\_n\_1}$ and possibly others.
 It is then easy to verify that every single atom in the \rmrs\ is
 satisfied---most interestingly, the {\sc ep}s
@@ -234,8 +234,8 @@ satisfiability in the usual way:
 One aspect in which our definition of \rmrs\ is like dominance
 constraints and unlike \mrs\ is that any satisfiable \rmrs\ has an
 infinite number of models which only differ in the areas that the
-\rmrs\ didn't ``talk about''.  Consider e.g.\ (\ref{ex:cat-erg}).
-Read as an \mrs\ or as an \rmrs\ of the previous literature, this
+\rmrs\ didn't ``talk about''.  Reading (\ref{ex:cat-erg})
+as an \mrs\ or as an \rmrs\ of the previous literature, this
 formula is an instruction to build a semantic representation out of
 the pieces for ``every fat cat'', ``some dog'', and ``chased''; a
 semantic representation as in Fig.~\ref{fig:fat-black-cat} would
@@ -254,10 +254,11 @@ enforce that the tree shouldn't contain those subformulas either.
 
 In the context of robust semantic processing, this is a desirable
 feature of \rmrs, because it means that when we enrich an \rmrs\
-obtained from a shallow processor with more semantic information --
-such as the relational information introduced by syntactic
-constructions such as appositives, noun-noun compounds, and
-nonrestrictive relative clauses --, we don't change the set of models;
+obtained from a shallow processor with more semantic
+information---such as the relation symbols introduced by
+syntactic 
+constructions such as appositives, noun-noun compounds and free
+adjuncts---we don't change the set of models;
 we only \emph{restrict} the set of models further and further towards
 the semantic representation we are trying to reconstruct.
 Furthermore, it has been shown in the literature that a
@@ -272,8 +273,9 @@ infeasible.  For this reason, we will now transfer the concept of
 solved form is guaranteed to be satisfiable, and thus each solved form
 represents an infinite class of models.  However, each satisfiable
 \rmrs\ has only a finite number of solved forms which partition the
-space of possible models into classes with only ``irrelevant''
-differences as above.  A solver can then enumerate the solved forms
+space of possible models into classes with only `relevant'
+differences as in Fig.~\ref{fig:1}.  A solver can then enumerate the
+solved forms 
 rather than all models.
 
 Intuitively, we expect that an \rmrs\ in solved form is fully
@@ -301,13 +303,13 @@ precise below.
   \end{enumerate}
 \end{definition}
 
-Because solved forms are so restricted, it is now possible ``read
-off'' at least one model from each solved form.  We don't have the
+Because solved forms are so restricted, it is now possible to `read
+off' at least one model from each solved form.  We don't have the
 space to present any proofs here; they proceed mostly along the same
 lines as the proofs in \newcite{Duchier00dominanceconstraints}.
 
 \begin{prop} \label{prop:solved-forms-are-satisfiable}
-  Every RMRS in solved form is satisfiable.
+  Every {\sc rmrs} in solved form is satisfiable.
 \end{prop}
 
 
@@ -358,44 +360,47 @@ presented in Section~\ref{sec:motivation} (replacing $\qeq$ by
 $\dom$), are in solved form; this is least obvious for
 (\ref{ex:cat-erg}), but becomes clear once we notice that no label is
 on the right-hand side of two dominance atoms.  However, this is
-because the model that we can read off of (\ref{ex:cat-erg}) is
-similar to the one shown in Fig.~\ref{fig:fat-black-cat}; this model
-is problematic in several ways and in particular contains unbound
-variables.  If we restrict the class of models we consider to those in
-which variables are bound, we can add the information that the
+because (at least) one model of (\ref{ex:cat-erg}) is
+shown in Fig.~\ref{fig:fat-black-cat}; this model
+is problematic in several ways and in particular contains an unbound
+variable $y$ even though it also contains a quantifier that binds $y$.
+If we restrict the class of models to those in 
+which such variables are bound (as \newcite{copestake:etal:2005} do),
+we can add the information that the 
 quantifiers outscope their bound variables to the \rmrs\ without
-changing its models further -- i.e., we add the atoms $h_3 \dom
-l_5$ and $h_8 \dom l_5$.  The extended \rmrs\ is no longer in solved
+changing its models further---i.e., we add the atoms $h_3 \dom
+l_5$ and $h_8 \dom l_5$.  Fig.~\ref{fig:fat-black-cat} is no longer a
+model for the extended \rmrs, whic in turn is no longer in solved
 form because the label $l_5$ is on the right-hand side of two
 dominance edges.  Instead, it has the following two solved forms:
 
 \begin{examples}
 \item \label{ex:sf-1}
-  $l_1\handel a_1\handel\sempred{\_every\_q\_1}(x_1)$,
-  $\mathsf{RSTR}(a_1,h_2)$, $\mathsf{BODY}(a_1,h_3)$,
-  $l_{41}\handel a_{41}\handel\sempred{\_fat\_j\_1}(e'), \ARG_1(a_{41},x_1)$,
-  $l_{41}\handel a_{42}\handel\sempred{\_cat\_n\_1}(x_1)$,
+  $l_1\handel a_1\handel\sempred{\_every\_q\_1}(x_1)$,\\
+\hspace*{0.1in}$\mathsf{RSTR}(a_1,h_2)$, $\mathsf{BODY}(a_1,h_3)$,\\
+  $l_{41}\handel a_{41}\handel\sempred{\_fat\_j\_1}(e'), \ARG_1(a_{41},x_1)$,\\
+  $l_{41}\handel a_{42}\handel\sempred{\_cat\_n\_1}(x_1)$,\\
   %
-  $l_6\handel a_6\handel\sempred{\_some\_q\_1}(x_6)$,
-  $\mathsf{RSTR}(a_6,h_7)$, $\mathsf{BODY}(a_6,h_8)$,
-  $l_9\handel a_9\handel\sempred{\_dog\_n\_1}(x_6)$,
+  $l_6\handel a_6\handel\sempred{\_some\_q\_1}(x_6)$,\\
+\hspace*{0.1in}$\mathsf{RSTR}(a_6,h_7)$, $\mathsf{BODY}(a_6,h_8)$,\\
+  $l_9\handel a_9\handel\sempred{\_dog\_n\_1}(x_6)$,\\
   %
-  $l_5\handel a_5\handel\sempred{\_chase\_v\_1}(e)$,
-  $\ARG_1(a_5,x_1)$, $\ARG_2(a_5,x_6)$,
+  $l_5\handel a_5\handel\sempred{\_chase\_v\_1}(e)$,\\
+\hspace*{0.1in}  $\ARG_1(a_5,x_1)$, $\ARG_2(a_5,x_6)$,\\
   $h_2 \dom l_{41}$, $h_3 \dom l_6$,
   $h_7 \dom l_9$, $h_8 \dom l_5$
 \item \label{ex:sf-2}
-  $l_1\handel a_1\handel\sempred{\_every\_q\_1}(x_1)$,
-  $\mathsf{RSTR}(a_1,h_2)$, $\mathsf{BODY}(a_1,h_3)$,
-  $l_{41}\handel a_{41}\handel\sempred{\_fat\_j\_1}(e'), \ARG_1(a_{41},x_1)$,
-  $l_{41}\handel a_{42}\handel\sempred{\_cat\_n\_1}(x_1)$,
+  $l_1\handel a_1\handel\sempred{\_every\_q\_1}(x_1)$,\\
+\hspace*{0.1in}$\mathsf{RSTR}(a_1,h_2)$, $\mathsf{BODY}(a_1,h_3)$,\\
+  $l_{41}\handel a_{41}\handel\sempred{\_fat\_j\_1}(e'), \ARG_1(a_{41},x_1)$,\\
+  $l_{41}\handel a_{42}\handel\sempred{\_cat\_n\_1}(x_1)$,\\
   %
-  $l_6\handel a_6\handel\sempred{\_some\_q\_1}(x_6)$,
-  $\mathsf{RSTR}(a_6,h_7)$, $\mathsf{BODY}(a_6,h_8)$,
-  $l_9\handel a_9\handel\sempred{\_dog\_n\_1}(x_6)$,
+  $l_6\handel a_6\handel\sempred{\_some\_q\_1}(x_6)$,\\
+\hspace*{0.1in}$\mathsf{RSTR}(a_6,h_7)$, $\mathsf{BODY}(a_6,h_8)$,\\
+  $l_9\handel a_9\handel\sempred{\_dog\_n\_1}(x_6)$,\\
   %
-  $l_5\handel a_5\handel\sempred{\_chase\_v\_1}(e)$,
-  $\ARG_1(a_5,x_1)$, $\ARG_2(a_5,x_6)$,
+  $l_5\handel a_5\handel\sempred{\_chase\_v\_1}(e)$,\\
+\hspace*{0.1in}  $\ARG_1(a_5,x_1)$, $\ARG_2(a_5,x_6)$,\\
   $h_2 \dom l_{41}$, $h_3 \dom l_5$,
   $h_7 \dom l_9$, $h_8 \dom l_1$
 \end{examples}
@@ -425,13 +430,13 @@ Def.~\ref{defn:rmrs-syntax}, and $\tau,\alpha,g,\sigma$ will satisfy
 $X=_q Y$ iff $\alpha(X)$ and $\alpha(Y)$ are separated by zero or more
 nodes in $\tau$, each of which has a rightmost child that is a
 quantifier. All the above propositions about solved forms still hold
-if ``dominance'' is systematically replaced with ``qeq''.
+if ``dominance'' is replaced with ``qeq''.
 
 Furthermore, grammar developers such as those in the {\sc delph-in}
 community typically adopt conventions that restrict them to a fragment
 of the language from Def.~\ref{defn:rmrs-syntax} (once qeq is added to
-it), or they restrict attention to only a subset of the models (e.g.,
-ones in which all variables are bound). Our formalism provides a
+it), or they restrict attention to only a subset of the models.
+Our formalism provides a
 general framework into which all these various fragments fit, and it's
 a matter of future work to explore these fragments further.
 

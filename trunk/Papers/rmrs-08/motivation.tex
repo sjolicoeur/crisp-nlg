@@ -1,18 +1,17 @@
 \section{Deep and shallow semantic construction}
 \label{sec:motivation}
 
-We start with an informal illustration of why \rmrs\ is necessary and
-useful to represent partial semantic information.  Consider the
+Consider the
 following (toy) sentence:
 
 \begin{examples}
   \item Every fat cat chased some dog.
 \end{examples}
 
-This sentence exhibits several kinds of ambiguity, including a scope
-ambiguity between ``every fat cat'' and ``some dog'' and lexical
-ambiguities of the nouns ``cat'' and ``dog'' (which have 8 and 7
-WordNet senses respectively).  Simplifying slightly by ignoring tense
+It exhibits several kinds of ambiguity, including a quantifier scope
+ambiguity and lexical
+ambiguities---e.g., the nouns ``cat'' and ``dog'' have 8 and 7
+WordNet senses respectively.  Simplifying slightly by ignoring tense
 information, two of these readings are shown as logical forms below;
 these can be represented as trees as shown in Fig.~\ref{fig:1}.
 %  (but see Section~\ref{sec:extensions})
@@ -35,27 +34,26 @@ these can be represented as trees as shown in Fig.~\ref{fig:1}.
 \centering
 \includegraphics[scale=0.8]{pic-cat-chased-dog} \\
 \includegraphics[scale=0.8]{pic-cat-chased-dog-2}
-\caption{Structure trees of the semantic representations (\ref{ex:fat-cat-1}) and
-  (\ref{ex:fat-cat-2}). \label{fig:1}}
+\caption{Semantic representations (\ref{ex:fat-cat-1}) and
+  (\ref{ex:fat-cat-2}) as trees. \label{fig:1}}
 \end{figure}
 
 
 Now imagine we are trying to extract semantic information from the
 output of a part-of-speech tagger by using the word lemmas as lexical
-predicate symbols.  Such a semantic representation is highly partial,
-as it will not say anything about predicate-argument relations or
-resolve lexical ambiguity---it will use predicate symbols such as
+predicate symbols.  Such a semantic representation is highly partial.
+It will use predicate symbols such as
 $\sempred{\_cat\_n}$, which might resolve to the predicate symbols
 $\sem{\_cat\_n\_1}$ or $\sem{\_cat\_n\_2}$ in the complete semantic
 representation.  (Notice the different fonts for the ambiguous and
 unambiguous predicate symbols.)
-
-Partial semantic information is
-typically represented using an underspecification formalism such as
-\mrs\ \cite{copestake:etal:2005} or {\sc clls} \cite{egg:etal:inpress}.  But
-most underspecification formalisms are unable to represent semantic
-information that is as partial as what we get from a {\sc pos} tagger: They
-assume that the complete predicate-argument structure is known.
+But
+most underspecification formalisms (e.g., {\sc mrs}
+\cite{copestake:etal:2005} and {\sc clls} \cite{egg:etal:2001}) are
+unable to represent semantic 
+information that is as partial as what we get from a {\sc pos} tagger
+because they cannot underspecify
+predicate-argument structure.
 \rmrs\ \cite{copestake:2007a} was
 designed to address this problem.  In \rmrs, we can express the
 information we get from the {\sc pos} tagger as follows:
@@ -71,8 +69,8 @@ $l_9:a_9:\sempred{\_dog\_n}(x_7)$
 \end{examples}
 
 This \rmrs\ expresses only that certain predications must be made in
-the semantic representation -- but it doesn't say anything about the
-structure of the semantic representation, about most arguments of the
+the semantic representation -- but it doesn't say anything about
+semantic scope, about most arguments of the
 predicates (note that $\sempred{\_chase\_v}(e)$ doesn't say who chases
 whom), or about the coindexation of variables ($\sempred{\_every\_q}$
 binds the variable $x_1$, whereas $\sempred{\_cat\_n}$ speaks about
@@ -84,8 +82,8 @@ that refer to nodes in the trees in Fig.~\ref{fig:1}.  We can say that
 the two trees \emph{satisfy} this \rmrs\ because it is possible to map
 the labels and anchors into nodes in each tree and variable names like
 $x_1$ and $x_3$ into variable names in the tree in such a way that the
-predication of the node that labels and anchors are mapped to is
-consistent with that given in the {\sc ep}s of the {\sc rmrs}.  For
+predications of the nodes that labels and anchors are mapped to are 
+consistent with those in the {\sc ep}s of the {\sc rmrs}.  For
 instance, the first tree satisfies the \rmrs\ because $l_1$ and $a_1$
 can map to the root of that tree and $x_1$ to $x$, and the root label
 $\sem{\_every\_q\_1}$ is consistent with the {\sc ep} predicate
@@ -101,10 +99,10 @@ There are of course many other trees (and thus, fully specific
 semantic representations such as (\ref{ex:fat-cat-1})) that are
 described equally well by the \rmrs\ (\ref{ex:cat-pos}); this is not
 surprising, given that the semantic information we got from the {\sc
-  pos} tagger is so incomplete.  If we have more information, say
-information about subject and object relations from a chunk parser
-like Cass \cite{abney:1996}, we can represent these in a more detailed
-\rmrs, as follows:
+  pos} tagger is so incomplete.  If we have
+information about subjects and objects from a chunk parser
+like Cass \cite{abney:1996}, we can represent it in a more detailed
+\rmrs:
 
 \begin{examples}
 \item 
@@ -120,8 +118,8 @@ $x_3=x_4$, $x_5=x_7$
 \label{ex:cat-partial-parser}
 \end{examples}
 
-This \rmrs\ uses two new types of atoms.  Atoms of the form $x_3=x_4$
-express that the two variables $x_3$ and $x_4$ must map to the same
+This introduces two new types of atoms.   $x_3=x_4$
+expresses that the two variables $x_3$ and $x_4$ must map to the same
 variable in any fully specific logical form; e.g., both to the
 variable $x$ in Fig.~\ref{fig:1}.  Atoms of the form $\ARG_i(a,z)$ and
 $\ARG_i(a,h)$ express that the $i$-th child (counting from 0) of the
@@ -134,8 +132,8 @@ about lexical subcategorisation is absent. If we also allow atoms of
 the form $\ARG_{\{2,3\}}(a,x)$ to express uncertainty as to whether
 $x$ is the second or third child of the anchor $a$, then \rmrs\ can
 even specify the arguments to a predicate while underspecifying their
-position.  This is useful for specifying arguments to \_give\_v when a
-parser that is unableto process unbounded dependencies is faced with
+position.  This can useful for specifying arguments to \_give\_v when a
+parser doesn't handle unbounded dependencies and is faced with
 {\em Which bone did you give the dog?} vs.\ {\em To which dog did you
   give the bone?}
 
@@ -160,9 +158,7 @@ $x_5=x_6, x_5=x_7$
 \label{ex:cat-erg}
 \end{examples}
 
-Here we have full information about the predicate-argument structure
-and the variable binding; we only underspecify scope and some lexical
-ambiguity.  $\mathsf{RSTR}$ and $\mathsf{BODY}$ are conventional names
+$\mathsf{RSTR}$ and $\mathsf{BODY}$ are conventional names
 for the $\ARG_1$ and $\ARG_2$ of a quantifier predicate symbol.  Atoms
 like $h_2 \qeq l_{42}$ (``qeq'') specify a certain kind of
 ``outscopes'' relationship between the hole and the label, and are
@@ -176,7 +172,7 @@ mapped to the conjunction node just above them.  In other words, the
 role of the anchor in an {\sc ep} is to connect a predicate to its
 arguments, while the role of the label is to connect the {\sc ep} to
 the surrounding formula.  Representing conjunction with label sharing
-stems from \mrs\ and provides compact semantic representations.
+stems from \mrs\ and provides compact representations.
 
 Finally, (\ref{ex:cat-erg}) uses predicate symbols like
 $\sempred{\_dog\_n\_1}$ that are meant to be more specific than the
@@ -185,12 +181,15 @@ This reflects the fact that the deep grammar will perform some lexical
 disambiguation, whereas the chunker and {\sc pos} tagger didn't.  The fact
 that the former symbol should be more specific than the latter can be
 represented using SPEC atoms like $\sempred{\_dog\_n\_1}\sqsubseteq
-\sempred{\_dog\_n}$), which we have omitted in (\ref{ex:cat-erg}) for
-brevity.  Note that even a deep grammar will not fully disambiguate to
+\sempred{\_dog\_n}$.
+Note that even a deep grammar will not fully disambiguate to
 semantic predicate symbols, such as WordNet senses, and so
 $\sempred{\_dog\_n\_1}$ can still be consistent with multiple symbols
 like $\sem{\_dog\_n\_1}$ and $\sem{\_dog\_n\_2}$ in the semantic
-representation.
+representation.  However, unlike the symbols in the \rmrs\ output from a
+{\sc pos} tagger, those from a deep grammar will always be consistent
+with symbols of the {\em same} arity, because a deep grammar
+fully determines lexical subcategorisation.
 
 In summary, \rmrs\ is a formalism for partial semantic
 representations.  It allows us to represent the semantic information
@@ -200,8 +199,8 @@ analyses if deeper parsing is unsuccessful, or which try to match
 deeply parsed queries against shallow parses of large text corpora;
 and in fact, \rmrs\ is gaining popularity as a practical interchange
 format for exactly these purposes \cite{copestake:2003,frank:2004}.
-However, \rmrs\ is still relatively ad-hoc in that its formal syntax
-is not consistent across different papers, and its formal semantics is
+However, \rmrs\ is still relatively ad-hoc in that its
+formal semantics is
 not defined; we don't know, formally, what an \rmrs\ \emph{means} in
 terms of semantic representations like (\ref{ex:fat-cat-1}) and
 (\ref{ex:fat-cat-2}), and this hinders our ability to design efficient

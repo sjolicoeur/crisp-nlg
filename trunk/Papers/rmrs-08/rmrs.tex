@@ -305,14 +305,22 @@ precise below.
   \end{enumerate}
 \end{definition}
 
-Because solved forms are so restricted, it is now possible to `read
-off' at least one model from each solved form.  We don't have the
-space to present any proofs here; they proceed mostly along the same
-lines as the proofs in \newcite{Duchier00dominanceconstraints}.
+Because solved forms are so restricted, we can `read off' at least one
+model from each solved form.
 
 \begin{prop} \label{prop:solved-forms-are-satisfiable}
   Every {\sc rmrs} in solved form is satisfiable.
 \end{prop}
+\begin{proof}[Proof (sketch; see also
+  \cite{Duchier00dominanceconstraints})] 
+  For each {\sc ep}, we choose to label the anchor with the
+  constructor $p$ of sufficiently high arity whose existence we
+  assumed; we determine the edges between an anchor and its children
+  from the uniquely determined $\ARG$ atoms; plugging labels into
+  holes is straightforward because no label is dominated by more than
+  one label; and then we can fill the spaces between the labels and
+  anchors with conjunctions.
+\end{proof}
 
 
 We can now define the solved forms \emph{of} an \rmrs\ $\varphi$;
@@ -351,11 +359,28 @@ We write $D(\varphi)$ for the syntactic dominance
   $\varphi$, there is a solved form $\varphi'$ of $\varphi$ such that
   $(\tau,\alpha,g,\sigma)$ also satisfies $\varphi'$.
 \end{prop}
+\begin{proof}
+  We construct the substitution $s$ from $\alpha$ and $g$.  Then we
+  add all dominance atoms that are satisfied by $\alpha$ and restrict
+  the $\ARG$ atoms to those child indices that are actually used in
+  $\tau$.  The result is in solved form because $\tau$ is a tree; it
+  is a solved form of $\varphi$ by construction.
+\end{proof}
 
 \begin{prop}  \label{prop:finite-solved-forms}
   Every {\sc rmrs} $\varphi$ has only a finite number of solved forms, up to
   renaming of variables.
 \end{prop}
+\begin{proof}
+  Up to renaming of variables, there is only a finite number of
+  substitutions on the node and base variables of $\varphi$.  Let $s$
+  be such a substitution.  This fixes the set of {\sc ep}s of any
+  solved form of $\varphi$ that is based on $s$ uniquely.  There is
+  only a finite set of choices for the subsets $S'$ in condition 2 of
+  Def.~\ref{defn:solved-form-of}, and there is only a finite set of
+  choices of new dominance atoms that satisfy condition 3.  Therefore,
+  the set of solved forms of $\varphi$ is finite.
+\end{proof}
 
 Let's look at an example for all these definitions.  All the \rmrs s
 presented in Section~\ref{sec:motivation} (replacing $\qeq$ by

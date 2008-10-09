@@ -35,9 +35,9 @@ consistent with the claims that $\varphi$ makes.
 At this point, we cannot provide an efficient algorithm for testing
 entailment of \rmrs.  However, we propose the following novel
 syntactic characterisation which may again serve as a starting point
-for research along those lines:
-
-\todo{define ``extension''!!}
+for research along those lines. We call an \rmrs\ $\varphi'$ an
+\emph{extension} of the \rmrs\ $\varphi$ if $\varphi'$ contains all
+the EPs of $\varphi$ and $D(\varphi') \supseteq D(\varphi)$.
 
 \begin{prop}\label{thm:big-one}
   Let $\varphi, \varphi'$ be two {\sc rmrs}s.  Then $\varphi \models
@@ -45,7 +45,20 @@ for research along those lines:
   solved form $S'$ of $\varphi'$ such that $S$ is an extension of
   $S'$. 
 \end{prop}
+\begin{proof}[Proof (sketch)]
+``$\Leftarrow$'' follows from
+Props.~\ref{prop:solved-forms-are-satisfiable} and
+\ref{prop:models-satisfy-solved-forms}.
 
+``$\Rightarrow$'': We construct a solved form for
+$\varphi'$ by choosing a solved form for $\varphi$ and appropriate
+substitutions for mapping the variables of $\varphi$ and $\varphi'$
+onto each other, and removing all atoms using variables that don't
+occur in $\varphi'$ .  The hard part is the proof that the result is a
+solved form of $\varphi'$; this step involves proving that if $\varphi
+\models \varphi'$ with the same variable assignments, then all {\sc
+  ep}s in $\varphi'$ also occur in $\varphi$.
+\end{proof}
 
 %%% Local Variables: 
 %%% mode: latex

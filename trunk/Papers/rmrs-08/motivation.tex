@@ -12,7 +12,7 @@ It exhibits several kinds of ambiguity, including a quantifier scope
 ambiguity and lexical
 ambiguities---e.g., the nouns ``cat'' and ``dog'' have 8 and 7
 WordNet senses respectively.  Simplifying slightly by ignoring tense
-information, two of these readings are shown as logical forms below;
+information, two of its readings are shown as logical forms below;
 these can be represented as trees as shown in Fig.~\ref{fig:1}.
 %  (but see Section~\ref{sec:extensions})
 
@@ -69,12 +69,12 @@ $l_9:a_9:\sempred{\_dog\_n}(x_7)$
 \end{examples}
 
 This \rmrs\ expresses only that certain predications must be made in
-the semantic representation -- but it doesn't say anything about
+the semantic representation---but it doesn't say anything about
 semantic scope, about most arguments of the
 predicates (note that $\sempred{\_chase\_v}(e)$ doesn't say who chases
 whom), or about the coindexation of variables ($\sempred{\_every\_q}$
 binds the variable $x_1$, whereas $\sempred{\_cat\_n}$ speaks about
-$x_3$), and maintains the lexical ambiguities.  Technically, it
+$x_3$), and it maintains the lexical ambiguities.  Technically, it
 consists of six \emph{elementary predications} ({\sc ep}s), one for
 each word lemma in the sentence; each of them is prefixed by a
 \emph{label} and an \emph{anchor}, which are essentially variables
@@ -119,14 +119,14 @@ $x_3=x_4$, $x_5=x_7$
 \end{examples}
 
 This introduces two new types of atoms.   $x_3=x_4$
-expresses that the two variables $x_3$ and $x_4$ must map to the same
+means that $x_3$ and $x_4$ map to the same
 variable in any fully specific logical form; e.g., both to the
-variable $x$ in Fig.~\ref{fig:1}.  Atoms of the form $\ARG_i(a,z)$ and
+variable $x$ in Fig.~\ref{fig:1}.   $\ARG_i(a,z)$ and
 $\ARG_i(a,h)$ express that the $i$-th child (counting from 0) of the
 node to which the anchor $a$ refers is the variable name that $z$
 denotes (or the node that the {\em hole} $h$ denotes).  So unlike
 earlier underspecification formalisms, \rmrs\ can specify the
-predicate of an atom separately from its (scopal and non-scopal)
+predicate of an atom separately from its
 arguments; this is necessary for supporting parsers where information
 about lexical subcategorisation is absent. If we also allow atoms of
 the form $\ARG_{\{2,3\}}(a,x)$ to express uncertainty as to whether
@@ -178,7 +178,7 @@ Finally, (\ref{ex:cat-erg}) uses predicate symbols like
 $\sempred{\_dog\_n\_1}$ that are meant to be more specific than the
 symbols like $\sempred{\_dog\_n}$ which the earlier \rmrs s used.
 This reflects the fact that the deep grammar will perform some lexical
-disambiguation, whereas the chunker and {\sc pos} tagger didn't.  The fact
+disambiguation that the chunker and {\sc pos} tagger didn't.  The fact
 that the former symbol should be more specific than the latter can be
 represented using SPEC atoms like $\sempred{\_dog\_n\_1}\sqsubseteq
 \sempred{\_dog\_n}$.
@@ -186,13 +186,13 @@ Note that even a deep grammar will not fully disambiguate to
 semantic predicate symbols, such as WordNet senses, and so
 $\sempred{\_dog\_n\_1}$ can still be consistent with multiple symbols
 like $\sem{\_dog\_n\_1}$ and $\sem{\_dog\_n\_2}$ in the semantic
-representation.  However, unlike the symbols in the \rmrs\ output from a
-{\sc pos} tagger, those from a deep grammar will always be consistent
-with symbols of the {\em same} arity, because a deep grammar
+representation.  However, unlike the output of a
+{\sc pos} tagger, an \rmrs\ symbol that's output by a deep grammar is
+consistent 
+with symbols that all have the {\em same} arity, because a deep grammar
 fully determines lexical subcategorisation.
 
-In summary, \rmrs\ is a formalism for partial semantic
-representations.  It allows us to represent the semantic information
+In summary, \rmrs\ allows us to represent the (partial) semantic information
 that can be extracted from a wide range of {\sc nlp} tools in a uniform way.
 This is useful for hybrid systems which fall back to shallower
 analyses if deeper parsing is unsuccessful, or which try to match

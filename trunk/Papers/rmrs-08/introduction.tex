@@ -6,9 +6,10 @@ engineering tasks, such as dialogue systems.  Logical forms
 can be obtained from hand-crafted deep grammars
 \cite{butt:etal:1999,copestake:flickinger:2000}, but this
 tends to lack robustness: they fail to cover all
-words and linguistic constructions and by design do not handle
+words and constructions and by design don't handle
 ill-formed phrases. 
-There has thus been a trend recently towards systems for
+
+There has thus been a trend recently towards
 robust wide-coverage semantic construction (e.g., 
 \cite{bos:etal:2004,zettlemoyer:collins:2007}).     
 % COMMENT: this issue about optional arguments is really too cryptic.
@@ -27,7 +28,6 @@ robust wide-coverage semantic construction (e.g.,
 % position (e.g., the second argument of "bet" in "I bet 5 pounds" is
 % 5 pounds, and for "I bet it's raining" it's "it's raining".
 % 
-
 But there are certain semantic phenomena that these robust
 approaches don't capture reliably, including quantifier scope,
 optional arguments, and long-distance dependencies (for instance,
@@ -44,7 +44,7 @@ extraneous to the parser.
 In this paper, we focus on an approach to representing partial
 semantic information that supports this strategy: Robust Minimal
 Recursion Semantics (\rmrs, \cite{copestake:2007a,copestake:2007b}).
-\rmrs\ is designed to support underspecification of lexical ambiguity,
+\rmrs\ is designed to support underspecification of lexical information,
 scope, and predicate-argument structure.  It is an emerging standard
 for representing partial semantic information, and has been applied in
 several implemented systems.  For instance, \newcite{copestake:2003}

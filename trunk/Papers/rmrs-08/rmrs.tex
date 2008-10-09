@@ -50,12 +50,13 @@ of the form $\ep{Y}{X}{P}$ or $\ARG_S(X,i)$; and $X$ is called a
 or $X \qeq Y$.
 \end{definition}
 
-\rmrs\ as presented here combines similarities to earlier
+Def.\ref{defn:rmrs-syntax}
+combines similarities to earlier
 presentations of \rmrs\ \cite{copestake:2003,copestake:2007b} and to
 {\sc clls}/dominance constraints \cite{egg:etal:2001}.  For the most part,
 our syntax generalises that of older versions of \rmrs: We use
 $\ARG_{\{i\}}$ (with a singleton set $S$) instead of $\ARG_i$ and
-$\ARG_\N$ instead of $\ARG_n$, and the{\sc ep} $\ep{l}{a}{P(v)}$
+$\ARG_\N$ instead of $\ARG_n$, and the {\sc ep} $\ep{l}{a}{P(v)}$
 (as in Section~\ref{sec:motivation}) is an abbreviation of
 $\{\ep{l}{a}{P}, \ARG_{\{0\}}(a,v)\}$.  Similarly, we don't assume
 that labels, anchors, and holes are syntactically different objects;
@@ -111,25 +112,26 @@ and further define the following relations between nodes in a finite
 constructor tree:
 
 \begin{definition}\label{defn:dominance}
-  $u \dom v$ iff $u$ is a prefix of $v$, i.e.\ the node $u$ is above
+  $u \dom v$ iff $u$ is a prefix of $v$, i.e.\ the node $u$ is equal
+  to or above
   the node $v$ in the tree.  (This is the dominance relation familiar
   from \newcite{egg:etal:2001}.)
 
   $u \wedgedom v$ iff $u \dom v$, and all symbols on the path from $u$
-  to $v$ (including $u$ but not $v$) are $\wedge$.
+  to $v$ (not including $v$) are $\wedge$.
 \end{definition}
 
 The {\em satisfaction} relation between an \rmrs\ $\varphi$ and a
 finite constructor tree $\tau$ is defined in terms of several
-assignment functions.  First, we assume a node variable assignment
-function $\alpha: \nvar \rightarrow D(\tau)$ that maps the node
-variables in an \rmrs\ to the nodes of $\tau$.  Second, we assume a
-base language assignment function $g:\ovar \rightarrow \Sigma_0$ that
+assignment functions.  First, a node variable assignment
+function $\alpha: \nvar \rightarrow D(\tau)$ maps the node
+variables in an \rmrs\ to the nodes of $\tau$.  Second, a
+base language assignment function $g:\ovar \rightarrow \Sigma_0$ 
 maps the base variables to nullary constructors
-representing variables in the base language. Finally, we assume a
-relation $\sigma \subseteq \pred \times \Sigma_{\geq 1}$ that maps
+representing variables in the base language. Finally, a
+relation $\sigma \subseteq \pred \times \Sigma_{\geq 1}$ maps
 each \rmrs\ predicate symbol to a set of constructors from $\Sigma$.
-As we'll see shortly, this relation allows us to underspecify lexical
+As we'll see shortly, this relation allows an \rmrs\ to underspecify lexical
 ambiguities.
 
 \begin{definition}\label{defn:satisfaction}
@@ -263,7 +265,7 @@ we only \emph{restrict} the set of models further and further towards
 the semantic representation we are trying to reconstruct.
 Furthermore, it has been shown in the literature that a
 dominance-constraint style semantics for underspecified
-representations gives us more room to maneuver when developing
+representations gives us more room to manoeuvre when developing
 efficient solvers than an \mrs-style semantics
 \cite{Althaus_etal:JoA}.
 
@@ -273,8 +275,8 @@ infeasible.  For this reason, we will now transfer the concept of
 solved form is guaranteed to be satisfiable, and thus each solved form
 represents an infinite class of models.  However, each satisfiable
 \rmrs\ has only a finite number of solved forms which partition the
-space of possible models into classes with only `relevant'
-differences as in Fig.~\ref{fig:1}.  A solver can then enumerate the
+space of possible models into classes such that models within a class
+differ only in `irrelevant' details.  A solver can then enumerate the
 solved forms 
 rather than all models.
 
@@ -370,7 +372,7 @@ we can add the information that the
 quantifiers outscope their bound variables to the \rmrs\ without
 changing its models further---i.e., we add the atoms $h_3 \dom
 l_5$ and $h_8 \dom l_5$.  Fig.~\ref{fig:fat-black-cat} is no longer a
-model for the extended \rmrs, whic in turn is no longer in solved
+model for the extended \rmrs, which in turn is no longer in solved
 form because the label $l_5$ is on the right-hand side of two
 dominance edges.  Instead, it has the following two solved forms:
 

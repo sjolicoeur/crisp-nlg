@@ -12,17 +12,16 @@ this section by carrying over the notion of \emph{solved forms} from
 
 \subsection{RMRS Syntax}
 
-We define the syntax of \rmrs\ in the style of {\sc clls}
+We define \rmrs\ syntax in the style of {\sc clls}
 \cite{egg:etal:2001}.  We assume an infinite set of {\em node
   variables} $\nvar=\{X,Y,X_1,\ldots\}$, used as labels, anchors, and
-holes; the distinction between these uses will come from their
-position in the formula.  Furthermore, we assume an infinite set of
+holes; the distinction between these will come from their
+position in the formulas.  We also assume an infinite set of
 \emph{base variables} $\ovar$, consisting of individual variables
-$\{x,x_1,y,\ldots\}$ and event variables $\{e_1,\ldots\}$.  Finally,
-we assume a vocabulary of \emph{predicate symbols}
+$\{x,x_1,y,\ldots\}$ and event variables $\{e_1,\ldots\}$, and a
+vocabulary of \emph{predicate symbols}
 $\pred=\{P,Q,P_1,\ldots\}$.
-
-We can now define formulas of \rmrs\ as follows.
+\rmrs\ formulas are defined as follows.
 
 \begin{definition}\label{defn:rmrs-syntax}
   An \emph{\rmrs} is a finite set $\varphi$ of atoms of one of the
@@ -43,9 +42,9 @@ A &::= &\ep{X}{Y}{P} \\ %& \mbox{labelled elementary predication} \\
 $
 
 A node variable $X$ is called a \emph{label} iff $\varphi$ contains an
-atom of the form $\ep{X}{Y}{P}$ or $Y \qeq X$; $X$ is called an
-\emph{anchor} in the \rmrs\ $\varphi$ iff $\varphi$ contains an atom
-of the form $\ep{Y}{X}{P}$ or $\ARG_S(X,i)$; and $X$ is called a
+atom of the form $\ep{X}{Y}{P}$ or $Y \qeq X$; it is an 
+\emph{anchor} iff $\varphi$ contains an atom
+of the form $\ep{Y}{X}{P}$ or $\ARG_S(X,i)$; and it is a
 \emph{hole} iff $\varphi$ contains an atom of the form $\ARG_S(Y,X)$
 or $X \qeq Y$.
 \end{definition}
@@ -280,7 +279,7 @@ differ only in `irrelevant' details.  A solver can then enumerate the
 solved forms 
 rather than all models.
 
-Intuitively, we expect that an \rmrs\ in solved form is fully
+Intuitively, an \rmrs\ in solved form is fully
 specified with respect to the predicate-argument structure, all
 variable equalities and inequalities and scope ambiguities have been
 resolved, and only lexical sense ambiguities remain.  This is made
@@ -306,8 +305,7 @@ precise below.
 \end{definition}
 
 Because solved forms are so restricted, we can `read off' at least one
-model from each solved form.
-
+model from each solved form:
 \begin{prop} \label{prop:solved-forms-are-satisfiable}
   Every {\sc rmrs} in solved form is satisfiable.
 \end{prop}
@@ -318,8 +316,8 @@ model from each solved form.
   assumed; we determine the edges between an anchor and its children
   from the uniquely determined $\ARG$ atoms; plugging labels into
   holes is straightforward because no label is dominated by more than
-  one label; and then we can fill the spaces between the labels and
-  anchors with conjunctions.
+  one label; and  spaces between the labels and
+  anchors are filled with conjunctions.
 \end{proof}
 
 
@@ -468,18 +466,19 @@ general framework into which all these various fragments fit, and it's
 a matter of future work to explore these fragments further.
 
 Another feature of the existing \rmrs\ literature is that each term of
-an \rmrs\ is equipped with a \emph{sort}.  For instance, individual
-variables are typically assigned the sort $x$, event variables the
-sort $e$, and holes the sort $h$; these are arranged together with
-their subsorts in a sort hierarchy ${\cal S}$.  While we have defined
-\rmrs\ without sorts to simplify the presentation, it is
-straightforward to add them.  For this, one assumes that the signature
-$\Sigma$ is sorted, i.e.\ assigns a sort $s_1\times\ldots
-s_n\rightarrow s$ to each constructor, where $n$ is the constructor's
-arity (possibly zero) and $s,s_1,\ldots,s_n\in {\cal S}$ are atomic
-sorts.  We restrict the models of \rmrs\ to trees that are
-\emph{well-sorted} in the usual sense, i.e.\ those in which we can
-infer a sort for each subtree, and require that the variable
+an \rmrs\ is equipped with a \emph{sort}.  In particular, individual
+variables $x$, event variables $e$ and holes $h$ are arranged together
+with their subsorts (e.g., $e_{\mbox{past}}$) and supersorts (e.g.,
+sort $i$ abstracts over $x$ and $e$) into a
+sort hierarchy ${\cal S}$. 
+For simplicity we defined \rmrs\ without sorts, but it is
+straightforward to add them.  For this, one
+assumes that the signature $\Sigma$ is sorted, i.e.\ assigns a sort
+$s_1\times\ldots s_n\rightarrow s$ to each constructor, where $n$ is
+the constructor's arity (possibly zero) and $s,s_1,\ldots,s_n\in {\cal
+  S}$ are atomic sorts.  We restrict the models of \rmrs\ to trees
+that are \emph{well-sorted} in the usual sense, i.e.\ those in which
+we can infer a sort for each subtree, and require that the variable
 assignment functions likewise respect the sorts.  If we then modify
 Def.~\ref{defn:solved-forms} such that the constructor $p$ of
 sufficiently high arity is also consistent with the sorts of the known

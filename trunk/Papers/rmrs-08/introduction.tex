@@ -4,11 +4,10 @@ Representing semantics as a logical form that supports automated
 inference and model construction is vital for deeper language
 engineering tasks, such as dialogue systems.  Logical forms
 can be obtained from hand-crafted deep grammars
-\cite{butt:etal:1999,copestake:flickinger:2000}, but this
-tends to lack robustness: they fail to cover all
-words and constructions and by design don't handle
-ill-formed phrases. 
-
+\cite{butt:etal:1999,copestake:flickinger:2000} but 
+this lacks robustness: not all
+words and constructions are covered and by design
+ill-formed phrases fail to parse. 
 There has thus been a trend recently towards
 robust wide-coverage semantic construction (e.g., 
 \cite{bos:etal:2004,zettlemoyer:collins:2007}).     
@@ -41,12 +40,12 @@ sufficiently informed---i.e., to compute a partial semantic
 representation and to complete it later, using information
 extraneous to the parser.
 
-In this paper, we focus on an approach to representing partial
-semantic information that supports this strategy: Robust Minimal
-Recursion Semantics (\rmrs, \cite{copestake:2007a,copestake:2007b}).
+In this paper, we focus on an approach to
+semantic representation that supports this strategy: Robust Minimal
+Recursion Semantics (\rmrs, \newcite{copestake:2007a}).
 \rmrs\ is designed to support underspecification of lexical information,
 scope, and predicate-argument structure.  It is an emerging standard
-for representing partial semantic information, and has been applied in
+for representing partial semantics, and has been applied in
 several implemented systems.  For instance, \newcite{copestake:2003}
 and \newcite{frank:2004} use it to specify semantic components to
 shallow parsers ranging in depth from {\sc pos} taggers to chunk
@@ -59,12 +58,12 @@ are special cases of {\sc rmrs}.
 The key contribution we make is to cast {\sc rmrs}, for the first
 time, as a logic with a well-defined model theory.  Previously, no
 such model theory existed, and so \rmrs\ had to be used in a somewhat
-ad-hoc manner which left open what exactly any given \rmrs\
-representation actually \emph{means}.  This has hindered quite
+ad-hoc manner that left open exactly what any given \rmrs\
+representation actually \emph{means}.  This has hindered 
 practical progress, both in terms of understanding the relationship of
 \rmrs\ to other frameworks such as \mrs\ and predicate logic and in
 terms of the development of efficient algorithms.  As one application
-of the formal concepts that arise from our definitions, we use
+of our formalisation, we use
 entailment to propose a
 novel way of characterising consistency of \rmrs\ analyses across
 different parsers.

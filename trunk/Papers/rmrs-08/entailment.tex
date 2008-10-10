@@ -1,13 +1,11 @@
 \section{Future work}
 \label{sec:entailment}
 
-The definitions from Section~\ref{sec:rmrs} serve an important
-theoretical purpose in that they provide a formal underpinning for \rmrs's
-existing use for partial semantic representations in implemented
+The above definitions serve an important theoretical purpose in that
+they provide a formal underpinning for the use of \rmrs\ in practical
 systems.  Next to the peace of mind that comes with the use of a
 well-understood formalism, we hope that the work reported here will
-serve as a starting point for future work on efficient solvers and
-inference mechanisms.
+serve as a starting point for future research.
 
 One direction which we believe may develop from this paper is the
 development of efficient solvers for \rmrs.  As a first step, it would
@@ -24,20 +22,20 @@ which can help us phrase questions of practical grammar engineering in
 well-defined formal terms.  For instance, one crucial issue in
 developing a hybrid system that combines or compares the outputs of
 deep and shallow processors is to determine whether the \rmrs s
-produced by the two systems are compatible.  In the new formal terms
-we can use now, we can characterise compatibility of a more detailed
-\rmrs\ $\varphi$ (perhaps from a deep grammar) and a less detailed
-\rmrs\ $\varphi'$ simply as \emph{entailment} $\varphi \models
-\varphi'$.  If entailment holds, this tells us that all claims that
-$\varphi'$ makes about the semantic content of a sentence is
-consistent with the claims that $\varphi$ makes.
+produced by the two systems are compatible.  In the new formal terms,
+we can characterise compatibility of a more detailed \rmrs\ $\varphi$
+(perhaps from a deep grammar) and a less detailed \rmrs\ $\varphi'$
+simply as \emph{entailment} $\varphi \models \varphi'$.  If entailment
+holds, this tells us that all claims that $\varphi'$ makes about the
+semantic content of a sentence are consistent with the claims that
+$\varphi$ makes.
 
 At this point, we cannot provide an efficient algorithm for testing
 entailment of \rmrs.  However, we propose the following novel
-syntactic characterisation which may again serve as a starting point
-for research along those lines. We call an \rmrs\ $\varphi'$ an
-\emph{extension} of the \rmrs\ $\varphi$ if $\varphi'$ contains all
-the EPs of $\varphi$ and $D(\varphi') \supseteq D(\varphi)$.
+syntactic characterisation as a starting point for research along
+those lines. We call an \rmrs\ $\varphi'$ an \emph{extension} of the
+\rmrs\ $\varphi$ if $\varphi'$ contains all the EPs of $\varphi$ and
+$D(\varphi') \supseteq D(\varphi)$.
 
 \begin{prop}\label{thm:big-one}
   Let $\varphi, \varphi'$ be two {\sc rmrs}s.  Then $\varphi \models

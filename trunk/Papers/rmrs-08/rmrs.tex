@@ -49,14 +49,13 @@ of the form $\ep{Y}{X}{P}$ or $\ARG_S(X,i)$; and it is a
 or $X \qeq Y$.
 \end{definition}
 
-Def.\ref{defn:rmrs-syntax}
-combines similarities to earlier
+Def.~\ref{defn:rmrs-syntax} combines similarities to earlier
 presentations of \rmrs\ \cite{copestake:2003,copestake:2007b} and to
-{\sc clls}/dominance constraints \cite{egg:etal:2001}.  For the most part,
-our syntax generalises that of older versions of \rmrs: We use
+{\sc clls}/dominance constraints \cite{egg:etal:2001}.  For the most
+part, our syntax generalises that of older versions of \rmrs: We use
 $\ARG_{\{i\}}$ (with a singleton set $S$) instead of $\ARG_i$ and
-$\ARG_\N$ instead of $\ARG_n$, and the {\sc ep} $\ep{l}{a}{P(v)}$
-(as in Section~\ref{sec:motivation}) is an abbreviation of
+$\ARG_\N$ instead of $\ARG_n$, and the {\sc ep} $\ep{l}{a}{P(v)}$ (as
+in Section~\ref{sec:motivation}) is an abbreviation of
 $\{\ep{l}{a}{P}, \ARG_{\{0\}}(a,v)\}$.  Similarly, we don't assume
 that labels, anchors, and holes are syntactically different objects;
 they receive their function from their positions in the formula.  One
@@ -84,7 +83,7 @@ consisting of the symbols of predicate logic: a unary constructor
 $\neg$ and binary constructors $\wedge$, $\rightarrow$, etc.; a set of
 3-place quantifier symbols such as $\sem{\_every\_q\_1}$ and
 $\sem{\_some\_q\_1}$ (with the children being the bound variable, the
-restrictor, and the scope); and, constructors of various arities for
+restrictor, and the scope); and constructors of various arities for
 the predicate symbols; e.g., $\sem{\_chase\_v\_1}$ is of arity 3.  Other
 base languages may require a different signature $\Sigma$ and/or a
 different mapping between formulas and trees; the only strict
@@ -316,8 +315,8 @@ model from each solved form:
   assumed; we determine the edges between an anchor and its children
   from the uniquely determined $\ARG$ atoms; plugging labels into
   holes is straightforward because no label is dominated by more than
-  one label; and  spaces between the labels and
-  anchors are filled with conjunctions.
+  one hole; and spaces between the labels and anchors are filled with
+  conjunctions.
 \end{proof}
 
 
@@ -384,20 +383,20 @@ Let's look at an example for all these definitions.  All the \rmrs s
 presented in Section~\ref{sec:motivation} (replacing $\qeq$ by
 $\dom$), are in solved form; this is least obvious for
 (\ref{ex:cat-erg}), but becomes clear once we notice that no label is
-on the right-hand side of two dominance atoms.  However, this is
-because (at least) one model of (\ref{ex:cat-erg}) is
-shown in Fig.~\ref{fig:fat-black-cat}; this model
-is problematic in several ways and in particular contains an unbound
-variable $y$ even though it also contains a quantifier that binds $y$.
-If we restrict the class of models to those in 
-which such variables are bound (as \newcite{copestake:etal:2005} do),
-we can add the information that the 
-quantifiers outscope their bound variables to the \rmrs\ without
-changing its models further---i.e., we add the atoms $h_3 \dom
-l_5$ and $h_8 \dom l_5$.  Fig.~\ref{fig:fat-black-cat} is no longer a
-model for the extended \rmrs, which in turn is no longer in solved
-form because the label $l_5$ is on the right-hand side of two
-dominance edges.  Instead, it has the following two solved forms:
+on the right-hand side of two dominance atoms.  However, the model
+constructed in the proof of
+Prop.~\ref{prop:solved-forms-are-satisfiable} looks a bit like
+Fig.~\ref{fig:fat-black-cat}; both models are problematic in several
+ways and in particular contain an unbound variable $y$ even though
+they also contains a quantifier that binds $y$.  If we restrict the
+class of models to those in which such variables are bound (as
+\newcite{copestake:etal:2005} do), we can enforce that the quantifiers
+outscope their bound variables without changing models of the \rmrs\
+further---i.e., we add the atoms $h_3 \dom l_5$ and $h_8 \dom l_5$.
+Fig.~\ref{fig:fat-black-cat} is no longer a model for the extended
+\rmrs, which in turn is no longer in solved form because the label
+$l_5$ is on the right-hand side of two dominance atoms.  Instead, it
+has the following two solved forms:
 
 \begin{examples}
 \item \label{ex:sf-1}
@@ -460,8 +459,9 @@ if ``dominance'' is replaced with ``qeq''.
 Furthermore, grammar developers such as those in the {\sc delph-in}
 community typically adopt conventions that restrict them to a fragment
 of the language from Def.~\ref{defn:rmrs-syntax} (once qeq is added to
-it), or they restrict attention to only a subset of the models.
-Our formalism provides a
+it), or they restrict attention to only a subset of the models (e.g.,
+ones with correctly bound variables, or ones which don't contain extra
+material like Fig.~\ref{fig:fat-black-cat}).  Our formalism provides a
 general framework into which all these various fragments fit, and it's
 a matter of future work to explore these fragments further.
 

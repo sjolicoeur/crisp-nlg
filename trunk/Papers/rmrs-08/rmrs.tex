@@ -59,7 +59,7 @@ in Section~\ref{sec:motivation}) is an abbreviation of
 $\{\ep{l}{a}{P}, \ARG_{\{0\}}(a,v)\}$.  Similarly, we don't assume
 that labels, anchors, and holes are syntactically different objects;
 they receive their function from their positions in the formula.  One
-major difference is that we use dominance rather than qeq; see
+major difference is that we use dominance ($\dom$) rather than qeq; see
 Section~\ref{sec:extensions} for a discussion.  Compared to dominance
 constraints, the primary difference is that we now have a mechanism
 for representing lexical ambiguity, and we can specify a predicate and
@@ -345,7 +345,7 @@ We write $D(\varphi)$ for the syntactic dominance
     variables $X,Y$ such that $\ep{X}{Y}{P}$ is in $\varphi$, $X' =
     s(X)$, and $Y' = s(Y)$;
   \item for every atom $\ARG_S(X,i)$ in $\varphi$, there is exactly
-    one atom $\ARG_{S'}(X',i')$ in $\varphi$ with $X' = s(X)$, $i' =
+    one atom $\ARG_{S'}(X',i')$ in $\varphi'$ with $X' = s(X)$, $i' =
     s(i)$, and $S' \subseteq S$;
   \item $D(\varphi') \supseteq s(D(\varphi))$.
   \end{enumerate}
@@ -449,9 +449,9 @@ dominance but not qeq to represent that the predicate introduced by
 the verb is outscoped by the quantifier introduced by the determiner
 (see earlier discussion).  However, it is very straightforward to add
 qeq to the syntax of the language and to extend the model theory
-accordingly.  This extension adds a new atom $X=_q Y$ to
+accordingly.  This extension adds a new atom $X \dom Y$ to
 Def.~\ref{defn:rmrs-syntax}, and $\tau,\alpha,g,\sigma$ will satisfy
-$X=_q Y$ iff $\alpha(X)$ and $\alpha(Y)$ are separated by zero or more
+$X \dom Y$ iff $\alpha(X)$ and $\alpha(Y)$ are separated by zero or more
 nodes in $\tau$, each of which has a rightmost child that is a
 quantifier. All the above propositions about solved forms still hold
 if ``dominance'' is replaced with ``qeq''.

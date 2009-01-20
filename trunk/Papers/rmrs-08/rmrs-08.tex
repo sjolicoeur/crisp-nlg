@@ -1,7 +1,9 @@
 \documentclass[a4,11pt]{article}
 
 \usepackage{acl08}
-\usepackage{times,examples, url,amsthm, amssymb, graphicx}
+\usepackage{examples, url,amsthm, amssymb, graphicx}
+\renewcommand*{\rmdefault}{ptm}
+\usepackage{microtype}
 
 \input{QobiTree}
 
@@ -48,15 +50,17 @@
 
 \title{A Logic of Semantic Representations for Shallow Parsing}
 
-% \author{Alexander Koller \\ {\small \url{koller@coli.uni-saarland.de}}
-%   \\ Saarland University
-% \And
-% Alex Lascarides \\ {\small \url{alex@inf.ed.ac.uk}} \\ University of Edinburgh
-% % \And
-% % Ann Copestake \\ {\small \url{Ann.Copestake@cl.cam.ac.uk}} \\ University of
-% % Cambridge
-% }
-\author{}
+ \author{Alexander Koller \\
+   Saarland University \\
+   Saarbr{\"u}cken, Germany \\
+   \texttt{koller@mmci.uni-saarland.de}
+ \And
+  Alex Lascarides \\
+  University of Edinburgh \\
+  Edinburgh, UK \\
+  \texttt{alex@inf.ed.ac.uk} \\ 
+ }
+
 \date{}
 
 \renewcommand{\baselinestretch}{0.99}

@@ -42,11 +42,11 @@ A &::= &\ep{X}{Y}{P} \\ %& \mbox{labelled elementary predication} \\
 $
 
 A node variable $X$ is called a \emph{label} iff $\varphi$ contains an
-atom of the form $\ep{X}{Y}{P}$ or $Y \qeq X$; it is an 
+atom of the form $\ep{X}{Y}{P}$ or $Y \dom X$; it is an 
 \emph{anchor} iff $\varphi$ contains an atom
 of the form $\ep{Y}{X}{P}$ or $\ARG_S(X,i)$; and it is a
 \emph{hole} iff $\varphi$ contains an atom of the form $\ARG_S(Y,X)$
-or $X \qeq Y$.
+or $X \dom Y$.
 \end{definition}
 
 Def.~\ref{defn:rmrs-syntax} combines similarities to earlier

@@ -1,0 +1,265 @@
+\section{Generating referring expressions} \label{sec:gre}
+
+Now we apply description logic to GRE.  The core claim of this paper
+is that it is natural and useful to view the GRE problem as the
+problem of computing a formula of some description logic $\gL$ whose
+extension is a given target set $A$ of individuals.
+
+\medskip
+\noindent
+{\small
+\begin{center}
+\begin{tabular}{ll} \hline
+\multicolumn{2}{l}{
+\textsc{$\gL$-GRE Problem}}\\ \hline
+\ \ Input: & A model $\gM$ and a target set $A \subseteq \Delta$.\\
+\ \ Output: & A formula $\varphi \in \gL$ such that
+$\interp{\varphi} = A$\\ 
+& \hspace*{0.5cm} (if such a formula exists).\\ \hline
+\end{tabular}
+\end{center}}
+\medskip
+
+In the examples above, it is because $\mathsf{flower} \sqcap \exists
+\mathsf{in}. \mathsf{hat}$ denotes exactly $\{f_2\}$ that we can say
+``the flower in the hat'' to refer to $f_2$.  This perspective
+provides a general framework into which many existing GRE approaches
+fit: Traditional attribute selection \cite{Dale1995} corresponds to
+building DL formulas that are conjunctions of atoms; relational REs as
+in \citeA{dale91:_gener_refer_expres_invol_relat} are formulas of
+\el; and so on.  We will further pursue the idea of organizing GRE
+approaches with respect to the variant of DL they use in
+Section~\ref{sec:related}.
+
+For the rest of this paper, we assume that we are generating a
+singular RE, i.e., the target set $A$ will be a singleton.  In this
+case, we will only be able to generate a formula that denotes exactly
+$A = \{a\}$ (i.e., a RE that uniquely refers to $a$) if there is no
+other individual $b$ to which $a$ is similar; otherwise, any formula
+that is satisfied by $a$ is also satisfied by $b$.  Conversely, if we
+know that $a$ is not similar to any other individual, then there is a
+formula that is satisfied by $a$ and not by anything else; this
+formula can serve as a unique singular RE.  In other words, we can
+reduce the $\gL$-GRE problem for a given model to the problem of
+computing the $\gL$-similarity sets of this model.  Notice that this
+use of similarity sets can be seen as a generalization of van
+Deemter's \shortcite{deemter02:_gener_refer_expres} ``satellite sets''
+to relational descriptions.
+
+In the rest of this section, we will present algorithms that compute
+the similarity sets of a given model for \alc\ and \el, together with
+characteristic formulas that denote them.  In the \alc\ case, we adapt
+a standard algorithm from the literature for computing
+\emph{simulation classes}; we will then further adapt this algorithm
+for \el.  In effect, both algorithms compute REs for all individuals
+in some model at the same time -- very efficiently and without any
+danger of infinite regress.
+
+
+\begin{figure}[t]
+  \centering
+	\todo{need to reformat pic}
+  %%%%%%%%%%\includegraphics[width=\columnwidth]{pic-dale-haddock}
+  \caption{(a) The \citeA{dale91:_gener_refer_expres_invol_relat}
+    scenario; (b) the \citeA{Stone1998a} scenario.}
+  \label{fig:dale-haddock}\vspace*{-1ex}
+\end{figure}
+
+
+\subsection{Computing similarity sets}
+
+It can be shown that for \alc, the similarity sets of a finite model
+coincide exactly with the \emph{simulation classes} of this model.
+Simulation classes have been studied extensively in the literature
+(see e.g.,~\citeA{blac:moda01}; \citeA{kurt:expr99}), and there are several
+efficient algorithms for computing \alc-simulation classes
+\cite{hopc:algo71,paig:thre87,dovier04:_effic_algor_for_comput_bisim_equiv}.
+However, these algorithms will only compute the simulation classes
+themselves. Here we extend the \citeA{hopc:algo71} algorithm such
+that it computes, along with each set, also a formula that denotes
+exactly this set.  We can then use these formulas as representations
+of the referring expressions.
+
+The pseudocode for our \alc\ algorithm is shown as
+Algorithm~\ref{algo:bisim-l} (with $\gL=\alc$) and
+Algorithm~\ref{algo:bisim-add-alc}.  Given a model $\gM=(\Delta,
+\interp{\cdot})$, the algorithm computes a set $\RE$ of $\alc$
+formulas such that $\{\interp{\varphi} \mid \varphi \in \RE\}$ is the
+set of \alc-similarity sets of $\gM$.  The algorithm starts with $\RE
+= \{\top\}$ (where $\interp{\top} = \Delta$), and successively refines
+$\RE$ by making its elements denote smaller and smaller sets.  It
+maintains the invariant that at the start and end of every iteration,
+$\{\interp{\varphi} \mid \varphi \in \RE\}$ is always a partition of
+$\Delta$.  The algorithm iterates over all propositional and
+relational symbols in $\prop$ and $\rel$ to construct new formulas
+until either all formulas in $\RE$ denote singletons (i.e., there is
+only one individual that satisfies them), or no progress has been made
+in the previous iteration.  In each iteration, it calls the procedure
+add$_\alc$($\varphi$, $\RE$), which intersects $\varphi$ with any
+formula $\psi \in \RE$ which does not denote a singleton and which is
+not equivalent to $\varphi$ and to $\neg \varphi$. In this case, it
+replaces $\psi$ in $\RE$ by $\psi \sqcap \varphi$ and $\psi \sqcap
+\neg \varphi$.
+
+
+
+The \alc\ algorithm computes the \alc-similarity sets of the model in
+time $O(n^3)$, where $n$ is the number of individuals in the domain.
+However, it will freely introduce negations in the case distinctions,
+which can make the resulting formula hard to realize (see also
+Section~\ref{sec:discussion-realization}).  This is why we also
+present an algorithm for the \el-similarity sets; \el\ corresponds to
+positive relational REs, which are generally much easier to realize.
+
+We obtain the \el\ algorithm by replacing the call to add$_{\alc}$ in
+Algorithm~\ref{algo:bisim-l} by a call to add$_{\el}$, which is
+defined in Algorithm~\ref{algo:bisim-add-el}.  As before, the
+algorithm maintains a set $\RE = \{\varphi_1,\ldots,\varphi_n\}$ of
+formulas (this time of \el) such that $\interp{\varphi_1} \cup \ldots
+\cup \interp{\varphi_n} = \Delta$, and which it refines iteratively.
+However, where the \alc\ algorithm maintains the invariant that
+$\interp{\varphi_1},\ldots,\interp{\varphi_n}$ is a partition of
+$\Delta$, we weaken this invariant to the requirement that there are
+no $m \geq 2$ pairwise different indices $1 \leq i_1,\ldots,i_m \leq
+n$ such that $\interp{\varphi_{i_1}} = \interp{\varphi_{i_2}} \cup
+\ldots \cup \interp{\varphi_{i_m}}$.  We call $\varphi_{i_1}$
+\emph{subsumed} if such a decomposition exists.
+
+Because it maintains a weaker invariant, the set $\RE$ may contain
+more formulas at the same time in the \el\ algorithm than in the \alc\
+algorithm.  Given that $\Delta$ has an exponential number of subsets,
+there is a risk that the \el\ algorithm might have worst-case
+exponential runtime (although we are not aware of such worst-case
+examples).  We leave a more careful complexity analysis for future work.
+
+\begin{algorithm}[t]
+\dontprintsemicolon
+\caption{Computing the $\mathcal{L}$-similarity sets}
+\label{algo:bisim-l}
+\KwIn{A model $\gM = (\Delta, \interp{\cdot})$}
+\KwOut{A set \RE of formulas  such that
+$\{\interp{\varphi} \mid \varphi \in \RE\}$ is the set of
+$\mathcal{L}$-similarity 
+sets of $\gM$.}
+
+$\RE \leftarrow \{\top\}$
+
+\For{$p \in \prop$}{
+      add$_\mathcal{L}(p,\RE)$
+   }
+
+\While{exists some $\varphi \in \RE, |\interp{\varphi}|^\gM>1$}{
+   \For{$\varphi \in \RE, R \in \rel$}{
+         add$_\mathcal{L}(\exists R.\varphi,\RE)$
+   }
+   \If{made no changes to \RE}{
+      exit
+      }
+}
+\end{algorithm}
+
+
+We presented both algorithms as first refining $\RE$ according to
+propositional symbols, and then by relational expressions of
+increasing depth. But actually, propositional symbols can be encoded
+using new relational symbols (e.g., we could represent that $f_1$ is a
+flower in Fig.~\ref{fig:dale-haddock} as a relation labeled
+$\mathsf{flower}$ from $f_1$ to an additional dummy element $d$).  In
+this way, we don't need to distinguish between propositions and
+relations, and any arbitrary preference ordering of properties can be
+used.
+
+
+\subsection{Some examples}\label{sec:examples}
+
+Let's try our algorithms on some examples.  We first run the \el\
+algorithm on the model shown in Fig.~\ref{fig:dale-haddock}a, which is
+taken from \citeA{dale91:_gener_refer_expres_invol_relat}.  The
+algorithm starts with $\RE = \{\top\}$.  In the first loop, it adds
+the formulas $\mathsf{floor}$, $\mathsf{bowl}$, $\mathsf{cup}$, and
+$\mathsf{table}$, and then removes $\top$ because it is now subsumed.
+Not all of these formulas denote singletons; for instance,
+$\interp{\mathsf{cup}}$ contains two individuals.  So we iterate over
+the relations to refine our formulas.  After the first iteration over
+the relations, we have $\RE = \{ \mathsf{floor}, \mathsf{bowl} \sqcap
+\exists \mathsf{on}.\mathsf{floor}, \mathsf{bowl} \sqcap \exists
+\mathsf{on}.\mathsf{table}, \mathsf{cup}, \mathsf{table} \}$. Notice
+that $\mathsf{bowl}$ has become subsumed, but we haven't distinguished
+the cups and tables further.
+
+
+
+\begin{algorithm}[t]
+\caption{add$_\alc(\varphi,\RE)$}
+\label{algo:bisim-add-alc}
+\For{$\psi \in \RE$ with $|\interp{\psi}| > 1$}{
+   \If{$\interp{\psi \sqcap \varphi} \not = \emptyset$ and
+       $\interp{\psi \sqcap \neg \varphi} \not = \emptyset$}{
+         add $\psi \sqcap \varphi$ and
+               $\psi \sqcap \neg \varphi$ to \RE \;
+         remove $\psi$ from \RE \;
+      }
+   }
+\end{algorithm}
+%
+\begin{algorithm}[t]
+\dontprintsemicolon
+\caption{add$_\el$($\varphi$, $\RE$)}
+\label{algo:bisim-add-el}
+\For{$\psi \in \RE$ with $|\interp{\psi}| > 1$}{
+  \If{$\psi \sqcap \varphi$ is not subsumed in $\RE$ {\bf and}
+    $\interp{\psi \sqcap \varphi} \neq \emptyset$ {\bf and}
+    $\interp{\psi \sqcap \varphi} \neq \interp{\psi}$}{
+    add $\psi \sqcap \varphi$ to $\RE$ \;
+    remove subsumed formulas from $\RE$\;
+  }
+}
+\end{algorithm}
+
+Now we can use the split between the bowls to distinguish the cups in
+the second iteration.  The result of this is $\RE = \{ \mathsf{floor},
+\mathsf{bowl} \sqcap \exists \mathsf{on}.\mathsf{floor}, \mathsf{bowl}
+\sqcap \exists \mathsf{on}.\mathsf{table}, \mathsf{cup} \sqcap \exists
+\mathsf{in}. (\mathsf{bowl} \sqcap \exists
+\mathsf{on}.\mathsf{floor}), \mathsf{cup} \sqcap \exists
+\mathsf{in}. (\mathsf{bowl} \sqcap \exists
+\mathsf{on}.\mathsf{table}), \mathsf{table} \}$.  At this point, all
+formulas except $\mathsf{table}$ denote singletons, and further
+iterations don't allow us to refine $\mathsf{table}$; so the algorithm
+terminates.  Each formula with a singleton extension $\{a\}$ is a
+unique description of $a$; for instance, $\mathsf{cup} \sqcap \exists
+\mathsf{in}. (\mathsf{bowl} \sqcap \exists
+\mathsf{on}.\mathsf{table})$ is only satisfied by $c_2$, so we may
+refer to $c_2$ as ``the cup in the bowl on the table''.  Notice that
+the algorithm didn't focus on any particular individual; it
+simultaneously generated REs for all individuals except for the two
+tables (which are similar to each other).
+
+
+The \el\ algorithm has a harder time with the example in
+Fig.~\ref{fig:dale-haddock}b \cite{Stone1998a}.  While it will
+correctly identify $r_1$ as ``the rabbit in the hat'' and $f_2$ as
+``the flower in the hat'', it will not be able to compute a RE for $f_1$
+because $f_1$ is \el-similar to $f_2$.  Indeed, the algorithm
+terminates with $\RE$ containing both $\mathsf{flower}$ and
+$\mathsf{flower} \sqcap \exists \mathsf{in}.\mathsf{hat}$.  This is a
+typical pattern for asymmetrical cases of similarity in \el: If there
+are two formulas $\varphi_1$ and $\varphi_2$ in the output set with
+$\interp{\varphi_1} \subseteq \interp{\varphi_2}$, then there is
+generally some individual $b \in \interp{\varphi_2} -
+\interp{\varphi_1}$ such that all individuals in $\interp{\varphi_1}$
+are similar to $b$, but not vice versa.  By contrast, the \alc\
+algorithm can exploit the greater expressivity of \alc\ to split
+$\mathsf{flower}$ into the two new formulas $\mathsf{flower} \sqcap
+\exists \mathsf{in}.\mathsf{hat}$ and $\mathsf{flower} \sqcap \neg
+\exists \mathsf{in}.\mathsf{hat}$, generating a unique RE for $f_1$ as
+well.
+
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "dl-gre-08"
+%%% End: 

@@ -1,0 +1,110 @@
+\documentclass[11pt]{article}
+
+\usepackage{jair, theapa}
+
+\usepackage{times}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{bm}
+\usepackage{multirow}
+
+\input epsf %% at top of file
+
+
+\usepackage[algoruled, linesnumbered,noend]{algorithm2e}
+
+\newcommand{\gM}{\ensuremath{\mathcal{M}}}
+\newcommand{\gL}{\ensuremath{\mathcal{L}}}
+
+\newcommand{\C}{\ensuremath{\mathcal{C}}\xspace}
+\newcommand{\M}{\ensuremath{\mathcal{M}}\xspace}
+\newcommand{\RE}{\ensuremath{\mathit{RE}}\xspace}
+
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+
+\newcommand{\todo}[1]{\textbf{(#1)}}
+\newcommand{\ignore}[1]{}
+
+\newcommand{\el}{\ensuremath{\mathcal{EL}}\xspace}
+\newcommand{\alc}{\ensuremath{\mathcal{ALC}}\xspace}
+\newcommand{\form}{\mathsf{form}\xspace}
+\newcommand{\prop}{\ensuremath{\mathsf{prop}}\xspace}
+\newcommand{\simm}{\textsf{sim}}
+\newcommand{\rel}{\ensuremath{\mathsf{rel}}\xspace}
+\newcommand{\propm}{\ensuremath{\mathsf{prop}^\gM\xspace}}
+
+\newcommand{\interp}[1]{|\!|#1|\!|}
+
+
+\jairheading{0}{0000}{0-00}{0/0}{0/0}
+\ShortHeadings{Referring Expressions as Formulas of Description Logic}
+{Areces, Koller \& Striegnitz}
+\firstpageno{1}
+
+\begin{document}
+
+\title{Referring Expressions as Formulas of Description Logic}
+
+\author{\name Carlos Areces \email areces@loria.fr \\
+       \addr INRIA Nancy Grand Est\\
+       Nancy, France
+       \AND
+       \name Alexander Koller \email koller@coli.uni-sb.de \\
+       \addr Saarland University\\
+       Saarbr\"{u}cken, Germany
+       \AND
+       \name Kristina Striegnitz \email striegnk@union.edu \\
+       \addr Union College\\
+       Schenectady, NY, USA}
+
+% For research notes, remove the comment character in the line below.
+% \researchnote
+
+\maketitle
+
+
+\begin{abstract}
+In this paper, we propose to reinterpret the problem of generating
+referring expressions (GRE) as the problem of computing a formula in a
+description logic that is only satisfied by the referent. This view
+offers a new unifying perspective under which existing GRE algorithms
+can be compared. We also show that by applying existing algorithms for
+computing simulation classes in description logic, we can obtain
+extremely efficient algorithms for relational referring expressions
+without any danger of running into infinite regress.
+\end{abstract}
+
+
+
+\input introduction
+\input bisim
+\input gre
+\input discussion
+\input related
+\input conclusion
+
+
+
+\acks{We are grateful to Hector Geffner (who
+independently suggested to view GRE as computation of DL formulas),
+Kees van Deemter, and Emiel Krahmer for interesting discussions.  We
+also thank Jette Viethen and Robert Dale for making their corpus
+available, and the reviewers for their comments.
+}
+
+
+\appendix
+\section*{In case we have an appendix.}
+
+[section ommitted]
+
+
+
+\vskip 0.2in
+\bibliography{bibliography}
+\bibliographystyle{theapa}
+
+\end{document}
+
+

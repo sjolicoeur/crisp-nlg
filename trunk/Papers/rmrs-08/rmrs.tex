@@ -124,7 +124,7 @@ variables in an \rmrs\ to the nodes of $\tau$.  Second, a
 base language assignment function $g:\ovar \rightarrow \Sigma_0$ 
 maps the base variables to nullary constructors
 representing variables in the base language. Finally, a
-relation $\sigma \subseteq \pred \times \Sigma_{\geq 1}$ maps
+function $\sigma$ from $\pred$ to the power set of $\Sigma_{\geq 1}$ maps
 each \rmrs\ predicate symbol to a set of constructors from $\Sigma$.
 As we'll see shortly, this relation allows an \rmrs\ to underspecify lexical
 ambiguities.
@@ -436,13 +436,14 @@ for instance, the first model in Fig.~\ref{fig:1} is a model of
 So far we have based the syntax and semantics of \rmrs\ on the
 dominance relation from \newcite{egg:etal:2001} rather than the qeq
 relation from \newcite{copestake:etal:2005}.  This is partly because
-dominance is a weaker relation than qeq: If a dependency parser links
+dominance is the weaker relation: If a dependency parser links
 a determiner to a noun and this noun to a verb, then we can use
 dominance but not qeq to represent that the predicate introduced by
 the verb is outscoped by the quantifier introduced by the determiner
-(see earlier discussion).  However, it is very straightforward to add
-qeq to the syntax of the language and to extend the model theory
-accordingly.  This extension adds a new atom $X \qeq Y$ to
+(see earlier discussion).  However, it is very straightforward to
+extend the syntax and semantics
+of the language to include the qeq relation.
+This extension adds a new atom $X \qeq Y$ to
 Def.~\ref{defn:rmrs-syntax}, and $\tau,\alpha,g,\sigma$ will satisfy
 $X \qeq Y$ iff $\alpha(X) \dom \alpha(Y)$, each node on the path is a
 quantifier, and each step in the path goes to the rightmost child. All

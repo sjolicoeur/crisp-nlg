@@ -84,19 +84,19 @@ $\neg$ and binary constructors $\wedge$, $\rightarrow$, etc.; a set of
 3-place quantifier symbols such as $\sem{\_every\_q\_1}$ and
 $\sem{\_some\_q\_1}$ (with the children being the bound variable, the
 restrictor, and the scope); and constructors of various arities for
-the predicate symbols; e.g., $\sem{\_chase\_v\_1}$ is of arity 3.  Other
-base languages may require a different signature $\Sigma$ and/or a
-different mapping between formulas and trees; the only strict
+the predicate symbols; e.g., $\sem{\_chase\_v\_1}$ is of arity 3.
+Other base languages may require a different signature $\Sigma$ and/or
+a different mapping between formulas and trees; the only strict
 requirement we make is that the signature contains a binary
 constructor $\wedge$ to represent conjunction.  We write $\Sigma_i$
-for the set of all constructors in $\Sigma$ with arity $i$.  We
-will follow the typographical convention that non-logical symbols in
-$\Sigma$ are written in $\mathsf{sans{-}serif}$, as opposed to the
-\rmrs\ predicate symbols like $\sempred{\_cat\_n}$ and
-$\sempred{\_cat\_n\_1}$.
+and $\Sigma_{\geq i}$ for the set of all constructors in $\Sigma$ with
+arity $i$ and at least $i$, respectively.  We will follow the
+typographical convention that non-logical symbols in $\Sigma$ are
+written in \textsf{sans-serif}, as opposed to the \rmrs\ predicate
+symbols like $\sempred{\_cat\_n}$ and $\sempred{\_cat\_n\_1}$.
 
 The models of {\sc rmrs} are then defined to be finite constructor
-trees:
+trees (see also \cite{egg:etal:2001}):
 \begin{definition}\label{defn:models}
   A {\em finite constructor tree} $\tau$ is a function $\tau:D
   \rightarrow \Sigma$ such that $D$ is a \emph{tree domain} (i.e., a
@@ -110,11 +110,8 @@ and further define the following relations between nodes in a finite
 constructor tree:
 
 \begin{definition}\label{defn:dominance}
-  $u \dom v$ iff $u$ is a prefix of $v$, i.e.\ the node $u$ is equal
-  to or above
-  the node $v$ in the tree.  (This is the dominance relation familiar
-  from \newcite{egg:etal:2001}.)
-
+  $u \dom v$ \emph{(dominance)} iff $u$ is a prefix of $v$, i.e.\ the node
+  $u$ is equal to or above the node $v$ in the tree.
   $u \wedgedom v$ iff $u \dom v$, and all symbols on the path from $u$
   to $v$ (not including $v$) are $\wedge$.
 \end{definition}
@@ -253,15 +250,13 @@ enforce that the tree shouldn't contain those subformulas either.
 \end{figure}
 
 In the context of robust semantic processing, this is a desirable
-feature of \rmrs, because it means that when we enrich an \rmrs\
-obtained from a shallow processor with more semantic
-information---such as the relation symbols introduced by
-syntactic 
-constructions such as appositives, noun-noun compounds and free
-adjuncts---we don't change the set of models;
-we only \emph{restrict} the set of models further and further towards
-the semantic representation we are trying to reconstruct.
-Furthermore, it has been shown in the literature that a
+feature, because it means that when we enrich an \rmrs\ obtained from
+a shallow processor with more semantic information---such as the
+relation symbols introduced by syntactic constructions such as
+appositives, noun-noun compounds and free adjuncts---we don't change
+the set of models; we only \emph{restrict} the set of models further
+and further towards the semantic representation we are trying to
+reconstruct.  Furthermore, it has been shown in the literature that a
 dominance-constraint style semantics for underspecified
 representations gives us more room to manoeuvre when developing
 efficient solvers than an \mrs-style semantics
@@ -324,8 +319,8 @@ We can now define the solved forms \emph{of} an \rmrs\ $\varphi$;
 these finitely many \rmrs s in solved form partition the space of
 models of $\varphi$ into classes of models with trivial differences.
 
-\begin{definition}  \label{defn:solved-form-of}
-  The \emph{syntactic dominance relation} in an {\sc  rmrs} $\varphi$ is the
+\begin{definition} \label{defn:solved-form-of} The \emph{syntactic
+    dominance relation} $D(\varphi)$ in an {\sc rmrs} $\varphi$ is the
   reflexive, transitive closure of the binary relation $$
 \begin{array}{r c l}
 \{(X,Y) & \mid &  \mbox{$\varphi$ contains $X \dom Y$ or}\\
@@ -333,8 +328,7 @@ models of $\varphi$ into classes of models with trivial differences.
     $S$}\}
 \end{array}
 $$  
-We write $D(\varphi)$ for the syntactic dominance
-  relation of $\varphi$.
+
 
   An RMRS $\varphi'$ is \emph{a solved form of} the RMRS $\varphi$
   iff $\varphi'$ is in solved form and there is a substitution $s$
@@ -380,12 +374,11 @@ We write $D(\varphi)$ for the syntactic dominance
 \end{proof}
 
 Let's look at an example for all these definitions.  All the \rmrs s
-presented in Section~\ref{sec:motivation} (replacing $\qeq$ by
-$\dom$), are in solved form; this is least obvious for
-(\ref{ex:cat-erg}), but becomes clear once we notice that no label is
-on the right-hand side of two dominance atoms.  However, the model
-constructed in the proof of
-Prop.~\ref{prop:solved-forms-are-satisfiable} looks a bit like
+presented in Section~\ref{sec:motivation} (replacing $\qeq$ by $\dom$)
+are in solved form; this is least obvious for (\ref{ex:cat-erg}), but
+becomes clear once we notice that no label is on the right-hand side
+of two dominance atoms.  However, the model constructed in the proof
+of Prop.~\ref{prop:solved-forms-are-satisfiable} looks a bit like
 Fig.~\ref{fig:fat-black-cat}; both models are problematic in several
 ways and in particular contain an unbound variable $y$ even though
 they also contains a quantifier that binds $y$.  If we restrict the
@@ -449,12 +442,12 @@ dominance but not qeq to represent that the predicate introduced by
 the verb is outscoped by the quantifier introduced by the determiner
 (see earlier discussion).  However, it is very straightforward to add
 qeq to the syntax of the language and to extend the model theory
-accordingly.  This extension adds a new atom $X \dom Y$ to
+accordingly.  This extension adds a new atom $X \qeq Y$ to
 Def.~\ref{defn:rmrs-syntax}, and $\tau,\alpha,g,\sigma$ will satisfy
-$X \dom Y$ iff $\alpha(X)$ and $\alpha(Y)$ are separated by zero or more
-nodes in $\tau$, each of which has a rightmost child that is a
-quantifier. All the above propositions about solved forms still hold
-if ``dominance'' is replaced with ``qeq''.
+$X \qeq Y$ iff $\alpha(X) \dom \alpha(Y)$, each node on the path is a
+quantifier, and each step in the path goes to the rightmost child. All
+the above propositions about solved forms still hold if ``dominance''
+is replaced with ``qeq''.
 
 Furthermore, grammar developers such as those in the {\sc delph-in}
 community typically adopt conventions that restrict them to a fragment

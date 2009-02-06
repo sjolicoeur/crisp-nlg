@@ -28,16 +28,6 @@ these can be represented as trees as shown in Fig.~\ref{fig:1}.
 \label{ex:fat-cat-2}
 \end{examples}
 
-
-\begin{figure}[t]
-\centering
-\includegraphics[scale=0.8]{pic-cat-chased-dog} \\
-\includegraphics[scale=0.8]{pic-cat-chased-dog-2}
-\caption{Semantic representations (\ref{ex:fat-cat-1}) and
-  (\ref{ex:fat-cat-2}) as trees. \label{fig:1}}
-\end{figure}
-
-
 Now imagine trying to extract semantic information from the output of
 a part-of-speech ({\sc pos}) tagger by using the word lemmas as
 lexical predicate symbols.  Such a semantic representation is highly
@@ -85,6 +75,16 @@ can map to the root of the first tree in Fig.~\ref{fig:1}, $x_1$ to
 $x$, and the root label 
 $\sem{\_every\_q\_1}$ is consistent with the {\sc ep} predicate
 $\sempred{\_every\_q}$.
+
+\begin{figure}[t]
+\centering
+\includegraphics[scale=0.8]{pic-cat-chased-dog} \\
+\includegraphics[scale=0.8]{pic-cat-chased-dog-2}
+\caption{Semantic representations (\ref{ex:fat-cat-1}) and
+  (\ref{ex:fat-cat-2}) as trees. \label{fig:1}}
+\end{figure}
+
+
 
 % The lack of semantic dependencies rendered by a {\sc pos} tagger means
 % we have unique arguments to each predicate symbol (e.g., see $x_1$ and

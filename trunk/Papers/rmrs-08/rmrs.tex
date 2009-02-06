@@ -118,16 +118,15 @@ constructor tree:
 
 The {\em satisfaction} relation between an \rmrs\ $\varphi$ and a
 finite constructor tree $\tau$ is defined in terms of several
-assignment functions.  First, a node variable assignment
-function $\alpha: \nvar \rightarrow D(\tau)$ maps the node
-variables in an \rmrs\ to the nodes of $\tau$.  Second, a
-base language assignment function $g:\ovar \rightarrow \Sigma_0$ 
-maps the base variables to nullary constructors
-representing variables in the base language. Finally, a
-function $\sigma$ from $\pred$ to the power set of $\Sigma_{\geq 1}$ maps
-each \rmrs\ predicate symbol to a set of constructors from $\Sigma$.
-As we'll see shortly, this relation allows an \rmrs\ to underspecify lexical
-ambiguities.
+assignment functions.  First, a node variable assignment function
+$\alpha: \nvar \rightarrow D(\tau)$ maps the node variables in an
+\rmrs\ to the nodes of $\tau$.  Second, a base language assignment
+function $g:\ovar \rightarrow \Sigma_0$ maps the base variables to
+nullary constructors representing variables in the base
+language. Finally, a function $\sigma$ from $\pred$ to the power set
+of $\Sigma_{\geq 1}$ maps each \rmrs\ predicate symbol to a set of
+constructors from $\Sigma$.  As we'll see shortly, this function
+allows an \rmrs\ to underspecify lexical ambiguities.
 
 \begin{definition}\label{defn:satisfaction}
 Satisfaction of atoms is defined as follows:

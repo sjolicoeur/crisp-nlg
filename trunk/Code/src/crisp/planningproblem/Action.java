@@ -2,13 +2,15 @@
  * @(#)Action.java created 30.09.2006
  *
  * Copyright (c) 2006 Alexander Koller
- *
+ * 
+ * modified by Daniel Bauer, 06.02.2009
  */
 
 package crisp.planningproblem;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -24,20 +26,24 @@ public class Action {
     private Goal precondition;
     private Effect effect;
 
+    private HashMap<String,String> constants; // Store constants used by this action.
+    private ArrayList<Predicate> predicates; // Store predicates used by this action
 
-
-
-    public Action(Predicate label, Goal precondition, Effect effect) {
+    public Action(Predicate label, Goal precondition, Effect effect, HashMap<String, String> constants, ArrayList<Predicate> predicates) {
         this.effect = effect;
         this.label = label;
         this.precondition = precondition;
+        this.constants = constants;
+    }
+    
+    
+    public Action(Predicate label, Goal precondition, Effect effect) {
+        this(label, precondition, effect, null, null); 
     }
 
     private Action() {
 
     }
-
-
 
 
     public Effect getEffect() {
@@ -52,7 +58,13 @@ public class Action {
         return precondition;
     }
 
+    public HashMap<String, String> getDomainConstants(){
+        return constants;
+    }
 
+    public ArrayList<Predicate> getDomainPredicates(){
+        return predicates;
+    }
 
     public List<Literal> getDynamicGoalList(Problem problem) {
     	Domain dom = problem.getDomain();

@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import javax.xml.xpath.XPathExpressionException;
 
 import crisp.planningproblem.Action;
+import crisp.planningproblem.DurativeAction;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
@@ -42,9 +43,10 @@ public class PddlOutputCodec extends OutputCodec {
 
         pw.println("   (:goal " + toPddlString(problem.getGoal()) + ")");
         pw.println(")");
+        pw.flush(); //otherwise output is incomplete 
     }
 
-    private void writeDomain(Domain domain, PrintWriter dw) {
+    public void writeDomain(Domain domain, PrintWriter dw) {
         dw.println("(define (domain " + domain.getName() + ")");
         dw.println("        (:requirements " + StringTools.join(domain.getRequirements(), " ") + ")");
 
@@ -78,7 +80,7 @@ public class PddlOutputCodec extends OutputCodec {
         }
 
         dw.println(")");
-
+        dw.flush(); //otherwise output is incomplete 
     }
 
 
@@ -86,10 +88,18 @@ public class PddlOutputCodec extends OutputCodec {
         StringBuffer buf = new StringBuffer();
         String prefix = "      ";
 
-        buf.append("   (:action " + action.getPredicate().getLabel() + "\n");
+        boolean isDurativeAction = (action instanceof DurativeAction);
+        
+        if (isDurativeAction)
+            buf.append("   (:durative-action " + action.getPredicate().getLabel() + "\n");
+        else
+            buf.append("   (:action " + action.getPredicate().getLabel() + "\n");
         buf.append(prefix + ":parameters (" + action.getPredicate().getVariables().toLispString() + ")\n");
         buf.append(prefix + ":precondition " + toPddlString(action.getPrecondition()) + "\n");
         buf.append(prefix + ":effect " + toPddlString(action.getEffect()) + "\n");
+        if (isDurativeAction)
+            buf.append(prefix + ":duration " + ((DurativeAction)action).getDuration() + "\n");
+            
         buf.append("   )\n");
 
         return buf.toString();

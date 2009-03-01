@@ -27,13 +27,14 @@ public class Action {
     private Effect effect;
 
     private HashMap<String,String> constants; // Store constants used by this action.
-    private ArrayList<Predicate> predicates; // Store predicates used by this action
+    private ArrayList<Predicate> predicates; // Store (semantic) predicates used by this action
 
     public Action(Predicate label, Goal precondition, Effect effect, HashMap<String, String> constants, ArrayList<Predicate> predicates) {
         this.effect = effect;
         this.label = label;
         this.precondition = precondition;
         this.constants = constants;
+        this.predicates = predicates; 
     }
     
     

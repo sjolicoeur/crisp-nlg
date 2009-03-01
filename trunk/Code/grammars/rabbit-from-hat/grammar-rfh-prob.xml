@@ -45,7 +45,7 @@
             <leaf cat="" type="terminal" index="v" sem="self"/>
           </node>
           <node cat="PP" sem="ppobj">
-            <leaf cat="P" type="lex" sem="ppobj"/>
+            <leaf cat="PRP" type="lex" sem="ppobj"/>
             <leaf cat="NP" type="substitution" index="2" sem="ppobj"/>
           </node>
         </node>
@@ -64,7 +64,7 @@
             <leaf cat="" type="terminal" index="v" sem="self"/>
           </node>
           <node cat="PP" sem="ppobj">
-            <leaf cat="P" type="lex" sem="ppobj"/>
+            <leaf cat="PRP" type="lex" sem="ppobj"/>
             <leaf cat="NP" type="substitution" index="2" sem="ppobj"/>
           </node>
         </node>
@@ -144,7 +144,7 @@
 
   <entry word='take' pos='V'>
     <tree refid="i.transImperative">
-      <lex pos="P" word="from" />
+      <lex pos="PRP" word="from" />
       <semcontent>takefrom(self,obj,ppobj)</semcontent>
       <semreq>in(obj,ppobj)</semreq>
       <prob type="init"> 0.5 </prob>

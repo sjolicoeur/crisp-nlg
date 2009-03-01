@@ -129,7 +129,7 @@ public class ProblemParser extends DefaultHandler {  // Default Handler already 
             
             // This was in computeInitialState(Domain domain, Problem problem)
             problem.addToInitialState(TermParser.parse("subst(root," + mainCat+ ", init)"));
-            problem.addToInitialState(TermParser.parse("referent(root, " + 
+            problem.addToInitialState(TermParser.parse("referent(init, " + 
                                     atts.getValue("index") + ")"));
             // TODO: maybe there is a better place for this
             problem.addToInitialState(TermParser.parse("step(step0)")); 

@@ -68,11 +68,11 @@ public class CRISPtoTempPDDL {
                 for (String key : constants.keySet())
                     domain.addConstant(key,constants.get(key));
 
+            // Add semantic predicates
             ArrayList<Predicate> predicates = a.getDomainPredicates();
             if (predicates!=null)
-                for (Predicate pred : predicates)
-                    domain.addPredicate(pred);
-             
+                for (Predicate pred : predicates) 
+                   domain.addPredicate(pred);
         }
 		end = System.currentTimeMillis();
         long domainCreationTime = end-start;

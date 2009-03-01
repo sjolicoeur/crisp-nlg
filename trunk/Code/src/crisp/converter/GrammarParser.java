@@ -132,7 +132,6 @@ public class GrammarParser extends DefaultHandler {
             newNode.setSem(atts.getValue("sem"));
             newNode.setType(atts.getValue("type"));
             newNode.setConstraint(atts.getValue("constraint"));
-            System.out.println("parse:"+newNode.getConstraint());       
             elementStack.push(newNode);
         } else 
         

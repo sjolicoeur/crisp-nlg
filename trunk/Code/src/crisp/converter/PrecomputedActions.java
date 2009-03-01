@@ -300,7 +300,7 @@ public class PrecomputedActions {
             
             /* Generate action */
             
-            DurativeAction newAction = new DurativeAction(pred, new crisp.planningproblem.goal.Conjunction(preconds), new crisp.planningproblem.effect.Conjunction(effects), constants, predicates,probabilityToDuration(prob));
+            DurativeAction newAction = new DurativeAction(pred, new crisp.planningproblem.goal.Conjunction(preconds), new crisp.planningproblem.effect.Conjunction(effects), constants, predicates, probabilityToDuration(prob));
             
             if (term != null) {
                 String key = term.getLabel()+"-"+term.getSubterms().size(); // Use label and arity as keys
@@ -333,7 +333,6 @@ public class PrecomputedActions {
             String treeRef = entry.getTreeRef();
             TAGTree tree = trees.get(entry.getTreeRef());
             
-            System.out.println(entry.getWord());
             
             // Create action to use this tree as initial tree, if there is any 
             // chance to do so.
@@ -364,7 +363,6 @@ public class PrecomputedActions {
                 HashMap<String, Float> adjLabelProbs = adjProbs.get(targetTree);
                 // for each possible node in the target tree           
                 for (String label : adjLabelProbs.keySet()){ 
-                    System.out.println("adjoin");
                     float adjProb = adjLabelProbs.get(label);
                     createActions(entry, targetTree, label, ACTION_TYPE_ADJOIN, adjProb);
                 }
@@ -404,11 +402,11 @@ public class PrecomputedActions {
     private static Predicate makeSemanticPredicate(Term term) {
         Predicate ret = new Predicate();
         Compound t = (Compound) term;
-        
+       
         ret.setLabel(t.getLabel());
         for( int i = 1; i <= t.getSubterms().size(); i++ ) 
             ret.addVariable("?y" + i, "individual");
-        
+       
         return ret;
     }
     

@@ -62,22 +62,22 @@ public class TAGLexEntry{
         initProb = prob;
     }
     
-    public void addSubstProb(String targetTreeID, String targetNode, float prob){
+    public void addSubstProb(String targetTreeID, String targetNode, String targetCat, float prob){                
         if (substProb.containsKey(targetTreeID)) 
-            substProb.get(targetTreeID).put(targetNode,new Float(prob));
+            substProb.get(targetTreeID).put(targetCat+"-"+targetNode,new Float(prob));
         else {
             HashMap<String, Float> nodesToProbs = new HashMap<String, Float>();
-            nodesToProbs.put(targetNode, new Float(prob));
+        nodesToProbs.put(targetCat+"-"+targetNode, new Float(prob));
             substProb.put(targetTreeID,nodesToProbs);
         }
     }
     
-    public void addAdjProb(String targetTreeID, String targetNode, float prob){
+    public void addAdjProb(String targetTreeID, String targetNode, String targetCat, float prob){
         if (adjProb.containsKey(targetTreeID)) 
-            adjProb.get(targetTreeID).put(targetNode,new Float(prob));
+            adjProb.get(targetTreeID).put(targetCat+"-"+targetNode,new Float(prob));
         else {
             HashMap<String, Float> nodesToProbs = new HashMap<String, Float>();
-            nodesToProbs.put(targetNode, new Float(prob));
+            nodesToProbs.put(targetCat+"-"+targetNode, new Float(prob));
             adjProb.put(targetTreeID,nodesToProbs);
         }
     }

@@ -145,7 +145,8 @@ public class PrecomputedActions {
     * involving a certain lexical entry, a target tree and a node label and add
     * it to the object's action list.
     */
-    private void createActions(TAGLexEntry entry, String targetTree, String label, int actionType, float prob){
+    private void createActions(TAGLexEntry entry, String targetTree, String nodeID, int actionType, float prob){
+        
         
         // compute action name
         StringWriter actionNameBuf = new StringWriter();
@@ -163,7 +164,7 @@ public class PrecomputedActions {
         else{
             actionNameBuf.write(normalizeTreename(targetTree));
             actionNameBuf.write("-");
-            actionNameBuf.write(label);
+            actionNameBuf.write(nodeID);
         }
         String actionName = actionNameBuf.toString();
         
@@ -206,29 +207,33 @@ public class PrecomputedActions {
             
             // Compute the predicate
             pred.setLabel(actionName +  (i-1));
-            //pred.addVariable("?u","syntaxnode");
+            pred.addVariable("?u","syntaxnode");
             for (String role : roles.get(treeRef))
                 pred.addVariable(I.get(n.get(role)), "individual");
+            
+            // Syntaxnode must be referent for first individual
+            preconds.add(new crisp.planningproblem.goal.Literal("referent(?u,?x1)", true));
             
             // Count the step
             preconds.add(new crisp.planningproblem.goal.Literal("step(step"+(i-1)+")",true));
             effects.add(new crisp.planningproblem.effect.Literal("step(step"+(i-1)+")",false));
             effects.add(new crisp.planningproblem.effect.Literal("step(step"+i+")",true));
             
-            String targetLabel = label+(i-1);
-            constants.put(targetLabel,"syntaxnode");
+          
+            constants.put(nodeID,"nodetype");
+            
             // Satisfy open substitution or adjunction
             if (actionType == ACTION_TYPE_SUBST) {
-                preconds.add(new crisp.planningproblem.goal.Literal("subst(" + normalizeTreename(targetTree)+ ", "+ rootCategory + ","+targetLabel+")", true));
-                effects.add(new crisp.planningproblem.effect.Literal("subst(" + normalizeTreename(targetTree)+ ", "+rootCategory + ","+targetLabel+")", false));
+                preconds.add(new crisp.planningproblem.goal.Literal("subst(" + normalizeTreename(targetTree)+ ", "+ nodeID + ", ?u)", true));
+                effects.add(new crisp.planningproblem.effect.Literal("subst(" + normalizeTreename(targetTree)+ ", "+nodeID + ", ?u)", false));
             } else if (actionType == ACTION_TYPE_ADJOIN) {
-                preconds.add(new crisp.planningproblem.goal.Literal("canadjoin(" + rootCategory + ", "+targetLabel+")", true));
-                effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" + rootCategory + ","+targetLabel+")", false)); 
+                preconds.add(new crisp.planningproblem.goal.Literal("canadjoin(" +normalizeTreename(targetTree)+ ","+ nodeID + ", ?u)", true));
+                effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" +normalizeTreename(targetTree)+ ","+ nodeID + ", ?u)", false)); 
             } else if (actionType == ACTION_TYPE_INIT) {
-                preconds.add(new crisp.planningproblem.goal.Literal("subst(root, S, init)", true));
-                effects.add(new crisp.planningproblem.effect.Literal("subst(root, S, init)", false));
-                targetLabel = "init";
-
+                preconds.add(new crisp.planningproblem.goal.Literal("subst(root, none, ?u)", true));
+                effects.add(new crisp.planningproblem.effect.Literal("subst(root, none, ?u)", false));
+                constants.put("none","nodetype");
+                nodeID = "init";
             }
             
             // semantic content must be satisfied 
@@ -257,6 +262,8 @@ public class PrecomputedActions {
             
             // TODO: semantic requirements must also be satisfied
             
+            String treeIdent = normalizeTreename(entry.getTreeRef())+"-"+entry.getWord();
+            
             // effects for the substitution nodes
             for (TAGNode substNode : tree.getSubstNodes()) {
                 String role = substNode.getSem();                       
@@ -265,8 +272,9 @@ public class PrecomputedActions {
                 
                 constants.put(cat,"category");
                 
-                effects.add(new crisp.planningproblem.effect.Literal("subst(" + normalizeTreename(entry.getTreeRef())+"-"+entry.getWord()+", "+ cat +", "+roleN + ")", true));
+                effects.add(new crisp.planningproblem.effect.Literal("subst(" + treeIdent +", " + cat + "-" + role  +", "+roleN + ")", true));
                 
+                constants.put(cat+"-"+role,"nodetype"); 
                 if (!role.equals("self") ) 
                     constants.put(roleN, "syntaxnode");
                 
@@ -279,27 +287,26 @@ public class PrecomputedActions {
             for ( TAGNode adjNode : tree.getNonSubstNodes()) {
                 
                 String role = adjNode.getSem();
-                String roleN = (((role == null) || (role.equals("self"))) ? targetLabel : n.get(role));
+                //String roleN = (((role == null) || (role.equals("self"))) ? targetNode : 
+                String roleN = n.get(role);
                 
-                String cat = adjNode.getCat();
-                
-                constants.put(cat,"category");
+                String cat = adjNode.getCat();       
                 
                 // canadjoin
-                effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" + cat + ", " + roleN + ")", true));
+                effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" +treeIdent + ", " + cat +"-" + role + ", " + roleN + ")", true));
+                
+                constants.put(cat+"-"+role,"nodetype");
                 
                 // mustadjoin         
                 String constraint = adjNode.getConstraint();
                 if( constraint!=null && constraint.equals("oa")){
-                    effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" + cat + ", " + roleN + ")", true));
-                    
+                   effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" +treeIdent + ", " + cat + "-" + role + ", " + roleN + ")", true)); 
                 }
                 // don't need to add constant to the constant list because we ASSUME that every role
                 // except for "self" decorates some substitution node (and hence is added there)                    
             }
             
-            /* Generate action */
-            
+            // Assemble action
             DurativeAction newAction = new DurativeAction(pred, new crisp.planningproblem.goal.Conjunction(preconds), new crisp.planningproblem.effect.Conjunction(effects), constants, predicates, probabilityToDuration(prob));
             
             if (term != null) {
@@ -308,7 +315,7 @@ public class PrecomputedActions {
                     actionsBySemContent.put(key, new ArrayList<DurativeAction>());
                 actionsBySemContent.get(key).add(newAction); // Sort new actions in a HashMap by semantic content
             } else 
-            emptyActions.add(newAction); // For actions that don't satisfy semantic requirements
+            emptyActions.add(newAction); // for actions that don't have semantic content
         }
     }
     

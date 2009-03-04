@@ -182,10 +182,11 @@ public class CRISPtoTempPDDL {
         domain.addSubtype("predicate", "object");
         domain.addSubtype("rolename", "object");
         domain.addSubtype("treename", "object");
+        domain.addSubtype("nodetype", "object"); // Identifiers for nodes in trees (tree types)
 
         Predicate predSubst = new Predicate(); predSubst.setLabel("subst");
         predSubst.addVariable("?t", "treename");
-        predSubst.addVariable("?x", "category"); predSubst.addVariable("?y", "syntaxnode");
+        predSubst.addVariable("?x", "nodetype"); predSubst.addVariable("?y", "syntaxnode");
         domain.addPredicate(predSubst);
 
         Predicate predStep = new Predicate(); predStep.setLabel("step");
@@ -201,11 +202,13 @@ public class CRISPtoTempPDDL {
         domain.addPredicate(predReferent);
 
         Predicate predCanadjoin = new Predicate(); predCanadjoin.setLabel("canadjoin");
-        predCanadjoin.addVariable("?x", "category"); predCanadjoin.addVariable("?y", "syntaxnode");
+        predCanadjoin.addVariable("?t", "treename"); predCanadjoin.addVariable("?x","nodetype"); 
+        predCanadjoin.addVariable("?y", "syntaxnode");
         domain.addPredicate(predCanadjoin);
 
         Predicate predMustadjoin = new Predicate(); predMustadjoin.setLabel("mustadjoin");
-        predMustadjoin.addVariable("?x", "category"); predMustadjoin.addVariable("?y", "syntaxnode");
+        predMustadjoin.addVariable("?t", "treename"); predMustadjoin.addVariable("?x","nodetype"); 
+        predMustadjoin.addVariable("?y", "syntaxnode");
         domain.addPredicate(predMustadjoin);
         
         domain.addConstant("S","category");

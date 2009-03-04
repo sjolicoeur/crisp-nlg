@@ -1,4 +1,4 @@
-<crispproblem name="rfh" grammar="grammar-rfh.xml" 
+ <crispproblem name="rfh" grammar="grammar-rfh.xml" 
 	      cat="S" index="e" plansize="10">
 
   <world>rabbit(r1)</world>

@@ -106,8 +106,8 @@
       <!-- The substitution probability to attach the tree for this entry to a
             certain other tree 'tree' with lexical anchor 'lex' at the node 
             labeled with 'sem' -->
-      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="subj"> 0.3 </prob>
-      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="obj"> 0.2 </prob>
+      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="subj" cat="NP"> 0.3 </prob>
+      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="obj" cat="NP"> 0.2 </prob>
       <!-- All unspecified substitution and adjunction probabilities are 
            assumed to be 0 -->
     </tree>
@@ -116,8 +116,8 @@
   <entry word='Peter' pos='PN'>
     <tree refid='i.propername'>
       <semcontent>name(self,peter)</semcontent>
-      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="subj"> 0.3 </prob>
-      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="obj"> 0.2 </prob>
+      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="subj" cat="NP"> 0.3 </prob>
+      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="obj" cat="NP"> 0.2 </prob>
     </tree>
   </entry>
 
@@ -159,18 +159,18 @@
     --> 
     <tree refid="i.NP">
       <semcontent>rabbit(self)</semcontent>
-      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="subj"> 0.1 </prob>
-      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="obj"> 0.3 </prob>
+      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="subj" cat="NP"> 0.1 </prob>
+      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="obj" cat="NP"> 0.3 </prob>
     </tree> 
   </entry>
 
   <entry word='hat' pos='N'>
     <tree refid="i.NP">
       <semcontent>hat(self)</semcontent>
-      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="subj"> 0.1 </prob>
-      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="obj"> 0.3 </prob>
-      <prob type="subst" lex="take" tree="i.transImperative" sem="ppobj"> 1 </prob>
-    </tree> 
+      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="subj" cat="NP"> 0.1 </prob>
+      <prob type="subst" lex="likes" tree="i.nx0Vnx1" sem="obj" cat="NP"> 0.3 </prob>
+      <prob type="subst" lex="take" tree="i.transImperative" sem="ppobj" cat="NP"> 1 </prob>
+    </tree>  
   </entry>
 
   <entry word='flower' pos='N'>
@@ -188,8 +188,8 @@
 
   <entry word='the' pos='D'>
     <tree refid="a.Dn">
-        <prob type="adjoin" lex="rabbit" tree="i.NP" sem="subj"> 1 </prob>
-        <prob type="adjoin" lex="hat" tree="i.NP" sem="subj"> 1 </prob>
+        <prob type="adjoin" lex="rabbit" tree="i.NP" sem="self" cat="NP"> 0.5 </prob>
+        <prob type="adjoin" lex="hat" tree="i.NP" sem="self" cat="NP"> 1 </prob>
     </tree>
   </entry>
 
@@ -197,6 +197,7 @@
   <entry word='white' pos='A'>
     <tree refid='a.An'>
       <semcontent>white(self)</semcontent>
+      <prob type="adjoin" lex="rabbit" tree="i.NP" sem="self" cat="N"> 0.5 </prob>
     </tree>
   </entry>
 

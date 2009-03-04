@@ -76,6 +76,7 @@ public class GrammarParser extends DefaultHandler {
     String probTree;
     String probTargetTreeID;                           
     String probTargetNode; 
+    String probTargetCat;
                             
     
     
@@ -180,7 +181,8 @@ public class GrammarParser extends DefaultHandler {
                                                          //   substitute or adjoin this entry
             probTargetNode = atts.getValue("sem");    // Substitution/Adjunction node in 
                                                          //   the target tree where 
-            
+            probTargetCat = atts.getValue("cat");
+                                                         
             // if no ID exists create new target ID from tree reference and lex
             if (!probType.equals("init") && (probTargetTreeID==null))            
                 probTargetTreeID = probTree+"-"+probLex;           
@@ -285,9 +287,9 @@ public class GrammarParser extends DefaultHandler {
             if (probType.equals("init"))
                 entry.setInitProb(prob);    
             else if (probType.equals("subst"))
-                entry.addSubstProb(probTargetTreeID,probTargetNode,prob);
+                entry.addSubstProb(probTargetTreeID,probTargetNode, probTargetCat, prob);
             else if (probType.equals("adjoin"))
-                entry.addAdjProb(probTargetTreeID,probTargetNode,prob);
+                entry.addAdjProb(probTargetTreeID,probTargetNode, probTargetCat,prob);
             
            
         }

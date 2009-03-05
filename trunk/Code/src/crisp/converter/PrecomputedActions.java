@@ -385,7 +385,7 @@ public class PrecomputedActions {
     * @return the corresponding duration -log(p) for the action.
     */ 
     private double probabilityToDuration(double prob){
-        return -Math.log(prob);
+        return Math.round(-Math.log(prob)*1000000);
     }
     
     

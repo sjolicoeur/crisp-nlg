@@ -9,6 +9,8 @@ package crisp.planningproblem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import crisp.planningproblem.goal.Goal;
 import de.saar.chorus.term.Compound;
@@ -20,6 +22,8 @@ public class Problem {
     private String name;
     private Domain domain;
 
+    private HashSet<Integer> comgoalArities; // Keep track of observed arities of communicative goals
+    
     private final List<Term> initialState;
     private Goal goal;
 
@@ -28,6 +32,7 @@ public class Problem {
         domain = null;
         initialState = new ArrayList<Term>();
         goal = null;
+        comgoalArities = new HashSet<Integer>();
     }
 
     public void clear() {
@@ -50,7 +55,10 @@ public class Problem {
         initialState.add(term);
     }
 
-
+    public void registerComgoalArity(int arity){
+        comgoalArities.add(new Integer(arity));
+    }
+    
     @Override
     public String toString() {
         return "<PROBLEM " + name + " (domain: " + domain.getName() + "); init=" +
@@ -72,7 +80,11 @@ public class Problem {
     public String getName() {
         return name;
     }
-
+   
+    public Set<Integer> getComgoalArities() {
+        return comgoalArities;
+    }
+    
     // for "equals" hack
     public void addEqualityLiterals() {
     	for( String individual : domain.getUniverse().keySet() ) {

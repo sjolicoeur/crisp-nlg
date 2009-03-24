@@ -43,22 +43,15 @@ public class CRISPtoTempPDDL {
         long end = System.currentTimeMillis();
         long precomputeTime = end-start;
 
+
+
+		start = System.currentTimeMillis();
+
         // Initialize new domain
         Domain domain = new Domain();
         setupDomain(domain);
 
-
-		start = System.currentTimeMillis();
-        Problem problem = ProblemParser.parseProblem(new File(args[1]),domain);
-        String domainName = "domain-"+problem.getName();
-        domain.setName(domainName);
-        problem.setDomain(domainName);
-        computeGoal(domain,problem);
-		end = System.currentTimeMillis();
-        long problemCreationTime = end-start;
-
-		start = System.currentTimeMillis();
-        ArrayList<DurativeAction> selectedActions = actions.getAllActions();
+		ArrayList<DurativeAction> selectedActions = actions.getAllActions();
         //  Add all actions and corresponding predicates and constants to 
         //  the domain
         for (DurativeAction a: selectedActions){
@@ -75,14 +68,24 @@ public class CRISPtoTempPDDL {
                    domain.addPredicate(pred);
         }
 		end = System.currentTimeMillis();
-        long domainCreationTime = end-start;
 
-        
+		
+		long domainCreationTime = end-start;
+
+		start = System.currentTimeMillis();
+        Problem problem = ProblemParser.parseProblem(new File(args[1]),domain);
+        String domainName = "domain-"+problem.getName();
+        domain.setName(domainName);
+        problem.setDomain(domainName);
+        computeGoal(domain,problem);
+		end = System.currentTimeMillis();
+        long problemCreationTime = end-start;
 
 		System.out.println("Parse grammar and precompute actions: " + precomputeTime);
-		System.out.println("Create Problem: " + problemCreationTime);
-		System.out.println("Create domain: " + domainCreationTime);
 
+		System.out.println("Create domain: " + domainCreationTime);
+		System.out.println("Create Problem: " + problemCreationTime);
+		
         PrintWriter domainwriter = new PrintWriter(new FileWriter(new File(args[2])));
         PrintWriter problemwriter = new PrintWriter(new FileWriter(new File(args[3])));
 		new PddlOutputCodec().writeToDisk(domain, problem, domainwriter, problemwriter);

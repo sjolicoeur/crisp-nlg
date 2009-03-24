@@ -36,6 +36,9 @@ public class Domain {
 
     private final List<Action> actions;
 
+    private boolean sawMustadjoin; // Flag to indicate if the domain contains 
+                                   //   actions with mustadjoin effects 
+    
     public static Domain getDomainForName(String name) {
         return domains.get(name);
     }
@@ -64,6 +67,7 @@ public class Domain {
         predicates = new HashSet<Predicate>();
         actions = new ArrayList<Action>();
         staticPredicates = null;
+        sawMustadjoin = false;
 
         emptySubstitutionList = new ArrayList<Substitution>();
         emptySubstitutionList.add(new Substitution());
@@ -242,4 +246,12 @@ public class Domain {
     }
 
 
+    public void registerMustadjoin(){
+        sawMustadjoin = true;
+    }
+    
+    public boolean sawMustadjoin(){
+        return sawMustadjoin;
+    }
+    
 }

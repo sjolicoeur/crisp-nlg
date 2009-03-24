@@ -49,10 +49,10 @@ import crisp.converter.grammar.TAGLexEntry;
 
 /**
  * This class provides a fast converter from XML CRISP problem descriptions to
- * PDDL domains and problems.
- * This parser is implemented as a plain SAX parser, thereby improving
+ * planning domains and problems. This class only processes non-probabilistic grammar descriptions.
+ * The parser is implemented as a plain SAX parser, thereby improving
  * processing speed and decreasing memory requirements over the old xpath based
- * parser, which is particularly important for parsing large grammar 
+ * parser in {@link CRISPConverter}, which is particularly important for parsing large grammar 
  * description files.
  */
 
@@ -187,6 +187,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
                 if( arity > maximumArity ) {
                     maximumArity = arity;
                 }
+                problem.registerComgoalArity(arity);
 
                 domain.addConstant(renamePredicate(c.getLabel()), "predicate");
 
@@ -238,17 +239,26 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
         // no positive "distractor" literals in the goal state
         Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
                 new crisp.planningproblem.goal.Literal("distractor(?u,?x)", false));
-
+        
         // no positive "mustadjoin" literals in the goal state
-        Goal noMustAdj= new crisp.planningproblem.goal.Universal(tlCatNode,
+        //   this is only added if there is an action that creates a mustadjoin constraint
+        //   because otherwise the LAMA planner cannot handle universal preconditions 
+        //   involving this predicate.   
+        if (domain.sawMustadjoin()){           
+            Goal noMustAdj= new crisp.planningproblem.goal.Universal(tlCatNode,
                 new crisp.planningproblem.goal.Literal("mustadjoin(?a,?u)", false));
+            finalStateGoals.add(noMustAdj);
+        }
 
         finalStateGoals.add(noSubst);
         finalStateGoals.add(noDistractors);
-        finalStateGoals.add(noMustAdj);
+        
 
-        // no positive needtoexpress-* literals, for any arity
-        for( int i = 1; i <= maximumArity; i++ ) {
+        // no positive needtoexpress-* literals, for any arity used in the communicative 
+        // goals. If we would just do this for all arities the LAMA planner cannot handle 
+        // the universal precondition involving needtoexpress predicates that do not occur        
+        // elsewhere as an effect
+        for( Integer i : problem.getComgoalArities()) {
             TypedVariableList tlPredicate = new TypedVariableList();
             tlPredicate.addItem(new Variable("?P"), "predicate");
 
@@ -294,10 +304,12 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
         domain.addRequirement(":strips");
         domain.addRequirement(":equality");
         domain.addRequirement(":typing");
-        domain.addRequirement(":conditional-effects");
-        domain.addRequirement(":universal-preconditions");
+        domain.addRequirement(":conditional-effects");               
+        //domain.addRequirement(":universal-preconditions"); // Not understood by some planners (e.g LAMA) 
+                                                             // and redundant because it is subsumed by
+                                                             // :quantified-preconditions
         domain.addRequirement(":quantified-preconditions");
-
+        
         domain.addSubtype("individual", "object");
         domain.addSubtype("category", "object");
         domain.addSubtype("syntaxnode", "object");
@@ -557,8 +569,10 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
 
                     // mustadjoin
                     String constraint = adjNode.getConstraint();
-                    if( constraint!=null && constraint.equals("oa")) 
+                    if( constraint!=null && constraint.equals("oa")){ 
                         effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" + cat + ", " + roleN + ")", true));
+                        domain.registerMustadjoin();
+                    }
 
                     // don't need to add constant to the domain because we ASSUME that every role
                     // except for "self" decorates some substitution node (and hence is added there)                    

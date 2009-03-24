@@ -8,9 +8,10 @@
     <!-- property definitions -->
     <property name="build.dir" value="build" />
     <property name="dist.dir" value="dist" />
+    <property name="javadoc.dir" value="javadoc" />
 
     <property name="sourcefiles"
-	      value="de/saar/**/*.java,crisp/termparser/**/*.java,crisp/planningproblem/**/*.java,crisp/planner/lazygp/**/*.java,crisp/pddl/**/*.java,crisp/main/*.java,crisp/converter/*.java,crisp/tools/*.java,crisp/result/**/*.java" />
+	      value="de/saar/**/*.java,crisp/termparser/**/*.java,crisp/planningproblem/**/*.java,crisp/planner/lazygp/**/*.java,crisp/pddl/**/*.java,crisp/main/*.java,crisp/converter/**/*.java,crisp/tools/*.java,crisp/result/**/*.java" />
 
     <property name="classfiles"
 	      value="de/saar/**/*,crisp/termparser/**/*,crisp/planningproblem/**/*,crisp/planner/lazygp/**/*,crisp/pddl/**/*,crisp/main/*,crisp/converter/*,crisp/tools/*,crisp/result/**/*" />
@@ -79,8 +80,12 @@
       <mkdir dir="build" />
       <mkdir dir="build/classes" />
       <mkdir dir="dist" />
+      <mkdir dir="javadoc"/>
     </target>
 
+    <target name="javadoc" depends="init">
+        <javadoc destdir="javadoc" sourcepath="src"/>              
+    </target>
 
 
     <!--

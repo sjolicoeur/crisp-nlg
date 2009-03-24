@@ -61,19 +61,19 @@ public class PddlOutputCodec extends OutputCodec {
         }
         dw.println(")");
 
+        dw.println("       (:constants");
+        for( String constant : domain.getUniverse().keySet()) {
+            dw.println("         " + constant + " - " + domain.getUniverse().get(constant));
+        }
+        dw.println("       )");
+        
         dw.println("       (:predicates");
         for( Predicate pred : domain.getPredicates() ) {
             if( !pred.getLabel().equals("**equals**")) {
                 dw.println("         (" + pred.getLabel() + " " + pred.getVariables().toLispString() + ")");
             }
         }
-        dw.println("        )");
-
-        dw.println("       (:constants");
-        for( String constant : domain.getUniverse().keySet()) {
-            dw.println("         " + constant + " - " + domain.getUniverse().get(constant));
-        }
-        dw.println("       )");
+        dw.println("        )");        
 
         for( Action a : domain.getActions() ) {
             dw.println("\n" + toPddlString(a));

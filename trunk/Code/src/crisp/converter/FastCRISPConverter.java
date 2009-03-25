@@ -262,23 +262,28 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
             TypedVariableList tlPredicate = new TypedVariableList();
             tlPredicate.addItem(new Variable("?P"), "predicate");
 
-            Predicate predNTE = new Predicate();
-            predNTE.setLabel("needtoexpress-" + i);
-            predNTE.addVariable("?P", "predicate");
-
             List<Term> subterms = new ArrayList<Term>();
             subterms.add(new Variable("?P"));
 
             for( int j = 1; j <= i; j++ ) {
                 tlPredicate.addItem(new Variable("?x" + j), "individual");
-                subterms.add(new Variable("?x" + j));
-
-                predNTE.addVariable("?x" + j, "individual");
+                subterms.add(new Variable("?x" + j));                
             }
 
             finalStateGoals.add(new crisp.planningproblem.goal.Universal(tlPredicate,
-                    new crisp.planningproblem.goal.Literal(new Compound("needtoexpress-" + i, subterms), false)));
+                    new crisp.planningproblem.goal.Literal(new Compound("needtoexpress-" + i, subterms), false)));            
+        }
+        
+        // since negated needtoexpress-* literals can also occur with other arity we  
+        // need to add predicates for any arity to the domain.        
+        for (int i = 1; i <= maximumArity; i++){
+            Predicate predNTE = new Predicate();
+            predNTE.setLabel("needtoexpress-" + i);
+            predNTE.addVariable("?P", "predicate");
 
+            for( int j = 1; j <= i; j++ ) 
+                predNTE.addVariable("?x" + j, "individual");
+            
             domain.addPredicate(predNTE);
         }
 

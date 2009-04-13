@@ -42,7 +42,7 @@ public class TAGrammar{
      * @param pos POS for the word for which an entry is added.
      */
     public void addEntry(TAGLexEntry entry){
-        String key = entry.getWord()+"#"+entry.getPOS();   
+        String key = entry.getWord()+"#"+entry.getTreeRef();   
         lexicon.put(key,entry);
     }
 
@@ -54,5 +54,8 @@ public class TAGrammar{
         return lexicon.values();
     }
     
-
+    public TAGLexEntry getEntry(String treeRef, String treeWord) {
+        return lexicon.get(treeWord+"#"+treeRef);
+    }
+    
 }

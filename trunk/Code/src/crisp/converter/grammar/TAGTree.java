@@ -38,9 +38,9 @@ public class TAGTree {
     public TAGNode getRootNode() { return rootNode; }
     public String getID(){ return id; }
 
-    public List<String> getRoles(){ 
+    public List<String> getRoles(){                
         if (roles == null)
-            roles = rootNode.getRoleList();
+            roles = rootNode.getRoleList();        
         return roles;
     } 
 

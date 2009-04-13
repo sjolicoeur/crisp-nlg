@@ -71,11 +71,11 @@ public class GrammarParser extends DefaultHandler {
     private boolean withinEntry;
     
 
-    String probType; 
+    String probType;    
     String probLex;
     String probTree;
-    String probTargetTreeID;                           
-    String probTargetNode; 
+    String probTargetNodeID;
+    String probTargetSem;                           ; 
     String probTargetCat;
                             
     
@@ -104,6 +104,7 @@ public class GrammarParser extends DefaultHandler {
     public void startElement(String namespaceURI, String localName, String qName, 
         Attributes atts) throws SAXException {
 
+        String index;
         // Namespace is ingored for now, use prefixed name and assume prefixes are empty.
         
         if (qName.equals("crisp-grammar")){
@@ -125,14 +126,17 @@ public class GrammarParser extends DefaultHandler {
             // Create a new node instance and store it on the stack 
             TAGNode newNode = new TAGNode();
 
-            String index = atts.getValue("index");
-            if (index!=null) 
-                newNode.setIndex(index);
+            
     
             newNode.setCat(atts.getValue("cat"));
             newNode.setSem(atts.getValue("sem"));
             newNode.setType(atts.getValue("type"));
             newNode.setConstraint(atts.getValue("constraint"));
+            index = atts.getValue("num");
+            if (index!=null) 
+                newNode.setIndex(index);
+            else  // Consruct index dynamically
+                newNode.setIndex(atts.getValue("cat")+"-"+atts.getValue("sem"));            
             elementStack.push(newNode);
         } else 
         
@@ -140,7 +144,7 @@ public class GrammarParser extends DefaultHandler {
             // Create a new leaf instance and store it on the stack 
             TAGNode newLeaf = new TAGNode();
 
-            String index = atts.getValue("index");
+            index = atts.getValue("index");
             if (index!=null) 
                 newLeaf.setIndex(index);
     
@@ -149,6 +153,12 @@ public class GrammarParser extends DefaultHandler {
             newLeaf.setType(atts.getValue("type"));
             newLeaf.setConstraint(atts.getValue("constraint"));
    
+            index = atts.getValue("num");
+            if (index!=null) 
+                newLeaf.setIndex(index);
+            else  // Consruct index dynamically
+                newLeaf.setIndex(atts.getValue("cat")+"-"+atts.getValue("sem"));
+            
             elementStack.push(newLeaf);
         }
          
@@ -177,15 +187,15 @@ public class GrammarParser extends DefaultHandler {
             probType = atts.getValue("type");
             probLex = atts.getValue("lex");
             probTree = atts.getValue("tree");
-            probTargetTreeID = atts.getValue("targetid"); // ID of the entry in which to 
+            probTargetNodeID = atts.getValue("node"); // ID of the entry in which to 
                                                          //   substitute or adjoin this entry
-            probTargetNode = atts.getValue("sem");    // Substitution/Adjunction node in 
+            probTargetSem = atts.getValue("sem");    // Substitution/Adjunction node in 
                                                          //   the target tree where 
             probTargetCat = atts.getValue("cat");
                                                          
             // if no ID exists create new target ID from tree reference and lex
-            if (!probType.equals("init") && (probTargetTreeID==null))            
-                probTargetTreeID = probTree+"-"+probLex;           
+            if (!probType.equals("init") && (probTargetNodeID==null))            
+                probTargetNodeID = probTargetCat+"-"+probTargetSem;           
             
                                                          
             characterBuffer = new StringWriter(); // Expect characted data: 
@@ -287,9 +297,9 @@ public class GrammarParser extends DefaultHandler {
             if (probType.equals("init"))
                 entry.setInitProb(prob);    
             else if (probType.equals("subst"))
-                entry.addSubstProb(probTargetTreeID,probTargetNode, probTargetCat, prob);
+                entry.addSubstProb(probTree,probLex, probTargetNodeID, prob);
             else if (probType.equals("adjoin"))
-                entry.addAdjProb(probTargetTreeID,probTargetNode, probTargetCat,prob);
+                entry.addAdjProb(probTree,probLex, probTargetNodeID, prob);
             
            
         }

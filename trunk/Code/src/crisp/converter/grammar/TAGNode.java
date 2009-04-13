@@ -24,7 +24,7 @@ public class TAGNode extends LinkedList<TAGNode> {
     /**
      * Create a new empty Node in a TAG tree.
      */
-    public TAGNode(){
+    public TAGNode(){        
         roles = new HashSet<String>(); 
         catNames = new HashSet<String>();
         substNodes = new LinkedList<TAGNode>();
@@ -39,7 +39,8 @@ public class TAGNode extends LinkedList<TAGNode> {
     public void setType(String aType) { type = aType; }
     public void setConstraint(String aConstraint) { constraint = aConstraint; }
 
-    public void addRole(String role) { roles.add(role); }
+    public void addRole(String role) { if (role!=null) 
+                                           roles.add(role); }
     public void addRoles(Collection<String> someRoles) { roles.addAll(someRoles); }
 
     public void addCatName(String catName) { if (catName!=null && !("".equals(catName))) 

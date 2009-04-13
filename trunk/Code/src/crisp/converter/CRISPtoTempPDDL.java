@@ -5,7 +5,7 @@ import crisp.planningproblem.goal.Goal;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.TypedVariableList;
-import crisp.planningproblem.codec.PddlOutputCodec;
+import crisp.planningproblem.codec.CostPddlOutputCodec;
 
 
 import de.saar.chorus.term.Compound;
@@ -88,12 +88,12 @@ public class CRISPtoTempPDDL {
 		
         PrintWriter domainwriter = new PrintWriter(new FileWriter(new File(args[2])));
         PrintWriter problemwriter = new PrintWriter(new FileWriter(new File(args[3])));
-		new PddlOutputCodec().writeToDisk(domain, problem, domainwriter, problemwriter);
+		new CostPddlOutputCodec().writeToDisk(domain, problem, domainwriter, problemwriter);
 	}
 
 
-
-    /**
+    
+     /**
      * Compute the goal specification for the given CRISP problem.  This becomes the
      * "goal" clause in the PDDL problem.
      *
@@ -106,7 +106,8 @@ public class CRISPtoTempPDDL {
         tlNodeIndiv.addItem(new Variable("?x"), "individual");
 
         TypedVariableList tlCatNode = new TypedVariableList();
-        tlCatNode.addItem(new Variable("?a"), "category");
+        tlCatNode.addItem(new Variable("?t"), "treename");
+        tlCatNode.addItem(new Variable("?n"), "nodetype");
         tlCatNode.addItem(new Variable("?u"), "syntaxnode");
 
         // collect all goals in this list
@@ -114,49 +115,63 @@ public class CRISPtoTempPDDL {
 
         // no positive "subst" literals in the goal state
         Goal noSubst = new crisp.planningproblem.goal.Universal(tlCatNode,
-                new crisp.planningproblem.goal.Literal("subst(?a,?u)", false));
+                new crisp.planningproblem.goal.Literal("subst(?t,?n,?u)", false));
 
+                
+        // TODO
         // no positive "distractor" literals in the goal state
-        Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
-                new crisp.planningproblem.goal.Literal("distractor(?u,?x)", false));
+        //Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
+        //        new crisp.planningproblem.goal.Literal("distractor(?u,?x)", false));
 
         // no positive "mustadjoin" literals in the goal state
-        Goal noMustAdj= new crisp.planningproblem.goal.Universal(tlCatNode,
-                new crisp.planningproblem.goal.Literal("mustadjoin(?a,?u)", false));
+        //   this is only added if there is an action that creates a mustadjoin constraint
+        //   because otherwise the LAMA planner cannot handle universal preconditions 
+        //   involving this predicate
+        //if (domain.sawMustadjoin()){ 
+        //    Goal noMustAdj= new crisp.planningproblem.goal.Universal(tlCatNode,
+        //        new crisp.planningproblem.goal.Literal("mustadjoin(?a,?u)", false));
+        //    finalStateGoals.add(noMustAdj);
+       // }
 
         finalStateGoals.add(noSubst);
-        finalStateGoals.add(noDistractors);
-        finalStateGoals.add(noMustAdj);
-
-        // no positive needtoexpress-* literals, for any arity
-        for( int i = 1; i <= maximumArity; i++ ) {
+        //finalStateGoals.add(noDistractors);
+        
+        
+        // no positive needtoexpress-* literals, for any arity used in the communicative 
+        // goals. If we would just do this for all arities the LAMA planner cannot handle 
+        // the universal precondition involving needtoexpress predicates that do not occur        
+        // elsewhere as an effect        
+        for( Integer i : problem.getComgoalArities()) {
             TypedVariableList tlPredicate = new TypedVariableList();
             tlPredicate.addItem(new Variable("?P"), "predicate");
-
-            Predicate predNTE = new Predicate();
-            predNTE.setLabel("needtoexpress-" + i);
-            predNTE.addVariable("?P", "predicate");
-
+            
             List<Term> subterms = new ArrayList<Term>();
             subterms.add(new Variable("?P"));
 
             for( int j = 1; j <= i; j++ ) {
                 tlPredicate.addItem(new Variable("?x" + j), "individual");
-                subterms.add(new Variable("?x" + j));
-
-                predNTE.addVariable("?x" + j, "individual");
+                subterms.add(new Variable("?x" + j));           
             }
 
             finalStateGoals.add(new crisp.planningproblem.goal.Universal(tlPredicate,
-                    new crisp.planningproblem.goal.Literal(new Compound("needtoexpress-" + i, subterms), false)));
+                    new crisp.planningproblem.goal.Literal(new Compound("needtoexpress-" + i, subterms), false)));            
+        }
+        
+        // since negated needtoexpress-* literals can also occur with other arity we  
+        // need to add predicates for any arity to the domain.        
+        for (int i = 1; i <= maximumArity; i++){
+            Predicate predNTE = new Predicate();
+            predNTE.setLabel("needtoexpress-" + i);
+            predNTE.addVariable("?P", "predicate");
 
+            for( int j = 1; j <= i; j++ ) 
+                predNTE.addVariable("?x" + j, "individual");
+            
             domain.addPredicate(predNTE);
         }
 
-
         problem.setGoal(new crisp.planningproblem.goal.Conjunction(finalStateGoals));
     }
-
 
 
         /**
@@ -174,9 +189,8 @@ public class CRISPtoTempPDDL {
         domain.addRequirement(":equality");
         domain.addRequirement(":typing");
         domain.addRequirement(":conditional-effects");
-        domain.addRequirement(":universal-preconditions");
-        domain.addRequirement(":quantified-preconditions");
-        domain.addRequirement(":durative-actions");
+        domain.addRequirement(":quantified-preconditions");        
+
 
         domain.addSubtype("individual", "object");
         domain.addSubtype("category", "object");

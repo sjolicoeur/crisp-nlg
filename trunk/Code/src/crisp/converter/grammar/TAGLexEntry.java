@@ -62,28 +62,31 @@ public class TAGLexEntry{
         initProb = prob;
     }
     
-    public void addSubstProb(String targetTreeID, String targetNode, String targetCat, float prob){                
-        if (substProb.containsKey(targetTreeID)) 
-            substProb.get(targetTreeID).put(targetCat+"-"+targetNode,new Float(prob));
+    public void addSubstProb(String tree, String lex, String targetNode, float prob){
+        String key = tree+"-"+lex;
+        if (substProb.containsKey(key)) 
+            substProb.get(key).put(targetNode,new Float(prob));
         else {
             HashMap<String, Float> nodesToProbs = new HashMap<String, Float>();
-        nodesToProbs.put(targetCat+"-"+targetNode, new Float(prob));
-            substProb.put(targetTreeID,nodesToProbs);
+            nodesToProbs.put(targetNode, new Float(prob));
+            substProb.put(key,nodesToProbs);
         }
     }
     
-    public void addAdjProb(String targetTreeID, String targetNode, String targetCat, float prob){
-        if (adjProb.containsKey(targetTreeID)) 
-            adjProb.get(targetTreeID).put(targetCat+"-"+targetNode,new Float(prob));
+    public void addAdjProb(String tree, String lex, String targetNode, float prob){
+        String key = tree+"-"+lex;
+        if (adjProb.containsKey(key)) 
+            adjProb.get(key).put(targetNode,new Float(prob));
         else {
             HashMap<String, Float> nodesToProbs = new HashMap<String, Float>();
-            nodesToProbs.put(targetCat+"-"+targetNode, new Float(prob));
-            adjProb.put(targetTreeID,nodesToProbs);
+            nodesToProbs.put(targetNode, new Float(prob));
+            adjProb.put(key,nodesToProbs);
         }
     }
     
     /************ Getter methods *******************/
     public String getID(){ return id; }
+    public String getTreeName(){ return normalizeTreename(treeRef+"-"+word);}
     public String getTreeRef(){ return treeRef; }
     public String getPOS(){ return pos; }
     public String getWord(){ return word; }
@@ -100,6 +103,16 @@ public class TAGLexEntry{
     }
     public HashMap<String, HashMap<String, Float>> getAdjProbs(){
             return adjProb;
+    }
+ 
+    /**
+    * Translates XTAG style tree names into tree names that PDDL will accept.
+    *
+    * @param treename
+    * @return
+    */
+    private String normalizeTreename(String treename) {
+        return treename.replace("i.", "init_").replace("a.", "aux_");
     }
     
 }

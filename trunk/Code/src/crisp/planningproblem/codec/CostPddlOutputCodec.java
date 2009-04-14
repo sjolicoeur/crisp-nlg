@@ -146,10 +146,10 @@ public class CostPddlOutputCodec extends OutputCodec {
             return buf.toString();
         } else if( effect instanceof crisp.planningproblem.effect.Conditional ) {
             crisp.planningproblem.effect.Conditional cond = (crisp.planningproblem.effect.Conditional) effect;
-            return "(when " + toPddlString(cond.getCondition()) + " " + toPddlString(cond.getEffect());
+             return "(when " + toPddlString(cond.getCondition()) + " " + toPddlString(cond.getEffect()) + ")";
         } else if( effect instanceof crisp.planningproblem.effect.Universal ) {
             crisp.planningproblem.effect.Universal univ = (crisp.planningproblem.effect.Universal) effect;
-            return "(forall (" + univ.getVariables().toLispString() + ") " + toPddlString(univ.getScope());
+            return "(forall (" + univ.getVariables().toLispString() + ") " + toPddlString(univ.getScope()) + ")";
         } else if( effect instanceof crisp.planningproblem.effect.Literal ) {
             crisp.planningproblem.effect.Literal lit = (crisp.planningproblem.effect.Literal) effect;
             return (lit.getPolarity()?"":"(not ") + lit.getAtom().toLispString().replace("**equals**", "=") + (lit.getPolarity()?"":")");

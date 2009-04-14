@@ -201,12 +201,14 @@ public class PrecomputedActions {
         effects.add(new crisp.planningproblem.effect.Literal("subst(root, none, ?u)", false));
         constants.put("none","nodetype");           
         
-        // semantic content must be satisfied 
+         
         List<Term> contentWithVariables = new ArrayList<Term>();
         boolean hasContent = false;
         
         Compound term = null;
-        if (semContent != null) {
+        
+        // semantic content must be satisfied        
+        if (semContent != null) {     
             //System.out.println(entry.getSemContent());
             term = (Compound) TermParser.parse(entry.getSemContent());                
             Compound termWithVariables = (Compound) substituteVariablesForRoles(term, n, I);
@@ -224,9 +226,50 @@ public class PrecomputedActions {
                 maximumArity = term.getSubterms().size();
                   
             constants.put(renamePredicate(term.getLabel()), "predicate");
+            
+            // remove distractors
+            Variable distractorVar = new Variable("?y");
+            Substitution distractorSubst = new Substitution(new Variable("?x1"), distractorVar);
+            TypedVariableList distractorQuantifierVars = new TypedVariableList();
+            distractorQuantifierVars.addItem(distractorVar, "individual");
+            
+            List<crisp.planningproblem.goal.Goal> literals = new ArrayList<crisp.planningproblem.goal.Goal>();
+            for ( Term t: contentWithVariables ) 
+                literals.add(new crisp.planningproblem.goal.Literal(distractorSubst.apply(t), true));
+            
+            Goal distractorPrecondition = 
+                new crisp.planningproblem.goal.Negation(new crisp.planningproblem.goal.Conjunction(literals));
+            
+            effects.add(new crisp.planningproblem.effect.Universal(distractorQuantifierVars,
+                new crisp.planningproblem.effect.Conditional(distractorPrecondition,
+                    new crisp.planningproblem.effect.Literal("distractor(?u,?y)", false))));
+                        
+        }
+                                
+        // TODO: semantic requirements must also be satisfied
+        
+        // pragmatic requirements must be satisfied             
+        for( String pragCond : entry.getPragConds() ) {
+            Compound pragTerm = (Compound) TermParser.parse(pragCond);
+            predicates.add(makeSemanticPredicate(pragTerm));
+            preconds.add(new crisp.planningproblem.goal.Literal(substituteVariablesForRoles(pragTerm, n, I), true));
         }
         
-        // TODO: semantic requirements must also be satisfied
+        
+        // pragmatic effects
+        for( String pragEffect : entry.getPragEffects() ) {
+            Compound effect = (Compound) TermParser.parse(pragEffect);
+            
+            if ( "uniqueref".equals(effect.getLabel())) {
+                String roleN = n.get(effect.getSubterms().get(0).toString());
+                TypedVariableList vars = new TypedVariableList();
+                vars.addItem(new Variable("?y"), "individual");
+                
+                effects.add(new crisp.planningproblem.effect.Universal(vars,
+                new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", false)));
+                break;
+            }
+        }
         
         // effects for the substitution nodes
         for (TAGNode substNode : tree.getSubstNodes()) {
@@ -251,6 +294,33 @@ public class PrecomputedActions {
             
             //referent
             effects.add(new crisp.planningproblem.effect.Literal("referent(" + roleN + ", " + I.get(roleN) + ")", true));
+                        
+            
+            //distractors
+            Variable distractorVar = new Variable("?y");
+            Substitution distractorSubst = new Substitution(new Variable(I.get(roleN)), distractorVar);
+            TypedVariableList distractorQuantifierVars = new TypedVariableList();
+            distractorQuantifierVars.addItem(distractorVar, "individual");
+            
+            
+            // TODO - it's a bit of a hack that we use the same semantic requirement
+            // (modulo substitution) for each substitution node, even if it is irrelevant
+            // for the distractors of this substitution node.  But it seems to be ok.
+            List<Goal> distractorPreconditions = new ArrayList<Goal>();
+            distractorPreconditions.add(new crisp.planningproblem.goal.Literal("**equals**(?y," + I.get(roleN) + ")", false));
+            
+            for( String sr : entry.getSemReqs() ) {
+                Term semReqTerm = distractorSubst.apply(substituteVariablesForRoles(TermParser.parse(sr), n, I));
+                predicates.add(makeSemanticPredicate(semReqTerm));
+                distractorPreconditions.add(new crisp.planningproblem.goal.Literal(semReqTerm, true));
+            }
+            
+            Goal distractorPrecondition = new crisp.planningproblem.goal.Conjunction(distractorPreconditions);
+            
+            effects.add(new crisp.planningproblem.effect.Universal(distractorQuantifierVars,
+            new crisp.planningproblem.effect.Conditional(distractorPrecondition,
+            new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", true))));
+            
             
         }
         
@@ -415,9 +485,54 @@ public class PrecomputedActions {
                     maximumArity = term.getSubterms().size();
                 
                 constants.put(renamePredicate(term.getLabel()), "predicate");
+                
+                // remove distractors
+                Variable distractorVar = new Variable("?y");
+                Substitution distractorSubst = new Substitution(new Variable("?x1"), distractorVar);
+                TypedVariableList distractorQuantifierVars = new TypedVariableList();
+                distractorQuantifierVars.addItem(distractorVar, "individual");
+                
+                List<crisp.planningproblem.goal.Goal> literals = new ArrayList<crisp.planningproblem.goal.Goal>();
+                for ( Term t: contentWithVariables ) 
+                    literals.add(new crisp.planningproblem.goal.Literal(distractorSubst.apply(t), true));
+                
+                Goal distractorPrecondition = 
+                    new crisp.planningproblem.goal.Negation(new crisp.planningproblem.goal.Conjunction(literals));
+                
+                effects.add(new crisp.planningproblem.effect.Universal(distractorQuantifierVars,
+                    new crisp.planningproblem.effect.Conditional(distractorPrecondition,
+                        new crisp.planningproblem.effect.Literal("distractor(?u,?y)", false))));
+            
+                
             }
             
             // TODO: semantic requirements must also be satisfied
+            
+            // pragmatic requirements must be satisfied             
+            for( String pragCond : plugger.getPragConds() ) {
+                Compound pragTerm = (Compound) TermParser.parse(pragCond);
+                predicates.add(makeSemanticPredicate(pragTerm));
+                preconds.add(new crisp.planningproblem.goal.Literal(substituteVariablesForRoles(pragTerm, n, I), true));
+            }
+                                                        
+            
+            
+            // pragmatic effects
+            for( String pragEffect : plugger.getPragEffects() ) {
+                Compound effect = (Compound) TermParser.parse(pragEffect);
+                
+                if ( "uniqueref".equals(effect.getLabel())) {
+                    String roleN = n.get(effect.getSubterms().get(0).toString());
+                    TypedVariableList vars = new TypedVariableList();
+                    vars.addItem(new Variable("?y"), "individual");
+                    
+                    effects.add(new crisp.planningproblem.effect.Universal(vars,
+                    new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", false)));
+                    break;
+                }
+            }
+            
+            
             
             // effects for the substitution nodes
             for (TAGNode substNode : pluggerTree.getSubstNodes()) {
@@ -442,6 +557,32 @@ public class PrecomputedActions {
                 
                 //referent
                 effects.add(new crisp.planningproblem.effect.Literal("referent(" + roleN + ", " + I.get(roleN) + ")", true));
+                
+                //distractors
+                Variable distractorVar = new Variable("?y");
+                Substitution distractorSubst = new Substitution(new Variable(I.get(roleN)), distractorVar);
+                TypedVariableList distractorQuantifierVars = new TypedVariableList();
+                distractorQuantifierVars.addItem(distractorVar, "individual");
+                
+                
+                // TODO - it's a bit of a hack that we use the same semantic requirement
+                // (modulo substitution) for each substitution node, even if it is irrelevant
+                // for the distractors of this substitution node.  But it seems to be ok.
+                List<Goal> distractorPreconditions = new ArrayList<Goal>();
+                distractorPreconditions.add(new crisp.planningproblem.goal.Literal("**equals**(?y," + I.get(roleN) + ")", false));
+                
+                for( String sr : plugger.getSemReqs() ) {
+                    Term semReqTerm = distractorSubst.apply(substituteVariablesForRoles(TermParser.parse(sr), n, I));
+                    predicates.add(makeSemanticPredicate(semReqTerm));
+                    distractorPreconditions.add(new crisp.planningproblem.goal.Literal(semReqTerm, true));
+                }
+                
+                Goal distractorPrecondition = new crisp.planningproblem.goal.Conjunction(distractorPreconditions);
+                
+                effects.add(new crisp.planningproblem.effect.Universal(distractorQuantifierVars,
+                    new crisp.planningproblem.effect.Conditional(distractorPrecondition,
+                        new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", true))));            
+                
                 
             }
             

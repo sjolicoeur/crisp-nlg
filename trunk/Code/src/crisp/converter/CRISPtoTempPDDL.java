@@ -118,11 +118,12 @@ public class CRISPtoTempPDDL {
                 new crisp.planningproblem.goal.Literal("subst(?t,?n,?u)", false));
 
                 
-        // TODO
+        
         // no positive "distractor" literals in the goal state
-        //Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
-        //        new crisp.planningproblem.goal.Literal("distractor(?u,?x)", false));
+        Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
+                new crisp.planningproblem.goal.Literal("distractor(?u,?x)", false));
 
+        // TODO
         // no positive "mustadjoin" literals in the goal state
         //   this is only added if there is an action that creates a mustadjoin constraint
         //   because otherwise the LAMA planner cannot handle universal preconditions 
@@ -134,7 +135,7 @@ public class CRISPtoTempPDDL {
        // }
 
         finalStateGoals.add(noSubst);
-        //finalStateGoals.add(noDistractors);
+        finalStateGoals.add(noDistractors);
         
         
         // no positive needtoexpress-* literals, for any arity used in the communicative 

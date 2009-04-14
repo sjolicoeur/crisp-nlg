@@ -471,11 +471,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
 
                     domain.addConstant(renamePredicate(term.getLabel()), "predicate");
                 }
-
-
-                //               TODO semantic requirements must also be satisfied
-                
-
+               
                 // pragmatic requirements must be satisfied
                 // (for now, this is handled exactly like the semantic content)
                 // TODO - if that's so, why is the body of this loop different than above?
@@ -558,8 +554,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
                     effects.add(new crisp.planningproblem.effect.Universal(distractorQuantifierVars,
                             new crisp.planningproblem.effect.Conditional(distractorPrecondition,
                                     new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", true))));
-                    
-                    
+                                        
                 }
                 
                 // internal nodes: allow adjunction

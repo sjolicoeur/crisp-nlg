@@ -28,6 +28,7 @@ public class TAGLexEntry{
        labels (here semantic roles) to the probabilities.*/
     private HashMap<String, HashMap<String, Float>> substProb;
     private HashMap<String, HashMap<String, Float>> adjProb;
+    private HashMap<String, Float> noAdjProb; 
     
     private float initProb;
     
@@ -45,6 +46,7 @@ public class TAGLexEntry{
         lexValues = new HashMap<String,String>();
         substProb = new HashMap<String, HashMap<String, Float>>();
         adjProb = new HashMap<String, HashMap<String, Float>>();
+        noAdjProb = new HashMap<String, Float>();
     }
 
     /************ Setter methods **********************/
@@ -84,13 +86,25 @@ public class TAGLexEntry{
         }
     }
     
+    public void addNoAdjProb(String targetNode, float prob){
+        noAdjProb.put(targetNode, new Float(prob));
+    }
+    
     /************ Getter methods *******************/
     public String getID(){ return id; }
     public String getTreeName(){ return normalizeTreename(treeRef+"-"+word);}
     public String getTreeRef(){ return treeRef; }
     public String getPOS(){ return pos; }
     public String getWord(){ return word; }
-    public String getSemContent() { return semContent; }
+    public String getSemContent() {
+        if (semContent==null)
+            return null;
+        
+        if (semContent.equals(""))
+            return null;
+        
+        return semContent;
+    }
     public LinkedList<String> getSemReqs(){ return semReqs; }
     public LinkedList<String> getPragConds(){ return pragConds; }
     public LinkedList<String> getPragEffects(){ return pragEffects; }
@@ -104,7 +118,10 @@ public class TAGLexEntry{
     public HashMap<String, HashMap<String, Float>> getAdjProbs(){
             return adjProb;
     }
- 
+    public HashMap<String, Float> getNoAdjProbs(){
+            return noAdjProb;
+    }
+    
     /**
     * Translates XTAG style tree names into tree names that PDDL will accept.
     *

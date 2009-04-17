@@ -72,7 +72,7 @@ public class PrecomputedActions {
     private Map<String,List<String>> roles = new HashMap<String, List<String>>();
     private Map<String,TAGTree> trees = new HashMap<String, TAGTree>();
     
-    private int plansize = 5;
+    private int plansize = 15;
     private int maximumArity = 0;
     
     /*********************** Constructors *****************/
@@ -114,29 +114,36 @@ public class PrecomputedActions {
         return grammar;
     }
     
+      
+    // TODO actionsBySemContent now requires a collection of terms, not strings
+    //public ArrayList<DurativeAction> getAllActions(){
+    //    return retrieveActions(actionsBySemContent.keySet());
+    //}
+    
     
     /**
     * Retrieve a set of actions to include in the domain for the 
     * current planning problem. This method should return a minimal
     * set of actions that can have true preconditions during planning
     * for the given problem.
-    * @param problem The problem for which to select appropriate actions
+    * @param items A list of terms that is true in the initial state of a given problem.
     * @return A list of actions to generate a domain for a given planning problem. 
     */
-    public ArrayList<DurativeAction> retrieveActions(Collection<String> items) {
+    public ArrayList<DurativeAction> retrieveActions(Collection<Term> items) {
         ArrayList<DurativeAction> ret = new ArrayList<DurativeAction>();
-        for (String key : items) {
-            ArrayList<DurativeAction> actions = actionsBySemContent.get(key);
-            if (actions != null)
-                ret.addAll(actions);
+        for (Term t : items) {
+            if (t.isCompound()) {
+                Compound comp = (Compound) t;
+                String key = comp.getLabel()+"-"+comp.getSubterms().size();
+                ArrayList<DurativeAction> actions = actionsBySemContent.get(key);
+                if (actions != null)
+                    ret.addAll(actions);
+            }
         }
         ret.addAll(emptyActions); // Add actions with empty semantics
         return ret;
     }
-    
-    public ArrayList<DurativeAction> getAllActions(){
-        return retrieveActions(actionsBySemContent.keySet());
-    }
+       
     
     /******************** Methods to create actions ***************/
     
@@ -340,6 +347,7 @@ public class PrecomputedActions {
             // canadjoin
             //System.out.println(treeIdent+"#"+cat+"#"+role+"#"+roleN);
             effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" +entry.getTreeName() + ", " + adjNode.getIndex() + ", "+ roleN+ ")", true));
+            effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" +entry.getTreeName() + ", " + adjNode.getIndex() + ", "+ roleN+ ")", true));
             
             constants.put(adjNode.getIndex(),"nodetype");
             
@@ -372,6 +380,7 @@ public class PrecomputedActions {
     * it to the object's action list.
     */
     private void createActions(TAGLexEntry target, String nodeID, TAGLexEntry plugger, int actionType, float prob){
+                
         
         
         String targetTreeRef = target.getTreeRef();
@@ -391,15 +400,17 @@ public class PrecomputedActions {
         actionNameBuf.write(pluggerTreeName);
         actionNameBuf.write("-");  
         actionNameBuf.write(targetTreeName);        
-        actionNameBuf.write("-");
+        actionNameBuf.write("-");        
         actionNameBuf.write(nodeID);
-        
+                                     
         String actionName = actionNameBuf.toString();
+                
+        String semContent = plugger.getSemContent();                        
         
-        String semContent = plugger.getSemContent();        
+        TAGTree pluggerTree = trees.get(pluggerTreeRef);        
+        TAGTree targetTree = trees.get(targetTreeRef);        
         
-        TAGTree targetTree = trees.get(targetTreeRef);
-        TAGTree pluggerTree = trees.get(pluggerTreeRef);
+        
         
         //String rootCategory = targetTree.getRootNode().getCat();
         
@@ -419,6 +430,8 @@ public class PrecomputedActions {
                     n.put(role, role +"-"+ i);
                 I.put(n.get(role), "?x" + (roleno++));
             }
+
+            
             
             HashMap<String,String> constants = new HashMap<String,String>();
             constants.put(targetTreeName,"treename");
@@ -430,16 +443,18 @@ public class PrecomputedActions {
             ArrayList<Predicate> predicates = new ArrayList<Predicate>();
             
             //constants.put(rootCategory,"category");                       
-            
+
+
+            // Compute the predicate            
             Predicate pred = new Predicate();
             ArrayList<Goal> preconds = new ArrayList<Goal>();
             ArrayList<Effect> effects = new ArrayList<Effect>();
-            
-            // Compute the predicate
+                                   
             pred.setLabel(actionName + "-"+  (i-1));
             pred.addVariable("?u","syntaxnode");
             for (String role : roles.get(pluggerTreeRef))
                 pred.addVariable(I.get(n.get(role)), "individual");
+            
             
             // Syntaxnode must be referent for first individual
             preconds.add(new crisp.planningproblem.goal.Literal("referent(?u,?x1)", true));
@@ -465,6 +480,8 @@ public class PrecomputedActions {
             // semantic content must be satisfied 
             List<Term> contentWithVariables = new ArrayList<Term>();
             boolean hasContent = false;
+            
+            
             
             Compound term = null;
             if (semContent != null) {
@@ -603,6 +620,7 @@ public class PrecomputedActions {
                 // canadjoin
                 //System.out.println(treeIdent+"#"+cat+"#"+role+"#"+roleN);
                 effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" +pluggerTreeName + ", " + adjNode.getIndex() + ", " + roleN + ")", true));
+                effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" +pluggerTreeName + ", " + adjNode.getIndex() + ", " + roleN + ")", true));
                 
                 constants.put(adjNode.getIndex(),"nodetype");
                 
@@ -628,6 +646,47 @@ public class PrecomputedActions {
         }
     }
     
+    public void createNoAdjoinAction(TAGLexEntry entry, String nodeID, float prob) {
+        
+        String treeName = entry.getTreeName();
+                
+        String actionName = "noadj-"+treeName+"-"+nodeID;
+        
+        for (int i = 1; i <= plansize; i++) {
+           
+           HashMap<String, String> constants = new HashMap<String, String>();      
+           
+           constants.put(treeName,"treename");
+           constants.put("step"+(i-1),"stepindex");
+           constants.put("step"+i,"stepindex");
+
+
+           // Compute the predicate           
+           Predicate pred = new Predicate();
+           ArrayList<Goal> preconds = new ArrayList<Goal>();
+           ArrayList<Effect> effects = new ArrayList<Effect>();
+                                    
+           pred.setLabel(actionName + "-"+  (i-1));
+           pred.addVariable("?u","syntaxnode");
+           
+            
+           // Count the step
+           preconds.add(new crisp.planningproblem.goal.Literal("step(step"+(i-1)+")",true));
+           effects.add(new crisp.planningproblem.effect.Literal("step(step"+(i-1)+")",false));
+           effects.add(new crisp.planningproblem.effect.Literal("step(step"+i+")",true));            
+            
+           constants.put(nodeID,"nodetype");            
+           preconds.add(new crisp.planningproblem.goal.Literal("canadjoin(" + treeName+ ","+ nodeID + ", ?u)", true));
+           effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" + treeName+ ","+ nodeID + ", ?u)", false)); 
+                                 
+           ArrayList<Predicate> predicates = new ArrayList<Predicate>();           
+           // Assemble and store action          
+           DurativeAction newAction = new DurativeAction(pred, new crisp.planningproblem.goal.Conjunction(preconds), new crisp.planningproblem.effect.Conjunction(effects), constants, predicates, probabilityToDuration(prob));
+           emptyActions.add(newAction);
+        }
+        
+    }
+    
     
     /**
     * Create actions from a TAGrammar object.
@@ -636,18 +695,22 @@ public class PrecomputedActions {
         
         // get trees from grammar and store them in a hashmap by name.
         for(TAGTree tree : grammar.getTrees() ) {
-            
+                                    
             String treeName = tree.getID();
+            
             trees.put(treeName, tree);
             
             // store list of roles in each tree in a map by name
             roles.put(treeName, tree.getRoles());
         }
         
+        
         for (TAGLexEntry entry : grammar.getLexicon()) {
             
             String treeRef = entry.getTreeRef();
             TAGTree tree = trees.get(entry.getTreeRef());
+            
+            
             
             
             // Create action to use this tree as initial tree, if there is any 
@@ -663,7 +726,14 @@ public class PrecomputedActions {
                 System.err.println("Warning: Couldn't create initial action for "+
                 entry.getTreeName()+". Tree not found: "+e);               
             }
+                 
             
+            // Create actions for no-adjoin on every node of this tree
+            HashMap<String, Float> noAdjProbs = entry.getNoAdjProbs();
+            System.out.println(noAdjProbs);
+            for (String node: noAdjProbs.keySet()){
+                createNoAdjoinAction(entry, node, noAdjProbs.get(node));
+            }
             
             /* Create one action for substitution of every tree into 
             every other tree if there is a probability >0.*/
@@ -673,7 +743,7 @@ public class PrecomputedActions {
                 String[] keyElements = key.split("-",2);                
                 String targetTree = keyElements[0];
                 String targetLex = keyElements[1];
-                
+                                                
                 
                 HashMap<String, Float> substLabelProbs = substProbs.get(key);
                 
@@ -703,8 +773,7 @@ public class PrecomputedActions {
                 String[] keyElements = key.split("-");
                 String targetTree = keyElements[0];
                 String targetLex = keyElements[1];
-                
-                
+                                
                 HashMap<String, Float> adjLabelProbs = adjProbs.get(key);
                 // for each possible node in the target tree           
                 for (String node : adjLabelProbs.keySet()){ 

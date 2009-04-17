@@ -300,6 +300,8 @@ public class GrammarParser extends DefaultHandler {
                 entry.addSubstProb(probTree,probLex, probTargetNodeID, prob);
             else if (probType.equals("adjoin"))
                 entry.addAdjProb(probTree,probLex, probTargetNodeID, prob);
+            else if (probType.equals("noadjoin"))
+                entry.addNoAdjProb(probTargetNodeID, prob);
             
            
         }

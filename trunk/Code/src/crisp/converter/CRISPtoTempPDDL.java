@@ -38,22 +38,29 @@ public class CRISPtoTempPDDL {
 	 */
 	public static void main(String[] args) throws Exception {
 
+            
         long start = System.currentTimeMillis();
         PrecomputedActions actions  = new PrecomputedActions(new File(args[0]));
         long end = System.currentTimeMillis();
-        long precomputeTime = end-start;
+        long precomputeTime = end - start;
 
-
-
-		start = System.currentTimeMillis();
-
+        
         // Initialize new domain
         Domain domain = new Domain();
         setupDomain(domain);
+        
+        start = System.currentTimeMillis();
+        Problem problem = ProblemParser.parseProblem(new File(args[1]),domain);
+        end = System.currentTimeMillis();        
+        long problemParseTime = end-start;        
+        
 
-		ArrayList<DurativeAction> selectedActions = actions.getAllActions();
+		start = System.currentTimeMillis();       
+        //select actions whose semantic content is mentioned in the initial state (+empty actions)        
+		ArrayList<DurativeAction> selectedActions = actions.retrieveActions(problem.getInitialState());
+        
         //  Add all actions and corresponding predicates and constants to 
-        //  the domain
+        //  the domain        
         for (DurativeAction a: selectedActions){
             domain.addAction(a);
             HashMap<String,String> constants = a.getDomainConstants();
@@ -67,13 +74,11 @@ public class CRISPtoTempPDDL {
                 for (Predicate pred : predicates) 
                    domain.addPredicate(pred);
         }
-		end = System.currentTimeMillis();
-
-		
+		end = System.currentTimeMillis();		
 		long domainCreationTime = end-start;
 
 		start = System.currentTimeMillis();
-        Problem problem = ProblemParser.parseProblem(new File(args[1]),domain);
+        
         String domainName = "domain-"+problem.getName();
         domain.setName(domainName);
         problem.setDomain(domainName);
@@ -129,10 +134,10 @@ public class CRISPtoTempPDDL {
         //   because otherwise the LAMA planner cannot handle universal preconditions 
         //   involving this predicate
         //if (domain.sawMustadjoin()){ 
-        //    Goal noMustAdj= new crisp.planningproblem.goal.Universal(tlCatNode,
-        //        new crisp.planningproblem.goal.Literal("mustadjoin(?a,?u)", false));
-        //    finalStateGoals.add(noMustAdj);
-       // }
+            Goal noMustAdj= new crisp.planningproblem.goal.Universal(tlCatNode,
+                new crisp.planningproblem.goal.Literal("mustadjoin(?t, ?n, ?u)", false));
+            finalStateGoals.add(noMustAdj);
+        //}
 
         finalStateGoals.add(noSubst);
         finalStateGoals.add(noDistractors);
@@ -143,6 +148,7 @@ public class CRISPtoTempPDDL {
         // the universal precondition involving needtoexpress predicates that do not occur        
         // elsewhere as an effect        
         for( Integer i : problem.getComgoalArities()) {
+            System.out.println("Found needtoexpress for arity "+i.toString());
             TypedVariableList tlPredicate = new TypedVariableList();
             tlPredicate.addItem(new Variable("?P"), "predicate");
             

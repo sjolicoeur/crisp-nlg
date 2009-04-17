@@ -176,11 +176,9 @@ public class ProblemParser extends DefaultHandler {  // Default Handler already 
                 Compound c = (Compound) term;
                 
                 int arity = c.getSubterms().size();
-                if( arity > maximumArity ) {
-                    maximumArity = arity;
-                }
+                problem.registerComgoalArity(arity);
                 
-                domain.addConstant(renamePredicate(c.getLabel()), "predicate");
+                domain.addConstant(renamePredicate(c.getLabel()), "predicate");                               
                 
                 problem.addToInitialState(flattenTerm(c, "needtoexpress"));
             }

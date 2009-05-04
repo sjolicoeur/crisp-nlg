@@ -19,7 +19,7 @@
 Exzellenzcluster / FR 4.7 Computerlinguistik \\
 Saarland University \\
 Postfach 151150 \\
-66041 Saarbrücken \\
+66041 Saarbr\"ucken \\
 Germany \\
 Phone: +49 681 302 70040 \\
 Fax: +49 681 302 4351 \\
@@ -43,6 +43,9 @@ E-mail: \url{rpetrick@inf.ed.ac.uk}}
 \doublespacing
 
 \bibpunct{(}{)}{;}{a}{}{,}
+
+\newcommand{\todo}[1]{\textbf{(#1)}}
+
 
 \begin{document}
 
@@ -80,79 +83,142 @@ planning community.
 \section{Introduction}
 \label{sec:introduction}
 
-Natural language generation (NLG; \citealp{reiter00building}) is one of the
-major subfields of natural language processing, concerned with computing
-natural language sentences or texts that convey a given piece of
-information to the user. Intuitively, this task can be viewed as a problem
-involving actions, beliefs, and goals: an agent communicating with another
-agent tries to change the mental state of the hearer by applying actions
-which correspond to the utterance of words or sentences.
-This characterization of NLG suggests obvious parallels to automated
-planning---a view which has a long tradition in NLG. 
+Natural language generation (NLG; \citealp{reiter00building}) is one
+of the major subfields of natural language processing, concerned with
+computing natural language sentences or texts that convey a given
+piece of information to the user. This task can be viewed as a problem
+of achieving a (communicative) goal by successively applying
+(communicative) actions, and thus has clear intuitive parallels to
+automated planning.
 
-Early approaches to generation as planning
-\citep{perrault80,appelt:planning,hovy88,young94dpocl} focused primarily on
-planning high-level structures, such as speech acts and discourse
-relations.  While these approaches suffered from the inefficiency of the
-planners that were available at the time, there has recently been a
-resurgence of interest in applying modern planning techniques to NLG.
-These newer papers revisit speech act planning based on the more expressive
-planning formalisms available today \citep{Steedman-Petrick:07,benotti08b}
-and exploit the improved efficiency of modern planners for an integrated
-model of sentence planning and surface realization \citep{KolSto07}.
-Problems in NLG are often computationally challenging (see, e.g.,
-\citep{KolStr02}), and these new approaches combine an interest in planning
-as a modelling tool for natural language, with a hope of improved
-efficiency by exploiting modern approaches and algorithms.
+This view of generation as planning has a long tradition in NLG
+\citep{perrault80,appelt:planning,hovy88,young94dpocl}. Despite their
+theoretical attractiveness, these early approaches never gained
+mainstream use in applied systems, in part because of the inefficiency
+of the planners that were available at the time. However, the recent
+improvements in planner efficiency and expressiveness has sparked a
+renewed interest in applying modern planning techniques to NLG---both
+on the level of speech act planning
+\citep{Steedman-Petrick:07,benotti08b} and and on the level of
+sentence generation \citep{KolSto07}. The goal of this paper is to
+determine, by looking at some representative generation problems,
+whether planning has advanced to the point that this enterprise can be
+successful this time.
 
-The focus of this paper is twofold. First, we present two novel planning
-domains that arise in the context of natural language generation: the
-sentence generation domain and the GIVE domain. In the sentence generation
+The focus of this paper is twofold. First, we present two generation
+problems that have recently been cast as planning problems: the
+sentence generation task and the GIVE task. In the sentence generation
 task, the goal is to generate a single sentence that expresses a given
-meaning. \citet{KolSto07} cast this domain as a planning problem, where the
-plan encodes the necessary sentence and the actions correspond to uttering
-individual words.  In the GIVE domain (``Generating Instructions in Virtual
-Environments''), we describe a new shared task that was recently posed as a
-challenge for the NLG community \citep{alexander07:_shared_task_propos}.
-GIVE uses planning as part of an NLG system that generates natural-language
-instructions to guide a user in performing a given task in a virtual
-environment.
+meaning. \citet{KolSto07} cast this task as a planning problem, where
+the plan encodes the necessary sentence and the actions correspond to
+uttering individual words.  In the GIVE domain (``Generating
+Instructions in Virtual Environments''), we describe a new shared task
+that was recently posed as a challenge for the NLG community
+\citep{ByrKolStrCasDalMooObe09}.  GIVE uses planning as part of an NLG
+system that generates natural-language instructions to guide a user in
+performing a given task in a virtual environment.
 
 Second, we discuss some of our experiences using off-the-shelf
-planners in our two NLG-inspired domains. In particular, we explore the
-efficiency of FF \citep{HoffmannNebel01} and SGPLAN
+planners in our two NLG-inspired domains. In particular, we explore
+the efficiency of FF \citep{HoffmannNebel01} and SGPLAN
 \citep{hsu06:_new_featur_in_sgplan_for}: two planners that are readily
-available, support an expressive subset of the Planning Domain Definition
-Language (PDDL; McDermott et al.~\citeyear{PDDL}) for encoding domains, and
-have been successful on traditional benchmarks and problems from the
-International Planning Competition (IPC)\footnote{See
- \url{http://ipc.icaps-conference.org/} for information about past
- editions of the IPC.}.
-We test these planners on a range of problem instances in our planning
-domains, and compare our results against an ad-hoc Java implementation of
-GraphPlan \citep{Blum1997}. Overall, our findings are mixed. On the one
-hand, we demonstrate that modern planners can easily handle some of the
-moderately-sized search problems that arise in NLG. In certain cases, the
-planners we tested are more efficient than specialized NLG algorithms
-applied to the same problem. On the other hand, these same planners spend
-tremendous amounts of time on preprocessing. For instance, in the sentence
-generation domain, FF spends 90\% of its runtime grounding out literals and
-actions, and ends up being slower than our version of GraphPlan that avoids
-grounding. For domains like ours, which are dominated by the number of
-actions and the universe size, rather than the combinatorics of the search
-problem, this observation suggests that the overall runtime of a planner
-could be improved by grounding more selectively. This is particularly true
-for large problem instances, which still remain a challenge for the
-planners we tested, and where the effects of the grounding approach become
-quite pronounced. We therefore offer our NLG domains as challenges for the
-planning community.
+available, support an expressive subset of the Planning Domain
+Definition Language (PDDL; McDermott et al.~\citeyear{PDDL}) for
+encoding domains, and have been successful on traditional benchmarks
+and problems from the International Planning Competition
+(IPC)\footnote{See \url{http://ipc.icaps-conference.org/} for
+  information about past editions of the IPC.}.  We test these
+planners on a range of problem instances in our planning domains, and
+compare our results against an ad-hoc Java implementation of GraphPlan
+\citep{Blum1997}. Overall, our findings are mixed. On the one hand, we
+demonstrate that modern planners can easily handle the \emph{search}
+problems that arise in NLG on realistic inputs, which is promising
+given that the sentence generation task, at least, is NP-complete
+\citep{KolStr02}. On the other hand, these same planners spend
+tremendous amounts of time on preprocessing. For instance, in the
+sentence generation domain, FF spends 90\% of its runtime grounding
+out literals and actions, and ends up being slower than our version of
+GraphPlan that avoids grounding. For domains like ours, which are
+dominated by the number of actions and the universe size, rather than
+the combinatorics of the search problem, this observation suggests
+that the overall runtime of a planner could be improved by grounding
+more selectively. This is particularly true for large problem
+instances, which still remain a challenge for the planners we tested,
+and where the effects of the grounding approach become quite
+pronounced. We conclude that planning \emph{algorithms} have advanced
+to the point that generation as planning is now a realistic endeavour,
+but the concrete \emph{implementations} of these algorithms must be
+improved to be useful in this application, and offer our NLG domains
+as challenges for the planning community.
+
+This paper is structured as follows. We begin by briefly reviewing
+some of the literature on NLG as planning
+(Section~\ref{sec:nlg-as-planning}. Then we define introduce the
+planning problems arising in two particular NLG tasks in more detail
+in Section~\ref{sec:domains}. We report on some experiments with these
+planning problems in Section~\ref{sec:experiments}, and discuss the
+results in Section~\ref{sec:discussion}. Section~\ref{sec:conclusion}
+concludes.
 
 
-\section{Planning in NLG}
+\section{NLG as Planning} \label{sec:nlg-as-planning}
+
+The task of generating natural language from semantic representations
+is typically split up into two parts: the \emph{domain planning} task,
+which selects the information that is to be conveyed and structures it
+into sentence-sized chunks, and the \emph{sentence generation} tasks,
+which then translates each of these chunks into natural language
+sentences. The sentence generation task is often split up into two
+parts of its own---the \emph{sentence planning} task, which enriches
+the input by e.g.\ determining how to refer to objects and selects
+some lexical material, and the \emph{surface realization} task, which
+maps the enriched meaning representation into a sentence using a
+grammar. The chain of domain planning, sentence planning, and surface
+realization is sometimes called the ``NLG pipeline''
+\cite{reiter00building}. 
+
+Viewing generation as a planning problem has a long tradition in the
+NLG literature, especially in discourse planning. \todo{Sketch
+  Perrault et al here. Say something very brief about Appelt, Hovy,
+  Moore. Say why all this didn't really work.}
+
+Most recently, interest in generation as planning has been revived for
+NLG tasks on various levels of the NLG pipeline. Below, we will look
+in some detail at \cite{KolSto07}'s recasting of sentence generation
+as planning; furthermore, \cite{Steedman-Petrick:07} and
+\cite{benotti08b} have applied planning to \todo{something}. Notice
+that although all of these approaches encode ``communicative actions''
+as planning operators, they still solve fundamentally different
+problems. For instance, Perrault et al.\ tackled discourse planning
+with planning operators that encode speech acts, each of which
+represents the meaning of a whole sentence and models the contribution
+of this sentence to the intentional structure of the entire
+discourse. By contrast, Koller and Stone solve a sentence generation
+problem using planning operators that encode utterances of single
+words and model the contribution of each word to the grammatical
+structure of the sentence. Whether these different levels of ``NLG as
+planning'' could be combined into a single planning problem, and
+whether this would make computational sense, is an open question.
+
+Problems in NLG at all levels of description can become
+computationally complex very easily. For instance, \citet{KolStr02}b
+showed that even surface realization is NP-complete under reasonable
+assumptions. This makes it necessary to investigate methods for
+guiding the search, which makes modern planning techniques a promising
+approach to NLG. The point of this paper is to investigate whether
+existing planners fulfill this promise of efficiency for the
+application to NLG.
+
+
+
+
+\section{Two NLG Tasks}
 \label{sec:domains}
 
-We begin by presenting our two planning domains: the sentence generation
-domain and the instruction giving domain.
+We will now focus the discussion towards two specific NLG problems:
+sentence generation in the sense of \cite{KolSto07}, and the
+generation of instructions in virtual environments
+\cite{ByrKolStrCasDalMooObe09}. 
 
 
 \subsection{Sentence generation as planning}
@@ -191,7 +257,7 @@ task.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.75\columnwidth]{pic-derivation-2}
+  \includegraphics[width=0.75\columnwidth]{pic-derivation}
   \caption{Derivation of ``The white rabbit sleeps.''}
   \label{fig:white-rabbit-sleeps-deriv}
 \end{figure}

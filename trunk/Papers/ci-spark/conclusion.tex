@@ -1,0 +1,61 @@
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+In this paper, we introduced two novel planning domains arising from
+problems in natural language generation: the sentence generation domain and
+the Generating Instructions in Virtual Environments (GIVE) challenge
+domain. We also reported the results of a set of experiments designed to
+evaluate the suitability of off-the-shelf planners (particularly FF and
+SGPLAN) in these domains.
+
+Our results were mixed. While the planners we tested do an impressive job
+of controlling the complexity of search in many domains, they also suffer
+from practical problems that limit their performance in unexpected ways: in
+both of our NLG domains the grounding step performed by FF and SGPLAN
+dominates the time it takes to perform the search itself. As future work,
+we hope to extend our analysis to other planners that do not perform the
+initial grounding step, planners such as SHOP2
+\citep{DBLP:journals/jair/NauAIKMWY03} that have traditionally performed
+well on a wide range of domains, and new planners introduced in the latest
+edition of the IPC.\footnote{See
+ \url{http://ipc.informatik.uni-freiburg.de/} for details of the 2008
+ International Planning Competition (deterministic track).}
+
+The NLG community's recent interest in planning presents a valuable
+opportunity for planning researchers. Domains like GIVE highlight certain
+challenges, such as plan execution monitoring and plan presentation (i.e.,
+summarisation and elaboration), but also offer a platform on which such
+technologies can be evaluated in experiments with human users. Although we
+have focused on classical planning problems in this work, research related
+to reasoning under uncertainty, resource management, and planning with
+knowledge and sensing, can also be investigated in these settings. As such,
+we believe our domains would provide suitable challenges for planners
+entered in future editions of the IPC. Provided some of the challenges we
+have identified can be addressed, NLG-inspired problem domains offer a
+constructive platform for the planning community to showcase their
+techniques to a wider audience---and to improve the quality of their tools
+for real-world planning tasks. 
+
+\todo{planning claims general applicability; it's clear that IPC
+  benchmarks focus areas of improvement; but it's not so clear to what
+  extent this limits usefulness for non-IPC application areas; this
+  paper evaluates this (for the first time??)}
+
+
+
+\section*{Acknowledgements}
+
+This work arose in the context of the Planning and Language Interest Group
+at the University of Edinburgh. The authors would like to thank all members
+of this group, especially Hector Geffner and Mark Steedman, for interesting
+discussions. This work was partially supported by the DFG Research
+Fellowship ``CRISP: Efficient integrated realization and microplanning''
+and by the European Commission through the PACO-PLUS project
+(FP6-2004-IST-4-27657).
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "manuscript"
+%%% End: 

@@ -1,0 +1,54 @@
+
+\section{NLG as Planning} \label{sec:nlg-as-planning}
+
+The task of generating natural language from semantic representations
+is typically split up into two parts: the \emph{domain planning} task,
+which selects the information that is to be conveyed and structures it
+into sentence-sized chunks, and the \emph{sentence generation} tasks,
+which then translates each of these chunks into natural language
+sentences. The sentence generation task is often split up into two
+parts of its own---the \emph{sentence planning} task, which enriches
+the input by e.g.\ determining how to refer to objects and selects
+some lexical material, and the \emph{surface realization} task, which
+maps the enriched meaning representation into a sentence using a
+grammar. The chain of domain planning, sentence planning, and surface
+realization is sometimes called the ``NLG pipeline''
+\cite{reiter00building}. 
+
+Viewing generation as a planning problem has a long tradition in the
+NLG literature, especially in discourse planning. \todo{Sketch
+  Perrault et al here. Say something very brief about Appelt, Hovy,
+  Moore. Say why all this didn't really work.}
+
+Most recently, interest in generation as planning has been revived for
+NLG tasks on various levels of the NLG pipeline. Below, we will look
+in some detail at \cite{KolSto07}'s recasting of sentence generation
+as planning; furthermore, \cite{Steedman-Petrick:07} and
+\cite{benotti08b} have applied planning to \todo{something}. Notice
+that although all of these approaches encode ``communicative actions''
+as planning operators, they still solve fundamentally different
+problems. For instance, Perrault et al.\ tackled discourse planning
+with planning operators that encode speech acts, each of which
+represents the meaning of a whole sentence and models the contribution
+of this sentence to the intentional structure of the entire
+discourse. By contrast, Koller and Stone solve a sentence generation
+problem using planning operators that encode utterances of single
+words and model the contribution of each word to the grammatical
+structure of the sentence. Whether these different levels of ``NLG as
+planning'' could be combined into a single planning problem, and
+whether this would make computational sense, is an open question.
+
+Problems in NLG at all levels of description can become
+computationally complex very easily. For instance, \citet{KolStr02}
+showed that even surface realization is NP-complete under reasonable
+assumptions. This makes it necessary to investigate methods for
+guiding the search, which makes modern planning techniques a promising
+approach to NLG. The point of this paper is to investigate whether
+existing planners fulfill this promise of efficiency for the
+application to NLG.
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "manuscript"
+%%% End: 

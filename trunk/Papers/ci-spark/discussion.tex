@@ -1,0 +1,71 @@
+
+\section{Discussion}
+\label{sec:discussion}
+
+The positive conclusion we draw from our simple set of experiments is that
+modern planners are fairly good at controlling the search for many of the
+moderately-sized NLG problems we looked at. This is particularly true for
+FF in the sentence generation domain, which generates nontrivial 14-word
+sentences in about two seconds. Our results also indicate there is still
+room for improvement, however: special-purpose algorithms are able to
+generate much larger referring expressions in milliseconds
+\citep{AreKolStr08}. Although search efficiency is not the main concern in
+these domains, it nevertheless becomes a factor in scenarios like
+Experiment~2, where the world is almost completely unconstrained and
+(unsurprisingly) the search becomes much slower.
+
+The most restrictive bottleneck in the two NLG domains we investigated is
+the initial grounding step that many modern planners perform. While this
+may be a good strategy for traditional planning benchmarks and IPC
+domains---where plan length often dominates universe size and an initial
+investment into grounding pays off in saved instantiations during
+search---this approach has a very pronounced effect in domains like ours.
+As our experiments show, there are natural planning domains in which
+relatively short plans must be computed in large universes. For instance,
+in the sentence generation domain, it is not unrealistic to look for plans
+of length 20 over a universe consisting of thousands of domain individuals
+and tens of thousands of possible action instantiations, some of which
+require three domain individuals as parameters. Planners like FF and SGPLAN
+are less effective in such domains, to the point that grounding
+often dominates the total running time of these planners. (In the case of
+Experiment~1, our ad-hoc implementation of GraphPlan outperforms both
+planners in the sentence generation task.)
+
+Since our domains are not that unusual in their structure and composition,
+we hope that the lessons learned from our experiences can help improve the
+performance of current planning systems. For instance, the common strategy
+of splitting the universe into several types of individuals will not be a
+very effective solution in our NLG domains given the large number of
+individuals that could exist for a given type. On the other hand,
+sophisticated techniques based on reachability analysis may have the
+potential to improve this situation, provided such approaches can avoid the
+drawbacks of unnecessary grounding.\footnote{See
+  \citep{Bryce:07} for a good survey on reachability heuristics for planning
+  graph-based approaches to plan generation.}
+While recent trends in planning research have (rightfully) focused on the
+development of algorithms that control search in sophisticated ways,
+resulting in state-of-the-art planners that are more powerful and
+successful than their predecessors, we nevertheless believe that
+improvements are necessary if planning is to become a more mature
+technology that can offer tools to a wider community of users and
+researchers. At the end of the day, real-world users will care about the
+\emph{total} runtime of a planner, which is more than just the search time.
+
+By and large, our experiences with the planning community from a user's
+point of view have been favourable. Thanks to the planning competitions, it
+is easy to identify and download a fast state-of-the-art planner, at least
+for Linux. However, in the course of our experiments we found and reported
+bugs in both FF and SGPLAN. We also discovered that deciding as to which
+planner is appropriate for a particular task is not always straightforward,
+as the best performing planner in the IPC is not necessarily suitable for
+every planning task. As our experiments have shown, even planners as
+closely related as FF and SGPLAN can differ significantly in their
+performance on different domains (for instance, our results in
+Experiment~4).
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "manuscript"
+%%% End: 

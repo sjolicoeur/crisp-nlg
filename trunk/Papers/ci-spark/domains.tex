@@ -9,40 +9,29 @@ generation of instructions in virtual environments
 
 \subsection{Sentence generation as planning}
 
-Although the sentence generation task is often split up into two
-separate steps for sentence planning and surface realization, the
-decisions that an NLG system must make in these two modules often
-interact. For instance, in order to generate \emph{referring
-  expressions (REs)}, i.e.\ unique descriptions of individuals in the
-universe of discourse, it is necessary to know what properties of
-individuals can be expressed as nouns and adjectives. Grammatical
-information like this should belong exclusively to the surface
-realization module; but on the other hand, RE generation enriches the
-input meaning representation and is therefore usually seen as part of
-sentence planning.
-
-One seminal approach to solving the sentence planning and surface
-realization problems together is offered by the SPUD generation system
-(``Sentence Planning Using Description''; \citealt{Stone2003a}). This
-approach assumes a tree-adjoining grammar (TAG) \citep{joshi;etal1997}
-whose lexical entries are equipped with semantic and pragmatic
-information, as well as two sets of ground atoms: the
-\emph{communicative goal} that specifies what semantic information we
-must express, and a \emph{knowledge base}. Let's consider an example
-to illustrate the problem that SPUD solves. Consider a knowledge base
-containing the individuals $e$, $r_1$ and $r_2$, and a set of
-attributes encoding the fact that $r_1$ and $r_2$ are rabbits, $r_1$
-is white and $r_2$ is brown, and $e$ is an event in which $r_1$
-sleeps.  Say that we want to express the information
-$\{\mathsf{sleep}(e,r_1)\}$ using the tree-adjoining grammar shown in
+One way of modelling the sentence generation problem is to assume a
+lexicalized grammar in which each lexicon entry specifies how it can
+be combined grammatically with the other lexicon entries, what piece
+of meaning it expresses, and what the pragmatic conditions on using it
+are. Sentence generation can then be seen as constructing a
+grammatical derivation that is syntactically complete, respects the
+semantic and pragmatic conditions, and achieves all the
+\emph{communicative goals}. An example is the tree-adjoining grammar
+(TAG; \citep{joshi;etal1997}) shown in
 Figure~\ref{fig:white-rabbit-sleeps-grammar}. This grammar consists of
 \emph{elementary trees} (i.e., the disjoint trees in the figure), each
-of which contributes certain \emph{semantic content}. We can
-instantiate these trees by substituting individuals for \emph{semantic
-  roles}, such as $\mathsf{self}$ and $\mathsf{subj}$, and then
-combine the tree instances as shown in
-Figure~\ref{fig:white-rabbit-sleeps-deriv} to obtain the sentence
-``The white rabbit sleeps''.
+of which contributes certain \emph{semantic content}. Let's say that
+we assume a knowledge base containing the individuals $e$, $r_1$ and
+$r_2$ and the facts that $r_1$ and $r_2$ are rabbits, $r_1$ is white
+and $r_2$ is brown, and $e$ is an event in which $r_1$ sleeps. Then we
+would want to construct a sentence expressing the information
+$\{\mathsf{sleep}(e,r_1)\}$ by combining instances of the elementary
+trees (in which the \emph{semantic roles}, such as $\mathsf{self}$ and
+$\mathsf{subj}$, have been substituted by constants from the knowledge
+base) into a TAG derivation as as shown in
+Figure~\ref{fig:white-rabbit-sleeps-deriv}. We can then read off the
+sentence ``The white rabbit sleeps'' from the derivation. \todo{need
+  to mention distractors and unique REs here}
 
 \begin{figure}[t]
   \centering
@@ -58,26 +47,21 @@ Figure~\ref{fig:white-rabbit-sleeps-deriv} to obtain the sentence
   \label{fig:white-rabbit-sleeps-deriv}
 \end{figure}
 
-We can now consider various different algorithms for solving the SPUD
-problem. The naive algorithm builds the TAG derivation top-down. In
-the example, it starts with the elementary tree for ``sleeps''. This
-tree satisfies the need to convey the semantic information, but
-introduces a need to generate a noun phrase (NP) for the subject,
-which must refer uniquely to the target referent $r_1$. In a second
-step, we substitute the tree for ``the rabbit'' into the open NP leaf,
-which makes the derivation grammatically complete. Since there are two
-different individuals that could be described as ``the
-rabbit''---technically, $r_2$ is still a \emph{distractor} (i.e.,
-based on the description ``the rabbit'', the hearer might erroneously
-think that we're talking about $r_2$ and not $r_1$)---we are still not
-finished. To complete the derivation, the tree for ``white'' is added
-to the existing structure by an \emph{adjunction} operation, making
-the derivation both syntactically and semantically complete. This
-search algorithm takes worst-case exponential time because it may have
-to consider many combinations of elementary trees; and in fact, the
-SPUD problem generalizes the surface realization problem considered by
-\citet{KolStr02} and is therefore NP-complete.
-
+This perspective on sentence generation has the advantage of solving
+the sentence planning and surface realization problems simultaneously:
+in the example, we can require that referring expressions ``the white
+rabbit'' can be resolved uniquely to $r_1$ by the hearer, in addition
+to the requirement that the derivation is grammatically correct. This
+is useful in cases where sentence planning and surface realization
+interact, because syntactic information about the individual words is
+available when the REs are generated (see
+e.g. \cite{stone98textual}). However, the problem of whether a given
+communicative goal can be achieved with a given grammar is NP-complete
+\cite{KolStr02}. A naive search algorithm that computes the derivation
+top-down takes exponential time and is clearly infeasible to use in
+practice. The SPUD system \cite{Stone2003a}, which worked this idea
+out for the first time, uses a greedy algorithm, which circumvents the
+combinatorial explosion but is incomplete.
 
 \begin{figure}[p]
 \centering
@@ -133,14 +117,13 @@ sleeps.''}
 \label{fig:white-rabbit-as-planning}
 \end{figure}
 
-The SPUD system itself worked around this complexity by using a
-greedy, incomplete search algorithm. On the other hand,
-\citet{KolSto07} present an alternative to controlling the necessary
-search, by encoding the generation problem into a planning
-problem.\footnote{See \url{http://code.google.com/p/crisp-nlg/} for
-  the CRISP system, in which this conversion is implemented.} Each
-operator of this planning problem models the addition of some
-elementary tree to the TAG derivation. For instance,
+Here we will look at one recent approach which aims at controlling the
+search by converting the sentence generation problem into a planning
+problem and then running a planner \citet{KolSto07}.\footnote{See
+  \url{http://code.google.com/p/crisp-nlg/} for the CRISP system, in
+  which this conversion is implemented.} \todo{XXX} Each operator of this
+planning problem models the addition of some elementary tree to the
+TAG derivation. For instance,
 Figure~\ref{fig:white-rabbit-as-planning} shows the corresponding PDDL
 actions for the above generation task. The \texttt{add-sleeps}
 operator represents the addition of the elementary tree for ``sleeps''

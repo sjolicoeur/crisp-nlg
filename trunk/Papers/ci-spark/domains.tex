@@ -121,14 +121,14 @@ Here we will look at one recent approach which aims at controlling the
 search by converting the sentence generation problem into a planning
 problem and then running a planner \citet{KolSto07}.\footnote{See
   \url{http://code.google.com/p/crisp-nlg/} for the CRISP system, in
-  which this conversion is implemented.} \todo{XXX} Each operator of this
+  which this conversion is implemented.} Each operator of this
 planning problem models the addition of some elementary tree to the
 TAG derivation. For instance,
 Figure~\ref{fig:white-rabbit-as-planning} shows the corresponding PDDL
-actions for the above generation task. The \texttt{add-sleeps}
-operator represents the addition of the elementary tree for ``sleeps''
-to the derivation. $\verb?add-sleep?(\mathsf{root},e,r_1)$ removes the
-atom $\mathsf{subst}(S,\mathsf{root})$, which expresses that there is
+actions for the above generation task. The $\addact{sleeps}$ operator
+represents the addition of the elementary tree for ``sleeps'' to the
+derivation. $\addact{sleeps}(\mathsf{root},e,r_1)$ removes the atom
+$\mathsf{subst}(S,\mathsf{root})$, which expresses that there is
 currently an open substitution node $\mathsf{root}$ with label $S$,
 from the planning state and replaces it with an atom
 $\mathsf{subst}(NP,\mathsf{subj}(\mathsf{root}))$; here
@@ -145,9 +145,9 @@ individuals except for $r_1$ as distractors for the new RE at
 $\mathsf{subj}(\mathsf{root})$. These distractors can then be removed
 by subsequent applications of the other two operators. By assuming an
 initial state that encodes the knowledge base and contains an atom
-$\mathsf{subst}(S,\emph{root})$, and a goal that contains, among
+$\mathsf{subst}(S,\mathsf{root})$, and a goal that contains, among
 others, $\forall x \forall y. \neg \mathsf{subst}(x,y)$ and
-$\mathsf{expressed}(\emph{sleep},e,r_1)$, a planner will find plans
+$\mathsf{expressed}(\mathsf{sleep},e,r_1)$, a planner will find plans
 like the following:
 %
 \begin{enumerate}
@@ -285,6 +285,18 @@ large numbers of world objects, and navigating through complicated
 room shapes. This relatively loose integration of NLG system and
 planner is the state of the art of the systems that participated in
 GIVE-1.
+
+However, it is desirable to integrate the planner and the generation
+system more closely than this. For instance, let's say that the NLG
+system wants to generate the instruction sequence ``walk to the centre
+of the room; turn right; now press the green button in front of you''.
+Experiments \todo{cite} show that this is a pattern that human
+instruction givers use frequently: The instruction follower is made to
+walk to a certain point in the world at which the instruction giver
+can then use a a referring expression (``the green button'') that is
+very easy to interpret. \todo{XXX}
+
+
 
 However, in order to solve the GIVE task in a more satisfying way, we
 expect that planning and generation will have to be interleaved more

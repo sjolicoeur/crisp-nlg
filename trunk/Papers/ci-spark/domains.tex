@@ -294,75 +294,18 @@ Experiments \todo{cite} show that this is a pattern that human
 instruction givers use frequently: The instruction follower is made to
 walk to a certain point in the world at which the instruction giver
 can then use a a referring expression (``the green button'') that is
-very easy to interpret. \todo{XXX}
-
-
-
-However, in order to solve the GIVE task in a more satisfying way, we
-expect that planning and generation will have to be interleaved more
-closely, making the planning a genuine part of the NLG task. For
-instance, the NLG system could generate an instruction sequence
-starting with ``turn left; walk forward; press the button; turn right;
-walk forward; walk forward; turn right; walk forward; walk forward;
-turn left; walk forward''. But such instructions are clumsy and
-uninteresting; it would be much better to say ``turn around and walk
-through the door''. That is, the system should \emph{summarise} plans
-by merging multiple action instances into single instructions before
-presenting them to the user.\footnote{This task is similar to the
-  construction of ``macro'' actions, but is primarily intended for
-  plan presentation purposes. See, e.g., \citep{Botea-etal:05} which
-  contains a survey of recent approaches for generating macro actions
-  in planning.}  Conversely, it may also be necessary to
-\emph{elaborate} on a single planning step by expressing it with
-several instructions. Having just entered the top left room, it may be
-easier for the user to understand the instruction ``walk to the centre
-of the room; turn right; now press the green button in front of you'',
-rather than the instruction ``press the green button on the wall to
-your right''. Furthermore, in order to plan the referring expression
-``the green button in front of you'' at a time when the button is not
-yet in front of the user, the NLG system must keep track of the
-hypothetical changes in what objects are visible to the user. Thus,
-the NLG acts of referring and instructing must be tightly integrated
-with the modules for plan generation. This makes the GIVE domain
-planning problem an integral part of the NLG system, which makes this
-a second planning problem of immediate relevance to NLG that is
-completely different from the first one.
-
-% It seems to me that this paragraph misses the point. We're not
-% trying to sell GIVE as a cool problem here; we take the perspective
-% that GIVE exists and has already been shown to be cool, and we only
-% talk about solving it here. - AK
-%
-% From a planning perspective, GIVE imposes very strict runtime
-% requirements on the plan generation task: planning must
-% happen in real time and the system must respond to a user in a timely
-% fashion.  If the system takes too much time deliberating over an
-% instruction to give, rather than actually giving this instruction, the
-% user may have walked or turned away, thus making the instruction
-% invalid.  Furthermore, plan execution monitoring also plays an
-% important role in the GIVE problem.  At a high level, the system needs
-% to monitor a user's actions and compare them against the generated
-% instruction set to determine if the user has correctly followed
-% directions or not. In the case of the latter, new instructions may
-% have to be generated. In practice, the situation can be quite
-% complicated since the mental state of the user is not known and so the
-% system must be inferred from observing the user's actions in real
-% time. For example, a user directed to ``turn around and walk through
-% the door'' may not necessarily perform these actions to the letter,
-% i.e., immediately turning 180 degrees and proceeding directly to the
-% door. Instead, the user might take a roundabout route through the
-% room, eventually exiting out the door.  Although the user's actions do
-% not match the generated instructions exactly, they meet the intended
-% goal. The system must be able to identify such ``equivalent'' plans
-% and not immediately generate new instructions as soon as the user's
-% actions have gone off course. Furthermore, a user can communicate
-% certain intentions to the system, both through action and
-% inaction. For instance, the system should infer that a user has failed
-% to follow instructions if the user exits a room when given a directive
-% to ``walk to the centre of the room''. The system should also make a
-% similar conclusion if a user simply does nothing when given the
-% instruction.
-
+very easy to interpret. Such an NLG system must integrate discourse
+planning and planning in the domain of the world map closely: On the
+one hand, the structure of the discourse is determined by the needs of
+the NLG system rather than the domain plan; on the other hand, the
+discourse planner must be aware of the way in which the instruction
+``turn right'' is likely to change the visibility of objects. Even if
+the NLG system doesn't implement the generation of this discourse as
+planning, it still solves a problem that subsumes the domain planning
+problem. For these reasons, we consider the GIVE domain planning
+problem as a natural part of a GIVE NLG system.
+\todo{Make sure that this paragraph still talks about the things that
+  the reviewers found interesting about it.}
 
 %%% Local Variables: 
 %%% mode: latex

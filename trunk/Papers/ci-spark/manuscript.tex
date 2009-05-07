@@ -5,42 +5,56 @@
 %%% 
 %%% Updated: 2008/12/22
 %%%
-\documentclass[letterpaper]{article}
-\usepackage{times}
+\documentclass[useAMS,usenatbib]{coin}
+
+
+
+%\usepackage{times}
 \usepackage{graphicx}
 \usepackage{url}
-\usepackage[round]{natbib}
-\usepackage{setspace}
-\usepackage[paper=letterpaper,margin=1.0in]{geometry}
+\usepackage{natbib}
+%\usepackage{setspace}
+%\usepackage[paper=letterpaper,margin=1.0in]{geometry}
 
 
 \title{Experiences with Planning for Natural Language Generation}
-\author{\textbf{Alexander Koller} \\
-Exzellenzcluster / FR 4.7 Computerlinguistik \\
-Saarland University \\
-Postfach 151150 \\
-66041 Saarbr\"ucken \\
-Germany \\
-Phone: +49 681 302 70040 \\
-Fax: +49 681 302 4351 \\
-E-mail: \url{koller@mmci.uni-saarland.de}
-\and
-\textbf{Ronald P. A. Petrick} \\
-School of Informatics \\
-University of Edinburgh \\
-Informatics Forum, 10 Crichton Street \\
-Edinburgh \ EH8 9AB \\
-Scotland, United Kingdom \\
-Phone: +44 131 650 4426 \\
-Fax: +44 131 650 6899 \\
-E-mail: \url{rpetrick@inf.ed.ac.uk}}
+
+
+\author{{\sc Alexander Koller}\\
+        {\it Cluster of Excellence, Saarland University, Saarbr\"ucken, Germany}\\ 
+		\and
+        {\sc Ronald P. A. Petrick}\\
+        {\it School of Informatics, University of Edinburgh,
+          Edinburgh, UK\thanks{Address correspondence to XXXX.}}
+}
+
+
+% \author{\textbf{Alexander Koller} \\
+% Exzellenzcluster / FR 4.7 Computerlinguistik \\
+% Saarland University \\
+% Postfach 151150 \\
+% 66041 Saarbr\"ucken \\
+% Germany \\
+% Phone: +49 681 302 70040 \\
+% Fax: +49 681 302 4351 \\
+% E-mail: \url{koller@mmci.uni-saarland.de}
+% \and
+% \textbf{Ronald P. A. Petrick} \\
+% School of Informatics \\
+% University of Edinburgh \\
+% Informatics Forum, 10 Crichton Street \\
+% Edinburgh \ EH8 9AB \\
+% Scotland, United Kingdom \\
+% Phone: +44 131 650 4426 \\
+% Fax: +44 131 650 6899 \\
+% E-mail: \url{rpetrick@inf.ed.ac.uk}}
 
 %\date{22 December 2008}
 \date{}
 
-\pagestyle{plain}
-\pagenumbering{arabic}
-\doublespacing
+%\pagestyle{plain}
+%\pagenumbering{arabic}
+%\doublespacing
 
 \bibpunct{(}{)}{;}{a}{}{,}
 
@@ -49,12 +63,13 @@ E-mail: \url{rpetrick@inf.ed.ac.uk}}
 
 \begin{document}
 
-\maketitle
 
-\pagebreak
+%\pagebreak
 \input abstract
 
-\pagebreak
+\maketitle
+
+%\pagebreak
 
 \input introduction
 \input nlg-as-planning

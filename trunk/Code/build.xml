@@ -7,6 +7,7 @@
 
     <!-- property definitions -->
     <property name="build.dir" value="build" />
+    <property name="build.classes" value="build/classes" />
     <property name="dist.dir" value="dist" />
     <property name="javadoc.dir" value="javadoc" />
 
@@ -16,6 +17,8 @@
     <property name="classfiles"
 	      value="de/saar/**/*,crisp/termparser/**/*,crisp/planningproblem/**/*,crisp/planner/lazygp/**/*,crisp/pddl/**/*,crisp/main/*,crisp/converter/*,crisp/tools/*,crisp/result/**/*,crisp/pcrispresult/**/*" />
 
+    <property name="unpacked.classes.basics" value="de/saar/chorus/term/**/*,de/saar/basic/*" />
+    
 
 
 
@@ -24,14 +27,14 @@
     <target name="jar" depends="init,compile">
       <jar jarfile="dist/crisp.jar"
 	   basedir="build/classes"
-	   includes="${classfiles}">
+	   includes="${classfiles},${unpacked.classes.basics}">
             <manifest>
                 <attribute name="Main-Class" value="crisp.main.Generate" />
             </manifest>
       </jar>
       <jar jarfile="dist/lazygp.jar"
 	   basedir="build/classes"
-	   includes="${classfiles}">
+	   includes="${classfiles},${unpacked.classes.basics}">
             <manifest>
                 <attribute name="Main-Class" value="crisp.planner.lazygp.Planner" />
             </manifest>
@@ -39,46 +42,70 @@
 
       <jar jarfile="dist/pddl-converter.jar"
 	   basedir="build/classes"
-	   includes="${classfiles}">
+	   includes="${classfiles},${unpacked.classes.basics}">
             <manifest>
                 <attribute name="Main-Class" value="crisp.converter.CRISPtoPDDL" />
             </manifest>
       </jar>
       <jar jarfile="dist/pks-converter.jar"
 	   basedir="build/classes"
-	   includes="${classfiles}">
+	   includes="${classfiles},${unpacked.classes.basics}">
             <manifest>
                 <attribute name="Main-Class" value="crisp.converter.CRISPtoPKS" />
             </manifest>
       </jar>
       <jar jarfile="dist/crisp-sentence.jar"
 	   basedir="build/classes"
-	   includes="${classfiles}">
+	   includes="${classfiles},${unpacked.classes.basics}">
             <manifest>
                 <attribute name="Main-Class" value="crisp.main.GenerateSentence" />
             </manifest>
       </jar>
     </target>
 
-    <target name="compile" depends="init,-pre-compile">
+    <target name="compile" depends="init,-pre-compile,basics.unpacked">
       <javac srcdir="src" destdir="build/classes"
 	     debug="true"
 	     includes="${sourcefiles}" source="1.5"
-	     fork="yes" />
+	     fork="yes">
+      <classpath>
+	<pathelement path="${build.classes}" />
+      </classpath>
+      </javac>
     </target>
 
     <target name="-pre-compile">
       <javacc 
 	  javacchome="packages/javacc-4.0/bin/lib"
 	  target="src/crisp/pddl/PddlParser.jj" />
-      <javacc 
-	  javacchome="packages/javacc-4.0/bin/lib"
-	  target="src/crisp/termparser/TermParser.jj" />
     </target>
+
+
+
+    <target name="basics.unpacked" depends="init">
+      <antcall target="unpack" >
+	<param name="unpack.jar" value="packages/basics.jar" />
+	<param name="unpack.jar.id" value="basics" />
+      </antcall>
+    </target>
+
+  <target name="unpack" depends="check.unpack" unless="nobuild.unpack">
+    <unjar src="${unpack.jar}" dest="${build.classes}" />
+    <touch file="${build.classes}/timestamps-unpackjar/${unpack.jar.id}" />
+  </target>
+
+  <target name="check.unpack">
+    <uptodate property="nobuild.unpack"
+	      targetfile="${build.classes}/timestamps-unpackjar/${unpack.jar.id}">
+      <srcfiles dir="." includes="${unpack.jar}" />
+    </uptodate>
+  </target>
+
 
     <target name="init">
       <mkdir dir="build" />
       <mkdir dir="build/classes" />
+      <mkdir dir="build/classes/timestamps-unpackjar" />
       <mkdir dir="dist" />
       <mkdir dir="javadoc"/>
     </target>

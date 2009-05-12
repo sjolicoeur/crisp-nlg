@@ -142,7 +142,8 @@ public class PrecomputedActions {
             }
         }
         selectedActions.addAll(emptyActions); // Add actions with empty semantics
-        return returnList;
+        
+        return selectedActions;
     }
        
     

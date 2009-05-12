@@ -6,9 +6,9 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/home/Alex/software/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="bin"/>
 	<classpathentry kind="lib" path="packages/GecodeJ.jar"/>
 	<classpathentry kind="lib" path="packages/org-jdesktop-layout.jar"/>
 	<classpathentry kind="lib" path="packages/swing-layout-1.0.jar"/>
+	<classpathentry kind="lib" path="packages/basics.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

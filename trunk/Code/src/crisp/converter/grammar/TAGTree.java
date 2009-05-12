@@ -61,5 +61,6 @@ public class TAGTree {
             nonSubstNodes = rootNode.getNonSubstNodes(); 
         return nonSubstNodes;
     }
-     
+
+            
 }

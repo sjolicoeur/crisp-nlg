@@ -64,7 +64,7 @@ public class TAGNode extends LinkedList<TAGNode> {
 
     /**
      * Retrieve the list of semantic roles in the subtree rooted by this node.
-     * @returns the list of semantic roles.
+     * @return the list of semantic roles.
      */
     public List<String> getRoleList(){
         LinkedList<String> roleList = new LinkedList<String>();
@@ -76,7 +76,14 @@ public class TAGNode extends LinkedList<TAGNode> {
     }
 
     public List<TAGNode> getSubstNodes() { return substNodes; }
-    public List<TAGNode> getNonSubstNodes() { return nonSubstNodes; }  
+    public List<TAGNode> getNonSubstNodes() { return nonSubstNodes; }          
+    
+    public List<TAGNode> getAllNodes() {
+        LinkedList<TAGNode> nodeList= new LinkedList<TAGNode>();
+        nodeList.addAll(substNodes);
+        nodeList.addAll(nonSubstNodes);
+        return nodeList;
+    }
     
     @Override
     public boolean add(TAGNode node) {

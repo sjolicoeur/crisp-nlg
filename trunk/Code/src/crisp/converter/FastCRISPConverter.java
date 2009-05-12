@@ -91,7 +91,13 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
         domain = aDomain;
     }
     
-    public TAGrammar getGrammar() { return grammar; }
+    /**
+     * Retrieve the parsed tree adjoining grammar. 
+     * @return the parsed tree adjoining grammar.
+     */
+    public TAGrammar getGrammar() {
+        return grammar; 
+    }
     
     // All of these methods are specified in the ContentHandler interface.    
 

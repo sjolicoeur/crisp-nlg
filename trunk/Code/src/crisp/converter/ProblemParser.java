@@ -275,11 +275,11 @@ public class ProblemParser extends DefaultHandler {  // Default Handler already 
         this.problem = problem;
     };
     
-    /**
+   /**
     * Parses the XML document given in problemfilename and creates 
     * a problem over the given planning domain.
     *
-    * @param problemfilename
+    * @param problemfile The file to parse.
     * @throws ParserConfigurationException
     * @throws SAXException
     * @throws IOException
@@ -294,7 +294,7 @@ public class ProblemParser extends DefaultHandler {  // Default Handler already 
         Problem newproblem = new Problem();
         newproblem.clear();
         
-        ProblemParser handler = new ProblemParser(domain,newproblem);
+        ProblemParser handler = new ProblemParser(domain, newproblem);
         try{
             SAXParser parser = factory.newSAXParser();
             parser.parse(problemfile, handler);
@@ -302,8 +302,7 @@ public class ProblemParser extends DefaultHandler {  // Default Handler already 
             throw new SAXException("Parser misconfigured: "+e);    
         }
         
-        return newproblem;
-        
+        return newproblem;        
     }
     
     

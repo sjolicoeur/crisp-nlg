@@ -142,7 +142,7 @@ public class GrammarParser extends DefaultHandler {
         
         if (qName.equals("leaf")){
             // Create a new leaf instance and store it on the stack 
-            TAGNode newLeaf = new TAGNode();
+            TAGLeaf newLeaf = new TAGLeaf();
 
             index = atts.getValue("index");
             if (index!=null) 
@@ -152,6 +152,7 @@ public class GrammarParser extends DefaultHandler {
             newLeaf.setSem(atts.getValue("sem"));
             newLeaf.setType(atts.getValue("type"));
             newLeaf.setConstraint(atts.getValue("constraint"));
+            newLeaf.setWord(atts.getValue("word"));
    
             index = atts.getValue("num");
             if (index!=null) 

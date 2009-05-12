@@ -11,10 +11,10 @@ import java.util.List;
 
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
-import crisp.termparser.TermParser;
 import de.saar.chorus.term.Compound;
 import de.saar.chorus.term.Substitution;
 import de.saar.chorus.term.Term;
+import de.saar.chorus.term.parser.TermParser;
 
 public class Literal extends Effect {
     private Term atom;

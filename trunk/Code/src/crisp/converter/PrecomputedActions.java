@@ -20,13 +20,13 @@ import crisp.planningproblem.TypedVariableList;
 import crisp.planningproblem.effect.Effect;
 import crisp.planningproblem.goal.Goal;
 
-import crisp.termparser.TermParser;
 
 import de.saar.chorus.term.Compound;
 import de.saar.chorus.term.Constant;
 import de.saar.chorus.term.Substitution;
 import de.saar.chorus.term.Term;
 import de.saar.chorus.term.Variable;
+import de.saar.chorus.term.parser.TermParser;
 
 import crisp.converter.grammar.TAGrammar;
 import crisp.converter.grammar.TAGTree;
@@ -730,7 +730,7 @@ public class PrecomputedActions {
             if (initProb>0)
             try {
                 createInitAction(entry, initProb);
-            } catch (crisp.termparser.TokenMgrError e ) {
+            } catch (de.saar.chorus.term.parser.TokenMgrError e ) {
                 System.err.println("Warning: Couldn't create initial action for "+
                 entry.getTreeName()+". Failed to parse a term: "+e);               
             } catch (NullPointerException e) {
@@ -764,7 +764,7 @@ public class PrecomputedActions {
                     //System.out.println(targetTree+" : "+targetLex);
                     try {
                         createActions(entry, node, grammar.getEntry(targetTree, targetLex),  ACTION_TYPE_SUBST, substProb);
-                    } catch (crisp.termparser.TokenMgrError e ) {
+                    } catch (de.saar.chorus.term.parser.TokenMgrError e ) {
                         System.err.println("Warning: Couldn't create action for substituting "+
                         entry.getTreeName() + " into node "+node+" of "+targetTree+"-"+targetLex+". Failed to parse a term: "+e);
                     } catch (NullPointerException e) {
@@ -790,7 +790,7 @@ public class PrecomputedActions {
                     float adjProb = adjLabelProbs.get(node);
                     try {                        
                         createActions(entry, node, grammar.getEntry(targetTree, targetLex), ACTION_TYPE_ADJOIN, adjProb);
-                    } catch (crisp.termparser.TokenMgrError e) {
+                    } catch (de.saar.chorus.term.parser.TokenMgrError e) {
                         System.err.println("Warning: Couldn't create action for adjoining "+
                         entry.getTreeName() + " at node "+node+" of "+targetTree+"-"+targetLex);                    
                     } catch (NullPointerException e) {

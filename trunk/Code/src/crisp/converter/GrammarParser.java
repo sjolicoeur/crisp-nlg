@@ -42,12 +42,12 @@ import crisp.planningproblem.Problem;
 import crisp.planningproblem.TypedVariableList;
 import crisp.planningproblem.effect.Effect;
 import crisp.planningproblem.goal.Goal;
-import crisp.termparser.TermParser;
 import de.saar.chorus.term.Compound;
 import de.saar.chorus.term.Constant;
 import de.saar.chorus.term.Substitution;
 import de.saar.chorus.term.Term;
 import de.saar.chorus.term.Variable;
+import de.saar.chorus.term.parser.TermParser;
 
 /**
  * This class provides a parser for CRISP grammar XML files.

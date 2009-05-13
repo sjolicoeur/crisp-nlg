@@ -4,6 +4,14 @@ import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.codec.PddlOutputCodec;
 
+import de.saar.penguin.tag.grammar.Grammar;
+import de.saar.penguin.tag.codec.CrispXmlInputCodec;
+
+import de.saar.chorus.term.Term; 
+
+import java.io.File;
+import java.io.FileReader;
+
 
 public class CRISPtoPDDL {
         
@@ -11,7 +19,7 @@ public class CRISPtoPDDL {
      * Print a usage message
      */
     public static void usage(){
-        System.out.println("Usage: java crisp.converter.CRISPtoPPDL [crisp problem XML file]"); 
+        System.out.println("Usage: java crisp.converter.CRISPtoPPDL [CRISP grammar] [CRISP problem]"); 
     }
     
 	/**
@@ -29,12 +37,20 @@ public class CRISPtoPDDL {
             System.exit(1);
         }
         
+        // TODO some exception handling
         
 		Domain domain = new Domain();
 		Problem problem = new Problem();
 
 		long start = System.currentTimeMillis();
-		FastCRISPConverter.convert(args[0], domain, problem);
+        
+        CrispXmlInputCodec codec = new CrispXmlInputCodec();
+		Grammar<Term> grammar = new Grammar<Term>();	
+		codec.parse(new FileReader(new File(args[0])), grammar);         
+ 
+        File problemfile = new File(args[1]);
+        
+		FastCRISPConverter.convert(grammar, problemfile, domain, problem);
 		long end = System.currentTimeMillis();
 
 		System.out.println("Total runtime: " + (end-start) + "ms");

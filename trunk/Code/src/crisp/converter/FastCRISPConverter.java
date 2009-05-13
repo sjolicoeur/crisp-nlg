@@ -378,8 +378,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
             // store list of roles in each tree in a map by name
             HashSet<String> localRoles = new HashSet<String>();            
             for (String node : allNodeIds) {
-                localRoles.add(tree.getNodeDecoration(node).toString());
-                domain.addConstant(tree.getNodeLabel(node),"category"); // add constants for categories to the domain
+                localRoles.add(tree.getNodeDecoration(node).toString());                
             }            
             roles.put(treeName, localRoles);
             
@@ -555,8 +554,14 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
                         String roleN = n.get(role);
                         System.out.println("    For substNode "+substNode);                            
                         System.out.println(role+" "+roleN);
+                        
+                        String cat = tree.getNodeLabel(substNode);
+                        if (cat.equals(""))                             
+                            cat = "NONE";
+                        domain.addConstant(cat,"category"); // add constants for categories to the domain
+                        
                         //subst 
-                        effects.add(new crisp.planningproblem.effect.Literal("subst(" + tree.getNodeLabel(substNode) +", "+roleN + ")", true));
+                        effects.add(new crisp.planningproblem.effect.Literal("subst(" + cat +", "+roleN + ")", true));
                         
                         if (!role.equals("self") ) 
                             domain.addConstant(roleN, "syntaxnode");
@@ -599,8 +604,10 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
                         String role = tree.getNodeDecoration(adjNode).toString();
                         String roleN = n.get(role);
                         String cat = tree.getNodeLabel(adjNode);
-                        if (cat.equals("")) 
+                        
+                        if (cat.equals(""))                             
                             cat = "NONE";
+                        domain.addConstant(cat,"category"); // add constants for categories to the domain
                         
                         // canadjoin
                         effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" + cat + ", " + roleN + ")", true));

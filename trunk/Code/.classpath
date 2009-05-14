@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="packages/org-jdesktop-layout.jar"/>
 	<classpathentry kind="lib" path="packages/swing-layout-1.0.jar"/>
 	<classpathentry kind="lib" path="packages/basics.jar"/>
+	<classpathentry kind="lib" path="packages/tag.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

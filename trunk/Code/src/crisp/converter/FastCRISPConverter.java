@@ -4,24 +4,19 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
-import javax.xml.xpath.XPathFactory;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -33,26 +28,18 @@ import crisp.planningproblem.Problem;
 import crisp.planningproblem.TypedVariableList;
 import crisp.planningproblem.effect.Effect;
 import crisp.planningproblem.goal.Goal;
-
-
 import de.saar.chorus.term.Compound;
 import de.saar.chorus.term.Constant;
 import de.saar.chorus.term.Substitution;
 import de.saar.chorus.term.Term;
 import de.saar.chorus.term.Variable;
 import de.saar.chorus.term.parser.TermParser;
-
-import crisp.converter.grammar.TAGrammar;
-import crisp.converter.grammar.TAGTree;
-import crisp.converter.grammar.TAGNode;
-import crisp.converter.grammar.TAGLeaf;
-import crisp.converter.grammar.TAGLexEntry;
-
-import de.saar.penguin.tag.grammar.Grammar;
+import de.saar.penguin.tag.grammar.Constraint;
 import de.saar.penguin.tag.grammar.ElementaryTree;
+import de.saar.penguin.tag.grammar.Grammar;
 import de.saar.penguin.tag.grammar.LexiconEntry;
 import de.saar.penguin.tag.grammar.NodeType;
-import de.saar.penguin.tag.grammar.Constraint;
+import de.saar.penguin.tag.grammar.filter.GrammarFilterer;
 
 /**
 * This class provides a fast converter from XML CRISP problem descriptions to
@@ -86,9 +73,9 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
     private Problem problem;
     private Domain domain;
     
-    private Grammar<Term> grammar;
-    
     private Set<Term> trueAtoms;
+    
+    private Set<String> predicatesInWorld;
     
     
     /************************ Methods for the content handler *****************/
@@ -96,6 +83,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
     public FastCRISPConverter(Domain aDomain, Problem aProblem) {
         problem = aProblem;
         domain = aDomain;
+        predicatesInWorld = new HashSet<String>();
     }
     
     
@@ -172,6 +160,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
             Term term = TermParser.parse(characterBuffer.toString()); // parse the Term
             
             // This was in computeInitialState(Domain domain, Problem problem)
+            predicatesInWorld.add(((Compound) term).getLabel());
             domain.addPredicate(makeSemanticPredicate(term));
             addIndividualConstants(term,domain);
             
@@ -372,7 +361,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
             domain.addConstant(treeName, "treename");
             
             // Get all nodes in the tree
-            ElementaryTree tree = grammar.getTree(treeName);
+            ElementaryTree<Term> tree = grammar.getTree(treeName);
             Collection<String> allNodeIds = tree.getAllNodes();            
             
             // store list of roles in each tree in a map by name
@@ -655,7 +644,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
     * @param domain reference to an empty planning domain, will be completed by convert.
     * @param problem reference to an empty planning problem, will be completed by convert
     */
-    public static void convert(Grammar grammar, File problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException { 
+    public static void convert(Grammar<Term> grammar, File problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException { 
         
         //initialize domain
         setupDomain(domain, problem);
@@ -670,6 +659,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
             SAXParser parser = factory.newSAXParser();
             parser.parse(problemfile, handler);            
             
+            Grammar<Term> filteredGrammar = new GrammarFilterer<Term>().filter(grammar, null ); // XXX
             computeDomain(domain, problem, grammar);
             computeGoal(domain, problem);
             

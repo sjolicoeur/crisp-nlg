@@ -40,6 +40,7 @@ import de.saar.penguin.tag.grammar.Grammar;
 import de.saar.penguin.tag.grammar.LexiconEntry;
 import de.saar.penguin.tag.grammar.NodeType;
 import de.saar.penguin.tag.grammar.filter.GrammarFilterer;
+import de.saar.penguin.tag.grammar.filter.SemanticsPredicateListFilter;
 
 /**
 * This class provides a fast converter from XML CRISP problem descriptions to
@@ -75,7 +76,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
     
     private Set<Term> trueAtoms;
     
-    private Set<String> predicatesInWorld;
+    private Map<String,Set<Integer>> predicatesInWorld;
     
     
     /************************ Methods for the content handler *****************/
@@ -83,7 +84,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
     public FastCRISPConverter(Domain aDomain, Problem aProblem) {
         problem = aProblem;
         domain = aDomain;
-        predicatesInWorld = new HashSet<String>();
+        predicatesInWorld = new HashMap<String, Set<Integer>>();
     }
     
     
@@ -160,7 +161,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
             Term term = TermParser.parse(characterBuffer.toString()); // parse the Term
             
             // This was in computeInitialState(Domain domain, Problem problem)
-            predicatesInWorld.add(((Compound) term).getLabel());
+            addPredicateInWorld((Compound) term);
             domain.addPredicate(makeSemanticPredicate(term));
             addIndividualConstants(term,domain);
             
@@ -193,7 +194,19 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
     
     
     
-    public void characters(char[] ch, int start, int length) 
+    private void addPredicateInWorld(Compound term) {
+    	Set<Integer> arities = predicatesInWorld.get(term.getLabel());
+    	
+    	if( arities == null ) {
+    		arities = new HashSet<Integer>();
+    		predicatesInWorld.put(term.getLabel(), arities);
+    	}
+    	
+    	arities.add(term.getSubterms().size());
+	}
+
+
+	public void characters(char[] ch, int start, int length) 
     throws SAXException {
         
         if (elementStack.empty())
@@ -367,7 +380,9 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
             // store list of roles in each tree in a map by name
             HashSet<String> localRoles = new HashSet<String>();            
             for (String node : allNodeIds) {
-                localRoles.add(tree.getNodeDecoration(node).toString());                
+            	if( tree.getNodeDecoration(node) != null ) {
+            		localRoles.add(tree.getNodeDecoration(node).toString());
+            	}
             }            
             roles.put(treeName, localRoles);
             
@@ -397,7 +412,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
                     if (tree.getNodeType(node) == NodeType.SUBSTITUTION) {
                         substNodes.add(node);
                     } else {
-                        if (tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION) {
+                        if (tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION && (tree.getNodeDecoration(node) != null)) {
                             adjNodes.add(node);            
                         }
                     }        
@@ -659,8 +674,8 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
             SAXParser parser = factory.newSAXParser();
             parser.parse(problemfile, handler);            
             
-            Grammar<Term> filteredGrammar = new GrammarFilterer<Term>().filter(grammar, null ); // XXX
-            computeDomain(domain, problem, grammar);
+            Grammar<Term> filteredGrammar = new GrammarFilterer<Term>().filter(grammar, new SemanticsPredicateListFilter(handler.predicatesInWorld) );
+            computeDomain(domain, problem, filteredGrammar);
             computeGoal(domain, problem);
             
         } catch (ParserConfigurationException e){

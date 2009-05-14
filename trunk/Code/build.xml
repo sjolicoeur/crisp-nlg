@@ -19,6 +19,7 @@
 	      value="de/saar/**/*,crisp/termparser/**/*,crisp/planningproblem/**/*,crisp/planner/lazygp/**/*,crisp/pddl/**/*,crisp/main/*,crisp/converter/*,crisp/tools/*,crisp/result/**/*,crisp/pcrispresult/**/*" />
 
     <property name="unpacked.classes.basics" value="de/saar/chorus/term/**/*,de/saar/basic/*" />
+    <property name="unpacked.classes.tag" value="de/saar/penguin/tag/**/*" />
     
 
 
@@ -30,6 +31,14 @@
                 <attribute name="Main-Class" value="crisp.main.Generate" />
             </manifest>
       </jar>
+      <jar jarfile="dist/xtag-crisp.jar"
+	   basedir="build/classes"
+	   includes="${classfiles},${unpacked.classes.basics},${unpacked.classes.tag}">
+            <manifest>
+                <attribute name="Main-Class" value="crisp.main.GenerateXtag" />
+            </manifest>
+      </jar>
+
       <jar jarfile="dist/lazygp.jar"
 	   basedir="build/classes"
 	   includes="${classfiles},${unpacked.classes.basics}">
@@ -61,7 +70,7 @@
       </jar>
     </target>
 
-    <target name="compile" depends="init,-pre-compile,basics.unpacked">
+    <target name="compile" depends="init,-pre-compile,basics.unpacked,tag.unpacked">
       <javac srcdir="src" destdir="build/classes"
 	     debug="true"
 	     includes="${sourcefiles}" source="1.5"
@@ -85,6 +94,13 @@
       <antcall target="unpack" >
 	<param name="unpack.jar" value="packages/basics.jar" />
 	<param name="unpack.jar.id" value="basics" />
+      </antcall>
+    </target>
+
+    <target name="tag.unpacked" depends="init">
+      <antcall target="unpack" >
+	<param name="unpack.jar" value="packages/tag.jar" />
+	<param name="unpack.jar.id" value="tag" />
       </antcall>
     </target>
 

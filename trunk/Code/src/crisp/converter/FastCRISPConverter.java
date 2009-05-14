@@ -1,7 +1,9 @@
 package crisp.converter;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,6 +19,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -391,23 +394,25 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
             
         }
         
-        System.out.println(roles);
+        //System.out.println(roles);
         
         // compute actions from lexical entries
         for (String word : grammar.getAllWords())  {
-            System.out.println(">> "+word);
+            System.out.println("\n" + word + ":");
+            
             Collection<LexiconEntry> entries = grammar.getLexiconEntries(word);
-            System.out.println(entries.size());
+            //System.out.println(entries.size());
             for (LexiconEntry entry: entries){
                 // Get the tree for this lexical entry from the hash map
                 String treeRef = entry.tree;
                 ElementaryTree<Term> tree = grammar.getTree(entry.tree);
-                
-                Collection<String> allNodes = tree.getAllNodes();                                
+                Collection<String> allNodes = tree.getAllNodes();
                 
                 // Get lists of nodes that are open for substitution and adjunction
                 ArrayList<String> substNodes = new ArrayList<String>();
-                ArrayList<String> adjNodes = new ArrayList<String>();                                    
+                ArrayList<String> adjNodes = new ArrayList<String>();
+                
+                System.out.println("  " + treeRef + ": " + tree.getSignatureString());
                 
                 for (String node : allNodes) {
                     if (tree.getNodeType(node) == NodeType.SUBSTITUTION) {
@@ -431,7 +436,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
                 
                 String actionName = actionNameBuf.toString();
                 
-                System.out.println(actionName);
+                //System.out.println(actionName);
                 
                 String rootCategory = tree.getNodeLabel(tree.getRoot());
                 
@@ -470,7 +475,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
                     // require reference from u to the parameter for role self 
                     goals.add(new crisp.planningproblem.goal.Literal("referent(?u,"+I.get("?u")+")", true));
                     
-                    if (grammar.getTree(treeRef).getType() == ElementaryTreeType.INITIAL) {
+                    if (tree.getType() == ElementaryTreeType.INITIAL) {
                         // initial tree: fills substitution node
                         goals.add(new crisp.planningproblem.goal.Literal("subst(" + rootCategory + ", ?u)", true));
                         effects.add(new crisp.planningproblem.effect.Literal("subst(" + rootCategory + ", ?u)", false));
@@ -660,20 +665,20 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
     * @param domain reference to an empty planning domain, will be completed by convert.
     * @param problem reference to an empty planning problem, will be completed by convert
     */
-    public static void convert(Grammar<Term> grammar, File problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException { 
+    public static void convert(Grammar<Term> grammar, Reader problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException { 
         
         //initialize domain
         setupDomain(domain, problem);
                                 
         // get the pathname where problem and grammar files are stored
-        problempath = problemfile.getAbsoluteFile().getParent();
+        //problempath = problemfile.getAbsoluteFile().getParent();
         
         SAXParserFactory factory = SAXParserFactory.newInstance();        
         
         FastCRISPConverter handler = new FastCRISPConverter(domain,problem);
         try{
             SAXParser parser = factory.newSAXParser();
-            parser.parse(problemfile, handler);            
+            parser.parse(new InputSource(problemfile), handler);            
             
             Grammar<Term> filteredGrammar = new GrammarFilterer<Term>().filter(grammar, new SemanticsPredicateListFilter(handler.predicatesInWorld) );
             computeDomain(domain, problem, filteredGrammar);
@@ -682,6 +687,11 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
         } catch (ParserConfigurationException e){
             throw new SAXException("Parser misconfigured: "+e);    
         }
+        
+    }
+    
+    public static void convert(Grammar<Term> grammar, File problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException { 
+        convert(grammar, new FileReader(problemfile), domain, problem);
         
     }
     
@@ -790,9 +800,10 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
         return ret;
     }
     
-    
+    /*
     public static File convertGrammarPath(String filename){
         return new File(problempath,filename);
     }
+    */
     
 }

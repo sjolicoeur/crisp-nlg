@@ -557,8 +557,8 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
                     for (String substNode : substNodes) {
                         String role = tree.getNodeDecoration(substNode).toString();                                                       
                         String roleN = n.get(role);
-                        System.out.println("    For substNode "+substNode);                            
-                        System.out.println(role+" "+roleN);
+                        //System.out.println("    For substNode "+substNode);                            
+                        //System.out.println(role+" "+roleN);
                         
                         String cat = tree.getNodeLabel(substNode);
                         if (cat.equals(""))                             

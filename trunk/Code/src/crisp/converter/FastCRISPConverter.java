@@ -36,6 +36,7 @@ import de.saar.chorus.term.Variable;
 import de.saar.chorus.term.parser.TermParser;
 import de.saar.penguin.tag.grammar.Constraint;
 import de.saar.penguin.tag.grammar.ElementaryTree;
+import de.saar.penguin.tag.grammar.ElementaryTreeType;
 import de.saar.penguin.tag.grammar.Grammar;
 import de.saar.penguin.tag.grammar.LexiconEntry;
 import de.saar.penguin.tag.grammar.NodeType;
@@ -469,7 +470,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
                     // require reference from u to the parameter for role self 
                     goals.add(new crisp.planningproblem.goal.Literal("referent(?u,"+I.get("?u")+")", true));
                     
-                    if (treeRef.startsWith("i.") ) {
+                    if (grammar.getTree(treeRef).getType() == ElementaryTreeType.INITIAL) {
                         // initial tree: fills substitution node
                         goals.add(new crisp.planningproblem.goal.Literal("subst(" + rootCategory + ", ?u)", true));
                         effects.add(new crisp.planningproblem.effect.Literal("subst(" + rootCategory + ", ?u)", false));

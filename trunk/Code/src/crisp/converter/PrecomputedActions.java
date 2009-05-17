@@ -66,13 +66,14 @@ public class PrecomputedActions {
     private Set<Term> trueAtoms;
     
     // Store the actions so we can access them by their semantic content.
-    private HashMap<String, ArrayList<DurativeAction>> actionsBySemContent; 
-    private ArrayList<DurativeAction> emptyActions; 
+    private HashMap<String, ArrayList<DurativeAction>> actionsBySemContent;    
+    private ArrayList<DurativeAction> emptyActions;
+    private ArrayList<DurativeAction> initActions; 
     
     private Map<String,List<String>> roles = new HashMap<String, List<String>>();
     private Map<String,TAGTree> trees = new HashMap<String, TAGTree>();
     
-    private int plansize = 28;
+    private int plansize = 10;
     private int maximumArity = 0;
     
     /*********************** Constructors *****************/
@@ -83,6 +84,7 @@ public class PrecomputedActions {
     public PrecomputedActions() {
         actionsBySemContent = new HashMap<String, ArrayList<DurativeAction>>();
         emptyActions = new ArrayList<DurativeAction>();
+        initActions = new ArrayList<DurativeAction>();
     }
     
     
@@ -120,8 +122,9 @@ public class PrecomputedActions {
     //    return retrieveActions(actionsBySemContent.keySet());
     //}
     
+
     
-    /**
+   /**
     * Retrieve a set of actions to include in the domain for the 
     * current planning problem. This method should return a minimal
     * set of actions that can have true preconditions during planning
@@ -131,6 +134,10 @@ public class PrecomputedActions {
     */
     public ArrayList<DurativeAction> retrieveActions(Collection<Term> initialStateTerms) {
         ArrayList<DurativeAction> selectedActions = new ArrayList<DurativeAction>();
+        
+        
+        
+        Problem dynamicDomain = new Problem();                              
         
         for (Term term : initialStateTerms) {
             if (term.isCompound()) {
@@ -142,6 +149,8 @@ public class PrecomputedActions {
             }
         }
         selectedActions.addAll(emptyActions); // Add actions with empty semantics
+        selectedActions.addAll(initActions); // Add actions with empty semantics
+                
         
         return selectedActions;
     }
@@ -375,13 +384,7 @@ public class PrecomputedActions {
                 new crisp.planningproblem.effect.Conjunction(effects), 
                     constants, predicates, probabilityToDuration(prob));
         
-        if (term != null) {
-            String key = term.getLabel()+"-"+term.getSubterms().size(); // Use label and arity as keys
-            if ( !actionsBySemContent.containsKey(key) )
-                actionsBySemContent.put(key, new ArrayList<DurativeAction>());
-            actionsBySemContent.get(key).add(newAction); // Sort new actions in a HashMap by semantic content
-        } else 
-            emptyActions.add(newAction); // for actions that don't have semantic content
+        initActions.add(newAction);               
         
         
     }
@@ -404,7 +407,7 @@ public class PrecomputedActions {
         
         // compute action name
         StringWriter actionNameBuf = new StringWriter();
-        if (actionType == ACTION_TYPE_SUBST || actionType == ACTION_TYPE_INIT) 
+        if (actionType == ACTION_TYPE_SUBST) 
             actionNameBuf.write("subst-");
         else if (actionType == ACTION_TYPE_ADJOIN)
             actionNameBuf.write("adj-");
@@ -427,7 +430,7 @@ public class PrecomputedActions {
         //String rootCategory = targetTree.getRootNode().getCat();
         
         
-        for (int i = 1; i <= plansize; i++) {
+        for (int i = 2; i <= plansize; i++) {
             
             Map<String, String> n = new HashMap<String, String>();
             Map<String, String> I = new HashMap<String, String>();
@@ -664,38 +667,30 @@ public class PrecomputedActions {
                 
         String actionName = "noadj-"+treeName+"-"+nodeID;
         
-        for (int i = 1; i <= plansize; i++) {
+        HashMap<String, String> constants = new HashMap<String, String>();      
            
-           HashMap<String, String> constants = new HashMap<String, String>();      
-           
-           constants.put(treeName,"treename");
-           constants.put("step"+(i-1),"stepindex");
-           constants.put("step"+i,"stepindex");
+        constants.put(treeName,"treename");        
 
-
-           // Compute the predicate           
-           Predicate pred = new Predicate();
-           ArrayList<Goal> preconds = new ArrayList<Goal>();
-           ArrayList<Effect> effects = new ArrayList<Effect>();
+        // Compute the predicate           
+        Predicate pred = new Predicate();
+        ArrayList<Goal> preconds = new ArrayList<Goal>();
+        ArrayList<Effect> effects = new ArrayList<Effect>();
                                     
-           pred.setLabel(actionName + "-"+  (i-1));
-           pred.addVariable("?u","syntaxnode");
-           
-            
-           // Count the step
-           preconds.add(new crisp.planningproblem.goal.Literal("step(step"+(i-1)+")",true));
-           effects.add(new crisp.planningproblem.effect.Literal("step(step"+(i-1)+")",false));
-           effects.add(new crisp.planningproblem.effect.Literal("step(step"+i+")",true));            
-            
-           constants.put(nodeID,"nodetype");            
-           preconds.add(new crisp.planningproblem.goal.Literal("canadjoin(" + treeName+ ","+ nodeID + ", ?u)", true));
-           effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" + treeName+ ","+ nodeID + ", ?u)", false)); 
-                                 
-           ArrayList<Predicate> predicates = new ArrayList<Predicate>();           
-           // Assemble and store action          
-           DurativeAction newAction = new DurativeAction(pred, new crisp.planningproblem.goal.Conjunction(preconds), new crisp.planningproblem.effect.Conjunction(effects), constants, predicates, probabilityToDuration(prob));
-           emptyActions.add(newAction);
-        }
+        pred.setLabel(actionName);
+        pred.addVariable("?u","syntaxnode");
+                       
+        // Don't need to count the step for NoAdjoin, because                     
+         
+        constants.put(nodeID,"nodetype");            
+        preconds.add(new crisp.planningproblem.goal.Literal("canadjoin(" + treeName+ ","+ nodeID + ", ?u)", true));
+        effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" + treeName+ ","+ nodeID + ", ?u)", false));
+        effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" + treeName+ ","+ nodeID + ", ?u)", false));
+                             
+        ArrayList<Predicate> predicates = new ArrayList<Predicate>();           
+        // Assemble and store action          
+        DurativeAction newAction = new DurativeAction(pred, new crisp.planningproblem.goal.Conjunction(preconds), new crisp.planningproblem.effect.Conjunction(effects), constants, predicates, probabilityToDuration(prob));
+        emptyActions.add(newAction);
+     
         
     }
     

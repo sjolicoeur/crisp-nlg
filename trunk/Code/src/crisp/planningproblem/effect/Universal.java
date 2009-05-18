@@ -68,8 +68,10 @@ public class Universal extends Effect {
     		effect.instantiate(substitutions.next()).computeEffectList(eff, problem);
     	}
     }
-
-
+ 
+    public void getPositiveTerms(List<Term> terms){        
+            effect.getPositiveTerms(terms); // Ignore the variables        
+    }
 
 	@Override
 	public boolean mentionsPredicate(Predicate pred) {

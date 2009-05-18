@@ -15,6 +15,7 @@ import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
 import de.saar.basic.StringTools;
 import de.saar.chorus.term.Substitution;
+import de.saar.chorus.term.Term;
 
 
 public class Conjunction extends Goal {
@@ -59,6 +60,13 @@ public class Conjunction extends Goal {
     }
 
     @Override
+    public void getPositiveTerms(List<Term> terms) {
+        for( Goal sub : conjuncts ) {
+            sub.getPositiveTerms(terms);
+        }
+    }
+    
+    @Override
     public boolean isStaticallySatisfied(Problem problem, Collection<Predicate> staticPredicates) {
         for( Goal sub : conjuncts ) {
             if( !sub.isStaticallySatisfied(problem, staticPredicates)) {
@@ -80,4 +88,5 @@ public class Conjunction extends Goal {
         return true;
     }
 
+    
 }

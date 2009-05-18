@@ -14,6 +14,7 @@ import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.goal.Goal;
 import de.saar.chorus.term.Substitution;
+import de.saar.chorus.term.Term;
 
 public class Conditional extends Effect {
     private final Goal condition;
@@ -53,6 +54,11 @@ public class Conditional extends Effect {
         } else {
             throw new UnsupportedOperationException("Conditional effects must have static preconditions, but " + condition + " is not static!");
         }
+    }
+    
+    @Override
+    public void getPositiveTerms(List<Term> terms){      
+            effect.getPositiveTerms(terms);      
     }
 
 

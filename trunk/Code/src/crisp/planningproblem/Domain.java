@@ -38,6 +38,7 @@ public class Domain {
 
     private boolean sawMustadjoin; // Flag to indicate if the domain contains 
                                    //   actions with mustadjoin effects 
+    							   //  This is not supposed to be here!
     
     public static Domain getDomainForName(String name) {
         return domains.get(name);

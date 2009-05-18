@@ -13,6 +13,7 @@ import java.util.List;
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
 import de.saar.chorus.term.Substitution;
+import de.saar.chorus.term.Term;
 
 
 public abstract class Effect {
@@ -37,6 +38,8 @@ public abstract class Effect {
     }
     */
 
+    public abstract void getPositiveTerms(List<Term> terms);
+    
     abstract void computeEffectList(List<Literal> eff, Problem problem);
 
 	public abstract boolean mentionsPredicate(Predicate pred);

@@ -66,15 +66,45 @@ public class PrecomputedActions {
     private Set<Term> trueAtoms;
     
     // Store the actions so we can access them by their semantic content.
-    private HashMap<String, ArrayList<DurativeAction>> actionsBySemContent;    
+    private HashMap<String, ArrayList<DurativeAction>> actionsBySemContent;
+    private HashMap<String, ArrayList<DurativeAction>> initActionsBySemContent;    
     private ArrayList<DurativeAction> emptyActions;
-    private ArrayList<DurativeAction> initActions; 
+    
     
     private Map<String,List<String>> roles = new HashMap<String, List<String>>();
     private Map<String,TAGTree> trees = new HashMap<String, TAGTree>();
     
     private int plansize = 10;
     private int maximumArity = 0;
+    
+    
+    // Dummy substitution for reachability analysis
+    private Substitution dummySubst = new Substitution(){
+            Term defaultTerm = new Constant("dummy");
+            
+            public Term apply(Term t) {
+                switch(t.getType()) {
+                    case VARIABLE:            
+                    return defaultTerm;
+                    
+                    case CONSTANT:
+                    return t;
+                    
+                    case COMPOUND:
+                    Compound com = (Compound) t;
+                    List<Term> newSubterms = new ArrayList<Term>(com.getSubterms().size());
+                    
+                    for( Term subterm : com.getSubterms() ) {
+                        newSubterms.add(apply(subterm));
+                    }
+                    
+                    return new Compound(com.getLabel(), newSubterms);
+                }
+                
+                // unreachable
+                return null;
+            }  
+        };
     
     /*********************** Constructors *****************/
     
@@ -83,8 +113,8 @@ public class PrecomputedActions {
     */
     public PrecomputedActions() {
         actionsBySemContent = new HashMap<String, ArrayList<DurativeAction>>();
-        emptyActions = new ArrayList<DurativeAction>();
-        initActions = new ArrayList<DurativeAction>();
+        initActionsBySemContent = new HashMap<String, ArrayList<DurativeAction>>();
+        emptyActions = new ArrayList<DurativeAction>();        
     }
     
     
@@ -116,45 +146,100 @@ public class PrecomputedActions {
         return grammar;
     }
     
-      
-    // TODO actionsBySemContent now requires a collection of terms, not strings
-    //public ArrayList<DurativeAction> getAllActions(){
-    //    return retrieveActions(actionsBySemContent.keySet());
-    //}
     
-
-    
+   
    /**
     * Retrieve a set of actions to include in the domain for the 
     * current planning problem. This method should return a minimal
     * set of actions that can have true preconditions during planning
-    * for the given problem.
+    * for the given problem. It actually performs a poor-mans-reachability 
+    * analysis: Starting with the init actions it computes trivi
     * @param items A list of terms that is true in the initial state of a given problem.
     * @return A list of actions to generate a domain for a given planning problem. 
     */
     public ArrayList<DurativeAction> retrieveActions(Collection<Term> initialStateTerms) {
         ArrayList<DurativeAction> selectedActions = new ArrayList<DurativeAction>();
-        
-        
-        
-        Problem dynamicDomain = new Problem();                              
-        
+        ArrayList<DurativeAction> selectedInitActions = new ArrayList<DurativeAction>();
+                 
+        // Step 1:
+        // retrieve all actions that have some semantic precondition that is in the knowledge base + 
+        //   actions without semantic preconditions
         for (Term term : initialStateTerms) {
             if (term.isCompound()) {
                 Compound comp = (Compound) term;
                 String key = comp.getLabel() + "-" + comp.getSubterms().size();
                 ArrayList<DurativeAction> actions = actionsBySemContent.get(key);
                 if (actions != null)
-                    selectedActions.addAll(actions);
-            }
-        }
-        selectedActions.addAll(emptyActions); // Add actions with empty semantics
-        selectedActions.addAll(initActions); // Add actions with empty semantics
+                  selectedActions.addAll(actions);
                 
+                ArrayList<DurativeAction> initActions = initActionsBySemContent.get(key);
+                if (initActions != null)
+                  selectedInitActions.addAll(initActions);
+            }
+        }       
+        selectedActions.addAll(emptyActions); // Add actions with empty semantics                                                    
         
+        selectedActions.addAll(selectedInitActions);
         return selectedActions;
+        
+        /*
+        // Step 2: Filter out unreachable actions.
+        Set<Term> positiveEffectTerms = new HashSet<Term>();
+        
+        for (DurativeAction a : selectedInitActions) {
+            positiveEffectTerms.addAll(getInstantiatedPositiveActionEffects(a));
+        }
+        
+        System.out.println(positiveEffectTerms);
+                                
+        ArrayList<DurativeAction> resultActions = new ArrayList<DurativeAction>(selectedInitActions);
+        int actionNumber = resultActions.size()+1;
+        
+        while (actionNumber!=resultActions.size()) {
+            actionNumber = resultActions.size();
+            List<DurativeAction> newActions = new ArrayList<DurativeAction>();
+            for (DurativeAction action : selectedActions)  {
+                if (isApplicable(positiveEffectTerms, action)) { 
+                    positiveEffectTerms.addAll(getInstantiatedPositiveActionEffects(action));                    
+                    newActions.add(action);
+                }
+            }
+            selectedActions.removeAll(newActions);
+            resultActions.addAll(newActions);            
+        }
+        
+        return resultActions;
+        
+        */
     }
        
+    
+    private boolean isApplicable(Set<Term> trueTerms, Action action) {
+        System.out.println(action);
+        Goal precond = action.instantiate(dummySubst).getPrecondition();
+        List<Term> precondTerms = new ArrayList<Term>();
+        precond.getPositiveTerms(precondTerms);
+        
+        for (Term term: precondTerms) {            
+            String label = ((Compound) term).getLabel();
+            if (label.equals("subst") || label.equals("canadjoin")) {
+                System.out.println(term);
+                if (! trueTerms.contains(term)) {
+                    System.out.println(false);
+                    return false;
+                }
+            }
+        }
+        System.out.println(true);
+        return true;
+    }
+    
+    private List<Term> getInstantiatedPositiveActionEffects(Action action){                
+    	Effect eff = action.instantiate(dummySubst).getEffect();   	
+    	List<Term> result = new ArrayList<Term>();
+        eff.getPositiveTerms(result);
+        return result;
+    }
     
     /******************** Methods to create actions ***************/
     
@@ -384,8 +469,16 @@ public class PrecomputedActions {
                 new crisp.planningproblem.effect.Conjunction(effects), 
                     constants, predicates, probabilityToDuration(prob));
         
-        initActions.add(newAction);               
         
+        
+        if (term != null) {
+            String key = term.getLabel()+"-"+term.getSubterms().size(); // Use label and arity as keys
+            if (!initActionsBySemContent.containsKey(key)) {
+                initActionsBySemContent.put(key, new ArrayList<DurativeAction>());
+            }
+            initActionsBySemContent.get(key).add(newAction); // Sort new actions in a HashMap by semantic content
+        } else 
+        emptyActions.add(newAction); // for actions that don't have semantic content
         
     }
     

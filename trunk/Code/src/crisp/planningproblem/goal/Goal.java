@@ -14,6 +14,7 @@ import java.util.List;
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
 import de.saar.chorus.term.Substitution;
+import de.saar.chorus.term.Term;
 
 
 public abstract class Goal {
@@ -33,5 +34,6 @@ public abstract class Goal {
 
     public abstract boolean isStatic(Problem problem, Collection<Predicate> staticPredicates);
 
+    public abstract void getPositiveTerms(List<Term> terms);
 
 }

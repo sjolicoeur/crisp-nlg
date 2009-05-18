@@ -60,7 +60,12 @@ public class Universal extends Goal {
         return "forall(" + variables + ", " + goal + ")";
     }
 
-
+    @Override
+    public void getPositiveTerms(List<Term> terms) {
+        goal.getPositiveTerms(terms); // Ignore variable
+    }
+   
+    
     public Iterator<Substitution> getSubstitutions(Problem problem) {
         Domain domain = problem.getDomain();
         return new SubstitutionIterator(variables, domain.getUniverse(), domain.getTypeHierarchy());

@@ -42,6 +42,12 @@ public class Literal extends Effect {
     	this.polarity = polarity;
     }
 
+    @Override
+    public void getPositiveTerms(List<Term> terms){
+        if (polarity) {
+            terms.add(this.atom);
+        }
+    }
 
     @Override
     public Effect instantiate(Substitution subst) {

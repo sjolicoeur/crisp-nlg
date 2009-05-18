@@ -14,6 +14,7 @@ import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
 import de.saar.basic.StringTools;
 import de.saar.chorus.term.Substitution;
+import de.saar.chorus.term.Term;
 
 
 public class Conjunction extends Effect {
@@ -27,6 +28,9 @@ public class Conjunction extends Effect {
         this.conjuncts = conjuncts;
     }
 
+    
+
+    
     @Override
     public Effect instantiate(Substitution subst) {
         Conjunction ret = new Conjunction();
@@ -50,6 +54,13 @@ public class Conjunction extends Effect {
         }
     }
 
+    @Override
+    public void getPositiveTerms(List<Term> terms){
+        for( Effect sub : conjuncts) {
+            sub.getPositiveTerms(terms);
+        }
+    }
+    
 	@Override
 	public boolean mentionsPredicate(Predicate pred) {
         for( Effect sub : conjuncts ) {

@@ -63,6 +63,11 @@ public class Literal extends Goal {
         goals.add(this);
     }
 
+    public void getPositiveTerms(List<Term> terms) {
+        terms.add(this.atom);
+    }
+
+    
     @Override
     public boolean isStaticallySatisfied(Problem problem, Collection<Predicate> staticPredicates) {
         if( isStatic(problem, staticPredicates)) {

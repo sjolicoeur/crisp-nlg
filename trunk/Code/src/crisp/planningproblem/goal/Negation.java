@@ -6,6 +6,7 @@ import java.util.List;
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
 import de.saar.chorus.term.Substitution;
+import de.saar.chorus.term.Term;
 
 
 public class Negation extends Goal {
@@ -44,6 +45,11 @@ public class Negation extends Goal {
 		return ! subformula.isStaticallySatisfied(problem, staticPredicates);
 	}
 
+    @Override
+    public void getPositiveTerms(List<Term> terms) {
+        return;
+    }
+    
 	@Override
     public String toString() {
 		return "~" + subformula.toString();

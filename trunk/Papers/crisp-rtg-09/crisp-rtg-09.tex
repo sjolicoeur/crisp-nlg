@@ -1,0 +1,137 @@
+\documentclass[11pt,a4]{article}
+
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{amsfonts,amsthm}
+
+\def\N{\mathbb{N}}
+\newcommand{\sem}{\mathsf{sem}}
+\newcommand{\self}{\mathsf{self}}
+\newcommand{\produ}{\mathsf{prod}}
+\newcommand{\roles}{\mathsf{roles}}
+\newcommand{\Neq}{{:}}
+\newcommand{\refr}{\mathsf{ref}}
+\newcommand{\id}{\mathsf{id}}
+\newcommand{\idsem}{\mathsf{idsem}}
+\newcommand{\Vars}{\mathsf{Vars}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{kor}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{verm}{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{bem}{Remark}
+
+
+\title{Sentence generation with RTGs}
+\author{Alexander Koller \\ Saarland University \\
+  \url{koller@mmci.uni-saarland.de}}
+\date{\today\ (v3.0)}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\section{The generation problem of regular tree grammars}
+
+I write $\N_n$ for the set $\{1,\ldots,n\}$.  I write $T_A(B)$ for the
+set of terms $f(a_1,\ldots,a_n)$ with $f \in A$ and $a_1,\ldots,a_n
+\in B$.  I also assume that the set of nodes in a tree is a set of
+strings in $\N^*$ that is closed under left sister (i.e., if $ui$ is a
+node of some tree and $i>1$, then $u(i-1)$ is also a node) and prefix
+(i.e., if $ui$ is a node of the tree, then $u$ is too).
+
+\begin{definition}
+  A \emph{regular generation grammar (RGG)} is a tuple $G =
+  (N,\Sigma,S,Pred,R,L)$ consisting of a terminal alphabet $\Sigma$, a
+  nonterminal alphabet $N$, a start symbol $S \in N$, a set $Pred$ of
+  \emph{predicate symbols}, a set $R$ of \emph{roles}, and a finite
+  set $L$ of \emph{lexicon entries} $l = (P,\sem,r)$, where $P = A
+  \rightarrow f(B_1,\ldots,B_n)$ is an RTG production rule over $N$
+  and $\Sigma$, $r:\N_n \rightarrow R$ an assignment of roles to
+  right-hand nonterminal occurrences that assigns the role $\self$ to
+  exactly one number, and $\sem \subseteq
+  T_{Pred}(\{r(1),\ldots,r(n)\})$ is the semantic representation.
+\end{definition}
+
+We write $A \rightarrow f(B_1\Neq r_1,\ldots,B_n \Neq r_n)$ to
+abbreviate a production rule with a role assignment that maps $i$ to
+$r_i$ for each $1 \leq i \leq n$. We write $\produ(l)$, $\roles(l)$,
+and $\sem(l)$ for the production rule, the set of roles
+$\{r(1),\ldots,r(n)\}$, and the $\sem$ value of the lexicon entry
+respectively.
+
+\begin{definition}
+  Assume a universe $U$ and an infinite set $\Vars$ of variables. A
+  \emph{derivation} of a regular generation grammar $G$ is a sequence
+  $d = l_1,\ldots,l_n$ of lexicon entries from $G$ such that there are
+  functions $\id:\N_n \times R \rightsquigarrow \Vars$ and
+  $\refr:\Vars \rightarrow U$ such that
+  \begin{enumerate}
+  \item grammaticality: the sequence $\produ(l_1),\ldots,\produ(l_n)$
+    is a complete RTG derivation that maps $S$ into a tree of terminal
+    symbols;
+  \item definedness: $\id(i,r)$ is defined iff $r \in
+    \roles(l_i)$;
+  \item consistent reference: if $\produ(l_k)$ expands the right-hand
+    nonterminal $A:r$ in $\produ(l_i)$, then $\id(k,\self) =
+    \id(j,r)$.
+  \end{enumerate}
+
+  We write $\idsem(l_i) = \{P(x_1,\ldots,x_m) \;|\;
+  \mbox{$P(r_1,\ldots,r_m) \in \sem(l_i)$ and $x_k = \id(i,r_k)$ for
+    all $k$}\}$, and take $||S||_M$ to be the set of all variable
+  assignments $\Vars \rightarrow U$ that satisfy $S$ in all models
+  over $U$ that satisfy all formulas in the set $M$.
+
+  Then we can define a \emph{successful derivation} of $G$ for the
+  communicative goal $C \subseteq T_{Pred}(U)$, the target referent $e
+  \in U$, and the speaker and hearer knowledge bases $SKB, HKB
+  \subseteq T_{Pred}(U)$ to be a derivation of $G$ that also satisfies
+  the following conditions:
+
+  \begin{enumerate}
+  \item truthfulness: for all $i$, $\refr(\idsem(l_i)) \subseteq SKB$;
+  \item communicative goal achieved: $C \subseteq \cup_{k=1}^n \refr(\idsem(l_k))$;
+  \item unique reference: for all $1 \leq i \leq n$ and $r \in
+    \roles(l_i)$, $|| \cup_{k=1}^n \idsem(l_k) ||_{HKB}(\id(i,r)) =
+    \{\refr(\id(i,r))\}$.
+  \end{enumerate}
+
+  The \emph{sentence generation problem} of RGGs is to decide for a
+  grammar $G$ and the communicative goal, target referent, and
+  knowledge bases, whether there is a successful derivation.
+\end{definition}
+
+
+
+\section{RTG generation as planning}
+
+
+\section{NP-completeness of the RTG generation problem}
+
+\section{Conclusion}
+
+
+
+
+\section*{Version History}
+
+\begin{tabular}{lll}
+  v 3.0 & \today & Completely revised \\
+  v 2.0 & 29/10/07 & Version for Hector Geffner
+\end{tabular}
+
+
+
+\bibliographystyle{plainnat}
+\bibliography{gen}
+
+\end{document}

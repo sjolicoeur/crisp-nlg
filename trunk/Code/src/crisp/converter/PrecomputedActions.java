@@ -189,7 +189,6 @@ public class PrecomputedActions {
             positiveEffectTerms.addAll(getInstantiatedPositiveActionEffects(a));
         }
         
-        System.out.println(positiveEffectTerms);
                                 
         ArrayList<DurativeAction> resultActions = new ArrayList<DurativeAction>(selectedInitActions);
         
@@ -216,7 +215,6 @@ public class PrecomputedActions {
        
     
     private boolean isApplicable(Set<Term> trueTerms,  Action action) {
-        System.out.println(action);
         Goal precond = action.instantiate(dummySubst).getPrecondition();
         List<Term> precondTerms = new ArrayList<Term>();
         precond.getPositiveTerms(precondTerms);
@@ -226,7 +224,6 @@ public class PrecomputedActions {
             String label = compound.getLabel();
             // This does only work because adjunction is not allowed at substitution nodes
             if (label.equals("subst") || label.equals("canadjoin")) {
-                System.out.println(term);
                 
                 List<Term> subterms = compound.getSubterms();
                 Term treename = subterms.get(0);
@@ -238,7 +235,7 @@ public class PrecomputedActions {
                     Compound trueCompound = (Compound) t;
                     String trueCompoundLabel = trueCompound.getLabel();
                     
-                    if (label.equals("subst") || label.equals("canadjoin")) {
+                    if (trueCompoundLabel.equals("subst") || trueCompoundLabel.equals("canadjoin")) {
                         List<Term> trueTermSubTerms = trueCompound.getSubterms();
                         Term targetTreename = trueTermSubTerms.get(0);
                         Term targetTreenode = trueTermSubTerms.get(1);
@@ -248,11 +245,9 @@ public class PrecomputedActions {
                         }
                     }
                 }
-                System.out.println(found);
                 return found;
             }
         }
-        System.out.println(true);
         return true;
     }
     

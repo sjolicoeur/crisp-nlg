@@ -180,9 +180,8 @@ public class PrecomputedActions {
         selectedActions.addAll(emptyActions); // Add actions with empty semantics                                                    
         
         selectedActions.addAll(selectedInitActions);
-        return selectedActions;
         
-        /*
+        
         // Step 2: Filter out unreachable actions.
         Set<Term> positiveEffectTerms = new HashSet<Term>();
         
@@ -193,13 +192,15 @@ public class PrecomputedActions {
         System.out.println(positiveEffectTerms);
                                 
         ArrayList<DurativeAction> resultActions = new ArrayList<DurativeAction>(selectedInitActions);
+        
         int actionNumber = resultActions.size()+1;
         
         while (actionNumber!=resultActions.size()) {
             actionNumber = resultActions.size();
             List<DurativeAction> newActions = new ArrayList<DurativeAction>();
+        
             for (DurativeAction action : selectedActions)  {
-                if (isApplicable(positiveEffectTerms, action)) { 
+                if (isApplicable(positiveEffectTerms,  action)) { 
                     positiveEffectTerms.addAll(getInstantiatedPositiveActionEffects(action));                    
                     newActions.add(action);
                 }
@@ -210,24 +211,45 @@ public class PrecomputedActions {
         
         return resultActions;
         
-        */
+        
     }
        
     
-    private boolean isApplicable(Set<Term> trueTerms, Action action) {
+    private boolean isApplicable(Set<Term> trueTerms,  Action action) {
         System.out.println(action);
         Goal precond = action.instantiate(dummySubst).getPrecondition();
         List<Term> precondTerms = new ArrayList<Term>();
         precond.getPositiveTerms(precondTerms);
         
-        for (Term term: precondTerms) {            
-            String label = ((Compound) term).getLabel();
+        for (Term term: precondTerms) {     
+            Compound compound = (Compound) term;
+            String label = compound.getLabel();
+            // This does only work because adjunction is not allowed at substitution nodes
             if (label.equals("subst") || label.equals("canadjoin")) {
                 System.out.println(term);
-                if (! trueTerms.contains(term)) {
-                    System.out.println(false);
-                    return false;
+                
+                List<Term> subterms = compound.getSubterms();
+                Term treename = subterms.get(0);
+                Term treenode = subterms.get(1);
+                
+                boolean found = false;
+                for (Term t : trueTerms) {
+                    
+                    Compound trueCompound = (Compound) t;
+                    String trueCompoundLabel = trueCompound.getLabel();
+                    
+                    if (label.equals("subst") || label.equals("canadjoin")) {
+                        List<Term> trueTermSubTerms = trueCompound.getSubterms();
+                        Term targetTreename = trueTermSubTerms.get(0);
+                        Term targetTreenode = trueTermSubTerms.get(1);
+                        if (treename.equals(targetTreename) && treenode.equals(targetTreenode)) {
+                            found = true;
+                            break;
+                        }
+                    }
                 }
+                System.out.println(found);
+                return found;
             }
         }
         System.out.println(true);

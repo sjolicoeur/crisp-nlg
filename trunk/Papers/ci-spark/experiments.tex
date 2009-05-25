@@ -1,44 +1,26 @@
-
-
 \section{Experiments}
 \label{sec:experiments}
 
-We now describe the results of four simple experiments designed to evaluate
-the performance of three planners---FF \citep{HoffmannNebel01}, SGPLAN
-5.2.2 \citep{hsu06:_new_featur_in_sgplan_for}, and an ad-hoc implementation
-of GraphPlan \citep{Blum1997} written in Java---in our NLG domains. The FF
-and SGPLAN planners were chosen due to their success in the International
-Planning Competitions. Our implementation of GraphPlan is included as a
-counterpoint to the other two, more complex, planners. Most notably, our
-version of GraphPlan does not perform a preprocessing ``grounding'' step
-like FF and SGPLAN but is much more selective in its predicate and action
-instantiations.
+We will now return to the original question of the paper: Is planning
+technology ready for applications in natural language generation? We
+will tackle this question by evaluating the performance of several
+planners on the NLG planning domains from the previous section.
 
-On first impressions, our results indicate that planning is a promising
-tool for both domains.  In the sentence generation domain, FF dramatically
-outperforms the best previously known algorithm for the same problem (a
-reimplementation of \citep{Stone2003a}), although the latter approach uses
-a greedy search algorithm with a heuristic that is hand-tailored to the
-domain. In the GIVE domain, SGPLAN computes a domain plan from the initial
-state to the goal in 0.3 seconds, which is fast enough for moderately-sized
-problems instances in the application.\footnote{All
-  runtimes were measured on a Pentium 4 CPU running at 3 GHz. Java programs
-  were allowed to ``warm up'', i.e., the planner was run five times and the
-  first four measurements discarded to ensure that the JVM had just-in-time
-  compiled all relevant bytecode.}
+We start with two experiments in the CRISP domain. First, we present a
+scenario which focuses on the generation of referring expressions with
+a tiny grammar (Section~\ref{sec:exper-1:-sent}); then we look at a
+setting in which CRISP is used for surface realization with the XTAG
+Grammar \citep{xtag01:_tr}, a large-scale TAG grammar of English
+(Section~\ref{sec:exper-2:-sent-xtag}).
 
-We also observe that although FF and SGPLAN manage the search for plans
-very efficiently, they both spend comparatively large amounts of time
-computing predicate and action instantiations in their preprocessing
-stages, many of which are then never used during the search. FF's
-``grounding time'' in particular dominates its overall planning time,
-leading to some conflicting results. In some cases, our Java implementation
-of GraphPlan significantly outperforms both state-of-the-art planners. The
-experiments described below seek to improve our understanding of this
-situation.
+We then go through a series of experiments in the GIVE domain. We
+start with a domain that is essentially Gridworld
+(Section~\ref{sec:exper-2:-minim}), and then add positions that are
+either not needed (Section~\ref{sec:experiment-3:-give}) or even
+inaccessible (Section~\ref{sec:experiment-4:-give}).
 
 
-\subsection{Experiment 1: Sentence generation}
+\subsection{Experiment 1: Sentence generation (referring expressions)}
 \label{sec:exper-1:-sent}
 
 In the first experiment, we construct a series of sentence generation
@@ -63,6 +45,21 @@ the grammar).
     runtime in milliseconds.}
   \label{fig:runtimes-crisp}
 \end{figure}
+
+ The
+planners we will use include FF \citep{HoffmannNebel01} and SGPLAN
+5.2.2 \citep{hsu06:_new_featur_in_sgplan_for}: These were highly
+successful in recent International Planning Competitions and support a
+fragment of 
+
+and an ad-hoc implementation
+of GraphPlan \citep{Blum1997} written in Java---in our NLG domains. The FF
+and SGPLAN planners were chosen due to their success in the International
+Planning Competitions. Our implementation of GraphPlan is included as a
+counterpoint to the other two, more complex, planners. Most notably, our
+version of GraphPlan does not perform a preprocessing ``grounding'' step
+like FF and SGPLAN but is much more selective in its predicate and action
+instantiations.
 
 The results of this experiment are shown in the graph in
 Figure~\ref{fig:runtimes-crisp}. The input parameters $(m,n)$ are plotted
@@ -95,6 +92,11 @@ $m=10$. Conversely, GraphPlan's runtime grows much faster with the plan
 size (i.e., with growing values of $n$ for a fixed $m$). Larger, but still
 realistically-sized, instances of the sentence generation problem are still
 problematic for all the planners we tested.
+
+\subsection{Experiment 2: Sentence generation (XTAG)}
+\label{sec:exper-2:-sent-xtag}
+
+
 
 
 \subsection{Experiment 2: Minimal GIVE worlds}

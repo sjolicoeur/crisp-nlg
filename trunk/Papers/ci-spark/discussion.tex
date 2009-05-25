@@ -1,6 +1,37 @@
-
 \section{Discussion}
 \label{sec:discussion}
+
+this was in Sect 4 before:
+
+
+
+On first impressions, our results indicate that planning is a promising
+tool for both domains.  In the sentence generation domain, FF dramatically
+outperforms the best previously known algorithm for the same problem (a
+reimplementation of \citep{Stone2003a}), although the latter approach uses
+a greedy search algorithm with a heuristic that is hand-tailored to the
+domain. In the GIVE domain, SGPLAN computes a domain plan from the initial
+state to the goal in 0.3 seconds, which is fast enough for moderately-sized
+problems instances in the application.\footnote{All
+  runtimes were measured on a Pentium 4 CPU running at 3 GHz. Java programs
+  were allowed to ``warm up'', i.e., the planner was run five times and the
+  first four measurements discarded to ensure that the JVM had just-in-time
+  compiled all relevant bytecode.}
+
+We also observe that although FF and SGPLAN manage the search for plans
+very efficiently, they both spend comparatively large amounts of time
+computing predicate and action instantiations in their preprocessing
+stages, many of which are then never used during the search. FF's
+``grounding time'' in particular dominates its overall planning time,
+leading to some conflicting results. In some cases, our Java implementation
+of GraphPlan significantly outperforms both state-of-the-art planners. The
+experiments described below seek to improve our understanding of this
+situation.
+
+
+---
+
+
 
 The positive conclusion we draw from our simple set of experiments is that
 modern planners are fairly good at controlling the search for many of the

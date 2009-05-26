@@ -181,8 +181,9 @@ public class PrecomputedActions {
         
         selectedActions.addAll(selectedInitActions);
         
+        return selectedActions;
         
-        // Step 2: Filter out unreachable actions.
+        /* Step 2: Filter out unreachable actions.
         Set<Term> positiveEffectTerms = new HashSet<Term>();
         
         for (DurativeAction a : selectedInitActions) {
@@ -210,6 +211,7 @@ public class PrecomputedActions {
         
         return resultActions;
         
+        */
         
     }
        
@@ -219,10 +221,12 @@ public class PrecomputedActions {
         List<Term> precondTerms = new ArrayList<Term>();
         precond.getPositiveTerms(precondTerms);
         
+        boolean still_ok = true;
         for (Term term: precondTerms) {     
             Compound compound = (Compound) term;
             String label = compound.getLabel();
             // This does only work because adjunction is not allowed at substitution nodes
+            
             if (label.equals("subst") || label.equals("canadjoin")) {
                 
                 List<Term> subterms = compound.getSubterms();
@@ -245,10 +249,13 @@ public class PrecomputedActions {
                         }
                     }
                 }
-                return found;
+                still_ok = found;
+                if (! still_ok) {
+                    break;
+                }
             }
         }
-        return true;
+        return still_ok;
     }
     
     private List<Term> getInstantiatedPositiveActionEffects(Action action){                

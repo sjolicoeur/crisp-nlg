@@ -54,7 +54,7 @@ public class CRISPtoTempPDDL {
         end = System.currentTimeMillis();        
         long problemParseTime = end-start;        
         
-
+        System.out.println("Retrieve actions...");
 		start = System.currentTimeMillis();       
         //select actions whose semantic content is mentioned in the initial state (+empty actions)        
 		ArrayList<DurativeAction> selectedActions = actions.retrieveActions(problem.getInitialState());
@@ -181,7 +181,7 @@ public class CRISPtoTempPDDL {
     }
 
 
-        /**
+     /**
      * Sets up the PDDL domain by registering the requirements, types, and a 
      * bunch of constants. This is called before parsing, therefore part of the
      * domain information cannot be set here (e.g. maximum plan length etc.)

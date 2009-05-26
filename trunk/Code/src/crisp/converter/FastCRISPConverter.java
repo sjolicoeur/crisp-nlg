@@ -543,20 +543,20 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
                     
                     // TODO
                     /* pragmatic effects
-                    *for( String pragEffect : entry.getPragEffects() ) {
-                        *   Compound effect = (Compound) TermParser.parse(pragEffect);
-                        * 
-                        *    if ( "uniqueref".equals(effect.getLabel())) {
-                            *       String roleN = n.get(effect.getSubterms().get(0).toString());
-                            *        TypedVariableList vars = new TypedVariableList();
-                            *        vars.addItem(new Variable("?y"), "individual");
-                            *
-                            *        effects.add(new crisp.planningproblem.effect.Universal(vars,
-                            *                new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", false)));
-                            *        break;
-                        *    }
-                    *}
-                    */
+                     *for( String pragEffect : entry.getPragEffects() ) {
+                     *   Compound effect = (Compound) TermParser.parse(pragEffect);
+                     * 
+                     *    if ( "uniqueref".equals(effect.getLabel())) {
+                     *       String roleN = n.get(effect.getSubterms().get(0).toString());
+                     *        TypedVariableList vars = new TypedVariableList();
+                     *        vars.addItem(new Variable("?y"), "individual");
+                     *
+                     *        effects.add(new crisp.planningproblem.effect.Universal(vars,
+                     *                new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", false)));
+                     *        break;
+                     *    }
+                     *}
+                     */
                     
                     // effects for the substitution nodes
                     for (String substNode : substNodes) {

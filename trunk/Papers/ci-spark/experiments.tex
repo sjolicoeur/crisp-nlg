@@ -17,23 +17,34 @@ We then go through a series of experiments in the GIVE domain. We
 start with a domain that is essentially Gridworld
 (Section~\ref{sec:exper-2:-minim}), and then add positions that are
 either not needed (Section~\ref{sec:experiment-3:-give}) or even
-inaccessible (Section~\ref{sec:experiment-4:-give}).
+inaccessible (Section~\ref{sec:experiment-4:-give}). This series of
+experiments is set up to illustrate what we perceive as the main
+limitation of current off-the-shelf planners for our applications:
+They spend a long time on computing all ground instances, even if most
+of these instances are never used in the plan search.
+
 
 
 \subsection{Experiment 1: Sentence generation (referring expressions)}
 \label{sec:exper-1:-sent}
 
-In the first experiment, we construct a series of sentence generation
-problems which require the planner to compute a plan representing the
-sentence ``Mary likes the Adj$_1$ \ldots Adj$_n$ rabbit.''  Each problem
-instance assumes a certain number $m$ of rabbits that were distinguished by
-$n \leq m$ different properties, such that all $n$ properties are required
-to distinguish the target referent from all other rabbits.  The $n$
-properties are realized as $n$ different adjectives, in any order.  This
-setup allows us to control the plan length (a plan with $n$ properties will
-have length $n+4$) and the universe size (the universe will contain $m+1$
-individuals in addition to the differently-typed individuals used to encode
-the grammar).
+For the first experiment on sentence generation, we focus on the
+generation of referring expressions, a problem that is usually handled
+by the sentence planner if sentence planning and surface realization
+are separated. We consider a series of sentence generation problems
+which require the planner to compute a plan representing the sentence
+``Mary likes the Adj$_1$ \ldots Adj$_n$ rabbit.''  Each problem
+instance assumes a target referent $r$, which is a rabbit, and a
+certain number $m$ of further rabbits $r_1,\ldots,r_m$ that are
+distinguished by properties $P_1,\ldots,P_n$ with $n \leq m$. The
+problem instance is set up such that $r$ has all properties except for
+$P_i$ in common with each $r_i$. That is, all $n$ properties are
+required to describe $r$ uniquely. The $n$ properties are realized as
+$n$ different adjectives, in any order.  This setup allows us to vary
+the plan length (a plan with $n$ properties will have length $n+4$)
+and the universe size (the universe will contain $m+1$ rabbit
+individuals in addition to the differently-typed individuals used to
+encode the grammar).
 
 \begin{figure}
   \centering
@@ -46,52 +57,57 @@ the grammar).
   \label{fig:runtimes-crisp}
 \end{figure}
 
- The
-planners we will use include FF \citep{HoffmannNebel01} and SGPLAN
-5.2.2 \citep{hsu06:_new_featur_in_sgplan_for}: These were highly
-successful in recent International Planning Competitions and support a
-fragment of 
-
-and an ad-hoc implementation
-of GraphPlan \citep{Blum1997} written in Java---in our NLG domains. The FF
-and SGPLAN planners were chosen due to their success in the International
-Planning Competitions. Our implementation of GraphPlan is included as a
-counterpoint to the other two, more complex, planners. Most notably, our
-version of GraphPlan does not perform a preprocessing ``grounding'' step
-like FF and SGPLAN but is much more selective in its predicate and action
-instantiations.
+We converted these generation problem instances into planning problem
+instances as described in Section~\ref{sec:domains}, and then ran
+three different planners on them. We used the off-the-shelf planners
+FF 2.3 \citep{HoffmannNebel01} and SGPLAN 5.2.2
+\citep{hsu06:_new_featur_in_sgplan_for}, because they were highly
+successful in the recent International Planning Competitions, and
+support a fragment of PDDL with quantified and conditional effects,
+which is necessary in our domain (see
+Fig.~\ref{fig:white-rabbit-as-planning}). Common to both of these
+planners is that they perform a preprocessing step in which all ground
+instances of all predicates and actions are computed.  Furthermore, we
+used an ad-hoc implementation of GraphPlan \citep{Blum1997} written in
+Java which avoids the grounding preprocessing step and only computes
+instances of actions and predicates by need, as they are actually
+discovered when the planning graph is built. Our expectation was that
+this planner would not be able to compete with FF or SGPLAN in terms
+of search efficiency, but we were interested in comparing the
+contribution of the prior grounding step on the planner performance.
 
 The results of this experiment are shown in the graph in
-Figure~\ref{fig:runtimes-crisp}. The input parameters $(m,n)$ are plotted
-in lexicographic order on the horizontal axis and the runtime is shown in
-milliseconds on the vertical axis. These results reveal a number of
-interesting insights. First, FF significantly outperforms SGPLAN in this
-domain, sometimes by a factor of 10 or more.\footnote{Experiments with
- SGPLAN use a pre-release version of SGPLAN, kindly provided to us by
- Chih-Wei Hsu.The release version of SGPLAN 5.2.2 had a bug which caused it
- to crash on some of our problem instances.}
-Second, FF's runtime is dominated by its initial grounding step, in which
-it computes the ground instances of all predicates and actions used in the
-planning problem in order to avoid unnecessary instantiation during search.
-In particular, the ratio of grounding time to total runtime is generally
-above 85\%, and rises to above 99\% at $m=11$, which is still a relatively
-small universe for this application.\footnote{The
-  ``grounding'' time reported here is what FF reports as ``time spent:
-  instantiating action templates''.} 
+Figure~\ref{fig:runtimes-crisp}. The input parameters $(m,n)$ are
+plotted in lexicographic order on the horizontal axis, and the runtime
+is shown in milliseconds on the vertical axis.\footnote{These times
+  were measured on XXX} These results reveal a number of interesting
+insights. First, FF significantly outperforms SGPLAN in this domain,
+sometimes by a factor of 10 or more.\footnote{Experiments with SGPLAN
+  use a pre-release version of SGPLAN, kindly provided to us by
+  Chih-Wei Hsu.The release version of SGPLAN 5.2.2 had a bug which
+  caused it to crash on some of our problem instances.}  Second, FF's
+runtime is dominated by its initial grounding step, in which it
+computes the ground instances of all predicates and actions used in
+the planning problem in order to avoid unnecessary instantiation
+during search.  In particular, the ratio of grounding time to total
+runtime is generally above 85\%, and rises to above 99\% at $m=11$,
+which is still a relatively small universe for this
+application.\footnote{The ``grounding'' time reported here is what FF
+  reports as ``time spent: instantiating action templates''.}
 
-In our testing examples, the time spent by FF on grounding is such that it
-is consistently outperformed by our Java implementation of GraphPlan, which
-only computes instances of predicates and actions as they are discovered
-during the construction of the planning graph. Although FF is consistently
-much faster as far as pure search time is concerned, our results indicate
-that FF's performance is much more sensitive to the domain size: if we fix
-$n=1$, FF takes 60 ms to compute a plan at $m=1$, but 2.4 seconds to
-compute the same plan at $m=10$. By comparison, our GraphPlan
-implementation takes 30 ms at $m=1$ and still only requires 50 ms at
-$m=10$. Conversely, GraphPlan's runtime grows much faster with the plan
-size (i.e., with growing values of $n$ for a fixed $m$). Larger, but still
-realistically-sized, instances of the sentence generation problem are still
-problematic for all the planners we tested.
+In our testing examples, the time spent by FF on grounding is so high
+that it is consistently outperformed by our Java implementation of
+GraphPlan, which only computes instances by need. Although FF is
+consistently much faster as far as pure search time is concerned, our
+results indicate that FF's performance is much more sensitive to the
+domain size: if we fix $n=1$, FF takes 60 ms to compute a plan at
+$m=1$, but 2.4 seconds to compute the same plan at $m=10$. By
+comparison, our GraphPlan implementation takes 30 ms at $m=1$ and
+still only requires 50 ms at $m=10$. Conversely, GraphPlan's runtime
+grows much faster with the plan size (i.e., with growing values of $n$
+for a fixed $m$). Larger, but still realistically-sized, instances of
+the sentence generation problem are still problematic for all the
+planners we tested.
 
 \subsection{Experiment 2: Sentence generation (XTAG)}
 \label{sec:exper-2:-sent-xtag}

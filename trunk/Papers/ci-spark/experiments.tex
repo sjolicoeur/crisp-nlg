@@ -109,8 +109,71 @@ for a fixed $m$). Larger, but still realistically-sized, instances of
 the sentence generation problem are still problematic for all the
 planners we tested.
 
+
+
 \subsection{Experiment 2: Sentence generation (XTAG)}
 \label{sec:exper-2:-sent-xtag}
+
+The first experiment already gives us some initial insights into the
+appropriateness of planning for the sentence generation domain: On the
+examples we looked at, search times were low, but FF and SGPLAN spend
+a lot of time on the initial grounding step.  However, one weakness of
+this experiment is that it uses a tiny grammar, consisting of just
+those 12 lexicon entries that are needed for the experiment. While the
+grounding problem can only get worse with larger grammars, the
+experiment by itself does not allow us to make clear statements about
+the search efficiency.
+
+To address this problem, we ran a second sentence generation
+experiment. This time, we used the XTAG Grammar \citep{xtag01:_tr}, a
+large-scale TAG grammar of English. XTAG contains lexicon entries for
+about 17,000 uninflected words using about 1100 different elementary
+trees. Although XTAG does not contain semantic information, it is
+possible to automatically equip the lexicon entries with inferred
+semantic representations based on the words in the lexicalized
+elementary tree. The result is a highly ambiguous grammar: The most
+ambiguous word, ``ask'', is the anchor of 314 lexicon entries.
+
+In our experiment, we were especially interested in two
+questions. First, how would the planners handle the search problem
+involved in generating with such a large and ambiguous grammar?
+Second, would it be harder to generate sentences containing verbs with
+multiple arguments, given that verbs with more arguments lead to
+actions with more parameters and therefore more instances? To answer
+these questions, we generated sentences of the form ``S and S and
+\ldots and S'', where each S was a sentence; we called the number of
+sentences in the conjunction $n$. Each S was a sentence of the form
+``the businessman sneezes'', ``the businessman admires the girl'', or
+``the businessman gives the girl the book''---that is, they varied in
+the number $k$ of syntactic arguments the verb expects (1 for the
+intransitive verb ``sneeze'', 2 for the transitive verb ``admire'',
+and 3 for the ditransitive verb ``give''). This means that the output
+sentence for parameters $n$ and $k$ contained $n(2k+2)-1$ words. The
+instances were set up in such a way that the generation of referring
+expressions was trivial, so this experiment was purely a surface
+realization task.
+
+\begin{figure}
+  \centering
+  
+  \caption{Results for the XTAG experiment. The horizontal axis
+    represents parameters $(k,n)$ from $(1,1)$ to $(3,10)$ in
+    lexicographic order. The vertical axis is runtime in milliseconds.}
+  \label{fig:xtag-graph}
+\end{figure}
+
+Again we ran the experiment with FF 2.3 and SGPLAN 5.2.2; this time,
+we also ran the experiment with the Metric-FF implementation of FF
+because FF 2.3 had a bug that caused it to switch to a slower search
+heuristic for larger problem instances, and which was fixed in
+Metric-FF. The results are shown in
+Fig.~\ref{fig:xtag-graph}. \todo{blah blah talk about results a bit}
+Unlike in the referring expressions experiment above, our own
+Graphplan implementation was unusably slow here for serious problem
+instances---for $k=1$ and $n=3$, this planner took over two minutes,
+and it exceeded its memory limit of 16 GB for $n>3$. \todo{blah blah
+  talk about what we learn about FF etc}
+
 
 
 

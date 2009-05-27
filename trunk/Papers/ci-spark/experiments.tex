@@ -162,17 +162,27 @@ realization task.
   \label{fig:xtag-graph}
 \end{figure}
 
-Again we ran the experiment with FF 2.3 and SGPLAN 5.2.2; this time,
-we also ran the experiment with the Metric-FF implementation of FF
-because FF 2.3 had a bug that caused it to switch to a slower search
-heuristic for larger problem instances, and which was fixed in
-Metric-FF. The results are shown in
-Fig.~\ref{fig:xtag-graph}. \todo{blah blah talk about results a bit}
-Unlike in the referring expressions experiment above, our own
-Graphplan implementation was unusably slow here for serious problem
-instances---for $k=1$ and $n=3$, this planner took over two minutes,
-and it exceeded its memory limit of 16 GB for $n>3$. \todo{blah blah
-  talk about what we learn about FF etc}
+Fig.~\ref{fig:xtag-graph} reports the runtimes we measured in this
+experiment for FF. Because the computations in this experiment were
+very memory-intensive, we recompiled FF 2.3 as a 64-bit binary. We
+also ran the experiments with a 64-bit version of Metric-FF; although
+our planning problem is purely sequential and not metric, Metric-FF
+avoids a bug which caused FF 2.3 to switch to a best-first search
+strategy beyond a certain point; the jump in runtime is clearly
+visible in the figure. We did not run this experiment with SGPLAN
+because we didn not have access to a 64-bit version of either SGPLAN
+5.2.2 or SGPLAN 6; some initial experiences with the 32-bit version
+indicate that SGPLAN switches to FF's best-first strategy even for
+small problem instances, and thus would be slower than the versions of
+FF we reported here. We also do not report runtimes for our Java
+implementation of Graphplan, because it was unusuably slow for serious
+problem instances: For $k=1$ and $n=3$, it already took over two
+minutes, and it exceeded its memory limit of 16 GB for
+$n>3$.
+
+\todo{blah blah talk about what we learn about FF etc}
+search strategy matters; EHC search works pretty well; but again,
+preprocessing takes tons of time.
 
 
 

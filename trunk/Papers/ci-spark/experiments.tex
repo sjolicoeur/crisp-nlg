@@ -151,7 +151,10 @@ and 3 for the ditransitive verb ``give''). This means that the output
 sentence for parameters $n$ and $k$ contained $n(2k+2)-1$ words. The
 instances were set up in such a way that the generation of referring
 expressions was trivial, so this experiment was purely a surface
-realization task.
+realization task. To achieve reasonable performance, we only generated
+planning operators for those elementary trees for which all predicate
+symbols in the semantic representation also appeared in the knowledge
+base.
 
 \begin{figure}
   \centering
@@ -180,10 +183,26 @@ problem instances: For $k=1$ and $n=3$, it already took over two
 minutes, and it exceeded its memory limit of 16 GB for
 $n>3$.
 
-\todo{blah blah talk about what we learn about FF etc}
-search strategy matters; EHC search works pretty well; but again,
-preprocessing takes tons of time.
-
+There are a number of observations we can make in this
+experiment. First of all, the experiment confirms that FF's Enforced
+Hill-Climbing search strategy works very well for the sentence
+generation task: Although we are now generating with a large grammar,
+FF generates a 39-word sentence ($k=1,n=6$) in under a second of
+search time. This efficiency is a direct result of this particular
+search strategy: Whenever FF falls back to the best-first strategy,
+runtimes become much slower (compare the graphs for FF 2.3 and
+Metric-FF). Second, FF's runtime is still dominated by the
+preprocessing stage. For instance, Metric-FF spends about 10 seconds
+on search for $k=1,n=10$, compared to its total runtime of about 65
+seconds. This effect becomes more pronounced as we increase $k$: For
+$k=2$, we reach 65 seconds of total runtime at $n=4$, but here
+Metric-FF only spends about a second on search. For $k=3$, \todo{say
+  something true}. This is to be expected, given that the planning
+operators for the verbs have $k+2$ parameters (see
+Fig.~\ref{fig:white-rabbit-as-planning}), and thus the number of
+action instances grows by a factor of the universe size every time we
+increase $k$ by one. A planner which computes all ground instances of
+the operators thus takes exponential time in $k$ for preprocessing.
 
 
 

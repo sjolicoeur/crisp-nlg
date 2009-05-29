@@ -290,7 +290,8 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
     /**
     * Sets up the PDDL domain by registering the requirements, types, and a 
     * bunch of constants. This is called before parsing, therefore part of the
-    * domain information cannot be set here (e.g. maximum plan length etc.)
+    * domain information cannot be set here (e.g. constants, predicates, 
+    * maximum plan length etc.)
     *
     * @param domain
     * @param problem
@@ -370,9 +371,12 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
             HashSet<String> localRoles = new HashSet<String>();            
             for (String node : allNodeIds) {
             	if( tree.getNodeDecoration(node) != null ) {
-            		localRoles.add(tree.getNodeDecoration(node).toString());
+                    String role = tree.getNodeDecoration(node).toString();
+                    if (role!=null) { 
+                        localRoles.add(tree.getNodeDecoration(node).toString());
+                    }
             	}
-            }            
+            }                        
             roles.put(treeName, localRoles);                                    
         }
         
@@ -381,33 +385,38 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
             
             for (LexiconEntry parentEntry : entries) {
                 ElementaryTree<Term> parentTree = grammar.getTree(parentEntry.tree);                
-                
+                                
                 // Add init action for this entry
-                Action initAction = PCrispActionCreator.createInitAction(grammar, parentEntry, grammar.getInitProbability(parentEntry), roles);
-                addActionToDomain(initAction, domain);                  
+                if (grammar.hasInitProbability(parentEntry)) {                                        
+                    Action initAction = PCrispActionCreator.createInitAction(grammar, parentEntry, grammar.getInitProbability(parentEntry), roles);
+                    addActionToDomain(initAction, domain);
+                }                                  
                 
                 for (String node : parentTree.getAllNodes()) {
                     
                     //Compute actions for substitution in parentTree at this node
-                    Map<LexiconEntry,Double> substProbs = grammar.getSubstitutionProbabilities(parentEntry,node);
-                    for (LexiconEntry childEntry : substProbs.keySet()){
+                    Map<LexiconEntry,Double> substProbs = grammar.getSubstitutionProbabilities(parentEntry,node);                    
+                    for (LexiconEntry childEntry : substProbs.keySet()) {
                         Collection<Action> substActions = 
                             PCrispActionCreator.createActions(grammar, parentEntry, node, childEntry, TagActionType.SUBSTITUTION, substProbs.get(childEntry), plansize, roles);
                         addActionsToDomain(substActions, domain);  
                     }
                     
                     //Compute actions for adjoining in parentTree at this node
-                    Map<LexiconEntry, Double> adjoinProbs = grammar.getSubstitutionProbabilities(parentEntry,node);
-                    for (LexiconEntry childEntry : adjoinProbs.keySet()){
+                    Map<LexiconEntry, Double> adjoinProbs = grammar.getAdjunctionProbabilities(parentEntry,node);                     
+                    
+                    for (LexiconEntry childEntry : adjoinProbs.keySet()) {
                         Collection<Action> adjActions = 
                             PCrispActionCreator.createActions(grammar, parentEntry, node, childEntry, TagActionType.ADJUNCTION, adjoinProbs.get(childEntry), plansize, roles);
                         addActionsToDomain(adjActions, domain);
                     }
                     
                     //Compute noadjoin action for this node
-                    double noadjoinProb = grammar.getNoadjoinProbability(parentEntry, node);
-                    Action noadjoinAction = PCrispActionCreator.createNoAdjoinAction(parentEntry, node, grammar.getNoadjoinProbability(parentEntry,node), plansize);
-                    addActionToDomain(noadjoinAction, domain);
+                    if (grammar.hasNoadjoinProbability(parentEntry,node)) {
+                        double noadjoinProb = grammar.getNoadjoinProbability(parentEntry, node);
+                        Action noadjoinAction = PCrispActionCreator.createNoAdjoinAction(parentEntry, node, grammar.getNoadjoinProbability(parentEntry,node), plansize);
+                        addActionToDomain(noadjoinAction, domain);
+                    }
                 }                                    
             }            
         }
@@ -418,7 +427,7 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
      * Add a collection of actions to a planning domain and register all constants and predicates
      * they use.
      */
-    private static void addActionsToDomain(Collection<Action> actions, Domain domain) {
+    private static void addActionsToDomain(Collection<Action> actions, Domain domain) {        
         for (Action action : actions) {
             addActionToDomain(action,domain);
         }
@@ -450,12 +459,12 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
     
     
     
-    /******** input, output, main program **********/
+    
     
     public static ProbabilisticGrammar<Term> filterProbabilisticGrammar(ProbabilisticGrammar<Term> grammar, LexiconEntryFilter filter) {
-        Grammar<Term> filteredGrammar = new GrammarFilterer<Term>().filter(grammar, filter);
+        Grammar<Term> filteredGrammar = new GrammarFilterer<Term>().filter(grammar, filter);                
         ProbabilisticGrammar<Term> ret = new ProbabilisticGrammar();
-        
+                
         Set<LexiconEntry> filteredEntries = new HashSet<LexiconEntry>();
         
         // Copy all treeNames and all lexicon entries
@@ -463,27 +472,35 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
             ret.addTree(treeName, filteredGrammar.getTree(treeName));
         }
         
+        
+        
         for (String word: filteredGrammar.getAllWords()){
             for (LexiconEntry entry : filteredGrammar.getLexiconEntries(word)) {
                 filteredEntries.add(entry);
                 ret.addLexiconEntry(entry.word, entry.tree, entry.auxLexicalItems, entry.semantics);                
-                filteredEntries.add(entry);
             }
         }
+                
         
+                
         for (LexiconEntry entry : filteredEntries) {                        
                         
-            ret.setInitProbability(entry, grammar.getInitProbability(entry));
-            
-            for (String node : grammar.getTree(entry.tree).getAllNodes()) {
-                ret.setNoadjoinProbability(entry, node, grammar.getNoadjoinProbability(entry,node));
+            if (grammar.hasInitProbability(entry)) {                
+                ret.setInitProbability(entry, grammar.getInitProbability(entry));                
+            }
                 
-                Map<LexiconEntry, Double> substProbs = grammar.getSubstitutionProbabilities(entry, node);
+            for (String node : grammar.getTree(entry.tree).getAllNodes()) {
+                if (grammar.hasNoadjoinProbability(entry,node)) {                    
+                    ret.setNoadjoinProbability(entry, node, grammar.getNoadjoinProbability(entry,node));
+                }
+                
+                Map<LexiconEntry, Double> substProbs = grammar.getSubstitutionProbabilities(entry, node);                                                    
                 for (LexiconEntry child : substProbs.keySet()) {
                     if (filteredEntries.contains(child)) {
                         ret.setSubstitutionProbability(entry,node,child,substProbs.get(child)); 
                     }
                 }
+                
                 Map<LexiconEntry, Double> adjoinProbs = grammar.getAdjunctionProbabilities(entry, node);
                 for (LexiconEntry child : adjoinProbs.keySet()) {
                     if (filteredEntries.contains(child)) {
@@ -495,6 +512,8 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
         
         return ret;
     }
+    
+    /******** input, output, main program **********/
     
     /**
     * Parses the XML document given in problemfilename, as well as the grammar file
@@ -524,9 +543,8 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
         
         try{
             SAXParser parser = factory.newSAXParser();
-            parser.parse(new InputSource(problemfile), handler);            
-            
-            ProbabilisticGrammar<Term> filteredGrammar = filterProbabilisticGrammar(grammar, new SemanticsPredicateListFilter(handler.predicatesInWorld) );
+            parser.parse(new InputSource(problemfile), handler);                        
+            ProbabilisticGrammar<Term> filteredGrammar = filterProbabilisticGrammar(grammar, new SemanticsPredicateListFilter(handler.predicatesInWorld) );                       
             computeDomain(domain, problem, filteredGrammar);
             computeGoal(domain, problem);
             

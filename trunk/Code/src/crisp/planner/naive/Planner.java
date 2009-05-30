@@ -41,12 +41,13 @@ public class Planner {
 	State findShortestPlanSpud() {
 		SpudComparator comp = new SpudComparator();
 		numStates = 1;
+		State state = agenda.remove();
 		
-		while( !agenda.isEmpty() && !agenda.peek().isGoalState() ) {
-			State state = agenda.remove();
-			
+		while( !state.isGoalState() ) {
 			List<ActionInstance> instances = state.getApplicableActionInstances();
 			State greedyChoice = null;
+			
+			System.err.print(".");
 			
 			for( ActionInstance inst : instances ) {
 				State newState = new State(state, inst);
@@ -63,11 +64,12 @@ public class Planner {
 				printPlan(state.getPlan());
 				return null;
 			}
-			agenda.add(greedyChoice);
+			
+			state = greedyChoice;
 		}
 		
-		if( !agenda.isEmpty() && agenda.peek().isGoalState() ) {
-			return agenda.remove();
+		if( state.isGoalState() ) {
+			return state;
 		}
 		
 		return null;

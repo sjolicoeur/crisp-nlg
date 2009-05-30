@@ -25,19 +25,35 @@ public class SpudComparator implements Comparator<State> {
 		boolean[] ta1 = arg1.getTrueAtoms(), ta2 = arg2.getTrueAtoms();
 		AtomTable tab1 = arg1.getAtomTable(), tab2 = arg2.getAtomTable();
 		
-		int synMismatch1 = tab1.countGoalMismatches(ta1, "subst"),
-		synMismatch2 = tab2.countGoalMismatches(ta2, "subst"),
-		distrMismatch1 = tab1.countGoalMismatches(ta1, "distractor"),
-		distrMismatch2 = tab2.countGoalMismatches(ta2, "distractor"),
-		needToExpress1 = tab1.countGoalMismatches(ta1, "needtoexpress-1") + tab1.countGoalMismatches(ta1, "needtoexpress-2") + tab1.countGoalMismatches(ta1, "needtoexpress-3"),
-		needToExpress2 = tab2.countGoalMismatches(ta2, "needtoexpress-1") + tab2.countGoalMismatches(ta2, "needtoexpress-2") + tab2.countGoalMismatches(ta2, "needtoexpress-3");
+		int synMismatch1=0, synMismatch2=0, distrMismatch1=0, distrMismatch2=0, needToExpress1=0, needToExpress2=0;
 		
-		/*
-		System.err.println("    state comparison: syn " + synMismatch1 + " vs " + synMismatch2 
-				+ ", distr " + distrMismatch1 + " vs " + distrMismatch2
-				+ ", nte " + needToExpress1 + " vs " + needToExpress2);
-				*/
+		for( int i = 0; i < ta1.length; i++ ) {
+			if( ta1[i]) {
+				String label = tab1.get(i).getLabel();
 				
+				if( label.equals("subst")) {
+					synMismatch1++;
+				} else if( label.equals("distractor")) {
+					distrMismatch1++;
+				} else if( label.startsWith("needtoexpress-")) {
+					needToExpress1++;
+				}
+			}
+		}
+		
+		for( int i = 0; i < ta2.length; i++ ) {
+			if( ta2[i]) {
+				String label = tab2.get(i).getLabel();
+				
+				if( label.equals("subst")) {
+					synMismatch2++;
+				} else if( label.equals("distractor")) {
+					distrMismatch2++;
+				} else if( label.startsWith("needtoexpress-")) {
+					needToExpress2++;
+				}
+			}
+		}
 		
 		if( needToExpress1 != needToExpress2 ) {
 			return needToExpress1 - needToExpress2;

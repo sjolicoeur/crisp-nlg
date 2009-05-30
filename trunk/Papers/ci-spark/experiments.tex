@@ -77,7 +77,11 @@ of search efficiency, but we were interested in comparing the
 contribution of the prior grounding step on the planner performance.
 
 The results of this experiment are shown in the graph in
-Figure~\ref{fig:runtimes-crisp}. The input parameters $(m,n)$ are
+Figure~\ref{fig:runtimes-crisp}.\footnote{All
+  runtimes were measured on a Pentium 4 CPU running at 3 GHz. Java programs
+  were allowed to ``warm up'', i.e., the planner was run five times and the
+  first four measurements discarded to ensure that the JVM had just-in-time
+  compiled all relevant bytecode.} The input parameters $(m,n)$ are
 plotted in lexicographic order on the horizontal axis, and the runtime
 is shown in milliseconds on the vertical axis.\footnote{These times
   were measured on XXX} These results reveal a number of interesting
@@ -181,7 +185,7 @@ FF we reported here. We also do not report runtimes for our Java
 implementation of Graphplan, because it was unusuably slow for serious
 problem instances: For $k=1$ and $n=3$, it already took over two
 minutes, and it exceeded its memory limit of 16 GB for
-$n>3$.
+$n>3$. \todo{compare to SPUD reconstruction here}
 
 There are a number of observations we can make in this
 experiment. First of all, the experiment confirms that FF's Enforced
@@ -196,8 +200,9 @@ preprocessing stage. For instance, Metric-FF spends about 10 seconds
 on search for $k=1,n=10$, compared to its total runtime of about 65
 seconds. This effect becomes more pronounced as we increase $k$: For
 $k=2$, we reach 65 seconds of total runtime at $n=4$, but here
-Metric-FF only spends about a second on search. For $k=3$, \todo{say
-  something true}. This is to be expected, given that the planning
+Metric-FF only spends about a second on search. For $k=3$, neither FF
+nor Metric-FF were able to solve any of the input
+instances. \todo{bla} This is to be expected, given that the planning
 operators for the verbs have $k+2$ parameters (see
 Fig.~\ref{fig:white-rabbit-as-planning}), and thus the number of
 action instances grows by a factor of the universe size every time we

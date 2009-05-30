@@ -1,98 +1,71 @@
 \section{Discussion}
 \label{sec:discussion}
 
-this was in Sect 4 before:
+There are both positive and negative conclusions about the state of
+planning for modern NLG applications that we can draw from these
+experiments.
 
+On the one hand, we found that modern planners are very good at
+dealing with the \emph{search} problems that are involved in the
+NLG-based planning problems we looked at. In the sentence generation
+domain, FF's Enforced Hill-Climbing strategy finds plans corresponding
+to 25-word sentences in about a second. It is hard to compare this
+number to a baseline because there are no shared benchmark problems;
+but FF's search outperforms a greedy search algorithm, and the
+performance is competitive with other sentence generators, which
+similarly employ special-purpose algorithms. Thus research on search
+strategies for planning has paid off: In particular, the Enforced
+Hill-Climbing heuristic outperforms the best-first strategy to which
+FF 2.3 switches for some problem instances. Similarly, SGPLAN's
+performance on the GIVE domain is very convincing and fast enough for
+the application.
 
+However, each of the off-the-shelf planners we tested spent
+substantial amounts of time on preprocessing. This is most apparent in
+the sentence generation domain, where the planners spent almost their
+entire runtime on grounding the predicates and operators for some
+instances. This effect is much weaker in the GIVE domain, which has a
+much smaller number of operators; but as we added dummy predicates,
+the ratio of time that the planners spent on preprocessing rose in a
+similar way. While the GIVE domain can be carefully defined in such a
+way that the number of operators is minimized, this is not possible
+for a domain in which the operators encode the different communicative
+actions that the NLG system can use. For instance, in the sentence
+generation domain, the XTAG planning problem for $k=2$ and $n=5$
+consists of about 1000 operators for the different lexicon entries for
+all the words in the sentence, some of which take four parameters. It
+is not unrealistic to assume a knowledge base with a few hundred
+individuals. All this adds up to trillions of ground instances, i.e.\
+it is completely infeasible to compute ground instances naively.
 
-On first impressions, our results indicate that planning is a promising
-tool for both domains.  In the sentence generation domain, FF dramatically
-outperforms the best previously known algorithm for the same problem (a
-reimplementation of \citep{Stone2003a}), although the latter approach uses
-a greedy search algorithm with a heuristic that is hand-tailored to the
-domain. In the GIVE domain, SGPLAN computes a domain plan from the initial
-state to the goal in 0.3 seconds, which is fast enough for moderately-sized
-problems instances in the application.\footnote{All
-  runtimes were measured on a Pentium 4 CPU running at 3 GHz. Java programs
-  were allowed to ``warm up'', i.e., the planner was run five times and the
-  first four measurements discarded to ensure that the JVM had just-in-time
-  compiled all relevant bytecode.}
+This means that while current planners deal well with the search
+problems we have looked at, they are still unusable for practical NLG
+applications because of the time they spend on preprocessing. In other
+words, generation-as-planning research is still not in a much better
+position than it was in the 1980s. While we are aware that the time
+that a planner invests in preprocessing can pay off during search, we
+still suggest that the inability of current planners to scale to
+larger domains still limits their usefulness for applications beyond
+NLG as well. Furthermore, we feel that preprocessing gets less
+research attention than it deserves: If it is scientifically trivial,
+we challenge the planning community to come up with implementations
+that only ground operators by need; otherwise, we look forward to
+publications on this topic. To support this, we offer our planning
+domains as benchmarks for future competitions. They are available at
+\todo{upload them somewhere}
 
-We also observe that although FF and SGPLAN manage the search for plans
-very efficiently, they both spend comparatively large amounts of time
-computing predicate and action instantiations in their preprocessing
-stages, many of which are then never used during the search. FF's
-``grounding time'' in particular dominates its overall planning time,
-leading to some conflicting results. In some cases, our Java implementation
-of GraphPlan significantly outperforms both state-of-the-art planners. The
-experiments described below seek to improve our understanding of this
-situation.
-
-
----
-
-
-
-The positive conclusion we draw from our simple set of experiments is that
-modern planners are fairly good at controlling the search for many of the
-moderately-sized NLG problems we looked at. This is particularly true for
-FF in the sentence generation domain, which generates nontrivial 14-word
-sentences in about two seconds. Our results also indicate there is still
-room for improvement, however: special-purpose algorithms are able to
-generate much larger referring expressions in milliseconds
-\citep{AreKolStr08}. Although search efficiency is not the main concern in
-these domains, it nevertheless becomes a factor in scenarios like
-Experiment~2, where the world is almost completely unconstrained and
-(unsurprisingly) the search becomes much slower.
-
-The most restrictive bottleneck in the two NLG domains we investigated is
-the initial grounding step that many modern planners perform. While this
-may be a good strategy for traditional planning benchmarks and IPC
-domains---where plan length often dominates universe size and an initial
-investment into grounding pays off in saved instantiations during
-search---this approach has a very pronounced effect in domains like ours.
-As our experiments show, there are natural planning domains in which
-relatively short plans must be computed in large universes. For instance,
-in the sentence generation domain, it is not unrealistic to look for plans
-of length 20 over a universe consisting of thousands of domain individuals
-and tens of thousands of possible action instantiations, some of which
-require three domain individuals as parameters. Planners like FF and SGPLAN
-are less effective in such domains, to the point that grounding
-often dominates the total running time of these planners. (In the case of
-Experiment~1, our ad-hoc implementation of GraphPlan outperforms both
-planners in the sentence generation task.)
-
-Since our domains are not that unusual in their structure and composition,
-we hope that the lessons learned from our experiences can help improve the
-performance of current planning systems. For instance, the common strategy
-of splitting the universe into several types of individuals will not be a
-very effective solution in our NLG domains given the large number of
-individuals that could exist for a given type. On the other hand,
-sophisticated techniques based on reachability analysis may have the
-potential to improve this situation, provided such approaches can avoid the
-drawbacks of unnecessary grounding.\footnote{See
-  \citep{Bryce:07} for a good survey on reachability heuristics for planning
-  graph-based approaches to plan generation.}
-While recent trends in planning research have (rightfully) focused on the
-development of algorithms that control search in sophisticated ways,
-resulting in state-of-the-art planners that are more powerful and
-successful than their predecessors, we nevertheless believe that
-improvements are necessary if planning is to become a more mature
-technology that can offer tools to a wider community of users and
-researchers. At the end of the day, real-world users will care about the
-\emph{total} runtime of a planner, which is more than just the search time.
-
-By and large, our experiences with the planning community from a user's
-point of view have been favourable. Thanks to the planning competitions, it
-is easy to identify and download a fast state-of-the-art planner, at least
-for Linux. However, in the course of our experiments we found and reported
-bugs in both FF and SGPLAN. We also discovered that deciding as to which
-planner is appropriate for a particular task is not always straightforward,
-as the best performing planner in the IPC is not necessarily suitable for
-every planning task. As our experiments have shown, even planners as
-closely related as FF and SGPLAN can differ significantly in their
-performance on different domains (for instance, our results in
-Experiment~4).
+Finally, we found it very convenient that the recent IPC planning
+competitions provide an entry point for selecting and obtaining
+current planners. Nevertheless, our experiments exposed several bugs
+in the planners we tested, and required us to make changes to the
+source code to make them scale to our inputs. We also found that
+different planners differ in the variants of PDDL that they can
+process. These differences range from fragments of ADL that can be
+parsed to sensitivity to the order of declarations and the use of
+``objects'' rather than ``individuals'' as the keyword for declaring
+the universe. We propose that the case for planning as a mature
+technology with professional-quality implementations could be made
+more strongly if such discrepancies were harmonized.
 
 
 

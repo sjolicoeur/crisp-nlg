@@ -1,56 +1,52 @@
 \section{NLG as Planning} \label{sec:nlg-as-planning}
 
-The task of generating natural language from semantic representations
-(NLG) is typically split up into two parts: the \emph{discourse
-  planning} task, which selects the information that is to be conveyed
-and structures it into sentence-sized chunks, and the \emph{sentence
-  generation} tasks, which then translates each of these chunks into
-natural language sentences. The sentence generation task is often
-split up into two parts of its own---the \emph{sentence planning}
-task, which enriches the input by e.g.\ determining how to refer to
-objects and selects some lexical material, and the \emph{surface
-  realization} task, which maps the enriched meaning representation
-into a sentence using a grammar. The chain of domain planning,
-sentence planning, and surface realization is sometimes called the
-``NLG pipeline'' \cite{reiter00building}.
+The task of generating natural language from semantic representations (NLG) is
+typically split into two parts: the \emph{discourse planning} task, which
+selects the information to be conveyed and structures it into sentence-sized
+chunks, and the \emph{sentence generation} task, which then translates each of
+these chunks into natural language sentences. The sentence generation task is
+often divided into two parts of its own---the \emph{sentence planning} task,
+which enriches the input by, e.g., determining object references and selecting
+some lexical material, and the \emph{surface realization} task, which maps the
+enriched meaning representation into a sentence using a grammar. The chain of
+domain planning, sentence planning, and surface realization is sometimes called
+the ``NLG pipeline'' \citep{reiter00building}.
 
-Viewing generation as a planning problem has a long tradition in the
-NLG literature.  \citet{perrault80} presented an approach to discourse
-planning in which the planning operators represent individual speech
-acts such as ``request'' and ``inform''. This idea was later worked
-out further, e.g.\ by \citet{young94dpocl}. On the other hand,
-researchers such as \citet{appelt:planning} and \citet{hovy88} used
-techniques from hierarchical planning to expand a high-level plan
-consisting of speech acts into more detailed specifications of
-individual sentences. Their systems also covered some aspects of
-sentence planning. However, these systems used very expressive logics,
-which were designed to reason about beliefs and intentions, to
-represent the planning state and the planning operators. Furthermore,
-most of them used ad-hoc planning algorithms with rather naive search
-strategies, which did not scale to realistic inputs. As a consequence,
-the NLG-as-planning approach was mostly marginalized throughout the
-1990s.
+Viewing generation as a planning problem has a long tradition in the NLG
+literature. \citet{perrault80} presented an approach to discourse planning in
+which the planning operators represented individual speech acts such as
+``request'' and ``inform''. This idea was later expanded, e.g., by
+\citet{young94dpocl}. On the other hand, researchers such as
+\citet{appelt:planning} and \citet{hovy88} used techniques from hierarchical
+planning to expand a high-level plan consisting of speech acts into more
+detailed specifications of individual sentences. Their systems also covered some
+aspects of sentence planning. However, these systems used very expressive
+logics, which were designed to reason about beliefs and intentions, to represent
+the planning state and the planning operators. Furthermore, most of them used
+ad-hoc planning algorithms with rather naive search strategies, which did not
+scale to realistic inputs. As a consequence, the NLG-as-planning approach was
+mostly marginalized throughout the 1990s.
 
-However, there has recently been a string of publications by various
-authors with renewed interest in the generation-as-planning approach,
-motivated by the recent development of efficient and expressive
-planners. Below (Section~\ref{sec:domain-crisp}) we will look in some
-detail at \cite{KolSto07}'s approach to sentence generation (i.e., the
+More recently, there has been a string of publications by various authors with a
+renewed interest in the generation-as-planning approach, motivated by the
+ongoing development of increasingly more efficient and expressive planners. For
+instance, \cite{KolSto07} propose an approach to sentence generation (i.e., the
 sentence planning and surface realization modules of the pipeline) as
-planning. In addition, \citet{Steedman-Petrick:07} revisit the
-analysis of indirect speech acts with modern planning technology;
-\citet{benotti08b} uses planning to explain the accommodation of
-presuppositions; and
-\citet{brenner08:_contin_multiag_plann_approac_to_situat_dialog} use
-multi-agent planning to model the joint problem-solving behavior of
-agents in a situated dialogue. These approaches focus on different
-issues than the 1980's NLG-as-planning literature. But the main
-difference is that they apply \emph{existing}, well-understood
-planning approaches to linguistic problems because these offer new
-modeling tools, and because they hope that modern planners can solve
-the hard search problems that arise in NLG \citep{KolStr02}
-efficiently. The point of this paper is to investigate whether
-existing planners fulfill this latter promise.
+planning---an approach we will explore in more detail below
+(Section~\ref{sec:domain-crisp}). \citet{Steedman-Petrick:07} revisit the
+analysis of indirect speech acts with modern planning technology, viewing the
+problem as an instance of the general problem of planning with incomplete
+information and sensing actions. In addition, \citet{benotti08b} uses planning
+to explain the accommodation of presuppositions, and
+\citet{brenner08:_contin_multiag_plann_approac_to_situat_dialog} use multi-agent
+planning to model the joint problem-solving behaviour of agents in a situated
+dialogue. While these approaches focus on different issues compared to the
+1980's NLG-as-planning literature, they all apply \emph{existing},
+well-understood planning approaches to linguistic problems, in order to utilise
+the rich set of modelling tools provided by modern planners, and in the hope
+that such planners can efficiently solve the hard search problems that arise in
+NLG \citep{KolStr02}. This paper aims to investigate whether existing planners
+achieve this latter goal.
 
 
 %%% Local Variables: 

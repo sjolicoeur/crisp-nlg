@@ -1,81 +1,77 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Natural language generation (NLG; \citealp{reiter00building}) is one
-of the major subfields of natural language processing, concerned with
-computing natural language sentences or texts that convey a given
-piece of information to the user. This task can be viewed as a problem
-of achieving a (communicative) goal by successively applying
-(communicative) actions, and thus has clear intuitive parallels to
-automated planning.
+\emph{Natural language generation} (NLG; \citealp{reiter00building}) is one of
+the major subfields of natural language processing, concerned with computing
+natural language sentences or texts that convey a given piece of information to
+an audience. While the output of a generation task can take many forms,
+including written text, synthesised speech, or embodied multimodal
+presentations, the underlying NLG problem in each case can be modelled as a
+problem of achieving a (communicative) goal by successively applying a set of
+(communicative) actions. This view of NLG as goal-directed action has clear
+parallels to \emph{automated planning}, which seeks to find general techniques
+for efficiently solving the action sequencing problem.
 
-This view of generation as planning has a long tradition in NLG
-\citep{perrault80,appelt:planning,hovy88,young94dpocl}. Despite their
-theoretical attractiveness, these early approaches never gained
-mainstream use in applied systems, in part because of the inefficiency
-of the planners that were available at the time. However, the recent
-improvements in planner efficiency and expressiveness have sparked a
-renewed interest in applying modern planning techniques to NLG---both
-on the level of speech act planning
-\citep{Steedman-Petrick:07,benotti08b} and and on the level of
-sentence generation \citep{KolSto07}. The goal of this paper is to
-determine, by looking at some representative generation problems,
-whether planning has advanced to the point that this enterprise can be
-successful this time---and thus, to determine the usefulness of
-current planning technology to an application area that has a long
-tradition, but is not currently in the focus of the planning
-competitions.
+Treating generation as planning has a long history in NLG, ranging from the
+initial attempts of the field to utilise early planning approaches
+\citep{perrault80,appelt:planning,hovy88,young94dpocl}, to the recent surge of
+research \citep{Steedman-Petrick:07,KolSto07,benotti08b} seeking to capitalise
+on the improvements modern planners offer in terms of efficiency and
+expressiveness. This paper attempts to assess the usefulness of current planning
+techniques to NLG by investigating some representative generation problems, and
+evaluating whether automated planning has advanced to the point that it can
+provide solutions to such NLG applications---applications that are not currently
+being investigated by mainstream planning research.
 
-The focus of this paper is twofold. First, we present two generation
-problems that have recently been cast as planning problems: the
-sentence generation task and the GIVE task. In the sentence generation
-task, the goal is to generate a single sentence that expresses a given
-meaning. \citet{KolSto07} cast this task as a planning problem, where
-the plan encodes the necessary sentence and the actions correspond to
-uttering individual words.  In the GIVE domain (``Generating
-Instructions in Virtual Environments''), we describe a new shared task
-that was recently posed as a challenge for the NLG community
-\citep{ByrKolStrCasDalMooObe09}.  GIVE uses planning as part of an NLG
-system that generates natural-language instructions to guide a user in
+The focus of this paper is twofold. First, we present two generation problems
+that have recently been cast as planning problems: the sentence generation task
+and the GIVE task. In the sentence generation task, we concentrate on generating
+a single sentence that expresses a given meaning. In this case, a plan encodes
+the necessary sentence with the actions in the plan corresponding to the
+utterance of individual words \citep{KolSto07}. In the GIVE domain (``Generating
+Instructions in Virtual Environments''), we describe a new shared task that was
+recently posed as a challenge for the NLG community
+\citep{ByrKolStrCasDalMooObe09}. GIVE uses planning as part of a larger NLG
+system for generating natural-language instructions that guide a human user in
 performing a given task in a virtual environment.
 
-Second, we discuss some of our experiences using off-the-shelf
-planners in these two domains. In particular, we explore the
-efficiency of FF \citep{HoffmannNebel01} and SGPLAN
-\citep{hsu06:_new_featur_in_sgplan_for}: two planners that are readily
-available, support an expressive subset of the Planning Domain
-Definition Language (PDDL; McDermott et al.~\citeyear{PDDL}) for
-encoding domains, and have been successful on the benchmarks and
-problems in the International Planning Competition (IPC)\footnote{See
-  \url{http://ipc.icaps-conference.org/} for information about past
-  editions of the IPC.}. We test these planners on a range of problem
-instances in our planning domains, and compare our results against an
-ad-hoc Java implementation of GraphPlan \citep{Blum1997}.
+Second, we discuss our experiences using a set of off-the-shelf planners in
+these two generation domains. Among the planners we test, we explore the
+efficiency of FF \citep{HoffmannNebel01}---a planner that has arguably had the
+greatest impact on recent approaches to deterministic planning---and its many
+descendants, such as SGPLAN \citep{hsu06:_new_featur_in_sgplan_for}. All of the
+planners we test are freely available, support an expressive subset of the
+Planning Domain Definition Language (PDDL; McDermott et al.~\citeyear{PDDL}),
+and have been successful on both standard planning benchmarks and the problems
+of the International Planning Competition (IPC).\footnote{See
+  \url{http://ipc.icaps-conference.org/} for information about recent and past
+  editions of the IPC. A good overview of the deterministic track of the 2004
+  instance of the IPC can be found in \citep{Hoffmann-Edelkamp:05}.}
+Using these planners---and an ad-hoc Java implementation of GraphPlan
+\citep{Blum1997} which serves as a baseline for certain experiments---we perform
+a series of tests on a range of problem instances in our NLG domains.
 
-Overall, our findings are mixed. On the one hand, we demonstrate that
-modern planners can easily handle the \emph{search} problems that
-arise in NLG on realistic inputs, which is promising given that the
-sentence generation task, at least, is NP-complete
-\citep{KolStr02}. On the other hand, the same planners spend
-tremendous amounts of time on preprocessing: Because our domains use a
-large number of actions and constants, FF spends 90\% of its runtime
-in the sentence generation domain on grounding out all the actions and
-literals. As a consequence, the off-the-shelf planners we looked at
-are too slow to be useful in the NLG application -- but this is due to
-implementation issues rather than the quality of the search
-algorithms. We offer our NLG domains as challenges for the planning
-community in the hope that these implementation issues might gain more
-attention in the future.
+Overall, our findings are mixed. On the one hand, we demonstrate that certain
+planners can readily handle the \emph{search} problems that arise in our testing
+domains on realistic inputs, which is promising given the challenging nature of
+these tasks (e.g., the sentence generation task is NP-complete \citep{KolStr02})
+On the other hand, these same planners spend tremendous amounts of time on
+\emph{preprocessing} techniques that analyse the problem domain in support of
+the search. (For instance, FF spends 90\% of its runtime in the sentence
+generation domain on grounding out actions and literals.) As a consequence, the
+off-the-shelf planners we investigated are often too slow to be useful in real
+NLG applications.  Nevertheless, we offer our NLG domains and experiences as
+both challenges and lessons for the planning community, in the hope that the
+issues we raise might gain more attention in the future.
 
-This paper is structured as follows. We begin by briefly reviewing
-some of the literature on NLG as planning
-(Section~\ref{sec:nlg-as-planning}). Then we define introduce the
-planning problems arising in two particular NLG tasks in more detail
-in Section~\ref{sec:domains}. We report on some experiments with these
-planning problems in Section~\ref{sec:experiments}, and discuss the
-results in Section~\ref{sec:discussion}. Section~\ref{sec:conclusion}
-concludes.
-
+The remainder of this paper is structured as follows. In
+Section~\ref{sec:nlg-as-planning}, we introduce the idea of NLG as planning and
+briefly review the relevant literature. In Section~\ref{sec:domains}, we
+describe a set of planning problems associated with two NLG tasks, namely
+sentence planning and instruction generation. In Section~\ref{sec:experiments},
+we report on the results of our experiments with these planning problems.
+In Section~\ref{sec:discussion} we discuss our results and overall
+experiences, and conclude in Section~\ref{sec:conclusion}.
 
 
 %%% Local Variables: 

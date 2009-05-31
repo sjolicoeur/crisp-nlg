@@ -160,12 +160,14 @@ planning operators for those elementary trees for which all predicate
 symbols in the semantic representation also appeared in the knowledge
 base.
 
-\begin{figure}
-  \centering
-  
-  \caption{Results for the XTAG experiment. The horizontal axis
-    represents parameters $(k,n)$ from $(1,1)$ to $(3,10)$ in
-    lexicographic order. The vertical axis is runtime in milliseconds.}
+\begin{figure}[h]
+  \begin{tabular}{cp{1cm}c}
+    \includegraphics[width=0.45\textwidth]{data/xtag-k1.pdf}
+    &&
+    \includegraphics[width=0.45\textwidth]{data/xtag-k2.pdf} \\
+    $k=1$ && $k=2$ \\
+  \end{tabular} 
+  \caption{Results for the XTAG experiment, at $k=1$ and $k=2$.}
   \label{fig:xtag-graph}
 \end{figure}
 

@@ -1,4 +1,0 @@
-# k	n	inst	LNF	search	total
-3	1	UNSAT
-3	1	UNSAT
-3	1	UNSAT

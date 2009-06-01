@@ -1,4 +1,4 @@
-load "common.plt"
+load "common-twocolumn.plt"
 
 set output "xtag-k1.pdf"
 

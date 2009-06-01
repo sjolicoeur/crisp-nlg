@@ -48,8 +48,7 @@ encode the grammar).
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.75\columnwidth]{graph-exp1}
-  %\includegraphics[width=1\columnwidth]{pic-runtime-modifiers-with-sgplan}
+  \includegraphics[width=\columnwidth]{data/modifiers-all}
   \caption{Results for the sentence generation domain. The
     horizontal axis represents parameters $(m,n)$ from $(1,1)$ to
     $(10,10)$ in lexicographical order. The vertical axis is the
@@ -77,27 +76,28 @@ of search efficiency, but we were interested in comparing the
 contribution of the prior grounding step on the planner performance.
 
 The results of this experiment are shown in the graph in
-Figure~\ref{fig:runtimes-crisp}.\footnote{All
-  runtimes were measured on a Pentium 4 CPU running at 3 GHz. Java programs
-  were allowed to ``warm up'', i.e., the planner was run five times and the
-  first four measurements discarded to ensure that the JVM had just-in-time
-  compiled all relevant bytecode.} The input parameters $(m,n)$ are
-plotted in lexicographic order on the horizontal axis, and the runtime
-is shown in milliseconds on the vertical axis.\footnote{These times
-  were measured on XXX} These results reveal a number of interesting
-insights. First, FF significantly outperforms SGPLAN in this domain,
-sometimes by a factor of 10 or more.\footnote{Experiments with SGPLAN
-  use a pre-release version of SGPLAN, kindly provided to us by
-  Chih-Wei Hsu.The release version of SGPLAN 5.2.2 had a bug which
-  caused it to crash on some of our problem instances.}  Second, FF's
-runtime is dominated by its initial grounding step, in which it
-computes the ground instances of all predicates and actions used in
-the planning problem in order to avoid unnecessary instantiation
-during search.  In particular, the ratio of grounding time to total
-runtime is generally above 85\%, and rises to above 99\% at $m=11$,
-which is still a relatively small universe for this
-application.\footnote{The ``grounding'' time reported here is what FF
-  reports as ``time spent: instantiating action templates''.}
+Figure~\ref{fig:runtimes-crisp}.\footnote{All runtimes in
+  Sections~\ref{sec:exper-1:-sent} and \ref{sec:exper-2:-sent-xtag}
+  were measured on an AMD Opteron 8220 CPU running at 2.8 GHz, under
+  Linux. FF 2.3 and Metric-FF were recompiled as 64-bit binaries. Java
+  programs were executed under Java 1.6.0\_13 in 64-bit mode. They
+  were allowed to ``warm up'', i.e. the JVM was given the opportunity
+  to just-in-time compile the relevant bytecode by running the planner
+  three times and discarding the runtimes before taking the actual
+  measurements. All runtimes are averaged over three runs of
+  the planners.} The input parameters $(m,n)$ are plotted in
+lexicographic order on the horizontal axis, and the runtime is shown
+in seconds on the vertical axis. These results reveal a number of
+interesting insights. First, FF significantly outperforms SGPLAN in
+this domain, sometimes by a factor of 10 or more. Second, FF's runtime
+is dominated by its initial grounding step, in which it computes the
+ground instances of all predicates and actions used in the planning
+problem in order to avoid unnecessary instantiation during search.  In
+particular, the ratio of grounding time to total runtime is generally
+above 85\%, and rises to above 99\% at $m=11$, which is still a
+relatively small universe for this application.\footnote{The
+  ``grounding'' time reported here is what FF reports as ``time spent:
+  instantiating action templates''.}
 
 In our testing examples, the time spent by FF on grounding is so high
 that it is consistently outperformed by our Java implementation of

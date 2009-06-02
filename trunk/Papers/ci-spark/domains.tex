@@ -1,11 +1,11 @@
 \section{Two NLG Tasks}
 \label{sec:domains}
 
-We will now focus the discussion on two specific NLG problems:
-sentence generation in the sense of \citet{KolSto07}, and the
-generation of instructions in virtual environments
-\citep{ByrKolStrCasDalMooObe09}. For each, we will introduce the task
-and show by example how the task can be seen as a planning problem.
+We begin by considering two specific NLG problems: sentence generation in
+the sense of \citet{KolSto07}, and the generation of instructions in
+virtual environments \citep{ByrKolStrCasDalMooObe09}. For each problem, we
+introduce the task and show by example how the task can be viewed as a
+planning problem.
 
 
 \subsection{Sentence generation as planning}
@@ -20,29 +20,27 @@ grammatical derivation that is syntactically complete, respects the
 semantic and pragmatic conditions, and achieves all the
 \emph{communicative goals}.
 
-An example is the tree-adjoining grammar (TAG;
-\citealt{joshi;etal1997}) shown in
+An example of such a lexicalized grammar is the tree-adjoining grammar
+(TAG; \citealt{joshi;etal1997}) shown in
 Figure~\ref{fig:white-rabbit-sleeps-grammar}. This grammar consists of
-\emph{elementary trees} (i.e., the disjoint trees in the figure), each
-of which contributes certain \emph{semantic content}. Let's say that
-we assume a knowledge base containing the individuals $e$, $r_1$ and
-$r_2$ and the facts that $r_1$ and $r_2$ are rabbits, $r_1$ is white
-and $r_2$ is brown, and $e$ is an event in which $r_1$ sleeps. Then we
-would want to construct a sentence expressing the information
-$\{\mathsf{sleep}(e,r_1)\}$ by combining instances of the elementary
-trees (in which the \emph{semantic roles}, such as $\mathsf{self}$ and
-$\mathsf{subj}$, have been substituted by constants from the knowledge
-base) into a TAG derivation as as shown in
-Figure~\ref{fig:white-rabbit-sleeps-deriv}. In the picture, the dashed
-arrow indicates TAG's \emph{substitution} operation, which ``plugs''
-an elementary into the leaf of another tree, and the dotted arrows
-stand for \emph{adjunction}, which splices an elementary tree into an
-internal node. We can then read off the sentence ``The white rabbit
-sleeps'' from the derivation. Note that the sentence ``The rabbit
-sleeps'' would not have been an appropriate result, because ``the
-rabbit'' could refer to either $r_1$ or $r_2$, and thus $r_2$ remains
-as a \emph{distractor}, i.e.\ an incorrect possible interpretation of
-the phrase.
+\emph{elementary trees} (i.e., the disjoint trees in the figure), each of
+which contributes certain \emph{semantic content}. For instance, say that a
+knowledge base contains the individuals $e$, $r_1$ and $r_2$, and the facts
+that $r_1$ and $r_2$ are rabbits, $r_1$ is white and $r_2$ is brown, and
+$e$ is an event in which $r_1$ sleeps. We could then construct a sentence
+expressing the information $\{\mathsf{sleep}(e,r_1)\}$ by combining
+instances of the elementary trees (in which the \emph{semantic roles}, such
+as $\mathsf{self}$ and $\mathsf{subj}$, have been substituted by constants
+from the knowledge base) into a TAG derivation as shown in
+Figure~\ref{fig:white-rabbit-sleeps-deriv}. In the figure, the dashed arrow
+indicates TAG's \emph{substitution} operation, which ``plugs'' an
+elementary into the leaf of another tree; the dotted arrows stands for
+\emph{adjunction}, which splices an elementary tree into an internal node.
+We can then read the sentence ``The white rabbit sleeps'' from the
+derivation. Note that the sentence ``The rabbit sleeps'' would not have
+been an appropriate result, because ``the rabbit'' could refer to either
+$r_1$ or $r_2$. Thus, $r_2$ remains as a \emph{distractor}, i.e., an
+incorrect possible interpretation of the phrase.
 
 \begin{figure}
   \centering
@@ -58,24 +56,17 @@ the phrase.
   \label{fig:white-rabbit-sleeps-deriv}
 \end{figure}
 
-This perspective on sentence generation has the advantage of solving
-the sentence planning and surface realization problems
-simultaneously. The generation of referring expressions (REs) is
-usually seen as a sentence planning task; in the example, we required
-that the referring expression ``the white rabbit'' can be resolved
-uniquely to $r_1$ by the hearer, in addition to the requirement that
-the derivation is grammatically correct. This is useful in cases where
-sentence planning and surface realization interact, because syntactic
-information about the individual words is available when the REs are
-generated (see e.g. \citealt{stone98textual}). However, the problem of
-whether a given communicative goal can be achieved with a given
-grammar is NP-complete \citep{KolStr02}. A naive search algorithm that
-computes the derivation top-down takes exponential time and is clearly
-infeasible to use in practice. The seminal SPUD system
-\citep{Stone2003a}, which first worked out the idea of integrated
-TAG-based sentence generation, used a greedy algorithm to cope with
-the search, which circumvents the combinatorial explosion but is
-incomplete.
+This perspective on sentence generation also has the advantage of solving
+the sentence planning and surface realization problems simultaneously,
+which is particularly useful in cases where these two problems interact.
+For instance, the generation of referring expressions (REs) is usually seen
+as a sentence planning task, however, syntactic information about
+individual words in available when the REs are generated (see, e.g.,
+\citealt{stone98textual}). (In the example, we require the referring
+expression ``the white rabbit'' to be resolved uniquely to $r_1$ by the
+hearer, in addition to the requirement that the derivation be grammatically
+correct.)
+
 
 \begin{figure}
 \centering
@@ -115,52 +106,63 @@ sleeps.''}
 \label{fig:white-rabbit-as-planning}
 \end{figure}
 
-As an alternative, \citet{KolSto07} recently proposed to control the
-search by converting the sentence generation problem into a planning
-problem and then running a planner \citet{KolSto07}.\footnote{See
+However, the problem of deciding whether a given communicative goal can be
+achieved with a given grammar is NP-complete \citep{KolStr02}: a naive
+search algorithm that computes a derivation top-down takes exponential time
+and is clearly infeasible to use in practice. In order to circumvent this
+combinatorial explosion, the seminal SPUD system \citep{Stone2003a}, which
+first established the idea of integrated TAG-based sentence generation,
+used a greedy, but incomplete, search algorithm.
+%
+To better control the search, \citet{KolSto07} recently proposed an
+alternative approach which converts the sentence generation problem into a
+planning problem, and solves the transformed search problem using a planner
+\citep{KolSto07}.\footnote{See
   \url{http://code.google.com/p/crisp-nlg/} for the CRISP system, in
-  which this conversion is implemented.} This planning problem assumes
-an initial state containing an atom $\mathsf{subst}(S,\mathsf{root})$,
-encoding that we must generate a sentence ($S$) starting at the node
-named $\mathsf{root}$ in the TAG derivation tree, and an atom
-$\mathsf{referent}(\mathsf{root},e)$ encoding that the (event)
-individual which the entire sentence describes is $e$. Then it encodes
-the addition of elementary trees to the TAG derivation in the
-individual planning operators; the ones that are needed for our
-example above are shown in
-Fig.~\ref{fig:white-rabbit-as-planning}.
+  which this conversion is implemented.} The resulting planning problem in
+this case assumes an initial state containing an atom
+$\mathsf{subst}(S,\mathsf{root})$, encoding the fact that a sentence ($S$)
+must be generated starting at the node named $\mathsf{root}$ in the TAG
+derivation tree, and a second atom $\mathsf{referent}(\mathsf{root},e)$
+which encodes the fact that the entire sentence describes the (event)
+individual $e$. The elementary trees in the TAG derivation are encoded as
+individual planning operators.
 
-Here the action instance $\addact{sleeps}(\mathsf{root}, e, r_1)$
-replaces the atom $\mathsf{subst}(S,\mathsf{root})$ with the atom
+Figure~\ref{fig:white-rabbit-as-planning} shows the
+transformed planning operators needed to generate the above example
+sentence, ``The white rabbit sleeps.'' Here the action instance
+$\addact{sleeps}(\mathsf{root}, e, r_1)$ replaces the atom
+$\mathsf{subst}(S,\mathsf{root})$ with the atom
 $\mathsf{subst}(NP,\mathsf{subj}(\mathsf{root}))$. In an abuse of PDDL
-syntax, we write $\mathsf{subj}(\mathsf{root})$ as shorthand for a
-fresh individual name.\footnote{These terms, which are not valid in
-  ordinary PDDL, can be eliminated by estimating an upper bound $n$
+syntax, we write $\mathsf{subj}(\mathsf{root})$ as a shorthand for a fresh
+individual name.\footnote{These terms are not valid in
+  ordinary PDDL but can be eliminated by estimating an upper bound $n$
   for the plan length, making $n$ copies of each action, ensuring that
   copy $i$ can only be applied in step $i$, and replacing the term
   $\mathsf{subj}(u)$ in an action copy by the constant
   $\mathsf{subj}_i$. The terms $S$, $NP$, and $N$ in the planning
   problem are constants.}  At the same time, the operator records that
 the semantic information $\mathsf{sleep}(e,r_1)$ has now been
-expressed, and introduces all individuals except for $r_1$ as
+expressed, and introduces all individuals except $r_1$ as
 distractors for the new RE at $\mathsf{subj}(\mathsf{root})$. These
 distractors can then be removed by subsequent applications of the
 other two operators. Eventually we reach a goal state, which is
 characterized by goals including $\forall x \forall y. \neg
 \mathsf{subst}(x,y)$, $\forall x \forall y. \neg
 \mathsf{distractor}(x,y)$, and
-$\mathsf{expressed}(\mathsf{sleep},e,r_1)$. In summary, the following
-is a correct plan:
+$\mathsf{expressed}(\mathsf{sleep},e,r_1)$. For instance, the following
+plan correctly performs the necessary derivation:
 %
 \begin{enumerate}
 \item $\mathsf{add}\textsf{-}\mathsf{sleeps}(\mathsf{root}, r_1)$,
+\todo{FIX: add-sleeps takes 3 arguments in the PDDL spec!}
 \item $\mathsf{add}\textsf{-}\mathsf{rabbit}(\mathsf{subj}(\mathsf{root}),r_1)$,
 \item $\mathsf{add}\textsf{-}\mathsf{white}(\mathsf{subj}(\mathsf{root}),r_1)$.
 \end{enumerate}
 %
 The grammatical derivation in
 Figure~\ref{fig:white-rabbit-sleeps-deriv}, and therefore the
-generated sentence ``the white rabbit sleeps'', can be systematically
+generated sentence ``the white rabbit sleeps,'' can be systematically
 reconstructed from this plan. Thus, we can solve the sentence
 generation problem via the detour through planning and bring current
 search heuristics for planning to bear on generation.

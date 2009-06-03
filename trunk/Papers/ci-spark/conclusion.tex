@@ -1,49 +1,47 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-In this paper, we have investigated the usefulness of current planning
-technology to natural language generation, an application area with a
-long tradition that has recently experienced renewed interest from NLG
-researchers. In particular, we have evaluated the performance of
-several off-the-shelf planners on a series of planning domains that
-arise in the context of sentence generation and situated instruction
-generation.
+In this paper, we investigated the usefulness of current planning technology
+to natural language generation, an application area with a long tradition of
+using automated planning that has recently experienced renewed interest from
+NLG researchers. In particular, we evaluated the performance of several
+off-the-shelf planners on a series of planning domains that arose in the
+context of sentence generation and situated instruction generation.
 
 Our results were mixed. While some of the planners we tested---in
-particular, FF and SGPLAN, in different domains---did an impressive
-job of controlling the complexity of the search, we also found that
-all planners we tested spent too much time on preprocessing to be
-useful. In the sentence generation domain, FF spent 90\% of its
-runtime on computing the ground instances of the planning operators;
-in the instruction-giving domain, which is very similar to Gridworld,
-a similar effect happened once we added more predicates. As things
-stand, we found that this overly long preprocessing time makes current
-planners inapplicable to NLG application for any but the smallest
-instances. Users who come to planning from the outside, such as NLG
-researchers, take planners as a black box. This means that search
-efficiency alone is not helpful when other modules of the planner are
-slow. From this perspective, we propose that the planning community
-might spend some attention on optimizing the preprocessing module with
-similar vigor as the search itself. In particular, we propose to
-investigate planning algorithms that do not have to rely on grounding
-out all operators before starting the search.
+particular, FF and SGPLAN---did an impressive job of controlling the
+complexity of the search, we also found that all the planners we tested
+spent too much time on preprocessing to be useful. For instance, in the
+sentence generation domain, FF spent 90\% of its runtime on computing the
+ground instances of the planning operators; in the instruction-giving
+domain, which is very similar to Gridworld, a similar effect happened for
+certain combinations of grid sizes and buttons. As things stand, we found
+that this overly long preprocessing time makes current planners an
+inappropriate choice for NLG applications, in any but the smallest problem
+instances. Users who come to planning from outside the field, such as NLG
+researchers, treat planners as black boxes. This means that search
+efficiency alone is not helpful when other modules of the planner are slow.
+From this perspective, we propose that the planning community should spend
+some attention on optimising the preprocessing component of the problem with
+similar vigour as the search itself. In particular, we propose that one line
+of research might be to investigate planning algorithms that do not rely on
+grounding out all operators prior to the search, but instead selectively
+perform this operation when needed.
 
 NLG and planning have a long history in common. The recent surge in
 NLG-as-planning research presents valuable opportunities for both
-sides. Clearly, NLG researchers who apply planning technology will
-benefit directly from any improvements in planner effiency. But
-conversely, NLG may be a worthwhile application area for planning
-researchers to keep in mind. Domains like GIVE highlight certain
-challenges, such as plan execution monitoring and plan presentation
-(i.e., summarisation and elaboration), but also offer a platform on
-which such technologies can be evaluated in experiments with human
-users. Further, although we have focused on classical planning
-problems in this work, research related to reasoning under
-uncertainty, resource management, and planning with knowledge and
-sensing, can also be investigated in these settings. As such, we
-believe our domains would provide interesting challenges for planners
+disciplines. Clearly, NLG researchers who apply planning technology will
+benefit directly from any improvements in planner effiency. Conversely, NLG
+may also be a worthwhile application area for planning researchers to keep
+in mind. Domains like GIVE highlight certain challenges, such as plan
+execution monitoring and plan presentation (i.e., summarisation and
+elaboration), but also offer a platform on which such technologies can be
+evaluated in experiments with human users. Furthermore, although we have
+focused on classical planning problems in this work, research related to
+reasoning under uncertainty, resource management, and planning with
+knowledge and sensing, can also be investigated in these settings. As such,
+we believe our domains would provide interesting challenges for planners
 entered in future editions of the IPC.
-
 
 
 \section*{Acknowledgements}

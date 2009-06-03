@@ -18,5 +18,5 @@ plot "give-minimal.csv" \
      "" using 2:9   title "FF (total)"          with l ls 1, \
      "" using 2:28  title "SGPLAN 6 (parsing)"  with l ls 13, \
      "" using 2:30  title "SGPLAN 6 (total)"    with l ls 3, \
-     "" using 2:37  title "Lama (grounding)"    with l ls 7, \
+     "" using 2:37  title "Lama (grounding)"    with l ls 15, \
      "" using 2:39  title "Lama (total)"        with l ls 5

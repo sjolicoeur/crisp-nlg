@@ -1,28 +1,26 @@
 \section{Experiments}
 \label{sec:experiments}
 
-We will now return to the original question of the paper: Is planning
-technology ready for applications in natural language generation? We
-will tackle this question by evaluating the performance of several
-planners on the NLG planning domains from the previous section.
-
-We start with two experiments in the CRISP domain. First, we present a
-scenario which focuses on the generation of referring expressions with
-a tiny grammar (Section~\ref{sec:exper-1:-sent}); then we look at a
-setting in which CRISP is used for surface realization with the XTAG
-Grammar \citep{xtag01:_tr}, a large-scale TAG grammar of English
-(Section~\ref{sec:exper-2:-sent-xtag}).
-
-We then go through a series of experiments in the GIVE domain. We
-start with a domain that is essentially Gridworld
-(Section~\ref{sec:exper-2:-minim}), and then add positions that are
-either not needed (Section~\ref{sec:experiment-3:-give}) or even
-inaccessible (Section~\ref{sec:experiment-4:-give}). This series of
-experiments is set up to illustrate what we perceive as the main
-limitation of current off-the-shelf planners for our applications:
-They spend a long time on computing all ground instances, even if most
-of these instances are never used in the plan search. \todo{Ron, this
-  is something you need to adapt to the new story -- AK}
+We now return to the original question of the paper: is planning technology
+ready for realistic applications in natural language generation? To investigate
+this question we consider two sets of experiments, designed to evaluate the
+performance of several planners on the NLG planning domains from the previous
+section. Starting with the CRISP domain, we first present a scenario which
+focuses on the generation of referring expressions with a tiny grammar
+(Section~\ref{sec:exper-1:-sent}). We then look at a setting in which CRISP is
+used for surface realization with the XTAG Grammar \citep{xtag01:_tr}, a
+large-scale TAG grammar for English (Section~\ref{sec:exper-2:-sent-xtag}). In
+the second set of experiments we investigate the GIVE domain. We begin with a
+domain that is similar to the classic Gridworld
+(Section~\ref{sec:exper-2:-minim}), and then add extra grid cells to the world
+that are neither needed (Section~\ref{sec:experiment-3:-give}) nor even
+accessible (Section~\ref{sec:experiment-4:-give}). We also investigate the role
+that goal ordering plays in some of these problems. These experiments are
+configured in a way that lets us explore the scalability of a planner's search
+and preprocessing capabilities, and illustrates what we perceive to be one of
+the main limitations of current off-the-shelf planners for our applications:
+they often spend a long time computing ground instances, even when most of
+these instances are not required during plan search.
 
 
 
@@ -85,8 +83,8 @@ Figure~\ref{fig:runtimes-crisp}.\footnote{All runtimes in
   were measured on a single core of an AMD Opteron 8220 CPU running at
   2.8 GHz, under Linux. FF 2.3 and Metric-FF were recompiled as 64-bit
   binaries and run with a memory limit of 32 GB. Java programs were
-  executed under Java 1.6.0\_13 in 64-bit mode. They were allowed to
-  ``warm up'', i.e. the JVM was given the opportunity to just-in-time
+  executed under Java 1.6.0\_13 in 64-bit mode and were allowed to
+  ``warm up'', i.e., the JVM was given the opportunity to just-in-time
   compile the relevant bytecode by running the planner three times and
   discarding the runtimes before taking the actual measurements. All
   runtimes are averaged over three runs of the planners.} The input
@@ -165,8 +163,8 @@ symbols in the semantic representation also appeared in the knowledge
 base.
 
 \begin{figure}[t]
-\subfloat[$k=1$]{\includegraphics[width=8cm]{data/xtag-k1.pdf}}
-\subfloat[$k=2$]{\includegraphics[width=8cm]{data/xtag-k2.pdf}}
+\subfloat[$k=1$]{\includegraphics[width=7cm]{data/xtag-k1.pdf}}
+\subfloat[$k=2$]{\includegraphics[width=7cm]{data/xtag-k2.pdf}}
   \caption{Results for the XTAG experiment, at $k=1$ and $k=2$.}
   \label{fig:xtag-graph}
 \end{figure}

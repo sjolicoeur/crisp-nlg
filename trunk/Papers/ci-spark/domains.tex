@@ -1,11 +1,10 @@
 \section{Two NLG Tasks}
 \label{sec:domains}
 
-We begin by considering two specific NLG problems: sentence generation in
-the sense of \citet{KolSto07}, and the generation of instructions in
-virtual environments \citep{ByrKolStrCasDalMooObe09}. For each problem, we
-introduce the task and show by example how the task can be viewed as a
-planning problem.
+We begin by considering two specific NLG problems: sentence generation in the
+sense of \citet{KolSto07}, and the generation of instructions in virtual
+environments \citep{ByrKolStrCasDalMooObe09}. In each case, we introduce the
+task and show by example how it can be viewed as a planning problem.
 
 
 \subsection{Sentence generation as planning}
@@ -118,8 +117,8 @@ To better control the search, \citet{KolSto07} recently proposed an
 alternative approach which converts the sentence generation problem into a
 planning problem, and solves the transformed search problem using a planner
 \citep{KolSto07}.\footnote{See
-  \url{http://code.google.com/p/crisp-nlg/} for the CRISP system, in
-  which this conversion is implemented.} The resulting planning problem in
+  \url{http://code.google.com/p/crisp-nlg/} for the CRISP system, which
+  implements this conversion.} The resulting planning problem in
 this case assumes an initial state containing an atom
 $\mathsf{subst}(S,\mathsf{root})$, encoding the fact that a sentence ($S$)
 must be generated starting at the node named $\mathsf{root}$ in the TAG
@@ -215,7 +214,7 @@ steps as follows:
 \item $\mathsf{turn}\textsf{-}\mathsf{left}(\mathsf{north},
 \mathsf{west})$,
 \item $\mathsf{move}(\mathsf{pos\_5\_2}, \mathsf{pos\_4\_2}, \mathsf{west})$,
-\item $\mathsf{manipulate}\textsf{-}\mathsf{alarm}\textsf{-}\mathsf{button}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{b1, pos\_5\_2})$,
+\item $\mathsf{manipulate}\textsf{-}\mathsf{button}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{b1, pos\_5\_2})$,
 \item $\mathsf{turn}\textsf{-}\mathsf{right}(\mathsf{west}, \mathsf{north})$.
 \end{enumerate}
 
@@ -246,7 +245,7 @@ steps as follows:
    :effect 
        (and (not (player-orientation ?ori))  (player-orientation ?newOri)))
 
-(:action manipulate-alarm-button-off-on
+(:action manipulate-button-off-on
    :parameters (?b - button  ?pos - position  ?alarm - position)
    :precondition 
        (and (state ?b off)  (player-position ?pos)  (position ?b ?pos)

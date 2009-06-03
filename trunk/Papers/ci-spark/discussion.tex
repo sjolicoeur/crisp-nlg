@@ -1,76 +1,80 @@
 \section{Discussion}
 \label{sec:discussion}
 
-There are both positive and negative conclusions about the state of
-planning for modern NLG applications that we can draw from these
-experiments.
+We can draw both positive and negative conclusions from our experiments about
+the state of planning for modern NLG applications. On the one hand, we found
+that modern planners are very good at dealing with the \emph{search} problems
+that arise in the NLG-based planning problems we investigated; the search
+time reported by most planners was often a very small fraction of the total
+running time of the planner. In the sentence generation domain, FF's Enforced
+Hill-Climbing strategy finds plans corresponding to 25-word sentences in
+about a second. It is hard to compare this number to a baseline because there
+are no shared benchmark problems, but FF's search outperforms a greedy search
+algorithm, and the performance is competitive with other sentence generators,
+which similarly employ special-purpose algorithms. Thus research on search
+strategies for planning has paid off; in particular, the Enforced
+Hill-Climbing heuristic outperforms the best-first strategy to which FF 2.3
+switches for some problem instances. Similarly, SGPLAN's performance on the
+GIVE domain is very convincing and fast enough for this application.
 
-On the one hand, we found that modern planners are very good at
-dealing with the \emph{search} problems that are involved in the
-NLG-based planning problems we looked at. In the sentence generation
-domain, FF's Enforced Hill-Climbing strategy finds plans corresponding
-to 25-word sentences in about a second. It is hard to compare this
-number to a baseline because there are no shared benchmark problems;
-but FF's search outperforms a greedy search algorithm, and the
-performance is competitive with other sentence generators, which
-similarly employ special-purpose algorithms. Thus research on search
-strategies for planning has paid off: In particular, the Enforced
-Hill-Climbing heuristic outperforms the best-first strategy to which
-FF 2.3 switches for some problem instances. Similarly, SGPLAN's
-performance on the GIVE domain is very convincing and fast enough for
-the application.
+On the other hand, each of the off-the-shelf planners we tested spent
+substantial amounts of time on preprocessing. This is most apparent in the
+sentence generation domain, where the planners spent almost their entire
+runtime on grounding the predicates and operators for some problem instances.
+This effect is much weaker in the GIVE domain, which has a much smaller
+number of operators and less interactions between the predicates in the
+domain. However, our GIVE experiments also illustrate that altering the
+structure of a domain, even minimally, can significantly change a planner's
+performance on a problem. For instance, in some of our GIVE experiments with
+extra grid positions, increasing the number of buttons in the world, while
+keeping the dimensions of the grid fixed, resulted in a significantly larger
+search time while the preprocessing time remained essentially unchanged.
 
-However, each of the off-the-shelf planners we tested spent
-substantial amounts of time on preprocessing. This is most apparent in
-the sentence generation domain, where the planners spent almost their
-entire runtime on grounding the predicates and operators for some
-instances. This effect is much weaker in the GIVE domain, which has a
-much smaller number of operators; but as we added dummy predicates,
-the ratio of time that the planners spent on preprocessing rose in a
-similar way. While the GIVE domain can be carefully defined in such a
-way that the number of operators is minimized, this is not possible
-for a domain in which the operators encode the different communicative
-actions that the NLG system can use. For instance, in the sentence
-generation domain, the XTAG planning problem for $k=2$ and $n=5$
-consists of about 1000 operators for the different lexicon entries for
-all the words in the sentence, some of which take four parameters. It
-is not unrealistic to assume a knowledge base with a few hundred
-individuals. All this adds up to trillions of ground instances, i.e.\
-it is completely infeasible to compute ground instances naively.
+While the GIVE domain can be defined in such a way that the number of
+operators is minimized, this is not possible for an encoding of a domain in
+which the operators model the different communicative actions that the NLG
+system can use. For instance, in the sentence generation domain, the XTAG
+planning problem for $k=2$ and $n=5$ consists of about 1000 operators for the
+different lexicon entries for all the words in the sentence, some of which
+take four parameters. It is not unrealistic to assume a knowledge base with a
+few hundred individuals. All this adds up to trillions of ground
+instances: a set which is completely infeasible to compute naively.
 
-Of course, it would be premature to judge the usefulness of current
-planners for NLG as a whole based on just two NLG
-domains. Nevertheless, we believe that the structure of our planning
-problems, which are dominated by a large number of operators and
-individuals, is typical for NLG-related planning problems as a
-whole. This suggests strongly that while current planners deal well
-with the search problems we have looked at, they are still unusable
-for practical NLG applications because of the time they spend on
-preprocessing. In other words, generation-as-planning research is
-still not in a much better position than it was in the 1980s. While we
-are aware that the time that a planner invests in preprocessing can
-pay off during search, we still suggest that the inability of current
-planners to scale to larger domains still limits their usefulness for
-applications beyond NLG as well. Furthermore, we feel that
-preprocessing gets less research attention than it deserves: If it is
-scientifically trivial, we challenge the planning community to come up
-with implementations that only ground operators by need; otherwise, we
-look forward to publications on this topic. To support this, we offer
-our planning domains as benchmarks for future competitions. They are
-available at \todo{upload them somewhere}
+Of course, it would be premature to judge the usefulness of current planners
+as a whole, based on just two NLG domains. Nevertheless, we believe that the
+structure of our planning problems, which are dominated by large numbers of
+operators and individuals, is typical of NLG-related planning problems as a
+whole. This strongly suggests that while current planners are able to manage
+many of the search problems in the domains we looked at, they are still
+unusable for practical NLG applications because of the time they spend on
+preprocessing. In other words, the state of generation-as-planning research
+is still not in a much better position than it was in the 1980s. 
 
-Finally, we found it very convenient that the recent IPC planning
-competitions provide an entry point for selecting and obtaining
-current planners. Nevertheless, our experiments exposed several bugs
-in the planners we tested, and required us to make changes to the
-source code to make them scale to our inputs. We also found that
-different planners differ in the variants of PDDL that they can
-process. These differences range from fragments of ADL that can be
-parsed to sensitivity to the order of declarations and the use of
-``objects'' rather than ``individuals'' as the keyword for declaring
-the universe. We propose that the case for planning as a mature
-technology with professional-quality implementations could be made
-more strongly if such discrepancies were harmonized.
+We are also aware that the time a planner invests in preprocessing can pay
+off during search, and that such techniques have been invaluable in improving
+the overall running time of modern planners. However, we still suggest that
+the inability of current planners to scale to larger domains limits their
+usefulness for applications beyond NLG as well. Furthermore, we feel that the
+problem of preprocessing receives less research attention than it deserves:
+if the problem is scientifically trivial then we challenge the planning
+community to develop more efficient implementations that only ground
+operators by need; otherwise, we look forward to future publications on this
+topic. To support this effort, we offer our planning domains as benchmarks
+for future research and competitions.\footnote{The PDDL problem generators
+for our NLG domains are available at \texttt{http://\todo{TODO}}.}
+
+Finally, we found it very convenient that the recent International Planning
+Competitions provide a useful entry point for selecting and obtaining current
+planners. Nevertheless, our experiments exposed several bugs in the planners
+we tested, which required us to change their source code to make them scale
+to our inputs. We also found that different planners that solve the same
+class of planning problems (e.g., STRIPS, ADL, etc.) sometimes differ in the
+variants of PDDL that they support. These differences range from fragments of
+ADL that can be parsed to sensitivity, to the order of declarations and the
+use of ``objects'' rather than ``individuals'' as the keyword for declaring
+the universe. We propose that the case for planning as a mature technology
+with professional-quality implementations could be made more strongly if such
+discrepancies were harmonized.
 
 
 

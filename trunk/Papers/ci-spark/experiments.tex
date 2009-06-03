@@ -76,32 +76,33 @@ Java; unlike the three off-the-shelf planners, it only computes
 instances of literals and operators as they are needed in the course
 of the plan search, instead of computing all ground instances in a
 separate preprocessing step. Finally, we reimplemented the incomplete
-greedy search algorithm used in the SPUD system \citep{Stone2003a}.
+greedy search algorithm used in the SPUD system \citep{Stone2003a} in
+Java.
 
 The results of this experiment are shown in the graph in
 Figure~\ref{fig:runtimes-crisp}.\footnote{All runtimes in
   Sections~\ref{sec:exper-1:-sent} and \ref{sec:exper-2:-sent-xtag}
   were measured on a single core of an AMD Opteron 8220 CPU running at
   2.8 GHz, under Linux. FF 2.3 and Metric-FF were recompiled as 64-bit
-  binaries. Java programs were executed under Java 1.6.0\_13 in 64-bit
-  mode. They were allowed to ``warm up'', i.e. the JVM was given the
-  opportunity to just-in-time compile the relevant bytecode by running
-  the planner three times and discarding the runtimes before taking
-  the actual measurements. All runtimes are averaged over three runs
-  of the planners.} The input parameters $(m,n)$ are plotted in
-lexicographic order on the horizontal axis, and the runtime is shown
-in seconds on the vertical axis, on a logarithmic scale. These results
-reveal a number of interesting insights. First, the search times of FF
-and Metric-FF (shown as thinner lines) significantly outperform
-SGPLAN's search in this domain---on the largest instances, by a factor
-of over 100.\footnote{For FF and Metric-FF, we report the
-  ``searching'' and ``total'' times reported by the planners. For
-  SGPLAN, we report the ``total'' time and the difference between the
-  ``total'' and ``parsing'' times.} Second, FF and Metric-FF perform
-very similarly to each other, and their search times are almost the
-same as those of the SPUD algorithm, which is impressive because they
-are complete search algorithms, whereas SPUD's greedy algorithm is
-not.
+  binaries and run with a memory limit of 32 GB. Java programs were
+  executed under Java 1.6.0\_13 in 64-bit mode. They were allowed to
+  ``warm up'', i.e. the JVM was given the opportunity to just-in-time
+  compile the relevant bytecode by running the planner three times and
+  discarding the runtimes before taking the actual measurements. All
+  runtimes are averaged over three runs of the planners.} The input
+parameters $(m,n)$ are plotted in lexicographic order on the
+horizontal axis, and the runtime is shown in seconds on the vertical
+axis, on a logarithmic scale. These results reveal a number of
+interesting insights. First, the search times of FF and Metric-FF
+(shown as thinner lines) significantly outperform SGPLAN's search in
+this domain---on the largest instances, by a factor of over
+100.\footnote{For FF and Metric-FF, we report the ``searching'' and
+  ``total'' times reported by the planners. For SGPLAN, we report the
+  ``total'' time and the difference between the ``total'' and
+  ``parsing'' times.} Second, FF and Metric-FF perform very similarly
+to each other, and their search times are almost the same as those of
+the SPUD algorithm, which is impressive because they are complete
+search algorithms, whereas SPUD's greedy algorithm is not.
 
 Finally, it is striking that for all three off-the-shelf planners, the
 search only accounts for a tiny fraction of the total runtime; in each
@@ -124,14 +125,13 @@ $m=10$.
 
 The first experiment already gives us some initial insights into the
 appropriateness of planning for the sentence generation domain: On the
-examples we looked at, search times were low, but FF and SGPLAN spend
-a lot of time on the initial grounding step.  However, one weakness of
-this experiment is that it uses a tiny grammar, consisting of just
-those 12 lexicon entries that are needed for the experiment. While the
-grounding problem can only get worse with larger grammars, the
-experiment by itself does not allow us to make clear statements about
-the search efficiency.
-
+examples we looked at, the search times were quite acceptable, but FF
+and SGPLAN spent a lot of time on the initial grounding step.
+However, one weakness of this experiment is that it uses a tiny
+grammar, consisting of just those 12 lexicon entries that are needed
+for the experiment. While the grounding problem can only get worse
+with larger grammars, the experiment by itself does not allow us to
+make clear statements about the search efficiency.
 To address this problem, we ran a second sentence generation
 experiment. This time, we used the XTAG Grammar \citep{xtag01:_tr}, a
 large-scale TAG grammar of English. XTAG contains lexicon entries for
@@ -139,7 +139,7 @@ about 17,000 uninflected words using about 1100 different elementary
 trees. Although XTAG does not contain semantic information, it is
 possible to automatically equip the lexicon entries with inferred
 semantic representations based on the words in the lexicalized
-elementary tree. The result is a highly ambiguous grammar: The most
+elementary trees. The result is a highly ambiguous grammar: The most
 ambiguous word, ``ask'', is the anchor of 314 lexicon entries.
 
 In our experiment, we were especially interested in two
@@ -172,39 +172,43 @@ base.
 \end{figure}
 
 Fig.~\ref{fig:xtag-graph} reports the runtimes we measured in this
-experiment for FF. Because the computations in this experiment were
-very memory-intensive, we recompiled FF 2.3 as a 64-bit binary. We
-also ran the experiments with a 64-bit version of Metric-FF; although
-our planning problem is purely sequential and not metric, Metric-FF
-avoids a bug which caused FF 2.3 to switch to a best-first search
-strategy beyond a certain point; the jump in runtime is clearly
-visible in the figure. We did not run this experiment with SGPLAN
-because we didn not have access to a 64-bit version of either SGPLAN
-5.2.2 or SGPLAN 6; some initial experiences with the 32-bit version
-indicate that SGPLAN switches to FF's best-first strategy even for
-small problem instances, and thus would be slower than the versions of
-FF we reported here. We also do not report runtimes for our Java
-implementation of Graphplan, because it was unusuably slow for serious
-problem instances: For $k=1$ and $n=3$, it already took over two
-minutes, and it exceeded its memory limit of 16 GB for
-$n>3$. \todo{compare to SPUD reconstruction here}
+experiment for FF, Metric FF, and the SPUD reimplementation. We do not
+report runtimes for SGPLAN, because we could not recompile SGPLAN as a
+64-bit binary, and the 32-bit version ran out of memory very
+quickly. We also do not report runtimes for our Java implementation of
+Graphplan, because it was unusuably slow for serious problem
+instances: For $k=1$ and $n=3$, it already took over two minutes, and
+it exceeded its memory limit of 16 GB for $n>3$. This may be a
+limitation of our naive implementation rather than the GraphPlan
+algorithm itself.
 
-There are a number of observations we can make in this
+Nonetheless, there are a number of observations we can make in this
 experiment. First of all, the experiment confirms that FF's Enforced
 Hill-Climbing search strategy works very well for the sentence
 generation task: Although we are now generating with a large grammar,
 FF generates a 39-word sentence ($k=1,n=6$) in under a second of
-search time. This efficiency is a direct result of this particular
-search strategy: Whenever FF falls back to the best-first strategy,
-runtimes become much slower (compare the graphs for FF 2.3 and
-Metric-FF). Second, FF's runtime is still dominated by the
-preprocessing stage. For instance, Metric-FF spends about 10 seconds
-on search for $k=1,n=10$, compared to its total runtime of about 65
-seconds. This effect becomes more pronounced as we increase $k$: For
-$k=2$, we reach 65 seconds of total runtime at $n=4$, but here
-Metric-FF only spends about a second on search. For $k=3$, neither FF
-nor Metric-FF were able to solve any of the input
-instances. \todo{bla} This is to be expected, given that the planning
+search time. This level of efficiency is a direct result of using this
+particular search strategy: For $k=1$ and $n>6$, FF 2.3 (but not
+Metric-FF) fell back to the best-first search strategy, which causes a
+dramatic loss of search effiency. It is also encouraging that
+Metric-FF still performs comparably to SPUD in terms of pure search
+time. We believe that by FF's technique of evaluating actions by
+estimating the distance to a goal state for the relaxed problem
+essentially picks out the same evaluation function as SPUD's domain-specific
+heuristic, and the enforced hill-climbing strategy needs to backtrack
+very little in this domain and thus performs similarly to SPUD's
+greedy search. However, SPUD's incompleteness manifests itself in this
+experiment by its inability to find any plan for $k>1$ and $n>1$,
+whereas FF and its variants still (correctly) find these plans.
+
+Second, FF's runtime is still dominated by the preprocessing
+stage. For instance, Metric-FF spends about 10 seconds on search for
+$k=1,n=10$, compared to its total runtime of about 65 seconds. This
+effect becomes more pronounced as we increase $k$: For $k=2$, we reach
+65 seconds of total runtime at $n=4$, but here Metric-FF only spends
+about a second on search. For $k=3$, neither FF nor Metric-FF were
+able to solve any of the input instances within their memory
+limit. This is consistent with the observation that the planning
 operators for the verbs have $k+2$ parameters (see
 Fig.~\ref{fig:white-rabbit-as-planning}), and thus the number of
 action instances grows by a factor of the universe size every time we

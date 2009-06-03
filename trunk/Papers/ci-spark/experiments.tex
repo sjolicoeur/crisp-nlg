@@ -21,30 +21,36 @@ inaccessible (Section~\ref{sec:experiment-4:-give}). This series of
 experiments is set up to illustrate what we perceive as the main
 limitation of current off-the-shelf planners for our applications:
 They spend a long time on computing all ground instances, even if most
-of these instances are never used in the plan search.
+of these instances are never used in the plan search. \todo{Ron, this
+  is something you need to adapt to the new story -- AK}
 
 
 
 \subsection{Experiment 1: Sentence generation (referring expressions)}
 \label{sec:exper-1:-sent}
 
-For the first experiment on sentence generation, we focus on the
-generation of referring expressions, a problem that is usually handled
-by the sentence planner if sentence planning and surface realization
-are separated. We consider a series of sentence generation problems
-which require the planner to compute a plan representing the sentence
-``Mary likes the Adj$_1$ \ldots Adj$_n$ rabbit.''  Each problem
-instance assumes a target referent $r$, which is a rabbit, and a
-certain number $m$ of further rabbits $r_1,\ldots,r_m$ that are
-distinguished by properties $P_1,\ldots,P_n$ with $n \leq m$. The
-problem instance is set up such that $r$ has all properties except for
-$P_i$ in common with each $r_i$. That is, all $n$ properties are
-required to describe $r$ uniquely. The $n$ properties are realized as
-$n$ different adjectives, in any order.  This setup allows us to vary
-the plan length (a plan with $n$ properties will have length $n+4$)
-and the universe size (the universe will contain $m+1$ rabbit
-individuals in addition to the differently-typed individuals used to
-encode the grammar).
+For the first experiment on sentence generation, we exercise the
+ability of the CRISP system described in
+Section~\ref{sec:domain-crisp} to generate referring expressions. This
+problem is usually handled by the sentence planner if sentence
+planning and surface realization are separated; here it happens as
+part of the overall generation process. 
+
+We consider a series of sentence generation problems which require the
+planner to compute a plan representing the sentence ``Mary likes the
+Adj$_1$ \ldots Adj$_n$ rabbit.''  Each problem instance assumes a
+target referent $r$, which is a rabbit, and a certain number $m$ of
+further rabbits $r_1,\ldots,r_m$ that are distinguished by properties
+$P_1,\ldots,P_n$ with $n \leq m$. The problem instance is set up such
+that $r$ has all properties except for $P_i$ in common with each $r_i$
+for $1 \leq i \leq n$, and $r_{n+1},\ldots,r_m$ have none of the
+properties $P_i$. That is, all $n$ properties are required to describe
+$r$ uniquely. The $n$ properties are realized as $n$ different
+adjectives, in any order.  This setup allows us to vary the plan
+length (a plan with $n$ properties will have length $n+4$) and the
+universe size (the universe will contain $m+1$ rabbit individuals in
+addition to the individuals used to encode the grammar, which have
+different types).
 
 \begin{figure}
   \centering
@@ -58,60 +64,58 @@ encode the grammar).
 
 We converted these generation problem instances into planning problem
 instances as described in Section~\ref{sec:domains}, and then ran
-three different planners on them. We used the off-the-shelf planners
-FF 2.3 \citep{HoffmannNebel01} and SGPLAN 5.2.2
-\citep{hsu06:_new_featur_in_sgplan_for}, because they were highly
-successful in the recent International Planning Competitions, and
-support a fragment of PDDL with quantified and conditional effects,
-which is necessary in our domain (see
-Fig.~\ref{fig:white-rabbit-as-planning}). Common to both of these
-planners is that they perform a preprocessing step in which all ground
-instances of all predicates and actions are computed.  Furthermore, we
+several different planners on them. We used three off-the-shelf
+planners: FF 2.3 \citep{HoffmannNebel01}, Metric-FF
+\citep{hoffmann:ecai-02}, and SGPLAN 6
+\citep{hsu06:_new_featur_in_sgplan_for}; all of these were highly
+successful at the recent IPC competitions, and unlike many other IPC
+participants, support a fragment of PDDL with quantified and
+conditional effects, which is necessary in our domain. In addition, we
 used an ad-hoc implementation of GraphPlan \citep{Blum1997} written in
-Java which avoids the grounding preprocessing step and only computes
-instances of actions and predicates by need, as they are actually
-discovered when the planning graph is built. Our expectation was that
-this planner would not be able to compete with FF or SGPLAN in terms
-of search efficiency, but we were interested in comparing the
-contribution of the prior grounding step on the planner performance.
+Java; unlike the three off-the-shelf planners, it only computes
+instances of literals and operators as they are needed in the course
+of the plan search, instead of computing all ground instances in a
+separate preprocessing step. Finally, we reimplemented the incomplete
+greedy search algorithm used in the SPUD system \citep{Stone2003a}.
 
 The results of this experiment are shown in the graph in
 Figure~\ref{fig:runtimes-crisp}.\footnote{All runtimes in
   Sections~\ref{sec:exper-1:-sent} and \ref{sec:exper-2:-sent-xtag}
-  were measured on an AMD Opteron 8220 CPU running at 2.8 GHz, under
-  Linux. FF 2.3 and Metric-FF were recompiled as 64-bit binaries. Java
-  programs were executed under Java 1.6.0\_13 in 64-bit mode. They
-  were allowed to ``warm up'', i.e. the JVM was given the opportunity
-  to just-in-time compile the relevant bytecode by running the planner
-  three times and discarding the runtimes before taking the actual
-  measurements. All runtimes are averaged over three runs of
-  the planners.} The input parameters $(m,n)$ are plotted in
+  were measured on a single core of an AMD Opteron 8220 CPU running at
+  2.8 GHz, under Linux. FF 2.3 and Metric-FF were recompiled as 64-bit
+  binaries. Java programs were executed under Java 1.6.0\_13 in 64-bit
+  mode. They were allowed to ``warm up'', i.e. the JVM was given the
+  opportunity to just-in-time compile the relevant bytecode by running
+  the planner three times and discarding the runtimes before taking
+  the actual measurements. All runtimes are averaged over three runs
+  of the planners.} The input parameters $(m,n)$ are plotted in
 lexicographic order on the horizontal axis, and the runtime is shown
-in seconds on the vertical axis. These results reveal a number of
-interesting insights. First, FF significantly outperforms SGPLAN in
-this domain, sometimes by a factor of 10 or more. Second, FF's runtime
-is dominated by its initial grounding step, in which it computes the
-ground instances of all predicates and actions used in the planning
-problem in order to avoid unnecessary instantiation during search.  In
-particular, the ratio of grounding time to total runtime is generally
-above 85\%, and rises to above 99\% at $m=11$, which is still a
-relatively small universe for this application.\footnote{The
-  ``grounding'' time reported here is what FF reports as ``time spent:
-  instantiating action templates''.}
+in seconds on the vertical axis, on a logarithmic scale. These results
+reveal a number of interesting insights. First, the search times of FF
+and Metric-FF (shown as thinner lines) significantly outperform
+SGPLAN's search in this domain---on the largest instances, by a factor
+of over 100.\footnote{For FF and Metric-FF, we report the
+  ``searching'' and ``total'' times reported by the planners. For
+  SGPLAN, we report the ``total'' time and the difference between the
+  ``total'' and ``parsing'' times.} Second, FF and Metric-FF perform
+very similarly to each other, and their search times are almost the
+same as those of the SPUD algorithm, which is impressive because they
+are complete search algorithms, whereas SPUD's greedy algorithm is
+not.
 
-In our testing examples, the time spent by FF on grounding is so high
-that it is consistently outperformed by our Java implementation of
-GraphPlan, which only computes instances by need. Although FF is
-consistently much faster as far as pure search time is concerned, our
-results indicate that FF's performance is much more sensitive to the
-domain size: if we fix $n=1$, FF takes 60 ms to compute a plan at
-$m=1$, but 2.4 seconds to compute the same plan at $m=10$. By
-comparison, our GraphPlan implementation takes 30 ms at $m=1$ and
-still only requires 50 ms at $m=10$. Conversely, GraphPlan's runtime
-grows much faster with the plan size (i.e., with growing values of $n$
-for a fixed $m$). Larger, but still realistically-sized, instances of
-the sentence generation problem are still problematic for all the
-planners we tested.
+Finally, it is striking that for all three off-the-shelf planners, the
+search only accounts for a tiny fraction of the total runtime; in each
+case, the preprocessing times are higher than the search times by one
+or two orders of magnitude. As a consequence, even our relatively
+naive Java implementation of GraphPlan outperforms them all in terms
+of total runtime, because it only computes instances by need. Although
+FF is consistently much faster as far as pure search time is
+concerned, our results indicate that FF's performance is much more
+sensitive to the domain size: if we fix $n=1$, FF takes 27
+milliseconds to compute a plan at $m=1$, but 4.4 seconds to compute
+the same plan at $m=10$. By comparison, our GraphPlan implementation
+takes 20 ms at $m=1$ and still only requires 22 ms at
+$m=10$.
 
 
 

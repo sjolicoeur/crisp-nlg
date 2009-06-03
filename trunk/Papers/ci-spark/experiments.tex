@@ -221,7 +221,7 @@ the operators thus takes exponential time in $k$ for preprocessing.
 
 In the second experiment, we evaluate the performance of the planners on
 problems arising in the GIVE domain. We construct a series of test worlds,
-similar to the one illustrated in Figure~\ref{fig:give-minimal}. These
+similar to the one illustrated in Figure~\ref{fig:give-maps}(a). These
 worlds consist of a $2n$ by $h$ grid of positions, such that there are
 buttons at positions $(2i-1,1)$ and $(2i,h)$ for $1 \leq i \leq n$. The
 player starts in position $(1,1)$ and must press all the buttons
@@ -232,9 +232,15 @@ of the actions available in the GIVE domain in PDDL syntax.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.5\columnwidth]{pic-buttons}
-  \caption{Minimal GIVE world.}
-  \label{fig:give-minimal}
+  \subfloat[position=bottom][(a) Minimal world]{%
+      \includegraphics[height=2.5cm,clip=true,trim=0 -10px 0 -3px]{pic-buttons}}
+  \qquad
+  \subfloat[position=bottom][(b) Extra grid cells with accessible positions]{%
+      \includegraphics[height=2.5cm]{pic-empty-buttons}} \\
+  \subfloat[(c) Extra grid cells with inaccessible positions]{%
+      \includegraphics[height=2.5cm]{pic-empty-inaccessible}}
+  \caption{Experimental GIVE world configuration.}
+  \label{fig:give-maps}
 \end{figure}
 
 Results for the $h=20$ case, with $n$ ranging from $1$ to $40$, are shown
@@ -280,19 +286,13 @@ In the third experiment, we vary the structure of the GIVE world in order
 to judge the effect that universe size has on the planning problem in this
 domain. Starting with the ordinary GIVE world described in Experiment~2, we
 extend the world map by adding another $w$ by $h$ empty ``junk'' positions
-to the right of the minimal world, as shown in Figure~\ref{fig:give-junk}.
+to the right of the minimal world, as shown in Figure~\ref{fig:give-maps}(b).
 These new positions are not actually required in any plan, but extend the
 size of the state space and approximate the situation in the actual GIVE
 domain where most grid positions are never used. We leave the initial state
 and goal untouched. As before, we generate a GIVE world description and
 then convert it into a planning problem in PDDL.
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.80\columnwidth]{pic-empty-buttons}
-  \caption{GIVE world with extra ``junk'' positions.}
-  \label{fig:give-junk}
-\end{figure}
 
 Results for the $h=20$, $n=5$ case with $w$ ranging from $1$ to $70$ are
 shown in Figure~\ref{fig:give-runtime-junk}. As in Experiment~2, FF again
@@ -332,7 +332,7 @@ positions, with buttons at positions $(2i-1,1)$ and $(2i,h)$ for $1 \leq i
 an additional button in this grid. Unlike Experiment~3, the second grid
 does not extend the first grid but is ``disconnected'' so its positions are
 inaccessible from the first grid, as shown in
-Figure~\ref{fig:give-junk-nosoln}. Since the geometry of the grid makes it
+Figure~\ref{fig:give-maps}(c). Since the geometry of the grid makes it
 impossible to construct a plan for pressing all the buttons in the world,
 we instead investigate the time it takes a planner to arrive at the
 conclusion that the problem cannot be solved.
@@ -350,13 +350,6 @@ demonstrate that SGPLAN has a significant advantage over FF in this
 experiment. 
 %Our implementation of GraphPlan is unable to complete any of
 %these problem instances.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.85\columnwidth]{pic-empty-inaccessible}
-  \caption{GIVE world with inaccessible positions.}
-  \label{fig:give-junk-nosoln}
-\end{figure}
 
 \begin{figure}
   \centering

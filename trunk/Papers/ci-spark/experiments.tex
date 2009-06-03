@@ -227,78 +227,87 @@ the operators thus takes exponential time in $k$ for preprocessing.
 \end{figure}
 
 
-\subsection{Experiment 2: Minimal GIVE worlds}
+\subsection{Experiment 3: Minimal GIVE worlds}
 \label{sec:exper-2:-minim}
 
-In the second set of experiments, we evaluate the performance of
-several planners on problems arising in the GIVE domain. Besides the
-FF, Metric-FF, and SGPLAN planners we used in the previous set of
-experiments, we expand our testing to include FF($h_a$)
-\citep{keyder08:_ff_h_plann_for_plann}, LAMA
-\citep{richter08:_lama_plann}, and C$^3$
-\citep{lipovetzky08:_c3}. Each of these additional planners competed
-in the deterministic ``sequential, satifying'' track of the 2008
-International Planning Competition; all planners generally performed
-well on the competition domains, with LAMA the overall winner of the
-track.\footnote{See \texttt{http://ipc.informatik.uni-freiburg.de/}
-  for details of the 2008 IPC.}
+We now turn our attention to a set of experiments arising from the GIVE domain.
+Besides using some of the planners from the previous set of experiments (FF,
+Metric-FF, and SGPLAN), we expand our testing to include the FF(h$_a$), LAMA, and
+C$^3$ planners \todo{citations}. Each of these additional planners competed in the
+deterministic ``sequential, satifying'' track of the 2008 International Planning
+Competition; all planners generally performed well on the competition domains,
+with LAMA the overall winner of the track.\footnote{See
+\texttt{http://ipc.informatik.uni-freiburg.de/} for details of the 2008 IPC.}
 
-In the first GIVE test, we construct a series of grid worlds, similar to the one
-illustrated in Figure~\ref{fig:give-maps}(a). These worlds consist of a $2n$ by
-$h$ grid of positions, such that there are buttons at positions $(2i-1,1)$ and
-$(2i,h)$ for $1 \leq i \leq n$. The player starts in position $(1,1)$ and must
-press all the buttons to successfully complete the game.  (The actions in this
-domain are similar to the PDDL actions in Figure~\ref{fig:give-planning}.)
-We consider two variants of this problem in our tests. In the \emph{unordered}
-problem, the player is permitted to press the buttons in any order to
-successfully achieve the goal. In the \emph{ordered} version of the problem, the
-player is unable to initially move to any grid cell containing a button, except
-for the cell containing the first button, $u_1$. Pressing $u_1$ releases the
-position of the next button, $l_1$, allowing the player to move into this cell.
-Similarly, pressing button $l_1$ frees button $u_2$, and so on. The end result
-is a set of constraints that forces the buttons to be pressed in a particular
-order to achieve the goal. As a concrete example, the following is a minimal
-plan (in either variant of the problem) for the case of a $2$ by $2$ grid with
-$2$ buttons (i.e., $n=1$, $h=2$):
+In the first GIVE experiment, we construct a series of grid worlds, similar to
+the one illustrated in Figure~\ref{fig:give-maps}(a). These worlds consist of a
+$N = 2n$ by $h$ grid of positions, such that there are buttons at positions
+$(2i-1,1)$ and $(2i,h)$ for $1 \leq i \leq n$. The player starts in position
+$(1,1)$ and must press all the buttons to successfully complete the game.  (The
+actions in this domain are similar to the PDDL actions in
+Figure~\ref{fig:give-planning}.) We consider two variants of this problem in our
+tests. In the \emph{unordered} problem, the player is permitted to press the
+buttons in any order to successfully achieve the goal. In the \emph{ordered}
+version of the problem, the player is unable to initially move to any grid cell
+containing a button, except for the cell containing the first button, $u_1$.
+Pressing $u_1$ releases the position of the next button, $l_1$, allowing the
+player to move into this cell.  Similarly, pressing button $l_1$ frees button
+$u_2$, and so on. The end result is a set of constraints that forces the buttons
+to be pressed in a particular order to achieve the goal. As a concrete example,
+the following is a minimal plan (in either variant of the problem) for the case
+of a $2$ by $2$ grid with $2$ buttons (i.e., $n=1$, $h=2$):
 
 \begin{enumerate}
 \item $\mathsf{move}(\mathsf{pos\_1\_1},\mathsf{pos\_1\_2}, \mathsf{north})$,
-\item $\mathsf{manipulate}\textsf{-}\mathsf{u1}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{pos\_1\_2})$,
+\item $\mathsf{manipulate}\textsf{-}\mathsf{button}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{u1, pos\_1\_2})$,
 \item $\mathsf{turn}\textsf{-}\mathsf{right}(\mathsf{north}, \mathsf{east})$,
 \item $\mathsf{move}(\mathsf{pos\_1\_2}, \mathsf{pos\_2\_2},
   \mathsf{east})$,
 \item $\mathsf{turn}\textsf{-}\mathsf{right}(\mathsf{east}, \mathsf{south})$,
 \item $\mathsf{move}(\mathsf{pos\_2\_2}, \mathsf{pos\_2\_1}, \mathsf{south})$,
-\item $\mathsf{manipulate}\textsf{-}\mathsf{l1}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{pos\_2\_1})$.
+\item $\mathsf{manipulate}\textsf{-}\mathsf{button}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{l1, pos\_2\_1})$.
 \end{enumerate}
 
-Results for the $h=20$ case, with the grid width $N$ ranging from $0$ to $40$,
+Results for the $h=20$ case, with the grid width $N$ ranging from $1$ to $40$,
 are shown in Figure~\ref{fig:give-minimal}. In the unordered case
-(Figure~\ref{fig-give-minimal}(a)), the most obvious result is that some of the
+(Figure~\ref{fig:give-minimal}(a)), the most obvious result is that some of the
 planners tested---Metric-FF, FF(h$_a$), and C$^3$---are unable to solve any
 problems beyond $N=24$ on our experimentation machine within the memory limit of
-2 GB.\footnote{\todo{describe testing environment}} While FF, Lama, and SGPLAN
-are all able to solve problem instances up to $N=40$, the total running time
-varies greatly between this planners. For instance, FF takes almost 35
-seconds to solve the $N=40$ problem, LAMA takes around 6.5 seconds, and SGPLAN
-shows impressive performance, taking well less than a second. 
+2 GB.\footnote{\todo{describe testing environment}} While FF, LAMA, and SGPLAN
+are able to solve all problem instances up to $N=40$, the total running time
+varies greatly between these planners. For instance, FF takes almost 35 seconds
+to solve the $N=40$ problem, while LAMA takes around 6.5 seconds. SGPLAN shows
+impressive performance, generating a 240 step plan in the $N=40$ case in well
+less than a second. In the ordered case (Figure~\ref{fig:give-minimal}(b)), we
+again have the situation where Metric-FF, FF(h$_a$), and C$^3$ are unable to
+solve all problem instances. Furthermore, both SGPLAN and LAMA, which performed
+well on the unordered problem, now perform much worse than FF: FF takes 39
+seconds for the $N=40$ case, while SGPLAN takes 50 seconds and LAMA takes 90
+seconds. In real NLG systems, where response time is essential, running times
+over a few seconds are unacceptable.
 
-In a real NLG system, where response time is 
-
-machine within the memory limit of 1 GB. SGPLAN, on the other hand, solves
-instances beyond $n=40$ without major problems. In this case, our
-implementation of GraphPlan is unable to find any of these plans. The time
-spent on grounding is not a major factor in either planner, probably
-because the planners need more time to actually compute the plan---for
-instance, the optimal plan for the problem $n=40$ has a length of about
-1600 steps.
-
+Preprocessing (parsing, grounding, etc.) time generally plays less of a role in
+GIVE, compared with the sentence generation domain, however, its effects still
+contribute significantly to the overall running time of a number of planners.
+Figure~\ref{fig:give-minimal-grounding} shows the grounding time for FF, LAMA,
+and SGPLAN on the minimal GIVE problems, compared with the total running time.
+In the unordered variant of the minimal GIVE domain
+(Figure~\ref{fig:give-minimal-grounding}(a)), the grounding time in LAMA and
+SGPLAN accounts for a significant fraction of the total runtime: SGPLAN spends
+around 40\% of its total runtime on preprocessing; for LAMA, this number
+rises to at least 80\% for our test problems. For FF, the preprocessing time is
+much less important than the search time, especially for large problem
+instances. In the ordered case (Figure~\ref{fig:give-minimal-grounding}(b)), the
+actual time spent on preprocessing is essentially unchanged from the unordered
+case, and search time dominates the total runtime for all three planners.
+However, FF is now much better at controlling the search,
+compared with the unordered variant of the problem.
 
 \begin{figure}[t]
 \subfloat[(a) Unordered]{\includegraphics[width=7cm]{data/give-minimal.pdf}}
 \subfloat[(b) Ordered]{\includegraphics[width=7cm]{data/give2-minimal.pdf}}
   \caption{Results for the unordered and ordered minimal GIVE domains with grid
-  height $h=20$. The horizontal axis is the grid width, $N = 2n$. The
+  height $h=20$. The horizontal axis is the grid width, $N$. The
   vertical axis is the total runtime in seconds.}
   \label{fig:give-minimal}
 \end{figure}
@@ -308,11 +317,12 @@ instance, the optimal plan for the problem $n=40$ has a length of about
 \subfloat[(b) Ordered]{\includegraphics[width=7cm]{data/give2-minimal-grounding.pdf}}
   \caption{Comparison of the total running time and grounding time for selected
   planners in the $h=20$ minimal GIVE domain. The horizontal axis is the grid
-  width, $N = 2n$. The vertical axis is the total runtime in seconds.}
+  width, $N$. The vertical axis is the total runtime in seconds.}
   \label{fig:give-minimal-grounding}
 \end{figure}
 
-\subsection{Experiment 3: GIVE worlds with extra positions}
+
+\subsection{Experiment 4: GIVE worlds with extra positions}
 \label{sec:experiment-3:-give}
 
 In the third experiment, we vary the structure of the GIVE world in order
@@ -372,7 +382,7 @@ in real time to user actions.
   \label{fig:give-buttons}
 \end{figure}
 
-\subsection{Experiment 4: GIVE worlds with inaccessible positions}
+\subsection{Experiment 5: GIVE worlds with inaccessible positions}
 \label{sec:experiment-4:-give}
 
 In the final experiment, we consider a variation on the GIVE worlds from

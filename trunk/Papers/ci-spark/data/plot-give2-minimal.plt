@@ -7,11 +7,11 @@ set output "give2-minimal.pdf"
 set xlabel "grid width (b)"
 set ylabel "time (s)"
 set xrange [ 0 : 40 ]
-set yrange [ 0 : 40 ]
+#set yrange [ 0 : 40 ]
 set mxtics 5
 set mytics 5
 set xtics 5
-set ytics 5
+set ytics 10
 
 plot "give2-minimal.csv" \
         using 2:9   title "FF"         with l ls 1, \

@@ -18,5 +18,5 @@ plot "give-extracells.csv" \
      "" using 4:14  title "Metric-FF"  with l ls 2, \
      "" using 4:19  title "FF-ha"      with l ls 4, \
      "" using 4:30  title "SGPLAN 6"   with l ls 3, \
-     "" using 4:39  title "Lama"       with l ls 5, \
+     "" using 4:39  title "LAMA"       with l ls 5, \
      "" using 4:40  title "C3"         with l ls 6

@@ -231,12 +231,13 @@ the operators thus takes exponential time in $k$ for preprocessing.
 \label{sec:exper-2:-minim}
 
 We now turn our attention to a set of experiments arising from the GIVE domain.
-Besides using some of the planners from the previous set of experiments (FF,
-Metric-FF, and SGPLAN), we expand our testing to include the FF(h$_a$), LAMA, and
-C$^3$ planners \todo{citations}. Each of these additional planners competed in the
-deterministic ``sequential, satifying'' track of the 2008 International Planning
-Competition; all planners generally performed well on the competition domains,
-with LAMA the overall winner of the track.\footnote{See
+Besides using many of the planners from the previous set of experiments (FF,
+Metric-FF, and SGPLAN), we also expand our testing to include the FF(h$_a$)
+\citep{keyder08:_ff_h_plann_for_plann}, LAMA \citep{richter08:_lama_plann}, and
+C$^3$ \citep{lipovetzky08:_c3} planners. Each of these additional planners
+competed in the deterministic ``sequential, satifying'' track of the 2008
+International Planning Competition; all planners performed well on the
+competition domains, with LAMA the overall winner of the track.\footnote{See
 \texttt{http://ipc.informatik.uni-freiburg.de/} for details of the 2008 IPC.}
 
 In the first GIVE experiment, we construct a series of grid worlds, similar to
@@ -300,8 +301,8 @@ much less important than the search time, especially for large problem
 instances. In the ordered case (Figure~\ref{fig:give-minimal-grounding}(b)), the
 actual time spent on preprocessing is essentially unchanged from the unordered
 case, and search time dominates the total runtime for all three planners.
-However, FF is now much better at controlling the search,
-compared with the unordered variant of the problem.
+However, overall, FF is now much better at controlling the search, compared with
+the other planners and its performance on the unordered variant of the problem.
 
 \begin{figure}[t]
 \subfloat[(a) Unordered]{\includegraphics[width=7cm]{data/give-minimal.pdf}}

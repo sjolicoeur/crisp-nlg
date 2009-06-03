@@ -153,8 +153,7 @@ $\mathsf{expressed}(\mathsf{sleep},e,r_1)$. For instance, the following
 plan correctly performs the necessary derivation:
 %
 \begin{enumerate}
-\item $\mathsf{add}\textsf{-}\mathsf{sleeps}(\mathsf{root}, r_1)$,
-\todo{FIX: add-sleeps takes 3 arguments in the PDDL spec!}
+\item $\mathsf{add}\textsf{-}\mathsf{sleeps}(\mathsf{root}, e, r_1)$,
 \item $\mathsf{add}\textsf{-}\mathsf{rabbit}(\mathsf{subj}(\mathsf{root}),r_1)$,
 \item $\mathsf{add}\textsf{-}\mathsf{white}(\mathsf{subj}(\mathsf{root}),r_1)$.
 \end{enumerate}
@@ -195,7 +194,7 @@ largest ever NLG evaluation effort to date in terms of human users.
 \end{figure}
 
 Planning plays a central role in the GIVE task. For instance, consider the
-example GIVE world shown map in Figure~\ref{fig:give-development-world}. In
+example GIVE world shown in Figure~\ref{fig:give-development-world}. In
 this world, the user's task is to pick up a trophy in the top left room.
 The trophy is hidden in a safe behind a picture; to access it, the user
 must push certain buttons in order to move the picture out of the way, open

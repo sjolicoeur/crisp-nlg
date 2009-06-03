@@ -1,21 +1,26 @@
 \section{Discussion}
 \label{sec:discussion}
 
-We can draw both positive and negative conclusions from our experiments about
-the state of planning for modern NLG applications. On the one hand, we found
-that modern planners are very good at dealing with the \emph{search} problems
-that arise in the NLG-based planning problems we investigated; the search
-time reported by most planners was often a very small fraction of the total
-running time of the planner. In the sentence generation domain, FF's Enforced
-Hill-Climbing strategy finds plans corresponding to 25-word sentences in
-about a second. It is hard to compare this number to a baseline because there
-are no shared benchmark problems, but FF's search outperforms a greedy search
-algorithm, and the performance is competitive with other sentence generators,
-which similarly employ special-purpose algorithms. Thus research on search
-strategies for planning has paid off; in particular, the Enforced
-Hill-Climbing heuristic outperforms the best-first strategy to which FF 2.3
-switches for some problem instances. Similarly, SGPLAN's performance on the
-GIVE domain is very convincing and fast enough for this application.
+We can draw both positive and negative conclusions from our
+experiments about the state of planning for modern NLG
+applications. On the one hand, we found that modern planners are very
+good at dealing with the \emph{search} problems that arise in the
+NLG-based planning problems we investigated.
+% I don't think we want to talk about this yet - AK
+%; the search time reported
+%by most planners was often a very small fraction of the total running
+%time of the planner. 
+In the sentence generation domain, FF's Enforced
+Hill-Climbing strategy finds plans corresponding to 25-word sentences
+in about a second. It is hard to compare this number to a baseline
+because there are no shared benchmark problems, but FF's search
+performance is similar to that of a greedy, incomplete special-purpose
+algorithm, and competitive to other sentence generators as well. Thus
+research on search strategies for planning has paid off; in
+particular, the Enforced Hill-Climbing heuristic outperforms the
+best-first strategy to which FF 2.3 switches for some problem
+instances. Similarly, SGPLAN's performance on the GIVE domain is very
+convincing and fast enough for this application.
 
 On the other hand, each of the off-the-shelf planners we tested spent
 substantial amounts of time on preprocessing. This is most apparent in the
@@ -61,7 +66,8 @@ community to develop more efficient implementations that only ground
 operators by need; otherwise, we look forward to future publications on this
 topic. To support this effort, we offer our planning domains as benchmarks
 for future research and competitions.\footnote{The PDDL problem generators
-for our NLG domains are available at \texttt{http://\todo{TODO}}.}
+for our NLG domains are available at
+\url{http://www.coli.uni-saarland.de/~koller/projects/crisp}.}
 
 Finally, we found it very convenient that the recent International Planning
 Competitions provide a useful entry point for selecting and obtaining current
@@ -70,7 +76,7 @@ we tested, which required us to change their source code to make them scale
 to our inputs. We also found that different planners that solve the same
 class of planning problems (e.g., STRIPS, ADL, etc.) sometimes differ in the
 variants of PDDL that they support. These differences range from fragments of
-ADL that can be parsed to sensitivity, to the order of declarations and the
+ADL that can be parsed, to sensitivity to the order of declarations and the
 use of ``objects'' rather than ``individuals'' as the keyword for declaring
 the universe. We propose that the case for planning as a mature technology
 with professional-quality implementations could be made more strongly if such

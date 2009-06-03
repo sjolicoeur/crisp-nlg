@@ -213,7 +213,18 @@ action instances grows by a factor of the universe size every time we
 increase $k$ by one. A planner which computes all ground instances of
 the operators thus takes exponential time in $k$ for preprocessing.
 
-
+\begin{figure}[t]
+  \centering
+  \subfloat[position=bottom][(a) Minimal world]{%
+      \includegraphics[height=2.5cm,clip=true,trim=0 -10px 0 -3px]{pic-buttons}}
+  \qquad
+  \subfloat[position=bottom][(b) World with extra grid cells]{%
+      \includegraphics[height=2.5cm]{pic-empty-buttons}} \\
+  %\subfloat[(c) Extra grid cells with inaccessible positions]{%
+  %    \includegraphics[height=2.5cm]{pic-empty-inaccessible}}
+  \caption{Experimental GIVE world configurations.}
+  \label{fig:give-maps}
+\end{figure}
 
 
 \subsection{Experiment 2: Minimal GIVE worlds}
@@ -229,19 +240,6 @@ to successfully complete the game. The world is generated as a GIVE world
 description, and then automatically converted into a planning problem by
 the GIVE software. For instance, Figure~\ref{fig:give-planning} shows some
 of the actions available in the GIVE domain in PDDL syntax.
-
-\begin{figure}[t]
-  \centering
-  \subfloat[position=bottom][(a) Minimal world]{%
-      \includegraphics[height=2.5cm,clip=true,trim=0 -10px 0 -3px]{pic-buttons}}
-  \qquad
-  \subfloat[position=bottom][(b) Extra grid cells with accessible positions]{%
-      \includegraphics[height=2.5cm]{pic-empty-buttons}} \\
-  \subfloat[(c) Extra grid cells with inaccessible positions]{%
-      \includegraphics[height=2.5cm]{pic-empty-inaccessible}}
-  \caption{Experimental GIVE world configuration.}
-  \label{fig:give-maps}
-\end{figure}
 
 Results for the $h=20$ case, with $n$ ranging from $1$ to $40$, are shown
 in Figure~\ref{fig:give-runtime-minimal}. The most obvious result is that
@@ -267,14 +265,12 @@ $n=1$, $h=2$):
 \item $\mathsf{manipulate}\textsf{-}\mathsf{l1}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{pos\_2\_1})$.
 \end{enumerate}
 
-
 \begin{figure}[t]
-  \centering
-  \includegraphics[width=0.75\columnwidth]{graph-exp2}
-  %\includegraphics[width=1\columnwidth]{pic-runtime-buttons}
-  \caption{Results on the minimal GIVE
-    domain for $h=20$. The horizontal axis is $n$. The vertical axis
-    is the runtime in seconds.}
+\subfloat[(a) Unordered]{\includegraphics[width=7cm]{data/give-minimal.pdf}}
+\subfloat[(b) Ordered]{\includegraphics[width=7cm]{data/give2-minimal.pdf}}
+  \caption{Results for the unordered and ordered minimal GIVE domains with grid
+  height $h=20$. The horizontal axis is the grid width, $b = 2n$. The
+  vertical axis is the total runtime in seconds.}
   \label{fig:give-runtime-minimal}
 \end{figure}
 
@@ -295,7 +291,7 @@ then convert it into a planning problem in PDDL.
 
 
 Results for the $h=20$, $n=5$ case with $w$ ranging from $1$ to $70$ are
-shown in Figure~\ref{fig:give-runtime-junk}. As in Experiment~2, FF again
+shown in Figure~\ref{fig:give-extracells}. As in Experiment~2, FF again
 runs out of memory, this time at $w=17$, while SGPLAN easily solves inputs
 beyond $w=70$. As in Experiment~2, our implementation of GraphPlan is
 unable to generate any of these plans. Unlike Experiment 2, however, both
@@ -311,16 +307,33 @@ instances are also concerning since times over a couple seconds will
 negatively affect the overall response time of the system, which must react
 in real time to user actions.
 
+%\begin{figure}[t]
+%  \centering
+%  \includegraphics[width=0.75\columnwidth]{graph-exp3}
+%  %\includegraphics[width=1\columnwidth]{pic-runtime-empty-world}
+%  \caption{Results on the GIVE domain with junk
+%    positions for $h=20$ and $n=5$. The horizontal axis is $w$.
+%    The vertical axis is the runtime in seconds.}
+%\end{figure}
+
 \begin{figure}[t]
-  \centering
-  \includegraphics[width=0.75\columnwidth]{graph-exp3}
-  %\includegraphics[width=1\columnwidth]{pic-runtime-empty-world}
-  \caption{Results on the GIVE domain with junk
-    positions for $h=20$ and $n=5$. The horizontal axis is $w$.
-    The vertical axis is the runtime in seconds.}
-  \label{fig:give-runtime-junk}
+\subfloat[(a) Unordered]{\includegraphics[width=7cm]{data/give-extracells.pdf}}
+\subfloat[(b) Ordered]{\includegraphics[width=7cm]{data/give2-extracells.pdf}}
+  \caption{Results for the unordered and ordered GIVE domains with $h = 20$ and
+  $n = 10$. The horizontal axis is the extra grid width $w$.
+  The vertical axis is the total runtime in seonds.}
+  \label{fig:give-extracells}
 \end{figure}
 
+
+\begin{figure}[t]
+\subfloat[(a) Unordered]{\includegraphics[width=7cm]{data/give-button-unord.pdf}}
+\subfloat[(b) Ordered]{\includegraphics[width=7cm]{data/give-button-ord.pdf}}
+  \caption{Results for the unordered and ordered GIVE domains with a grid size
+  of height 20 and width 40. The horizontal axis is the number of buttons $b$.
+  The vertical axis is the runtime in seonds.}
+  \label{fig:give-buttons}
+\end{figure}
 
 \subsection{Experiment 4: GIVE worlds with inaccessible positions}
 \label{sec:experiment-4:-give}

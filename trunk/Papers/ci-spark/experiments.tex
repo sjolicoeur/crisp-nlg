@@ -230,29 +230,33 @@ the operators thus takes exponential time in $k$ for preprocessing.
 \subsection{Experiment 2: Minimal GIVE worlds}
 \label{sec:exper-2:-minim}
 
-In the second experiment, we evaluate the performance of the planners on
-problems arising in the GIVE domain. We construct a series of test worlds,
-similar to the one illustrated in Figure~\ref{fig:give-maps}(a). These
-worlds consist of a $2n$ by $h$ grid of positions, such that there are
-buttons at positions $(2i-1,1)$ and $(2i,h)$ for $1 \leq i \leq n$. The
-player starts in position $(1,1)$ and must press all the buttons
-to successfully complete the game. The world is generated as a GIVE world
-description, and then automatically converted into a planning problem by
-the GIVE software. For instance, Figure~\ref{fig:give-planning} shows some
-of the actions available in the GIVE domain in PDDL syntax.
+In the second set of experiments, we evaluate the performance of several
+planners on problems arising in the GIVE domain. Besides the FF, Metric-FF, and
+SGPLAN planners we used in the previous set of experiments, we expand our
+testing to include FF(h$_a$), LAMA, and C$^3$ \todo{citations}. Each of these
+additional planners competed in the deterministic ``sequential, satifying''
+track of the 2008 International Planning Competition; all planners generally
+performed well on the competition domains, with LAMA the overall winner of
+the track.\footnote{See \texttt{http://ipc.informatik.uni-freiburg.de/} for
+details of the 2008 IPC.}
 
-Results for the $h=20$ case, with $n$ ranging from $1$ to $40$, are shown
-in Figure~\ref{fig:give-minimal}. The most obvious result is that
-FF is unable to solve any problems beyond $n=13$ on our experimentation
-machine within the memory limit of 1 GB. SGPLAN, on the other hand, solves
-instances beyond $n=40$ without major problems. In this case, our
-implementation of GraphPlan is unable to find any of these plans. The time
-spent on grounding is not a major factor in either planner, probably
-because the planners need more time to actually compute the plan---for
-instance, the optimal plan for the problem $n=40$ has a length of about
-1600 steps. As a concrete example, the following is a minimal plan for the
-case of a $2$ by $2$ grid with $2$ buttons for the player to press (i.e.,
-$n=1$, $h=2$):
+In the first GIVE test, we construct a series of grid worlds, similar to the one
+illustrated in Figure~\ref{fig:give-maps}(a). These worlds consist of a $2n$ by
+$h$ grid of positions, such that there are buttons at positions $(2i-1,1)$ and
+$(2i,h)$ for $1 \leq i \leq n$. The player starts in position $(1,1)$ and must
+press all the buttons to successfully complete the game.  (The actions in this
+domain are similar to the PDDL actions in Figure~\ref{fig:give-planning}.)
+We consider two variants of this problem in our tests. In the \emph{unordered}
+problem, the player is permitted to press the buttons in any order to
+successfully achieve the goal. In the \emph{ordered} version of the problem, the
+player is unable to initially move to any grid cell containing a button, except
+for the cell containing the first button, $u_1$. Pressing $u_1$ releases the
+position of the next button, $l_1$, allowing the player to move into this cell.
+Similarly, pressing button $l_1$ frees button $u_2$, and so on. The end result
+is a set of constraints that forces the buttons to be pressed in a particular
+order to achieve the goal. As a concrete example, the following is a minimal
+plan (in either variant of the problem) for the case of a $2$ by $2$ grid with
+$2$ buttons (i.e., $n=1$, $h=2$):
 
 \begin{enumerate}
 \item $\mathsf{move}(\mathsf{pos\_1\_1},\mathsf{pos\_1\_2}, \mathsf{north})$,
@@ -265,11 +269,33 @@ $n=1$, $h=2$):
 \item $\mathsf{manipulate}\textsf{-}\mathsf{l1}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{pos\_2\_1})$.
 \end{enumerate}
 
+Results for the $h=20$ case, with the grid width $N$ ranging from $0$ to $40$,
+are shown in Figure~\ref{fig:give-minimal}. In the unordered case
+(Figure~\ref{fig-give-minimal}(a)), the most obvious result is that some of the
+planners tested---Metric-FF, FF(h$_a$), and C$^3$---are unable to solve any
+problems beyond $N=24$ on our experimentation machine within the memory limit of
+2 GB.\footnote{\todo{describe testing environment}} While FF, Lama, and SGPLAN
+are all able to solve problem instances up to $N=40$, the total running time
+varies greatly between this planners. For instance, FF takes almost 35
+seconds to solve the $N=40$ problem, LAMA takes around 6.5 seconds, and SGPLAN
+shows impressive performance, taking well less than a second. 
+
+In a real NLG system, where response time is 
+
+machine within the memory limit of 1 GB. SGPLAN, on the other hand, solves
+instances beyond $n=40$ without major problems. In this case, our
+implementation of GraphPlan is unable to find any of these plans. The time
+spent on grounding is not a major factor in either planner, probably
+because the planners need more time to actually compute the plan---for
+instance, the optimal plan for the problem $n=40$ has a length of about
+1600 steps.
+
+
 \begin{figure}[t]
 \subfloat[(a) Unordered]{\includegraphics[width=7cm]{data/give-minimal.pdf}}
 \subfloat[(b) Ordered]{\includegraphics[width=7cm]{data/give2-minimal.pdf}}
   \caption{Results for the unordered and ordered minimal GIVE domains with grid
-  height $h=20$. The horizontal axis is the grid width, $b = 2n$. The
+  height $h=20$. The horizontal axis is the grid width, $N = 2n$. The
   vertical axis is the total runtime in seconds.}
   \label{fig:give-minimal}
 \end{figure}
@@ -279,7 +305,7 @@ $n=1$, $h=2$):
 \subfloat[(b) Ordered]{\includegraphics[width=7cm]{data/give2-minimal-grounding.pdf}}
   \caption{Comparison of the total running time and grounding time for selected
   planners in the $h=20$ minimal GIVE domain. The horizontal axis is the grid
-  width, $b = 2n$. The vertical axis is the total runtime in seconds.}
+  width, $N = 2n$. The vertical axis is the total runtime in seconds.}
   \label{fig:give-minimal-grounding}
 \end{figure}
 
@@ -372,15 +398,15 @@ experiment.
 %Our implementation of GraphPlan is unable to complete any of
 %these problem instances.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.85\columnwidth]{graph-exp4}
-  %\includegraphics[width=1\columnwidth]{pic-runtime-empty-world}
-  \caption{Results on the GIVE domain with inaccessible
-    positions for $h=20$ and $n=5$. The horizontal axis is $w$.
-    The vertical axis is the runtime in seconds.}
-  \label{fig:give-runtime-nosoln}
-\end{figure}
+%\begin{figure}
+%  \centering
+%  \includegraphics[width=0.85\columnwidth]{graph-exp4}
+%  %\includegraphics[width=1\columnwidth]{pic-runtime-empty-world}
+%  \caption{Results on the GIVE domain with inaccessible
+%    positions for $h=20$ and $n=5$. The horizontal axis is $w$.
+%    The vertical axis is the runtime in seconds.}
+%  \label{fig:give-runtime-nosoln}
+%\end{figure}
 
 
 

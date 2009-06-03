@@ -4,7 +4,7 @@ set terminal pdf dashed font "Helvetica,26" size 30cm,20cm
 
 set output "give-minimal.pdf"
 
-set xlabel "size (b)"
+set xlabel "grid width (b)"
 set ylabel "time (s)"
 set xrange [ 0 : 40 ]
 set yrange [ 0 : 40 ]

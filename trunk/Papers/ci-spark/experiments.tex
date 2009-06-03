@@ -242,7 +242,7 @@ the GIVE software. For instance, Figure~\ref{fig:give-planning} shows some
 of the actions available in the GIVE domain in PDDL syntax.
 
 Results for the $h=20$ case, with $n$ ranging from $1$ to $40$, are shown
-in Figure~\ref{fig:give-runtime-minimal}. The most obvious result is that
+in Figure~\ref{fig:give-minimal}. The most obvious result is that
 FF is unable to solve any problems beyond $n=13$ on our experimentation
 machine within the memory limit of 1 GB. SGPLAN, on the other hand, solves
 instances beyond $n=40$ without major problems. In this case, our
@@ -271,9 +271,17 @@ $n=1$, $h=2$):
   \caption{Results for the unordered and ordered minimal GIVE domains with grid
   height $h=20$. The horizontal axis is the grid width, $b = 2n$. The
   vertical axis is the total runtime in seconds.}
-  \label{fig:give-runtime-minimal}
+  \label{fig:give-minimal}
 \end{figure}
 
+\begin{figure}[t]
+\subfloat[(a) Unordered]{\includegraphics[width=7cm]{data/give-minimal-grounding.pdf}}
+\subfloat[(b) Ordered]{\includegraphics[width=7cm]{data/give2-minimal-grounding.pdf}}
+  \caption{Comparison of the total running time and grounding time for selected
+  planners in the $h=20$ minimal GIVE domain. The horizontal axis is the grid
+  width, $b = 2n$. The vertical axis is the total runtime in seconds.}
+  \label{fig:give-minimal-grounding}
+\end{figure}
 
 \subsection{Experiment 3: GIVE worlds with extra positions}
 \label{sec:experiment-3:-give}
@@ -321,7 +329,7 @@ in real time to user actions.
 \subfloat[(b) Ordered]{\includegraphics[width=7cm]{data/give2-extracells.pdf}}
   \caption{Results for the unordered and ordered GIVE domains with $h = 20$ and
   $n = 10$. The horizontal axis is the extra grid width $w$.
-  The vertical axis is the total runtime in seonds.}
+  The vertical axis is the total runtime in seconds.}
   \label{fig:give-extracells}
 \end{figure}
 
@@ -329,9 +337,9 @@ in real time to user actions.
 \begin{figure}[t]
 \subfloat[(a) Unordered]{\includegraphics[width=7cm]{data/give-button-unord.pdf}}
 \subfloat[(b) Ordered]{\includegraphics[width=7cm]{data/give-button-ord.pdf}}
-  \caption{Results for the unordered and ordered GIVE domains with a grid size
-  of height 20 and width 40. The horizontal axis is the number of buttons $b$.
-  The vertical axis is the runtime in seonds.}
+  \caption{Results for the GIVE domains with a fixed grid size of
+  height 20 and width 40. The horizontal axis is the number of buttons $b$.
+  The vertical axis is the runtime in seconds (log scale).}
   \label{fig:give-buttons}
 \end{figure}
 

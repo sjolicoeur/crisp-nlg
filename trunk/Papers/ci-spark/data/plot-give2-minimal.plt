@@ -6,7 +6,7 @@ set output "give2-minimal.pdf"
 
 set xlabel "grid width (N)"
 set ylabel "time (s)"
-set xrange [ 0 : 40 ]
+set xrange [ 1 : 40 ]
 #set yrange [ 0 : 40 ]
 set mxtics 5
 set mytics 5

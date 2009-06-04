@@ -174,7 +174,7 @@ experiment for FF, Metric FF, and the SPUD reimplementation. We do not
 report runtimes for SGPLAN, because we could not recompile SGPLAN as a
 64-bit binary, and the 32-bit version ran out of memory very
 quickly. We also do not report runtimes for our Java implementation of
-Graphplan, because it was unusuably slow for serious problem
+GraphPlan, because it was unusably slow for serious problem
 instances: For $k=1$ and $n=3$, it already took over two minutes, and
 it exceeded its memory limit of 16 GB for $n>3$. This may be a
 limitation of our naive implementation rather than the GraphPlan
@@ -188,7 +188,7 @@ FF generates a 39-word sentence ($k=1,n=6$) in under a second of
 search time. This level of efficiency is a direct result of using this
 particular search strategy: For $k=1$ and $n>6$, FF 2.3 (but not
 Metric-FF) fell back to the best-first search strategy, which causes a
-dramatic loss of search effiency. It is also encouraging that
+dramatic loss of search efficiency. It is also encouraging that
 Metric-FF still performs comparably to SPUD in terms of pure search
 time. We believe that by FF's technique of evaluating actions by
 estimating the distance to a goal state for the relaxed problem
@@ -235,7 +235,7 @@ Besides using many of the planners from the previous set of experiments (FF,
 Metric-FF, and SGPLAN), we also expand our testing to include the FF(h$_a$)
 \citep{keyder08:_ff_h_plann_for_plann}, LAMA \citep{richter08:_lama_plann}, and
 C$^3$ \citep{lipovetzky08:_c3} planners. Each of these additional planners
-competed in the deterministic ``sequential, satifying'' track of the 2008
+competed in the deterministic ``sequential, satisfying'' track of the 2008
 International Planning Competition; all planners performed well on the
 competition domains, with LAMA the overall winner of the track.\footnote{See
 \texttt{http://ipc.informatik.uni-freiburg.de/} for details of the 2008 IPC.}

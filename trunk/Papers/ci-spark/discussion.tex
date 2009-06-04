@@ -6,10 +6,6 @@ experiments about the state of planning for modern NLG
 applications. On the one hand, we found that modern planners are very
 good at dealing with the \emph{search} problems that arise in the
 NLG-based planning problems we investigated.
-% I don't think we want to talk about this yet - AK
-%; the search time reported
-%by most planners was often a very small fraction of the total running
-%time of the planner. 
 In the sentence generation domain, FF's Enforced
 Hill-Climbing strategy finds plans corresponding to 25-word sentences
 in about a second. It is hard to compare this number to a baseline
@@ -20,7 +16,11 @@ research on search strategies for planning has paid off; in
 particular, the Enforced Hill-Climbing heuristic outperforms the
 best-first strategy to which FF 2.3 switches for some problem
 instances. Similarly, SGPLAN's performance on the GIVE domain is very
-convincing and fast enough for this application.
+convincing and fast enough for many instances of this application.
+% I don't think we want to talk about this yet - AK
+%; the search time reported
+%by most planners was often a very small fraction of the total running
+%time of the planner. 
 
 On the other hand, each of the off-the-shelf planners we tested spent
 substantial amounts of time on preprocessing. This is most apparent in the

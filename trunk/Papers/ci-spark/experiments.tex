@@ -17,7 +17,7 @@ that are not necessary to complete the task
 (Section~\ref{sec:experiment-4:-give}). We also investigate the role that goal
 ordering plays in these problems. These experiments are configured in a way that
 lets us explore the scalability of a planner's search and preprocessing
-capabilities, and illustrates what we perceive to be one of the main limitations
+capabilities, and illustrate what we perceive to be one of the main limitations
 of current off-the-shelf planners for our applications: they often spend a long
 time computing ground instances, even when most of these instances are not
 required during plan search.
@@ -235,7 +235,7 @@ Besides using many of the planners from the previous set of experiments (FF,
 Metric-FF, and SGPLAN), we also expand our testing to include the FF(h$_a$)
 \citep{keyder08:_ff_h_plann_for_plann}, LAMA \citep{richter08:_lama_plann}, and
 C$^3$ \citep{lipovetzky08:_c3} planners. Each of these additional planners
-competed in the deterministic ``sequential, satisfying'' track of the 2008
+competed in the deterministic ``sequential, satisficing'' track of the 2008
 International Planning Competition; all planners performed well on the
 competition domains, with LAMA the overall winner of the track.\footnote{See
 \texttt{http://ipc.informatik.uni-freiburg.de/} for details of the 2008 IPC.}
@@ -300,8 +300,8 @@ much worse than FF: FF takes 39 seconds for the $N=40$ case, while SGPLAN takes
 50 seconds and LAMA takes 90 seconds. In real NLG systems, where response time
 is essential, running times over a few seconds are unacceptable.
 
-Preprocessing (parsing, grounding, etc.) time generally plays less of a role in
-GIVE, compared with the sentence generation domain, however, its effects still
+Preprocessing time (parsing, grounding, etc.) generally plays less of a role in
+GIVE, compared with the sentence generation domain; however, its effects still
 contribute significantly to the overall running time of a number of planners.
 Figure~\ref{fig:give-minimal-grounding} shows the grounding time for FF, LAMA,
 and SGPLAN on the minimal GIVE problems, compared with the total running time.
@@ -347,7 +347,7 @@ in Figure~\ref{fig:give-extracells}. As in Experiment~3, a number of planners
 again fail to solve all the problems: Metric-FF, FF(h$_a$), and C$^3$ solve only
 a few instances, while FF only scales to $w=23$. In the unordered version of the
 domain, SGPLAN easily solves inputs beyond $w=40$ in well less than a second.
-LAMA is also reasonably successful on these problems, however, its runtimes grow
+LAMA is also reasonably successful on these problems; however, its runtimes grow
 more quickly than SGPLAN, with LAMA taking almost 5 seconds to solve the $w=40$
 problem instance. In the ordered case, we again see behaviour similar to that of
 Experiment~3: for the problem instances FF is able to solve, it performs

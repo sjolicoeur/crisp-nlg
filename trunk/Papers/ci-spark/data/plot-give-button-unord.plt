@@ -4,6 +4,7 @@ set terminal pdf dashed font "Helvetica,26" size 30cm,20cm
 
 set output "give-button-unord.pdf"
 
+set xrange [ 1: ]
 set xlabel "buttons (b)"
 set ylabel "time (s)"
 set xtics 5 

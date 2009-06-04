@@ -12,15 +12,15 @@ used for surface realization with the XTAG Grammar \citep{xtag01:_tr}, a
 large-scale TAG grammar for English (Section~\ref{sec:exper-2:-sent-xtag}). In
 the second set of experiments we investigate the GIVE domain. We begin with a
 domain that is similar to the classic Gridworld
-(Section~\ref{sec:exper-2:-minim}), and then add extra grid cells to the world
-that are neither needed (Section~\ref{sec:experiment-3:-give}) nor even
-accessible (Section~\ref{sec:experiment-4:-give}). We also investigate the role
-that goal ordering plays in some of these problems. These experiments are
-configured in a way that lets us explore the scalability of a planner's search
-and preprocessing capabilities, and illustrates what we perceive to be one of
-the main limitations of current off-the-shelf planners for our applications:
-they often spend a long time computing ground instances, even when most of
-these instances are not required during plan search.
+(Section~\ref{sec:exper-3:-minim}), and then add extra grid cells to the world
+that are not necessary to complete the task
+(Section~\ref{sec:experiment-4:-give}). We also investigate the role that goal
+ordering plays in these problems. These experiments are configured in a way that
+lets us explore the scalability of a planner's search and preprocessing
+capabilities, and illustrates what we perceive to be one of the main limitations
+of current off-the-shelf planners for our applications: they often spend a long
+time computing ground instances, even when most of these instances are not
+required during plan search.
 
 
 
@@ -215,10 +215,10 @@ the operators thus takes exponential time in $k$ for preprocessing.
 
 \begin{figure}[t]
   \centering
-  \subfloat[position=bottom][(a) Minimal world]{%
+  \subfloat[position=bottom][(a) Minimal GIVE world]{%
       \includegraphics[height=2.5cm,clip=true,trim=0 -10px 0 -3px]{pic-buttons}}
   \qquad
-  \subfloat[position=bottom][(b) World with extra grid cells]{%
+  \subfloat[position=bottom][(b) GIVE world with extra grid cells]{%
       \includegraphics[height=2.5cm]{pic-empty-buttons}} \\
   %\subfloat[(c) Extra grid cells with inaccessible positions]{%
   %    \includegraphics[height=2.5cm]{pic-empty-inaccessible}}
@@ -228,7 +228,7 @@ the operators thus takes exponential time in $k$ for preprocessing.
 
 
 \subsection{Experiment 3: Minimal GIVE worlds}
-\label{sec:exper-2:-minim}
+\label{sec:exper-3:-minim}
 
 We now turn our attention to a set of experiments arising from the GIVE domain.
 Besides using many of the planners from the previous set of experiments (FF,
@@ -269,23 +269,36 @@ of a $2$ by $2$ grid with $2$ buttons (i.e., $n=1$, $h=2$):
 \item $\mathsf{manipulate}\textsf{-}\mathsf{button}\textsf{-}\mathsf{off}\textsf{-}\mathsf{on}(\mathsf{l1, pos\_2\_1})$.
 \end{enumerate}
 
+\begin{figure}[t]
+\subfloat[(a) Unordered]{\includegraphics[width=7cm]{data/give-minimal.pdf}}
+\subfloat[(b) Ordered]{\includegraphics[width=7cm]{data/give2-minimal.pdf}}
+  \caption{Results for the unordered and ordered minimal GIVE domains with grid
+  height $h=20$. The horizontal axis is the grid width, $N$. 
+  The vertical axis is the total runtime in seconds.}
+  \label{fig:give-minimal}
+\end{figure}
+
 Results for the $h=20$ case, with the grid width $N$ ranging from $1$ to $40$,
 are shown in Figure~\ref{fig:give-minimal}. In the unordered case
 (Figure~\ref{fig:give-minimal}(a)), the most obvious result is that some of the
 planners tested---Metric-FF, FF(h$_a$), and C$^3$---are unable to solve any
 problems beyond $N=24$ on our experimentation machine within the memory limit of
-2 GB.\footnote{\todo{describe testing environment}} While FF, LAMA, and SGPLAN
-are able to solve all problem instances up to $N=40$, the total running time
-varies greatly between these planners. For instance, FF takes almost 35 seconds
-to solve the $N=40$ problem, while LAMA takes around 6.5 seconds. SGPLAN shows
-impressive performance, generating a 240 step plan in the $N=40$ case in well
-less than a second. In the ordered case (Figure~\ref{fig:give-minimal}(b)), we
-again have the situation where Metric-FF, FF(h$_a$), and C$^3$ are unable to
-solve all problem instances. Furthermore, both SGPLAN and LAMA, which performed
-well on the unordered problem, now perform much worse than FF: FF takes 39
-seconds for the $N=40$ case, while SGPLAN takes 50 seconds and LAMA takes 90
-seconds. In real NLG systems, where response time is essential, running times
-over a few seconds are unacceptable.
+2 GB.\footnote{All runtimes in Sections~\ref{sec:exper-3:-minim} and
+ \ref{sec:experiment-4:-give} were measured on a single core of an Intel Xeon
+ CPU running at 3GHz, under Linux. All runtimes are averaged over three runs of
+ the planners. Only 32-bit versions of the planners were used for testing in
+ each case.}
+While FF, LAMA, and SGPLAN are able to solve all problem instances up to $N=40$,
+the total running time varies greatly between these planners. For instance, FF
+takes almost 35 seconds to solve the $N=40$ problem, while LAMA takes around 6.5
+seconds. SGPLAN shows impressive performance on $N=40$, generating a 240 step
+plan in well under a second. In the ordered case
+(Figure~\ref{fig:give-minimal}(b)), we again have the situation where Metric-FF,
+FF(h$_a$), and C$^3$ are unable to solve all problem instances. Furthermore,
+both SGPLAN and LAMA, which performed well on the unordered problem, now perform
+much worse than FF: FF takes 39 seconds for the $N=40$ case, while SGPLAN takes
+50 seconds and LAMA takes 90 seconds. In real NLG systems, where response time
+is essential, running times over a few seconds are unacceptable.
 
 Preprocessing (parsing, grounding, etc.) time generally plays less of a role in
 GIVE, compared with the sentence generation domain, however, its effects still
@@ -301,17 +314,9 @@ much less important than the search time, especially for large problem
 instances. In the ordered case (Figure~\ref{fig:give-minimal-grounding}(b)), the
 actual time spent on preprocessing is essentially unchanged from the unordered
 case, and search time dominates the total runtime for all three planners.
-However, overall, FF is now much better at controlling the search, compared with
+Overall, however, FF is now much better at controlling the search, compared with
 the other planners and its performance on the unordered variant of the problem.
 
-\begin{figure}[t]
-\subfloat[(a) Unordered]{\includegraphics[width=7cm]{data/give-minimal.pdf}}
-\subfloat[(b) Ordered]{\includegraphics[width=7cm]{data/give2-minimal.pdf}}
-  \caption{Results for the unordered and ordered minimal GIVE domains with grid
-  height $h=20$. The horizontal axis is the grid width, $N$. The
-  vertical axis is the total runtime in seconds.}
-  \label{fig:give-minimal}
-\end{figure}
 
 \begin{figure}[t]
 \subfloat[(a) Unordered]{\includegraphics[width=7cm]{data/give-minimal-grounding.pdf}}
@@ -323,46 +328,54 @@ the other planners and its performance on the unordered variant of the problem.
 \end{figure}
 
 
-\subsection{Experiment 4: GIVE worlds with extra positions}
-\label{sec:experiment-3:-give}
 
-In the third experiment, we vary the structure of the GIVE world in order
-to judge the effect that universe size has on the planning problem in this
-domain. Starting with the ordinary GIVE world described in Experiment~2, we
-extend the world map by adding another $w$ by $h$ empty ``junk'' positions
-to the right of the minimal world, as shown in Figure~\ref{fig:give-maps}(b).
-These new positions are not actually required in any plan, but extend the
-size of the state space and approximate the situation in the actual GIVE
-domain where most grid positions are never used. We leave the initial state
-and goal untouched. As before, we generate a GIVE world description and
-then convert it into a planning problem in PDDL.
+\subsection{Experiment 4: GIVE worlds with extra grid cells}
+\label{sec:experiment-4:-give}
+
+In our last set of experiments, we vary the structure of the GIVE world in order
+to judge the effect that universe size has on the resulting planning problem.
+Starting with the GIVE world described in Experiment~3, we extend the world map
+by adding another $w$ by $h$ empty cell positions to the right of the minimal
+world, as shown in Figure~\ref{fig:give-maps}(b). These new positions are not
+actually required in any plan, but extend the size of the state space and
+approximate the situation in the actual GIVE domain where most grid positions
+are never used. We leave the initial state and goal untouched and, again,
+consider both unordered and ordered variants of the problem.
+
+Results for the $h=20$, $n=10$ case with $w$ ranging from $1$ to $40$ are shown
+in Figure~\ref{fig:give-extracells}. As in Experiment~3, a number of planners
+again fail to solve all the problems: Metric-FF, FF(h$_a$), and C$^3$ solve only
+a few instances, while FF only scales to $w=23$. In the unordered version of the
+domain, SGPLAN easily solves inputs beyond $w=40$ in well less than a second.
+LAMA is also reasonably successful on these problems, however, its runtimes grow
+more quickly than SGPLAN, with LAMA taking almost 5 seconds to solve the $w=40$
+problem instance. In the ordered case, we again see behaviour similar to that of
+Experiment~3: for the problem instances FF is able to solve, it performs
+significantly better than LAMA and SGPLAN. (SGPLAN's long term runtime
+appears to be growing at a slower rate than FF's, and so even if FF could be
+scaled to larger problem instances, it seems possible that SGPLAN might overtake
+FF as the better performer.) However, the overall planning times for most of
+these instances are concerning since times over a couple seconds will negatively
+affect the response time of an NLG system, which must react in real time to user
+actions.
+
+Finally, we also performed a set of experiments designed to investigate the
+tradeoff between grounding time and search time on certain grid configurations.
+For these experiments, we initially fixed the size of the grid and then varied
+the number of buttons $b$ in the world, thereby creating a series of
+``snapshots'' of particular extra-cell GIVE domains.
+Figure~\ref{fig:give-buttons} shows the results of these experiments for the FF
+and SGPLAN planners, for a fixed size grid of height 20 and width 40, and the
+number of buttons $b$ ranging from 1 to 40. In each case, the amount of time a
+planner spends on grounding is relatively unchanged as we vary the number of
+buttons in a grid, while the search time continues to rise (sometimes quite
+dramatically), as $b$ increases (we saw a similar effect for other grid
+configurations we tried). This observation has important consequences for the
+design of our GRID worlds: changing the underlying domain structure, even
+minimally, may result in significant---and often unexpected---performance
+differences for the planners that must operate in these domains.
 
 
-Results for the $h=20$, $n=5$ case with $w$ ranging from $1$ to $70$ are
-shown in Figure~\ref{fig:give-extracells}. As in Experiment~2, FF again
-runs out of memory, this time at $w=17$, while SGPLAN easily solves inputs
-beyond $w=70$. As in Experiment~2, our implementation of GraphPlan is
-unable to generate any of these plans. Unlike Experiment 2, however, both
-FF and SGPLAN now spend a substantial proportion of their time on
-grounding. In SGPLAN, this translates to a ``parsing time'' (which we
-assume includes grounding) which grows from 180 ms to 21.7 seconds as $w$
-grows from $1$ to $75$. The rest of the runtime, which also includes the
-search time, only grows from 400 ms to 2.3 seconds. This difference is
-particularly dramatic given that the actual optimal plan in each case is an
-identical plan of about 100 steps (i.e., the one we would have found in
-Experiment 2 for the $h=20$, $n=5$ case). The planning times for these
-instances are also concerning since times over a couple seconds will
-negatively affect the overall response time of the system, which must react
-in real time to user actions.
-
-%\begin{figure}[t]
-%  \centering
-%  \includegraphics[width=0.75\columnwidth]{graph-exp3}
-%  %\includegraphics[width=1\columnwidth]{pic-runtime-empty-world}
-%  \caption{Results on the GIVE domain with junk
-%    positions for $h=20$ and $n=5$. The horizontal axis is $w$.
-%    The vertical axis is the runtime in seconds.}
-%\end{figure}
 
 \begin{figure}[t]
 \subfloat[(a) Unordered]{\includegraphics[width=7cm]{data/give-extracells.pdf}}
@@ -383,45 +396,30 @@ in real time to user actions.
   \label{fig:give-buttons}
 \end{figure}
 
-\subsection{Experiment 5: GIVE worlds with inaccessible positions}
-\label{sec:experiment-4:-give}
 
-In the final experiment, we consider a variation on the GIVE worlds from
-Experiment~3. As before, we begin with a base grid of $2n$ by $h$
-positions, with buttons at positions $(2i-1,1)$ and $(2i,h)$ for $1 \leq i
-\leq n$. We then generate a second grid of $w$ by $h$ positions and place
-an additional button in this grid. Unlike Experiment~3, the second grid
-does not extend the first grid but is ``disconnected'' so its positions are
-inaccessible from the first grid, as shown in
-Figure~\ref{fig:give-maps}(c). Since the geometry of the grid makes it
-impossible to construct a plan for pressing all the buttons in the world,
-we instead investigate the time it takes a planner to arrive at the
-conclusion that the problem cannot be solved.
+%In the final experiment, we consider a variation on the GIVE worlds from
+%Experiment~3. As before, we begin with a base grid of $2n$ by $h$
+%positions, with buttons at positions $(2i-1,1)$ and $(2i,h)$ for $1 \leq i
+%\leq n$. We then generate a second grid of $w$ by $h$ positions and place
+%an additional button in this grid. Unlike Experiment~3, the second grid
+%does not extend the first grid but is ``disconnected'' so its positions are
+%inaccessible from the first grid, as shown in
+%Figure~\ref{fig:give-maps}(c). Since the geometry of the grid makes it
+%impossible to construct a plan for pressing all the buttons in the world,
+%we instead investigate the time it takes a planner to arrive at the
+%conclusion that the problem cannot be solved.
 
-Results for the $h=20$, $n=5$ case with $w$ ranging from 1 to 50 are shown
-in Figure~\ref{fig:give-runtime-nosoln}.\footnote{FF and SGPLAN do
- not display runtimes when they fail to construct a plan so an external timing
- program was used to generate these results.}
-In this case, the runtimes for FF rise sharply around $w=28$, producing
-times that are unacceptable for an NLG system in practice. FF is unable
-to complete problem instances above $w=35$. SGPLAN, by comparison, performs
-exceptionally well and is able to complete problems instances up to $w=50$
-in about 0.3 seconds and $w=80$ in about 0.6 seconds. These results
-demonstrate that SGPLAN has a significant advantage over FF in this
-experiment. 
-%Our implementation of GraphPlan is unable to complete any of
-%these problem instances.
-
-%\begin{figure}
-%  \centering
-%  \includegraphics[width=0.85\columnwidth]{graph-exp4}
-%  %\includegraphics[width=1\columnwidth]{pic-runtime-empty-world}
-%  \caption{Results on the GIVE domain with inaccessible
-%    positions for $h=20$ and $n=5$. The horizontal axis is $w$.
-%    The vertical axis is the runtime in seconds.}
-%  \label{fig:give-runtime-nosoln}
-%\end{figure}
-
+%Results for the $h=20$, $n=5$ case with $w$ ranging from 1 to 50 are shown
+%in Figure.\footnote{FF and SGPLAN do
+% not display runtimes when they fail to construct a plan so an external timing
+% program was used to generate these results.}
+%In this case, the runtimes for FF rise sharply around $w=28$, producing
+%times that are unacceptable for an NLG system in practice. FF is unable
+%to complete problem instances above $w=35$. SGPLAN, by comparison, performs
+%exceptionally well and is able to complete problems instances up to $w=50$
+%in about 0.3 seconds and $w=80$ in about 0.6 seconds. These results
+%demonstrate that SGPLAN has a significant advantage over FF in this
+%experiment. 
 
 
 %%% Local Variables: 

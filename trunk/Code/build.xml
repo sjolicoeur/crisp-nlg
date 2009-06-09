@@ -16,7 +16,7 @@
 	      value="de/saar/**/*.java,crisp/termparser/**/*.java,crisp/planningproblem/**/*.java,crisp/planner/lazygp/**/*.java,crisp/pddl/**/*.java,crisp/main/*.java,crisp/converter/**/*.java,crisp/tools/*.java,crisp/result/**/*.java,crisp/pcrispresult/**/*.java,crisp/preprocessing/*.java" />
 
     <property name="classfiles"
-	      value="de/saar/**/*,crisp/termparser/**/*,crisp/planningproblem/**/*,crisp/planner/lazygp/**/*,crisp/pddl/**/*,crisp/main/*,crisp/converter/*,crisp/tools/*,crisp/result/**/*,crisp/pcrispresult/**/*" />
+	      value="de/saar/**/*,crisp/termparser/**/*,crisp/planningproblem/**/*,crisp/planner/lazygp/**/*,crisp/pddl/**/*,crisp/main/*,crisp/converter/*,crisp/tools/*,crisp/result/**/*,crisp/pcrispresult/**/*,crisp/preprocessing/*" />
 
     <property name="unpacked.classes.basics" value="de/saar/chorus/term/**/*,de/saar/basic/*" />
     <property name="unpacked.classes.tag" value="de/saar/penguin/tag/**/*" />

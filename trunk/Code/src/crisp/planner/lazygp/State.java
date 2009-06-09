@@ -748,6 +748,25 @@ public class State {
 		return problem;
 	}
 
+    public String myToString() {
+		StringBuilder buf = new StringBuilder();
+
+		for( int i = 0; i < literals.length; i++ ) {
+			Term t = table.get(i);
+			String tString = t.toString();
+
+			if( canBeTrue(i) ) {
+				buf.append(tString + "\n");
+			}
+
+			if( canBeFalse(i) ) {
+				buf.append(tString + " (-)\n");
+			}
+		}
+
+		return buf.toString();
+    }
+
 
 	@Override
     public String toString() {

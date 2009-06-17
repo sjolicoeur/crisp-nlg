@@ -48,7 +48,48 @@ Precond:$\;$ \parbox[t]{3cm}{\ensuremath{#3}}\\
 
 \maketitle
 
-\section{Introduction}
+\section{Introduction} \label{sec:introduction}
+
+In \citet{KolSto07}, Matthew Stone and I showed how the sentence
+generation problem of TAG grammars can be encoded into a planning
+problem. A planner could then be used to compute a plan, and this plan
+could be decoded into a TAG derivation, and further into a sentence.
+
+In this manuscript, I generalize this result to sentence generation
+with regular tree grammars \citep{tata2007}.  Our older TAG encoding
+is indeed a special case of this because it is known that for each TAG
+grammar, the language of derivation trees forms a regular tree
+language \citep{schmitz08:_featur_in_tag_deriv_trees}. On the other
+hand, there are many other grammar formalisms whose derivational
+structures can be seen as regular tree languages -- including regular
+dependency grammars \citep{kuhlmann2007mildly}, linear context-free
+rewrite systems
+\citep{weir88:_charac_mildl_contex_sensit_gramm_formal}, and
+combinatory categorial grammars
+\citep{steedman01:_syntac_proces,KolKuh09}. What distinguishes these
+grammar formalisms from each other is how they assign word order to
+the trees in the regular tree language. But as long as we can read the
+trees we generate with our RTG as having each node decorated with
+lexicon entries of the underlying grammar formalism, we can leave it
+up to the grammar formalism to compute the word order (e.g., by
+computing a derived tree from a TAG derivation tree and reading the
+leaves left to right). As a consequence, the construction in this
+paper generalizes our sentence-generation-as-planning approach to a
+whole range of mildly context-sensitive grammar formalisms.
+
+The paper is structured as follows. In
+Section~\ref{sec:gener-probl-regul}, I will define the sentence
+generation problem of regular tree grammars and illustrate it with an
+example. In Section~\ref{sec:rtg-generation-as-planning}, I will
+sketch how to adapt the planning construction by \citet{KolSto07} to
+regular tree grammars. In Section~\ref{sec:np-completeness}, I prove
+that the sentence generation problem of RTGs is NP-complete, which
+justifies the use of a worst-case exponential algorithm like a planner
+for solving the problem. Section~\ref{sec:conclusion} concludes and
+points to future work.
+
+
+
 
 \section{The generation problem of regular tree grammars}
 \label{sec:gener-probl-regul}
@@ -441,6 +482,9 @@ proof of the NP-completeness of the TAG sentence generation problem.
 
 
 \section{Conclusion}
+\label{sec:conclusion}
+
+
 
 
 

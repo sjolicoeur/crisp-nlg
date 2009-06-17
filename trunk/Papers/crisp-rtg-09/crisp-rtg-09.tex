@@ -2,7 +2,7 @@
 
 \usepackage{url}
 \usepackage{graphicx}
-\usepackage{natbib}
+\usepackage[round]{natbib}
 \usepackage{amsfonts,amsthm}
 
 \def\N{\mathbb{N}}
@@ -27,6 +27,17 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{bem}{Remark}
 
+\newcommand{\actionname}[3]{\mathbf{\mathtt{#1}\mbox{-}\mathtt{#2}\mbox{-}\mathtt{#3}}}
+\newcommand{\action}[4]{\textbf{Action \texttt{#1}$(#2)$.}\\
+\strut\quad   Precond:$\;$ \parbox[t]{12cm}{\ensuremath{#3}}\\
+\strut\quad   Effect:$\;$ \parbox[t]{12cm}{\ensuremath{#4}}}
+\newcommand{\actionc}[4]{\textbf{Action \texttt{#1}$(#2)$.}
+Precond:$\;$ \parbox[t]{3cm}{\ensuremath{#3}}\\
+\strut\quad   Effect:$\;$ \parbox[t]{12cm}{\ensuremath{#4}}}
+
+\newcommand{\open}{\ensuremath{\mathsf{open}}}
+\newcommand{\gensym}{\ensuremath{\mathsf{gensym}()}}
+
 
 \title{Sentence generation with RTGs}
 \author{Alexander Koller \\ Saarland University \\
@@ -40,6 +51,7 @@
 \section{Introduction}
 
 \section{The generation problem of regular tree grammars}
+\label{sec:gener-probl-regul}
 
 We start by defining the generation problem of regular tree
 grammars. We will first show how RTGs can be equipped with semantic
@@ -272,10 +284,161 @@ verbalization of $C$ from Fig.~\ref{fig:rdg-crisp}.
 
 
 
-\section{RTG generation as planning}
+\section{RTG generation as planning} 
+\label{sec:rtg-generation-as-planning}
+
+It is straightforward to extend the encoding of TAG sentence
+generation to planning \citep{KolSto07} to regular tree grammars.
+Notice that this makes the \citet{KolSto07} encoding a special case of
+the algorithm presented here, as the derivation trees of a given TAG
+grammar form regular tree languages
+\citep{schmitz08:_featur_in_tag_deriv_trees} and can therefore be
+described by RTGs.\footnote{This is not strictly speaking true,
+  because we have not shown how to represent the pragmatic conditions
+  and semantic requirements in an RGG, in order to keep the
+  presentation simple; but it is obvious how these could be added.}
+
+Let $l$ be a lexicon entry with production rule $A \rightarrow
+\sigma(B_1 \Neq r_1, \ldots, B_n \Neq r_n)$.  Then the grammaticality
+condition is encoded by the precondition and effects of a planning
+operator as follows:\footnote{I write $r(u)$ to indicate the
+  construction of a new symbol representing the $r$-child of $u$. I
+  take $\self(u) = u$ as a special case. This cannot be expressed in
+  PDDL, but can be encoded with the same planning-step-counting
+  construction as in the ACL paper.}
+
+\strut\\
+\action{$\sigma$/$L$}{u}
+{\open(u,A)}
+{\neg \open(u,A), \open(r_1(u),,A_1), \ldots, \open(r_n(u),A_n)}\\
+
+Notice that I write $\open$ to encode the unprocessed nodes in the
+tree we are constructing, rather than $\mathsf{subst}$ and
+$\mathsf{adj}$ as in the paper. Those were TAG-specific predicates,
+encoding TAG's substitution and adjunction operation, and are no
+longer necessary here. Effectively, what happens here is that the plan
+encodes a derivation of the underlying RTG grammar; an atom
+$\open(u,A)$ in the current planning state encodes the fact that the
+current partial RTG derivation contains a leaf $u$ that is labeled
+with the nonterminal symbol $A$ (and still needs to be expanded in the
+future).
+
+The translation of the semantic and reference conditions then proceeds
+essentially as in the paper.  However, one crucial difference is that
+we no longer distinguish between substitution and adjunction, and thus
+it is not completely obvious where distractors for new referring
+expressions get introduced. This used to happen exactly at the
+substitution nodes. Now we can get the same effect by introducing
+distractors only for those nonterminal occurrences on the right-hand
+side that are labeled with a semantic role that is not $\self$.
+
+Note that the encoding of RGG generation as a planning problem is not
+entirely correct.  The difference is that in the problem as defined in
+Section~\ref{sec:gener-probl-regul}, we took $a$ to be a possible
+distractor for a new referring expression if there was any tuple
+$(a_1,\ldots,a,\ldots,a_n)$ that satisfied the semantic condition of
+the lexicon entry that introduced the RE.  In the encoding into
+planning in the ACL paper, however, we only accept $a$ as a possible
+distractor if $a_1,\ldots,a_n$ are the intended referents for the
+other semantic roles in the lexicon entry. If we continue using this
+encoding here, we end up with a planning problem that generates too
+few distractors, and therefore can compute referring expressions that
+are not unique. This is something that needs to be fixed at some
+point, but for now the planning encoding seems to work pretty well in
+practice.
 
 
 \section{NP-completeness of the RTG generation problem}
+\label{sec:np-completeness}
+
+Finally, we can show that the sentence generation problem of RGGs is
+NP-complete. This means that it is combinatorially hard, and hence
+solving it with a worst-case exponential-time algorithm like a planner
+is appropriate.
+
+The NP-hardness proof below works by reducing the HAMILTONIAN-CYCLE
+problem \cite{garey79:_comput_and_intrac} to the sentence generation
+problem. HAMILTONIAN-CYCLE is the (NP-complete) problem of deciding
+whether a directed graph has a Hamiltonian cycle.  A Hamiltonian cycle
+is a path $(u_1,u_2,\ldots,u_n,u_1)$ in the graph such that the graph
+contains an edge $(u_i,u_{i+1})$ for every $1 \leq i <n$ and the edge
+$(u_n,u_1)$ -- i.e., it is a cycle --, and such that the cycle visits
+every node in the graph exactly once. In the example graph in
+Fig.~\ref{fig:npc}a, $(1,3,2,1)$ is a Hamiltonian cycle; $(1,2,1)$ is
+a cycle that is not Hamiltonian because it doesn't visit 3.
+
+
+\begin{prop} \label{prop:npc} The sentence generation problem of
+  regular generation grammars is NP-complete.
+\end{prop}
+\begin{proof}
+  It is obvious that the problem is in NP; once we have
+  nondeterministically guessed a candidate tree, we can test whether
+  it satisfies all conditions in polynomial time.
+
+  For the NP-hardness, let's say we have a graph $G =
+  (\{1,\ldots,n\},E)$ with $m$ edges of the form $(i,k)$ of which we
+  want to check whether it has a Hamiltonian cycle.  We construct a
+  regular generation grammar $G_G$ with nonterminals $N = \{S,
+  A_{11}\} \cup \{A_{ik} \;|\; 2 \leq i \leq n+1, 1 \leq k \leq n\}$,
+  start symbol $S$, terminal alphabet $\Sigma=\{f,a\}$, role alphabet
+  $R = \{\mathsf{r}, \self\}$, and the following lexicon entries:
+
+  $$\begin{array}{l}
+    S \rightarrow f(A_{11} \Neq \mathsf{r}) \\
+    \mathsf{sem} = \{ \mathsf{start}(\self,\mathsf{r})\} \\
+    \\
+    A_{ij} \rightarrow f(A_{(i+1)k} \Neq \self) \quad \mbox{for all
+      $(j,k) \in E$ and $1 \leq i \leq n$} \\ 
+    \mathsf{sem} = \{ \mathsf{neq}_j(\self) \} \\
+    \\
+    A_{(n+1)1} \rightarrow a \\
+    \mathsf{sem} = \emptyset
+  \end{array}
+  $$
+
+  Now the target referent $e$ and the communicative goal $\emptyset$
+  have a successful derivation given $G_G$ and the knowledge bases
+  $SKB = HKB = \{\mathsf{start}(e,1)\} \cup \{ \mathsf{neq}_i(k) \;|\;
+  1 \leq i,k \leq n \;\mbox{and}\; i \neq k \}$ iff $G$ has a
+  Hamiltonian cycle.  To see this, notice that any tree generated by
+  $G_G$ must be a linear tree with nonterminal symbols $S, A_{11},
+  A_{2u_2}, \ldots, A_{(n+1)1}$ from top to bottom, and for any two
+  subsequent nonterminals $A_{ij}$ and $A_{(i+1)k}$ in this sequence,
+  there must be an edge $(j,k)$ in the graph.  So the tree encodes a
+  cycle of length $n$.  Now, if any node in the graph, say $j$, was
+  not visited on this cycle, then the semantics in the subtree of the
+  referring expression with nonterminal $A_{11}$ does not contain the
+  atom $\mathsf{neq}_j(1)$.  In other words, the tree does not contain
+  sufficient information to distinguish 1 (the target referent of the
+  referring expression) from $j$, so the referring expression is not
+  unique, and the derivation is not successful.  Hence, the cycle
+  visits every node exactly once and is therefore Hamiltonian.
+\end{proof}
+
+\begin{figure}
+  \centering
+  \begin{tabular}{cp{2cm}c}
+  \includegraphics[scale=0.5]{pic-npc-graph}
+  &&
+  \includegraphics[scale=0.5]{pic-npc} \\
+  (a) && (b)
+  \end{tabular}
+  \caption{(a) A graph with a Hamiltonian cycle, and (b) a tree
+    encoding this cycle according to the construction in
+    Prop.~\ref{prop:npc}.} 
+  \label{fig:npc}
+\end{figure}
+
+
+An example of this construction (i.e., a graph together with the tree
+that encodes its Hamiltonian cycle and that is generated by the RGG)
+is shown in Fig.~\ref{fig:npc}. Notice that nothing in this
+construction particularly hinges in the generalization of the TAG
+generation problem to RGGs. The proof can thus be ported directly to a
+proof of the NP-completeness of the TAG sentence generation problem.
+
+
 
 \section{Conclusion}
 

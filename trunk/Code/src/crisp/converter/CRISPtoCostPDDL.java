@@ -11,6 +11,7 @@ import de.saar.chorus.term.Term;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 
 
 public class CRISPtoCostPDDL {
@@ -44,12 +45,15 @@ public class CRISPtoCostPDDL {
 
 		long start = System.currentTimeMillis();
         
+        
+        System.out.println("Reading grammar...");
         PCrispXmlInputCodec codec = new PCrispXmlInputCodec();
 		ProbabilisticGrammar<Term> grammar = new ProbabilisticGrammar<Term>();	
 		codec.parse(new File(args[0]), grammar);         
  
         File problemfile = new File(args[1]);
                 
+        System.out.println("Generating planning problem...");
 		//FastCRISPConverter.convert(grammar, problemfile, domain, problem);
         ProbCRISPConverter.convert(grammar, problemfile, domain, problem);
 
@@ -60,7 +64,7 @@ public class CRISPtoCostPDDL {
         System.out.println("Domain: " + domain );
 		System.out.println("Problem: " + problem);
 
-		new CostPddlOutputCodec().writeToDisk(domain, problem, "");
+		new CostPddlOutputCodec().writeToDisk(domain, problem, new FileWriter(new File(args[2])), new FileWriter(new File(args[3])));
 	}
 
 

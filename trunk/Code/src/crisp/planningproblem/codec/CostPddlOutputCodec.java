@@ -2,6 +2,7 @@ package crisp.planningproblem.codec;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Writer;
 
 import javax.xml.xpath.XPathExpressionException;
 
@@ -30,6 +31,11 @@ public class CostPddlOutputCodec extends OutputCodec {
         writeDomain(domain, domainWriter);
         writeProblem(problem, problemWriter);
     }
+    
+    public void writeToDisk(Domain domain, Problem problem, Writer domainWriter, Writer problemWriter) throws IOException {
+        writeToDisk(domain, problem, new PrintWriter(domainWriter), new PrintWriter(problemWriter));        
+    }
+                    
     
     private void writeProblem(Problem problem, PrintWriter pw) {
         pw.println("(define (problem " + problem.getName() + ")");

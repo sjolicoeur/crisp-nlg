@@ -57,7 +57,7 @@ public class PCrispActionCreator {
         return actionName;
     }
     
-    public static DurativeAction createInitAction(ProbabilisticGrammar grammar, LexiconEntry entry, double prob, Map<String,HashSet<String>> roles){
+    public static DurativeAction createInitAction(ProbabilisticGrammar grammar, LexiconEntry entry, double prob, Map<String,HashSet<String>> roles){               
         
         // Get the tree for this lexical entry from the hash map
         String treeRef = entry.tree;
@@ -66,9 +66,7 @@ public class PCrispActionCreator {
         
         // Get lists of nodes that are open for substitution and adjunction
         ArrayList<String> substNodes = new ArrayList<String>();
-        ArrayList<String> adjNodes = new ArrayList<String>();
-        
-        // System.out.println("  " + treeRef + ": " + tree.getSignatureString());
+        ArrayList<String> adjNodes = new ArrayList<String>();                
         
         for (String node : allNodes) {
             if (tree.getNodeType(node) == NodeType.SUBSTITUTION) {
@@ -218,14 +216,12 @@ public class PCrispActionCreator {
                 cat = "NONE";            
             
             constants.put(cat,"category");
-            
-            //System.out.println(treeIdent+":"+cat+":"+role+":"+roleN);       
+                               
             effects.add(new crisp.planningproblem.effect.Literal("subst(" + treeName 
             +", " + substNode  +", "+roleN + ")", true));
             
             constants.put(substNode,"nodetype");
-            //if (role==null)
-            //System.out.println(tree.getID());
+                        
             if (!role.equals("self") ) 
                 constants.put(roleN, "syntaxnode");
             
@@ -278,8 +274,7 @@ public class PCrispActionCreator {
             }
             constants.put(cat,"category");
             
-            // canadjoin
-            //System.out.println(treeIdent+"#"+cat+"#"+role+"#"+roleN);
+            // canadjoin            
             effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" + 
             treeName + ", " + adjNode + ", "+ roleN+ ")", true));
             // Allways put a mustadjoin constraint
@@ -498,14 +493,12 @@ public class PCrispActionCreator {
                     cat = "NONE";            
                 
                 constants.put(cat,"category");
-                
-                //System.out.println(treeIdent+":"+cat+":"+role+":"+roleN);       
+                                       
                 effects.add(new crisp.planningproblem.effect.Literal("subst(" + childTreeName 
                 +", " + substNode +", "+roleN + ")", true));
                 
                 constants.put(substNode,"nodetype");
-                //if (role==null)
-                //System.out.println(tree.getID());
+                
                 if (!role.equals("self") ) 
                     constants.put(roleN, "syntaxnode");
                 
@@ -558,8 +551,7 @@ public class PCrispActionCreator {
                 }
                 constants.put(cat,"category");
                 
-                // canadjoin
-                //System.out.println(treeIdent+"#"+cat+"#"+role+"#"+roleN);
+                // canadjoin                
                 effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" + 
                 childTreeName + ", " + adjNode + ", "+ roleN+ ")", true));
                 // Allways put a mustadjoin constraint

@@ -385,9 +385,10 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
             
             for (LexiconEntry parentEntry : entries) {
                 ElementaryTree<Term> parentTree = grammar.getTree(parentEntry.tree);                
+                        
                                 
                 // Add init action for this entry
-                if (grammar.hasInitProbability(parentEntry)) {                                        
+                if (grammar.hasInitProbability(parentEntry)) {  
                     Action initAction = PCrispActionCreator.createInitAction(grammar, parentEntry, grammar.getInitProbability(parentEntry), roles);
                     addActionToDomain(initAction, domain);
                 }                                  
@@ -395,7 +396,9 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
                 for (String node : parentTree.getAllNodes()) {
                     
                     //Compute actions for substitution in parentTree at this node
-                    Map<LexiconEntry,Double> substProbs = grammar.getSubstitutionProbabilities(parentEntry,node);                    
+                    Map<LexiconEntry,Double> substProbs =            
+                        grammar.getSubstitutionProbabilities(parentEntry,node);                           
+                        
                     for (LexiconEntry childEntry : substProbs.keySet()) {
                         Collection<Action> substActions = 
                             PCrispActionCreator.createActions(grammar, parentEntry, node, childEntry, TagActionType.SUBSTITUTION, substProbs.get(childEntry), plansize, roles);
@@ -466,6 +469,7 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
         ProbabilisticGrammar<Term> ret = new ProbabilisticGrammar();
                 
         Set<LexiconEntry> filteredEntries = new HashSet<LexiconEntry>();
+                
         
         // Copy all treeNames and all lexicon entries
         for (String treeName : filteredGrammar.getAllTreeNames()) {
@@ -540,12 +544,14 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
         SAXParserFactory factory = SAXParserFactory.newInstance();        
         
         ProbCRISPConverter handler = new ProbCRISPConverter(domain,problem);
+                                        
         
         try{
             SAXParser parser = factory.newSAXParser();
-            parser.parse(new InputSource(problemfile), handler);                        
-            ProbabilisticGrammar<Term> filteredGrammar = filterProbabilisticGrammar(grammar, new SemanticsPredicateListFilter(handler.predicatesInWorld) );                       
-            computeDomain(domain, problem, filteredGrammar);
+            parser.parse(new InputSource(problemfile), handler);     
+            ProbabilisticGrammar<Term> filteredGrammar = filterProbabilisticGrammar(grammar, new
+                SemanticsPredicateListFilter(handler.predicatesInWorld));                                   
+            computeDomain(domain, problem, filteredGrammar);            
             computeGoal(domain, problem);
             
         } catch (ParserConfigurationException e){

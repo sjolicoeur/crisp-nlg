@@ -1,3 +1,5 @@
+package crisp.evaluation;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -33,7 +35,7 @@ public class MySQLInterface {
     /**
      * Open a new database interface.
      */
-    public void MySQLInterface (String url, String username, String password, String filename) throws Exception{
+    public MySQLInterface (String url, String username, String password) throws Exception{
         Class.forName ("com.mysql.jdbc.Driver").newInstance();
                                
         connectionProperties = new Properties();
@@ -86,5 +88,18 @@ public class MySQLInterface {
         
         return root_index;
     }
-    
+
+
+    public static void main(String[] args) throws Exception{
+
+        MySQLInterface database = new MySQLInterface("jdbc:mysql://forbin/penguin" ,"penguin_rw","xohD9xei");
+        Set<Term> sem = database.getSentenceSemantics(1);
+        String rootIndex = database.getRootIndex(1);
+        System.out.println(sem);
+        System.out.println("Root index: "+rootIndex);
+
+    }
+
+
+
 }

@@ -453,6 +453,7 @@ public class FastCRISPConverter extends DefaultHandler {  // Default Handler alr
                     int roleno = 1;
                     
                     for ( String role : roles.get(treeRef)) {
+                        System.out.println(role);
                         if ( role.equals("self") )   
                             n.put(role,"?u");
                         else 

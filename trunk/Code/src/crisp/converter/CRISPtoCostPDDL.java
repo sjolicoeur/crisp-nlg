@@ -3,6 +3,7 @@ package crisp.converter;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.codec.CostPddlOutputCodec;
+//import crisp.planningproblem.codec.PddlOutputCodec;
 
 import de.saar.penguin.tag.grammar.ProbabilisticGrammar;
 import de.saar.penguin.tag.codec.PCrispXmlInputCodec;
@@ -12,6 +13,7 @@ import de.saar.chorus.term.Term;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.PrintWriter;
 
 
 public class CRISPtoCostPDDL {
@@ -64,7 +66,8 @@ public class CRISPtoCostPDDL {
         System.out.println("Domain: " + domain );
 		System.out.println("Problem: " + problem);
 
-		new CostPddlOutputCodec().writeToDisk(domain, problem, new FileWriter(new File(args[2])), new FileWriter(new File(args[3])));
+		new CostPddlOutputCodec().writeToDisk(domain, problem, new PrintWriter( new FileWriter(new File(args[2]))),
+                                                           new PrintWriter(new FileWriter(new File(args[3]))));
 	}
 
 

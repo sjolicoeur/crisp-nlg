@@ -88,18 +88,18 @@ public class PddlOutputCodec extends OutputCodec {
         StringBuffer buf = new StringBuffer();
         String prefix = "      ";
         
-        boolean isDurativeAction = (action instanceof DurativeAction);
+        //boolean isDurativeAction = (action instanceof DurativeAction);
         
-        if (isDurativeAction) {
-            buf.append("   (:durative-action " + action.getPredicate().getLabel() + "\n");
-        } else {
+        //if (isDurativeAction) {
+        //     buf.append("   (:durative-action " + action.getPredicate().getLabel() + "\n");
+        //} else {
             buf.append("   (:action " + action.getPredicate().getLabel() + "\n");
-        }
+        //}
         buf.append(prefix + ":parameters (" + action.getPredicate().getVariables().toLispString() + ")\n");
         buf.append(prefix + ":precondition " + toPddlString(action.getPrecondition()) + "\n");
         buf.append(prefix + ":effect " + toPddlString(action.getEffect()) + "\n");
-        if (isDurativeAction)
-            buf.append(prefix + ":duration " + Double.toString(((DurativeAction)action).getDuration()) + "\n");
+        //if (isDurativeAction)
+        //    buf.append(prefix + ":duration " + Double.toString(((DurativeAction)action).getDuration()) + "\n");
         
         buf.append("   )\n");
         

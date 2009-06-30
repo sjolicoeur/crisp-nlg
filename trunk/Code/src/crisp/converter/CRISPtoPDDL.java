@@ -50,7 +50,7 @@ public class CRISPtoPDDL {
  
         File problemfile = new File(args[1]);
         
-		FastCRISPConverter.convert(grammar, problemfile, domain, problem);
+		new FastCRISPConverter().convert(grammar, problemfile, domain, problem);
 		long end = System.currentTimeMillis();
 
 		System.out.println("Total runtime: " + (end-start) + "ms");

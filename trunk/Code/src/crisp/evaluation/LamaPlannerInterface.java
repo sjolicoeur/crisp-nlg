@@ -142,7 +142,7 @@ public class LamaPlannerInterface implements PlannerInterface {
                 
         System.out.println("Generating planning problem...");
 		//FastCRISPConverter.convert(grammar, problemfile, domain, problem);
-        ProbCRISPConverter.convert(grammar, problemfile, domain, problem);
+        new ProbCRISPConverter().convert(grammar, problemfile, domain, problem);
 
 		long end = System.currentTimeMillis();
 

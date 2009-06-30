@@ -55,150 +55,152 @@ import de.saar.penguin.tag.grammar.filter.LexiconEntryFilter;
 * planning domains with costs and problems using a probabilistic TAG grammar. 
 */
 
-public class ProbCRISPConverter extends DefaultHandler {  // Default Handler already does a lot of work like
+public class ProbCRISPConverter implements ProblemConverter {
+                                                          // Default Handler already does a lot of work like
                                                           // parse error handling and registering the handler
                                                           // with a parser.                
     
-    private static int plansize;         // the maximum plan size as specified in the problem file
-    private static int maximumArity = 0; // the maximum arity of any predicate in the problem file
+    private int plansize;         // the maximum plan size as specified in the problem file
+    private int maximumArity = 0; // the maximum arity of any predicate in the problem file
     
-    private static String problemname;   // the name for the problem as specified in the problem file 
+    private String problemname;   // the name for the problem as specified in the problem file 
     
-    private static String mainCat;       // main category for the problem in the problem file      
-    
-    
-    // Member variables for instances of the Content Handler
-    private Stack<String> elementStack = new Stack<String>(); 
-    private StringWriter characterBuffer;
-    
-    private Problem problem;
-    private Domain domain;
-    
-    private Set<Term> trueAtoms;
-    
-    private Map<String,Set<Integer>> predicatesInWorld;
+    private String mainCat;       // main category for the problem in the problem file      
     
     
-    /************************ Methods for the content handler *****************/    
-    public ProbCRISPConverter(Domain aDomain, Problem aProblem) {
-        problem = aProblem;
-        domain = aDomain;
-        predicatesInWorld = new HashMap<String, Set<Integer>>();
-    }
-    
-    
-    // All of these methods are specified in the ContentHandler interface.    
-    public void startDocument() throws SAXException {
-        characterBuffer = new StringWriter();
-    }
-    
-    
-    public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
+    private class ProblemfileHandler extends DefaultHandler {
+        // Member variables for instances of the Content Handler
+        private Stack<String> elementStack = new Stack<String>(); 
+        private StringWriter characterBuffer;
         
-        elementStack.push(qName);
+        private Problem problem;
+        private Domain domain;
         
-        // Namespace is ingored for now, use prefixed name and assume prefixes are empty.
-        if (qName.equals("crispproblem")){
-            
-            // Retrieve and set name for the problem
-            problemname = atts.getValue("name");  
-            domain.setName(problemname);
-            problem.setName(problemname);
-            problem.setDomain(problemname);
-            
-            try {
-                plansize = Integer.parseInt(atts.getValue("plansize"));
-            } catch (NumberFormatException e){
-                throw new SAXParseException("Expecting integer number in plansize attribute.",null);
-            }
-                        
-            domain.addConstant(atts.getValue("index"),"individual");
-            
-            mainCat = atts.getValue("cat"); // TODO: do we really need this as a member variable?
-            domain.addConstant(mainCat,"category");
-            
-            // This was in computeInitialState(Domain domain, Problem problem)
-            problem.addToInitialState(TermParser.parse("subst(root, none, init)"));
-            problem.addToInitialState(TermParser.parse("referent(init, " + atts.getValue("index") + ")"));                        
-            problem.addToInitialState(TermParser.parse("step(step0)"));                                     
-            
-            // Reinitialize the set of true atoms for each new problem
-            trueAtoms = new HashSet<Term>();
-            
+        private Set<Term> trueAtoms;
+        
+        private Map<String,Set<Integer>> predicatesInWorld;
+        
+        
+        /************************ Methods for the content handler *****************/    
+        public ProblemfileHandler(Domain aDomain, Problem aProblem) {
+            problem = aProblem;
+            domain = aDomain;
+            predicatesInWorld = new HashMap<String, Set<Integer>>();
         }
         
-        if (qName.equals("world")){
+        
+        // All of these methods are specified in the ContentHandler interface.    
+        public void startDocument() throws SAXException {
             characterBuffer = new StringWriter();
         }
         
-        if (qName.equals("commgoal")){
-            characterBuffer = new StringWriter();
-        }
         
-    }
-    
-    
-    public void endElement(String namespaceURI, String localName, String qName)
-    throws SAXException {
-        
-        String lastElement = elementStack.pop();
-        if (!(lastElement.equals(qName))) 
-            throw new SAXParseException("Cannot close " + qName + " here. Expected "+lastElement+".",null);
-        
-        if (qName.equals("world")){ // Term definition ends here 
-            Term term = TermParser.parse(characterBuffer.toString()); // parse the Term
+        public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
             
-            // This was in computeInitialState(Domain domain, Problem problem)
-            addPredicateInWorld((Compound) term);
-            domain.addPredicate(makeSemanticPredicate(term));
-            addIndividualConstants(term,domain);
+            elementStack.push(qName);
             
-            problem.addToInitialState(term);
-            trueAtoms.add(term);
-        } 
-        
-        if (qName.equals("commgoal")){ // Communicative goal definition ends here
-            Term term = TermParser.parse(characterBuffer.toString());
-            
-            // This was in computeInitialState(Domain domain, Problem problem)
-            
-            // keep track of maximum arity
-            if( term instanceof Compound ) {
-                Compound c = (Compound) term;
+            // Namespace is ingored for now, use prefixed name and assume prefixes are empty.
+            if (qName.equals("crispproblem")){
                 
-                int arity = c.getSubterms().size();
-                if( arity > maximumArity ) {
-                    maximumArity = arity;
+                // Retrieve and set name for the problem
+                problemname = atts.getValue("name");  
+                domain.setName(problemname);
+                problem.setName(problemname);
+                problem.setDomain(problemname);
+                
+                try {
+                    plansize = Integer.parseInt(atts.getValue("plansize"));
+                } catch (NumberFormatException e){
+                    throw new SAXParseException("Expecting integer number in plansize attribute.",null);
                 }
-                problem.registerComgoalArity(arity);
                 
-                domain.addConstant(renamePredicate(c.getLabel()), "predicate");
+                domain.addConstant(atts.getValue("index"),"individual");
                 
-                problem.addToInitialState(flattenTerm(c, "needtoexpress"));
+                mainCat = atts.getValue("cat"); // TODO: do we really need this as a member variable?
+                domain.addConstant(mainCat,"category");
+                
+                // This was in computeInitialState(Domain domain, Problem problem)
+                problem.addToInitialState(TermParser.parse("subst(root, none, init)"));
+                problem.addToInitialState(TermParser.parse("referent(init, " + atts.getValue("index") + ")"));                        
+                problem.addToInitialState(TermParser.parse("step(step0)"));                                     
+                
+                // Reinitialize the set of true atoms for each new problem
+                trueAtoms = new HashSet<Term>();
+                
+            }
+            
+            if (qName.equals("world")){
+                characterBuffer = new StringWriter();
+            }
+            
+            if (qName.equals("commgoal")){
+                characterBuffer = new StringWriter();
             }
             
         }
-    }
-    
-    
-    private void addPredicateInWorld(Compound term) {
-    	Set<Integer> arities = predicatesInWorld.get(term.getLabel());
-    	
-    	if( arities == null ) {
-    		arities = new HashSet<Integer>();
-    		predicatesInWorld.put(term.getLabel(), arities);
-    	}
-    	
-    	arities.add(term.getSubterms().size());
-	}
-
-    
-	public void characters(char[] ch, int start, int length) {                        
-                
-        characterBuffer.write(ch, start, length);
         
-    } 
-    
+        
+        public void endElement(String namespaceURI, String localName, String qName)
+        throws SAXException {
+            
+            String lastElement = elementStack.pop();
+            if (!(lastElement.equals(qName))) 
+                throw new SAXParseException("Cannot close " + qName + " here. Expected "+lastElement+".",null);
+            
+            if (qName.equals("world")){ // Term definition ends here 
+                Term term = TermParser.parse(characterBuffer.toString()); // parse the Term
+                
+                // This was in computeInitialState(Domain domain, Problem problem)
+                addPredicateInWorld((Compound) term);
+                domain.addPredicate(makeSemanticPredicate(term));
+                addIndividualConstants(term,domain);
+                
+                problem.addToInitialState(term);
+                trueAtoms.add(term);
+            } 
+            
+            if (qName.equals("commgoal")){ // Communicative goal definition ends here
+                Term term = TermParser.parse(characterBuffer.toString());
+                
+                // This was in computeInitialState(Domain domain, Problem problem)
+                
+                // keep track of maximum arity
+                if( term instanceof Compound ) {
+                    Compound c = (Compound) term;
+                    
+                    int arity = c.getSubterms().size();
+                    if( arity > maximumArity ) {
+                        maximumArity = arity;
+                    }
+                    problem.registerComgoalArity(arity);
+                    
+                    domain.addConstant(renamePredicate(c.getLabel()), "predicate");
+                    
+                    problem.addToInitialState(flattenTerm(c, "needtoexpress"));
+                }
+                
+            }
+        }
+        
+        
+        private void addPredicateInWorld(Compound term) {
+            Set<Integer> arities = predicatesInWorld.get(term.getLabel());
+            
+            if( arities == null ) {
+                arities = new HashSet<Integer>();
+                predicatesInWorld.put(term.getLabel(), arities);
+            }
+            
+            arities.add(term.getSubterms().size());
+        }
+        
+        
+        public void characters(char[] ch, int start, int length) {                        
+            
+            characterBuffer.write(ch, start, length);
+            
+        } 
+    }
     
     /*********************** Compute goal and domain  *****************/
     
@@ -209,7 +211,7 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
     * @param domain
     * @param problem
     */
-    private static void computeGoal(Domain domain, Problem problem) {
+    private void computeGoal(Domain domain, Problem problem) {
 
       TypedVariableList tlNodeIndiv = new TypedVariableList();
       tlNodeIndiv.addItem(new Variable("?u"), "syntaxnode");
@@ -296,7 +298,7 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
     * @param domain
     * @param problem
     */
-    private static void setupDomain(Domain domain, Problem problem) {
+    private void setupDomain(Domain domain, Problem problem) {
         domain.clear();
         problem.clear();
 
@@ -355,7 +357,7 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
     *
     * @param grammar The grammar from which actions are generated
     */
-    private static void computeDomain(Domain domain, Problem problem, ProbabilisticGrammar<Term> grammar) {
+    private void computeDomain(Domain domain, Problem problem, ProbabilisticGrammar<Term> grammar) {
         Map<String,HashSet<String>> roles = new HashMap<String, HashSet<String>>();
         
         // for all trees in the gramar store all roles 
@@ -430,7 +432,7 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
      * Add a collection of actions to a planning domain and register all constants and predicates
      * they use.
      */
-    private static void addActionsToDomain(Collection<Action> actions, Domain domain) {        
+    private void addActionsToDomain(Collection<Action> actions, Domain domain) {        
         for (Action action : actions) {
             addActionToDomain(action,domain);
         }
@@ -439,7 +441,7 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
     /**
      * Add a new action to a planning domain and register all constants and predicates it uses.
      */
-    private static void addActionToDomain(Action action, Domain domain){
+    private void addActionToDomain(Action action, Domain domain){
         HashMap<String,String> constants = action.getDomainConstants();
         
         domain.addAction(action);
@@ -464,7 +466,7 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
     
     
     
-    public static ProbabilisticGrammar<Term> filterProbabilisticGrammar(ProbabilisticGrammar<Term> grammar, LexiconEntryFilter filter) {
+    public ProbabilisticGrammar<Term> filterProbabilisticGrammar(ProbabilisticGrammar<Term> grammar, LexiconEntryFilter filter) {
         Grammar<Term> filteredGrammar = new GrammarFilterer<Term>().filter(grammar, filter);                
         ProbabilisticGrammar<Term> ret = new ProbabilisticGrammar();
                 
@@ -517,7 +519,7 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
         return ret;
     }
     
-    /******** input, output, main program **********/
+    /******** input, output, main program **********/            
     
     /**
     * Parses the XML document given in problemfilename, as well as the grammar file
@@ -533,7 +535,7 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
     * @param domain reference to an empty planning domain, will be completed by convert.
     * @param problem reference to an empty planning problem, will be completed by convert
     */
-    public static void convert(ProbabilisticGrammar<Term> grammar, Reader problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException { 
+    public void convert(Grammar<Term> grammar, Reader problemfile, Domain domain, Problem problem) throws Exception {                 
         
         //initialize domain
         setupDomain(domain, problem);
@@ -543,13 +545,12 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
         
         SAXParserFactory factory = SAXParserFactory.newInstance();        
         
-        ProbCRISPConverter handler = new ProbCRISPConverter(domain,problem);
-                                        
+        ProblemfileHandler handler = new ProblemfileHandler(domain,problem);                                        
         
         try{
             SAXParser parser = factory.newSAXParser();
-            parser.parse(new InputSource(problemfile), handler);     
-            ProbabilisticGrammar<Term> filteredGrammar = filterProbabilisticGrammar(grammar, new
+            parser.parse(new InputSource(problemfile), handler);            
+            ProbabilisticGrammar<Term> filteredGrammar = filterProbabilisticGrammar((ProbabilisticGrammar<Term>) grammar, new
                 SemanticsPredicateListFilter(handler.predicatesInWorld));                                   
             computeDomain(domain, problem, filteredGrammar);            
             computeGoal(domain, problem);
@@ -558,9 +559,9 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
             throw new SAXException("Parser misconfigured: "+e);    
         }
         
-    }
+    }        
     
-    public static void convert(ProbabilisticGrammar<Term> grammar, File problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException { 
+    public void convert(Grammar<Term> grammar, File problemfile, Domain domain, Problem problem) throws Exception { 
         convert(grammar, new FileReader(problemfile), domain, problem);
         
     }
@@ -579,7 +580,7 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
     * @param I a mapping of node identities to variables
     * @return
     */
-    private static Term substituteVariablesForRoles(Term term, Map<String, String> n, Map<String, String> I) {
+    private Term substituteVariablesForRoles(Term term, Map<String, String> n, Map<String, String> I) {
         if( term instanceof Compound ) {
             Compound t = (Compound) term;
             List<Term> newChildren = new ArrayList<Term>();
@@ -621,7 +622,7 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
     * @param newLabel
     * @return
     */
-    private static Term flattenTerm(Compound t, String newLabel) {
+    private Term flattenTerm(Compound t, String newLabel) {
         List<Term> subterms = new ArrayList<Term>();
         
         subterms.add(new Constant(renamePredicate(t.getLabel())));
@@ -630,7 +631,7 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
         return new Compound(newLabel + "-" + t.getSubterms().size(), subterms);
     }
     
-    private static String renamePredicate(String predicate) {
+    private String renamePredicate(String predicate) {
         return "pred-"+predicate;
     }
     
@@ -641,7 +642,7 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
     * @param term
     * @param domain
     */
-    private static void addIndividualConstants(Term term, Domain domain) {
+    private void addIndividualConstants(Term term, Domain domain) {
         if( term instanceof Compound ) {
             for( Term sub : ((Compound) term).getSubterms() ) {
                 addIndividualConstants(sub, domain);
@@ -658,7 +659,7 @@ public class ProbCRISPConverter extends DefaultHandler {  // Default Handler alr
     * @param term
     * @return
     */
-    private static Predicate makeSemanticPredicate(Term term) {
+    private Predicate makeSemanticPredicate(Term term) {
         Predicate ret = new Predicate();
         Compound t = (Compound) term;
         

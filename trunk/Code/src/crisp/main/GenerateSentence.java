@@ -33,7 +33,7 @@ public class GenerateSentence {
 
 		/*** read CRISP problem specification and convert it to PDDL domain/problem ***/
 		long start = System.currentTimeMillis();
-		CRISPConverter.convert(problemFile, domain, problem);
+		new CRISPConverter().convert(problemFile, domain, problem);
 		long end = System.currentTimeMillis();
 
 		new PddlOutputCodec().writeToDisk(domain, problem, "./", domain.getName());

@@ -76,8 +76,9 @@ public class GenerateXtag {
 		Problem problem = new Problem();
 		//File problemfile = new File(filename);
 
+        FastCRISPConverter converter = new FastCRISPConverter();
 		long start = System.currentTimeMillis();		
-		FastCRISPConverter.convert(grammar, problemfile, domain, problem);
+		converter.convert(grammar, problemfile, domain, problem);
 		long end = System.currentTimeMillis();
 
 		new PddlOutputCodec().writeToDisk(domain, problem, "./", domain.getName());

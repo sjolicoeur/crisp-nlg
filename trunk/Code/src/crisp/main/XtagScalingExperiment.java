@@ -102,8 +102,9 @@ public class XtagScalingExperiment {
 		Domain domain = new Domain();
 		Problem problem = new Problem();
 
+        FastCRISPConverter converter = new FastCRISPConverter();
 		long start = System.currentTimeMillis();		
-		FastCRISPConverter.convert(mGrammar, new StringReader(buf.toString()), domain, problem);
+		converter.convert(mGrammar, new StringReader(buf.toString()), domain, problem);
 		long end = System.currentTimeMillis();
 		
 		System.err.println("done, " + (end-start) + "ms.");

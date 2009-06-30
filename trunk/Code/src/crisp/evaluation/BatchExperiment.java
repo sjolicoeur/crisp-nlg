@@ -128,7 +128,8 @@ public class BatchExperiment {
                                                    new MySQLInterface("jdbc:mysql://forbin/penguin" ,"penguin_rw","xohD9xei"),
                                                    "pcrisp_results1"
                                                    );
-        exp1.addToBatch(1);        
+        exp1.addToBatch(1);
+        exp1.addToBatch(2);        
         exp1.addToBatch(42);
         System.out.println("Done.");
         System.out.println("Running experiment...");

@@ -88,6 +88,9 @@
       <javacc 
 	  javacchome="packages/javacc-4.0/bin/lib"
 	  target="src/crisp/pddl/PddlParser.jj" />
+      <javacc 
+	  javacchome="packages/javacc-4.0/bin/lib"
+	  target="src/crisp/evaluation/lamaplanparser/LamaPlanParser.jj" />
     </target>
 
 

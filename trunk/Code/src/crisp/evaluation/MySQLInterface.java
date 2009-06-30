@@ -22,7 +22,7 @@ import de.saar.chorus.term.parser.TermParser;
  * @author Daniel Bauer
  *
  */
-public class MySQLInterface {
+public class MySQLInterface extends DatabaseInterface {
 
     private static final String semanticsTableName = "dbauer_PTB_semantics";
     
@@ -55,7 +55,7 @@ public class MySQLInterface {
      * @return Semantic representation for the sentence as a set of ground positive literals.
      * @param sentenceID the id of the sentence for which to return semantics.
      */
-    public Set<Term> getSentenceSemantics(int sentenceID) throws SQLException{
+    public Set<Term> getSentenceSemantics(int sentenceID) throws Exception{
         
         Set<Term> literalSet = new HashSet<Term>();
         
@@ -76,7 +76,7 @@ public class MySQLInterface {
      * @param SentenceID the id of the sentence for which to return the root index.
      * @return The individual that is associated with the root of the derivation for the sentence. 
      */
-    public String getRootIndex(int sentenceID) throws SQLException{
+    public String getRootIndex(int sentenceID) throws Exception{
                 
         String sql = "SELECT DISTINCT root_index FROM "+semanticsTableName+" WHERE sentence_id = " + sentenceID;         
         

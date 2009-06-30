@@ -16,25 +16,14 @@ import java.util.Map;
  * it as a list of Atoms representing action instances.  
  */
  public class LamaPlanParser implements LamaPlanParserConstants {
-        private Map<String,String> normalizeUppercaseNames;
-
-        public LamaPlanParser(Reader reader, Map<String,String> normalizeUppercaseNames) {
-                this(reader);
-
-                this.normalizeUppercaseNames = normalizeUppercaseNames;
-        }
 
         private String normalize(String s) {
-                if( normalizeUppercaseNames.containsKey(s) ) {
-                        return normalizeUppercaseNames.get(s);
-                } else {
-                        return s;
-                }
+                        return s.toLowerCase();
         }
 
     public static List<Term> parse(String string, Map<String,String> normalizer) {
         try {
-            LamaPlanParser p = new LamaPlanParser(new StringReader(string), normalizer);
+            LamaPlanParser p = new LamaPlanParser(new StringReader(string));
             return p.plan();
         } catch(ParseException e) {
             System.err.println("Exception while parsing " + string + ": " + e);
@@ -52,7 +41,7 @@ import java.util.Map;
       } else {
         break label_1;
       }
-      jj_consume_token(6);
+      jj_consume_token(7);
       atom = planstep();
                                ret.add(atom);
     }
@@ -103,7 +92,7 @@ import java.util.Map;
   }
 
   final private boolean jj_3_1() {
-    if (jj_scan_token(6)) return true;
+    if (jj_scan_token(7)) return true;
     if (jj_3R_3()) return true;
     return false;
   }
@@ -300,8 +289,8 @@ import java.util.Map;
 
   public ParseException generateParseException() {
     jj_expentries.removeAllElements();
-    boolean[] la1tokens = new boolean[7];
-    for (int i = 0; i < 7; i++) {
+    boolean[] la1tokens = new boolean[8];
+    for (int i = 0; i < 8; i++) {
       la1tokens[i] = false;
     }
     if (jj_kind >= 0) {
@@ -317,7 +306,7 @@ import java.util.Map;
         }
       }
     }
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 8; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

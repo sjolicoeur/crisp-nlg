@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.InputStream;
 import java.io.FileInputStream;
+import java.io.FileReader;
 
 import crisp.converter.ProbCRISPConverter;
 
@@ -16,10 +17,13 @@ import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.codec.CostPddlOutputCodec;
 
+import crisp.evaluation.lamaplanparser.LamaPlanParser;
+
 import de.saar.penguin.tag.grammar.ProbabilisticGrammar;
 import de.saar.penguin.tag.codec.PCrispXmlInputCodec;
 import de.saar.chorus.term.Term; 
 
+import java.util.List;
 
 public class LamaPlannerInterface implements PlannerInterface {
     
@@ -59,7 +63,7 @@ public class LamaPlannerInterface implements PlannerInterface {
     }
     
     
-    public void runPlanner(Domain domain, Problem problem) throws Exception {
+    public List<Term> runPlanner(Domain domain, Problem problem) throws Exception {
         // This does look a bit like LAMA.sh. Calling the individual commands from here makes it easier to measure time
         
         long start;
@@ -96,10 +100,19 @@ public class LamaPlannerInterface implements PlannerInterface {
         pipeFileToProcess(search, new File("output"));
         search.waitFor();
         end = System.currentTimeMillis();
-        this.searchTime = end-start;        
+        this.searchTime = end-start;                
         if (search.exitValue() != 0) {
             throw new RuntimeException("Couldn't run LAMA search"+LAMA_PREFIX+LAMA_SEARCH);
         }                
+        
+        FileReader resultFileReader = new FileReader(new File(TEMPRESULT_FILE+".1"));
+        try{
+            LamaPlanParser parser = new LamaPlanParser(resultFileReader);
+            return parser.plan();
+        } catch(Exception e) {
+            System.err.println("Exception while parsing planner input.");
+            return null;
+        }
                                                                                            
     }
         
@@ -148,11 +161,13 @@ public class LamaPlannerInterface implements PlannerInterface {
 
 		System.out.println("Total runtime for problem generation: " + (end-start) + "ms");
 
-        System.out.println("Domain: " + domain );
-		System.out.println("Problem: " + problem);
-
+        //System.out.println("Domain: " + domain );
+		//System.out.println("Problem: " + problem);
+            
+        System.out.println("Running planner ... ");
         PlannerInterface planner = new LamaPlannerInterface();
-        planner.runPlanner(domain,problem);
+        System.out.println(planner.runPlanner(domain,problem));
+                    
         
     }
     

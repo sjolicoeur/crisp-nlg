@@ -144,6 +144,7 @@
     <target name="-do-clean" depends="init">
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
+        <delete file="src/crisp/evaluation/lamaplanparser/LamaPlanParser.java"/>
     </target>
     <target name="-post-clean">
         <!-- Empty placeholder for easier customization. -->

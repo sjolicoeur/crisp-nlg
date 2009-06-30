@@ -23,26 +23,15 @@ import java.util.Map;
  * A parser for reading a plan that is output by the LAMA lanner and returning
  * it as a list of Atoms representing action instances.  
  */
- public class LamaPlanParser {
-	private Map<String,String> normalizeUppercaseNames;
-	
-	public LamaPlanParser(Reader reader, Map<String,String> normalizeUppercaseNames) {
-		this(reader);
+ public class LamaPlanParser {	
 		
-		this.normalizeUppercaseNames = normalizeUppercaseNames;
-	}
-	
-	private String normalize(String s) {
-		if( normalizeUppercaseNames.containsKey(s) ) {
-			return normalizeUppercaseNames.get(s);
-		} else {
-			return s;
-		}
+	private String normalize(String s) {		
+			return s.toLowerCase();		
 	}
 	
     public static List<Term> parse(String string, Map<String,String> normalizer) {
         try {
-            LamaPlanParser p = new LamaPlanParser(new StringReader(string), normalizer);
+            LamaPlanParser p = new LamaPlanParser(new StringReader(string));
             return p.plan();
         } catch(ParseException e) {
             System.err.println("Exception while parsing " + string + ": " + e);
@@ -55,7 +44,7 @@ PARSER_END(LamaPlanParser)
 
 
 
-SKIP : { ")" | "\r" | "\t" | "\n" }
+SKIP : { " " | ")" | "\r" | "\t" | "\n" }
 
 TOKEN : {	    
    <IDENTIFIER: ["a"-"z", "A"-"Z", "*"] (["a"-"z", "A"-"Z", "_", "0"-"9", "-", "*"])*>

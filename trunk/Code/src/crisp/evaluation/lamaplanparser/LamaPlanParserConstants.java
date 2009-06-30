@@ -4,12 +4,13 @@ package crisp.evaluation.lamaplanparser;
 public interface LamaPlanParserConstants {
 
   int EOF = 0;
-  int IDENTIFIER = 5;
+  int IDENTIFIER = 6;
 
   int DEFAULT = 0;
 
   String[] tokenImage = {
     "<EOF>",
+    "\" \"",
     "\")\"",
     "\"\\r\"",
     "\"\\t\"",

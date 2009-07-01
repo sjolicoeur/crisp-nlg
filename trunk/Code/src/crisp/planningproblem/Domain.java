@@ -20,12 +20,13 @@ import de.saar.chorus.term.Substitution;
 
 
 public class Domain {
-    private static Map<String,Domain> domains = new HashMap<String,Domain>();
+    private static Map<String, Domain> domains = new HashMap<String, Domain>();
 
     private String name;
     private final List<String> requirements;
     private final TypeHierarchy types;
     private final Map<String,String> constants;  // constant -> type
+    
     private final Set<Predicate> predicates;
 
     private final List<String> constantsList;
@@ -33,9 +34,9 @@ public class Domain {
     private Set<Predicate> staticPredicates;
 
     private final List<Substitution> emptySubstitutionList;
-
-    private final List<Action> actions;
-
+    
+    private final HashMap<String, Action> actions; // store actions indexed by their label
+    
     private boolean sawMustadjoin; // Flag to indicate if the domain contains 
                                    //   actions with mustadjoin effects 
     							   //  This is not supposed to be here!
@@ -66,7 +67,7 @@ public class Domain {
         constants = new HashMap<String,String>();
         constantsList = new ArrayList<String>();
         predicates = new HashSet<Predicate>();
-        actions = new ArrayList<Action>();
+        actions = new HashMap<String, Action>();
         staticPredicates = null;
         sawMustadjoin = false;
 
@@ -127,14 +128,15 @@ public class Domain {
     }
 
     public void addPredicate(Predicate pred) {
-        predicates.add(pred);
+        predicates.add(pred);        
     }
 
     public void addAction(Action a) {
-        actions.add(a);
+        actions.put(a.getPredicate().getLabel(), a);                
     }
 
-    public void removeAction(Predicate p) {
+    public void removeAction(Predicate p) {                
+        /*
         Action a = null;
 
         for( Action ac : actions ) {
@@ -146,7 +148,12 @@ public class Domain {
 
         if( a != null ) {
             actions.remove(a);
-        }
+        }*/
+        removeAction(p.getLabel());        
+    }
+    
+    public void removeAction(String label) {
+        actions.remove(label);
     }
 
     @Override
@@ -156,15 +163,23 @@ public class Domain {
         buf.append("  types: " + types + "\n");
         buf.append("  constants: " + constants + "\n");
         buf.append("  predicates: " + predicates + "\n");
-        buf.append("  actions: " + actions + "\n");
+        buf.append("  actions: " + actions.values() + "\n");
 
         return buf.toString();
     }
 
     public List<Action> getActions() {
-        return actions;
+        return new ArrayList(actions.values());
     }
 
+    public Action getAction(Predicate p) {
+        return getAction(p.getLabel());
+    }
+    
+    public Action getAction(String label) {
+        return actions.get(label);
+    }
+    
     public Set<Predicate> getPredicates() {
         return predicates;
     }
@@ -225,7 +240,7 @@ public class Domain {
 			for( Predicate pred : predicates ) {
 				boolean isStatic = true;
 
-				for( Action action : actions ) {
+				for( Action action : actions.values() ) {
 					//if( pred.getLabel().equals("confusable")) System.err.println("Does " + action + " (" + action.getEffect() + ") mention " + pred + "? -> " + action.getEffect().mentionsPredicate(pred));
 					if( action.getEffect().mentionsPredicate(pred) ) {
 						isStatic = false;

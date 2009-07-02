@@ -77,8 +77,16 @@ public class Predicate {
 
     public Predicate instantiate(Substitution subst) {
         Predicate ret = new Predicate();
-        ret.setLabel(subst.apply(toTerm()).toString());
-
+        // ARGH! How did this ever work?
+        // ret.setLabel(subst.apply(toTerm()).toString());
+        
+        Compound result = (Compound) subst.apply(toTerm());
+        ret.setLabel(result.getLabel());
+        int i = 0;         
+        for (Variable v : variables) {
+           ret.addVariable(result.getSubterms().get(i).toString(), v.getType().toString());
+           i++;
+        }                
         return ret;
     }
 

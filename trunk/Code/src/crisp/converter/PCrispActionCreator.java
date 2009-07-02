@@ -65,8 +65,8 @@ public class PCrispActionCreator {
         Collection<String> allNodes = tree.getAllNodes();
         
         // Get lists of nodes that are open for substitution and adjunction
-        ArrayList<String> substNodes = new ArrayList<String>();
-        ArrayList<String> adjNodes = new ArrayList<String>();                
+        List<String> substNodes = new ArrayList<String>();
+        List<String> adjNodes = new ArrayList<String>();                
         
         for (String node : allNodes) {
             if (tree.getNodeType(node) == NodeType.SUBSTITUTION) {

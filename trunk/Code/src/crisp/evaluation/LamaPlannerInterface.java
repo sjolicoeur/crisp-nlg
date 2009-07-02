@@ -19,8 +19,13 @@ import crisp.planningproblem.codec.CostPddlOutputCodec;
 
 import crisp.evaluation.lamaplanparser.LamaPlanParser;
 
+import crisp.result.DerivationTreeBuilder;
+
 import de.saar.penguin.tag.grammar.ProbabilisticGrammar;
 import de.saar.penguin.tag.codec.PCrispXmlInputCodec;
+import de.saar.penguin.tag.derivation.DerivationTree;
+import de.saar.penguin.tag.derivation.DerivedTree;
+
 import de.saar.chorus.term.Term; 
 
 import java.util.List;
@@ -166,9 +171,11 @@ public class LamaPlannerInterface implements PlannerInterface {
             
         System.out.println("Running planner ... ");
         PlannerInterface planner = new LamaPlannerInterface();
-        System.out.println(planner.runPlanner(domain,problem));
-                    
+        List<Term> plan = planner.runPlanner(domain,problem);
         
+        DerivationTreeBuilder derivationTreeBuilder = new DerivationTreeBuilder(grammar);
+        DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);                    
+        System.out.println(derivTree.computeDerivedTree(grammar));
     }
     
     

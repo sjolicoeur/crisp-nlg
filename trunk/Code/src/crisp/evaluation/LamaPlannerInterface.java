@@ -174,8 +174,11 @@ public class LamaPlannerInterface implements PlannerInterface {
         List<Term> plan = planner.runPlanner(domain,problem);
         
         DerivationTreeBuilder derivationTreeBuilder = new DerivationTreeBuilder(grammar);
-        DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);                    
-        System.out.println(derivTree.computeDerivedTree(grammar));
+        DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
+        System.out.println(derivTree);        
+        DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
+        System.out.println(derivedTree);
+        System.out.println(derivedTree.yield());
     }
     
     

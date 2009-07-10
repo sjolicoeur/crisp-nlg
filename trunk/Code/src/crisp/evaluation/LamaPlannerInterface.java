@@ -25,10 +25,15 @@ import de.saar.penguin.tag.grammar.ProbabilisticGrammar;
 import de.saar.penguin.tag.codec.PCrispXmlInputCodec;
 import de.saar.penguin.tag.derivation.DerivationTree;
 import de.saar.penguin.tag.derivation.DerivedTree;
+import de.saar.penguin.tag.visualize.JGraphVisualizer;
 
 import de.saar.chorus.term.Term; 
 
 import java.util.List;
+
+import javax.swing.JFrame;
+import org.jgraph.JGraph;
+
 
 public class LamaPlannerInterface implements PlannerInterface {
     
@@ -172,11 +177,24 @@ public class LamaPlannerInterface implements PlannerInterface {
         System.out.println("Running planner ... ");
         PlannerInterface planner = new LamaPlannerInterface();
         List<Term> plan = planner.runPlanner(domain,problem);
-        
+        System.out.println(plan);
         DerivationTreeBuilder derivationTreeBuilder = new DerivationTreeBuilder(grammar);
         DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
         System.out.println(derivTree);        
         DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
+                
+        
+        JFrame f = new JFrame("TAG viewer:");
+        JGraph g = new JGraph();        
+        JGraphVisualizer v = new JGraphVisualizer();        
+        v.draw(grammar.getTree("t26"), g);        
+               
+       f.add(g);
+       f.pack();
+	   f.setVisible(true);	               
+	   v.computeLayout(g);       
+	   f.pack();    
+        
         System.out.println(derivedTree);
         System.out.println(derivedTree.yield());
     }

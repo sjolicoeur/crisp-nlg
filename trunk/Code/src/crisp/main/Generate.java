@@ -31,7 +31,8 @@ public class Generate {
         CrispXmlInputCodec codec = new CrispXmlInputCodec();
 		Grammar<Term> grammar = new Grammar<Term>();	
 		codec.parse(new FileReader(new File(args[0])), grammar);         
- 
+        System.out.println("Grammar parsed in "+ (System.currentTimeMillis()-start) + "ms .");
+        
         File problemfile = new File(args[1]);
         
 		new FastCRISPConverter().convert(grammar, problemfile, domain, problem);

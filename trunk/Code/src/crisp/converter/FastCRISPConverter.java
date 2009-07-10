@@ -400,7 +400,7 @@ public class FastCRISPConverter  {
         
         // compute actions from lexical entries
         for (String word : grammar.getAllWords())  {
-            System.out.println("\n" + word + ":");
+            //System.out.println("\n" + word + ":");
             
             Collection<LexiconEntry> entries = grammar.getLexiconEntries(word);
             //System.out.println(entries.size());
@@ -414,7 +414,7 @@ public class FastCRISPConverter  {
                 ArrayList<String> substNodes = new ArrayList<String>();
                 ArrayList<String> adjNodes = new ArrayList<String>();
                 
-                System.out.println("  " + treeRef + ": " + tree.getSignatureString());
+                //System.out.println("  " + treeRef + ": " + tree.getSignatureString());
                 
                 for (String node : allNodes) {
                     if (tree.getNodeType(node) == NodeType.SUBSTITUTION) {
@@ -455,7 +455,7 @@ public class FastCRISPConverter  {
                     int roleno = 1;
                     
                     for ( String role : roles.get(treeRef)) {
-                        System.out.println(role);
+                        //System.out.println(role);                        
                         if ( role.equals("self") )   
                             n.put(role,"?u");
                         else 

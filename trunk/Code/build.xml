@@ -12,6 +12,7 @@
     <property name="javadoc.dir" value="javadoc" />
     <property name="packages.tag" value="packages/tag.jar" />
     <property name="packages.mysqlconnector" value="packages/mysql-connector-java-5.1.5-bin.jar" />
+    <property name="packages.jgraph" value="packages/jgraph-5.8.3.1jar" />
 
     <property name="sourcefiles"
 	      value="de/saar/**/*.java,crisp/termparser/**/*.java,crisp/planningproblem/**/*.java,crisp/planner/lazygp/**/*.java,crisp/pddl/**/*.java,crisp/main/*.java,crisp/converter/**/*.java,crisp/tools/*.java,crisp/result/**/*.java,crisp/evaluation/**/*.java,crisp/preprocessing/*.java" />
@@ -79,6 +80,7 @@
       <classpath>
 	<pathelement path="${build.classes}" />
 	<pathelement path="${packages.tag}" />
+	<pathelement path="${packages.jgraph}" />
     <pathelement path="${packages.mysqlconnector}" />
       </classpath>
       </javac>

@@ -33,14 +33,14 @@ import java.util.HashMap;
  *
  * @author Daniel Bauer
  */
-public class DerivationTreeBuilder{
+public abstract class DerivationTreeBuilder{
        
     
-    private Grammar<Term> grammar;
+    protected Grammar<Term> grammar;
     
-    private Map<String,String> syntaxnodeToTreeId; // Store a mapping from tree#word#syntaxnode -> derivation 
+    protected Map<String,String> syntaxnodeToTreeId; // Store a mapping from tree#word#syntaxnode -> derivation 
                                                        // tree tree ID.   
-    private DerivationTree currentDerivation;
+    protected DerivationTree currentDerivation;
     
     public DerivationTreeBuilder(Grammar<Term> grammar) {
         this.grammar = grammar;
@@ -49,7 +49,7 @@ public class DerivationTreeBuilder{
     /** 
      * Retrieve the list of positive preconditions with a certain label from an instantiated action.
      */
-    private List<Compound> getPreconditionByLabel(Action action, String label) {
+    protected List<Compound> getPreconditionByLabel(Action action, String label) {
         Conjunction preconds = (Conjunction) action.getPrecondition();        
         List<Compound> result = new ArrayList<Compound>();
         for (Goal conjunct : preconds.getConjuncts()) {
@@ -67,11 +67,11 @@ public class DerivationTreeBuilder{
         return result;
     }
 
-    private List<Compound> getSubstPreconditions(Action action) {
+    protected List<Compound> getSubstPreconditions(Action action) {
         return this.getPreconditionByLabel(action, "subst");
     }
     
-    private List<Compound> getAdjPreconditions(Action action) {
+    protected List<Compound> getAdjPreconditions(Action action) {
         return this.getPreconditionByLabel(action, "canadjoin");
     }
 
@@ -79,7 +79,7 @@ public class DerivationTreeBuilder{
     /** 
      * Retrieve the list of positive effects with a certain label from an instantiated action.
      */
-    private List<Compound> getEffectsByLabel(Action action, String label) {
+    protected List<Compound> getEffectsByLabel(Action action, String label) {
         crisp.planningproblem.effect.Conjunction effect = (crisp.planningproblem.effect.Conjunction) action.getEffect();        
         List<Compound> result = new ArrayList<Compound>();
         for (Effect conjunct : effect.getConjuncts()) {
@@ -97,78 +97,38 @@ public class DerivationTreeBuilder{
         return result;
     }
 
-    private List<Compound> getSubstEffects(Action action) {
+    protected List<Compound> getSubstEffects(Action action) {
         return this.getEffectsByLabel(action, "subst");
     }
     
-    private List<Compound> getAdjEffects(Action action) {
+    protected List<Compound> getAdjEffects(Action action) {
         return this.getEffectsByLabel(action, "canadjoin");
     }    
     
-    private void processPlanStep(Action action) {
-
-            TypedVariableList t = action.getPredicate().getVariables();            
+    
+    protected Action computeInstantiatedAction(Term term, Domain domain){        
+        Compound compound = (Compound) term;
+        String label = compound.getLabel();            
+        List<Term> arguments = compound.getSubterms();
+        Action action = domain.getAction(label);                       
         
-            Compound pred = (Compound) action.getPredicate().toTerm();
-            String[] predicateParts = pred.getLabel().split("-");                        
-            TagActionType operation = decodeActionType(predicateParts[0]);
-            String childTree = predicateParts[1];
-            String word = predicateParts[2];
-                
-            String parentTree = null;
-            String parentWord = null;
-            String parentNode = null;            
-            int step;                                  
-            
-            String syntaxnode = pred.getSubterms().get(0).toString();
-            
-            
-            if (operation == TagActionType.NO_ADJUNCTION) { // this is a null adjunction
-               // Ignore no adjunction operations for now
-            } else {
-                                                
-            
-                String treeId;
-                String snode;
-                String node;                
-                
-                if (operation == TagActionType.INIT ) { // this is an init operation                                
-                    step = Integer.valueOf(predicateParts[3]).intValue();                    
-                    LexiconEntry entry = grammar.getLexiconEntry(word,childTree);
-                    // Really add the derivation
-                    treeId = currentDerivation.addNode(null, null, childTree, entry);                                                            
-                                                                                
-                } else {// This is an adjunction or substitution
-                    parentTree = predicateParts[3];
-                    parentWord = predicateParts[4];
-                    parentNode = predicateParts[5];
-                    step = Integer.valueOf(predicateParts[6]).intValue();                    
-                    String key = parentTree+"#"+parentWord+"#"+syntaxnode;                
-                    String targetTreeId = syntaxnodeToTreeId.get(key);
-                    LexiconEntry entry = grammar.getLexiconEntry(word,childTree);
-                    // Really add the derivation
-                    treeId = currentDerivation.addNode(targetTreeId, parentNode, childTree, entry);
-                }
-                                               
-                // Store the treeId for all 
-                for (Compound substterm : getSubstEffects(action)) {
-                    node = substterm.getSubterms().get(1).toString();
-                    snode = substterm.getSubterms().get(2).toString();
-                    String key = childTree+"#"+word+"#"+snode;
-                    syntaxnodeToTreeId.put(key,treeId);
-                }
-                
-                for (Compound adjterm : getAdjEffects(action)) {
-                    node = adjterm.getSubterms().get(1).toString();
-                    snode = adjterm.getSubterms().get(2).toString();
-                    String key = childTree+"#"+word+"#"+snode;
-                    syntaxnodeToTreeId.put(key,treeId);
-                }
-                
-            }                                              
+        TypedVariableList variables = action.getPredicate().getVariables();
+        
+        // Create a substitution (individuals for variables) for the original action to instantiate it. 
+        int i = 0;
+        Substitution subst = new Substitution();
+        for (Variable v : variables) {                
+            subst.setSubstitution(v,arguments.get(i)); // Ok, because arguments.get(i) is an individual
+            i++;
+        }
+                    
+        return action.instantiate(subst);
     }
     
-    private TagActionType decodeActionType(String actionType) {
+    public abstract void processPlanStep(Action action);
+    
+    
+    protected TagActionType decodeActionType(String actionType) {
         if (actionType.equals("init")) {
             return TagActionType.INIT;
         } else if (actionType.equals("subst")) {
@@ -182,34 +142,8 @@ public class DerivationTreeBuilder{
         }            
     }
     
-    public DerivationTree buildDerivationTreeFromPlan(List<Term> plan, Domain domain){
-        currentDerivation = new DerivationTree();                		            
+    public abstract DerivationTree buildDerivationTreeFromPlan(List<Term> plan, Domain domain);
             
-        syntaxnodeToTreeId = new HashMap<String, String>();
-        
-        for (Term term : plan){
-            // Create an action instance for the planning action
-            Compound compound = (Compound) term;
-            String label = compound.getLabel();            
-            List<Term> arguments = compound.getSubterms();
-            Action action = domain.getAction(label);                       
-            
-            TypedVariableList variables = action.getPredicate().getVariables();
-            
-            // Create a substitution (individuals for variables) for the original action to instantiate it. 
-            int i = 0;
-            Substitution subst = new Substitution();
-            for (Variable v : variables) {                
-                subst.setSubstitution(v,arguments.get(i)); // Ok, because arguments.get(i) is an individual
-                i++;
-            }
-                       
-            Action instantiatedAction = action.instantiate(subst);                        
-            processPlanStep(instantiatedAction);                                    
-            
-        }
-        return currentDerivation;
-    }        
     
 }
 

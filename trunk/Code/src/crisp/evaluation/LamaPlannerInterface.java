@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 
 import crisp.converter.ProbCRISPConverter;
+import crisp.converter.FastCRISPConverter;
 
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
@@ -19,6 +20,8 @@ import crisp.planningproblem.codec.CostPddlOutputCodec;
 
 import crisp.evaluation.lamaplanparser.LamaPlanParser;
 
+import crisp.result.PCrispDerivationTreeBuilder;
+import crisp.result.CrispDerivationTreeBuilder;
 import crisp.result.DerivationTreeBuilder;
 
 import de.saar.penguin.tag.grammar.ProbabilisticGrammar;
@@ -32,7 +35,7 @@ import de.saar.chorus.term.Term;
 import java.util.List;
 
 import javax.swing.JFrame;
-import org.jgraph.JGraph;
+//import org.jgraph.JGraph;
 
 
 public class LamaPlannerInterface implements PlannerInterface {
@@ -165,7 +168,7 @@ public class LamaPlannerInterface implements PlannerInterface {
                 
         System.out.println("Generating planning problem...");
 		//FastCRISPConverter.convert(grammar, problemfile, domain, problem);
-        new ProbCRISPConverter().convert(grammar, problemfile, domain, problem);
+        new FastCRISPConverter().convert(grammar, problemfile, domain, problem);
 
 		long end = System.currentTimeMillis();
 
@@ -178,23 +181,23 @@ public class LamaPlannerInterface implements PlannerInterface {
         PlannerInterface planner = new LamaPlannerInterface();
         List<Term> plan = planner.runPlanner(domain,problem);
         System.out.println(plan);
-        DerivationTreeBuilder derivationTreeBuilder = new DerivationTreeBuilder(grammar);
+        DerivationTreeBuilder derivationTreeBuilder = new CrispDerivationTreeBuilder(grammar);
         DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
         System.out.println(derivTree);        
         DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
                 
-        
+    /*      
         JFrame f = new JFrame("TAG viewer:");
         JGraph g = new JGraph();        
         JGraphVisualizer v = new JGraphVisualizer();        
         v.draw(grammar.getTree("t26"), g);        
                
-       f.add(g);
-       f.pack();
-	   f.setVisible(true);	               
-	   v.computeLayout(g);       
-	   f.pack();    
-        
+        f.add(g);
+        f.pack();
+	    f.setVisible(true);	               
+	    v.computeLayout(g);       
+	    f.pack();    
+      */  
         System.out.println(derivedTree);
         System.out.println(derivedTree.yield());
     }

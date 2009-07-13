@@ -34,6 +34,8 @@ import crisp.tools.Pair;
 
 public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
 
+    public static final String DEFAULT_ROOT_CATEGORY = "s";
+    
     private class Site {
         
         public String derivationNode;
@@ -60,7 +62,7 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
    }       
                
    
-   private void addNewSubstAndAdjSites(ElementaryTree tree, Site targetSide, String derivationNode) {
+   private void addNewSubstAndAdjSites(ElementaryTree tree, Site targetSide, String derivationNode, String selfSem, String step) {
        
        // Get lists of nodes that are open for substitution and adjunction
        ArrayList<String> substNodes = new ArrayList<String>();
@@ -78,8 +80,14 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
        
        for (String substNode : substNodes) {
            Site substSite = new Site(derivationNode, substNode, tree.getNodeLabel(substNode));
+                                 
+           String semEffect = ((Constant) tree.getNodeDecoration(substNode)).toString();
+           if (semEffect.equals("self")) {
+               semEffect = selfSem;
+           } else {
+               semEffect = semEffect+"-"+step;
+           }
            
-           String semEffect = ((Constant) tree.getNodeDecoration(substNode)).toString();          
            ArrayList<Site> effectsSites = substitutionSites.get(semEffect);
                       
            if (effectsSites == null) {
@@ -93,6 +101,12 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
            Site adjSite = new Site(derivationNode, adjNode, tree.getNodeLabel(adjNode));
            
            String semEffect = ((Constant) tree.getNodeDecoration(adjNode)).toString();
+           if (semEffect.equals("self")) {
+               semEffect = selfSem;
+           } else {
+               semEffect = semEffect+"-"+step;
+           }
+           
            Pair<String,String> semCat = new Pair<String, String>(semEffect, tree.getNodeLabel(adjNode));
            
            ArrayList<Site> effectsSites = substitutionSites.get(semCat);
@@ -102,7 +116,7 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
                adjunctionSites.put(semCat, effectsSites);
            }
            effectsSites.add(adjSite);
-       }       
+       }                     
        
    }
    
@@ -143,7 +157,7 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
                         
                         String newDerivNode = currentDerivation.addNode(substSite.derivationNode, substSite.treeNode, treename, childEntry);                                                
                         substituted = substSite;
-                        addNewSubstAndAdjSites(childTree, substSite, newDerivNode);
+                        addNewSubstAndAdjSites(childTree, substSite, newDerivNode, sem, step);
                                                 
                     }
                     break;
@@ -161,26 +175,32 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
                     String sem = roleTerm.getName();
                     String cat = catTerm.getName();
                     
-                    Pair<String, String> catSem = new Pair<String, String>(cat, sem);
+                    Pair<String, String> catSem = new Pair<String, String>(sem, cat);
                     List<Site> adjSites = adjunctionSites.get(catSem);
                 
                     if (adjSites==null || adjSites.size()==0) {
-                        throw new RuntimeException("Adjunction for "+action+" not possible.");
+                        throw new RuntimeException("Adjunction for "+action+" not possible. catSem was " + catSem);
                     } else {
                         Site adjoinTo = adjSites.get(0);
                         String newDerivNode = currentDerivation.addNode(adjoinTo.derivationNode, adjoinTo.treeNode, treename, childEntry);
-                        addNewSubstAndAdjSites(childTree, adjoinTo, newDerivNode);
+                        addNewSubstAndAdjSites(childTree, adjoinTo, newDerivNode, sem, step);
                     }
                 }
             }
     }
      
-    
-    @Override
-    public DerivationTree buildDerivationTreeFromPlan(List<Term> plan, Domain domain){
+        
+    public DerivationTree buildDerivationTreeFromPlan(List<Term> plan, Domain domain, String root_category){
         currentDerivation = new DerivationTree();                		            
         substitutionSites = new HashMap<String, ArrayList<Site>>();
         adjunctionSites = new HashMap<Pair<String,String>, ArrayList<Site>>();
+        
+        // Create initial substitution site for the root of the derivation
+        
+        Site rootSite = new Site(null, null, root_category);
+        ArrayList rootSites = new ArrayList();
+        rootSites.add(rootSite);
+        substitutionSites.put("root",rootSites);
         
         for (Term term : plan){
                             
@@ -189,6 +209,12 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
             
         }
         return currentDerivation;
+    }
+    
+    
+    @Override
+    public DerivationTree buildDerivationTreeFromPlan(List<Term> plan, Domain domain ){
+        return buildDerivationTreeFromPlan(plan,domain,DEFAULT_ROOT_CATEGORY);        
     }
     
 }

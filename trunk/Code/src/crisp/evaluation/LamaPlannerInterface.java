@@ -185,8 +185,17 @@ public class LamaPlannerInterface implements PlannerInterface {
         DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
         System.out.println(derivTree);        
         DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
-                
-    /*      
+        System.out.println(derivedTree.yield());
+        /*
+        System.out.println(grammar.getTree("t27").lexicalize(grammar.getLexiconEntry("yielding","t27")));
+        System.out.println(grammar.getTree("t26").lexicalize(grammar.getLexiconEntry("d_dot_","t26")));
+        
+        DerivationTree derivTree = new DerivationTree();
+        String node = derivTree.addNode(null,null, "t27", grammar.getLexiconEntry("yielding","t27"));
+        derivTree.addNode(node, "n1", "t26", grammar.getLexiconEntry("d_dot_","t26"));
+        DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
+        */
+    /*     
         JFrame f = new JFrame("TAG viewer:");
         JGraph g = new JGraph();        
         JGraphVisualizer v = new JGraphVisualizer();        
@@ -198,8 +207,7 @@ public class LamaPlannerInterface implements PlannerInterface {
 	    v.computeLayout(g);       
 	    f.pack();    
       */  
-        System.out.println(derivedTree);
-        System.out.println(derivedTree.yield());
+      
     }
     
     

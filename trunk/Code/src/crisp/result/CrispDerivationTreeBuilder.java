@@ -72,9 +72,11 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
            if (tree.getNodeType(node) == NodeType.SUBSTITUTION) {
                substNodes.add(node);
            } else {
-               if (tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION && (tree.getNodeDecoration(node) != null)) {
-                   adjNodes.add(node);            
-               }
+               if (tree.getNodeType(node) == NodeType.INTERNAL &&
+                   tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION &&
+                   tree.getNodeDecoration(node) != null) {
+                       adjNodes.add(node);            
+               }               
            }        
        }
        

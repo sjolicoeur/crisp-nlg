@@ -34,7 +34,7 @@ import de.saar.chorus.term.Term;
 
 import java.util.List;
 
-import javax.swing.JFrame;
+//import javax.swing.JFrame;
 //import org.jgraph.JGraph;
 
 
@@ -62,7 +62,7 @@ public class LamaPlannerInterface implements PlannerInterface {
 
     
     private void pipeFileToProcess(Process p, File f) throws IOException {
-        byte[] buf = new byte[1024];
+        byte[] buf = new byte[819200];
         
         OutputStream out = p.getOutputStream();
         InputStream in = new FileInputStream(f);
@@ -167,8 +167,8 @@ public class LamaPlannerInterface implements PlannerInterface {
         File problemfile = new File(args[1]);
                 
         System.out.println("Generating planning problem...");
-		//FastCRISPConverter.convert(grammar, problemfile, domain, problem);
-        new FastCRISPConverter().convert(grammar, problemfile, domain, problem);
+		new FastCRISPConverter().convert(grammar, problemfile, domain, problem);
+        //new ProbCRISPConverter().convert(grammar, problemfile, domain, problem);
 
 		long end = System.currentTimeMillis();
 
@@ -185,6 +185,7 @@ public class LamaPlannerInterface implements PlannerInterface {
         DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
         System.out.println(derivTree);        
         DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
+        System.out.println(derivedTree);
         System.out.println(derivedTree.yield());
         /*
         System.out.println(grammar.getTree("t27").lexicalize(grammar.getLexiconEntry("yielding","t27")));
@@ -195,19 +196,19 @@ public class LamaPlannerInterface implements PlannerInterface {
         derivTree.addNode(node, "n1", "t26", grammar.getLexiconEntry("d_dot_","t26"));
         DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
         */
-    /*     
+  
+        /*
         JFrame f = new JFrame("TAG viewer:");
         JGraph g = new JGraph();        
         JGraphVisualizer v = new JGraphVisualizer();        
-        v.draw(grammar.getTree("t26"), g);        
+        v.draw(derivedTree, g);        
                
         f.add(g);
         f.pack();
 	    f.setVisible(true);	               
 	    v.computeLayout(g);       
-	    f.pack();    
-      */  
-      
+	    f.pack();           
+        */
     }
     
     

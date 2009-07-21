@@ -15,8 +15,10 @@ import java.util.List;
 public interface PlannerInterface {            
     
     public List<Term> runPlanner(Domain domain, Problem problem) throws Exception;
+    public List<Term> runPlanner(Domain domain, Problem problem,long timeout) throws Exception;
         
     public long getPreprocessingTime();
-    public long getSearchTime();    
+    public long getSearchTime();
+    public long getTotalTime();    
     
 }

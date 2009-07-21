@@ -7,9 +7,16 @@ import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.BufferedOutputStream;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.Reader;
+import java.io.Writer;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 import crisp.converter.ProbCRISPConverter;
 import crisp.converter.FastCRISPConverter;
@@ -33,6 +40,7 @@ import de.saar.penguin.tag.visualize.JGraphVisualizer;
 import de.saar.chorus.term.Term; 
 
 import java.util.List;
+import java.util.Timer;
 
 //import javax.swing.JFrame;
 //import org.jgraph.JGraph;
@@ -42,6 +50,7 @@ public class LamaPlannerInterface implements PlannerInterface {
     
     public static final String PYTHON_BIN = "/usr/bin/python";
     public static final String LAMA_PREFIX = "/home/CE/dbauer/LAMA/";
+    public static final String LAMA_SCRIPT = "/home/CE/dbauer/LAMA/lama.sh";
     public static final String LAMA_TRANSLATOR = "translate/translate.py";
     public static final String LAMA_PREPROCESSOR = "preprocess/preprocess-mac";
     public static final String LAMA_SEARCH = "search/release-search-mac";
@@ -50,10 +59,13 @@ public class LamaPlannerInterface implements PlannerInterface {
     public static final String TEMPPROBLEM_FILE = "tmpproblem.lisp";
     public static final String TEMPRESULT_FILE = "tmpresult";
 
-    public static final String LAMA_STRATEGIES = "fF";
+    public static final String LAMA_STRATEGIES = "f";
 
+    public static final long DEFAULT_TIMEOUT = 60000;
+    
     private long preprocessingTime;
     private long searchTime;
+    private long totalTime;
     
     LamaPlannerInterface() {
         preprocessingTime = 0;
@@ -62,11 +74,11 @@ public class LamaPlannerInterface implements PlannerInterface {
 
     
     private void pipeFileToProcess(Process p, File f) throws IOException {
-        byte[] buf = new byte[819200];
+        byte[] buf = new byte[1024];
         
-        OutputStream out = p.getOutputStream();
+        OutputStream out = new BufferedOutputStream(p.getOutputStream());
         InputStream in = new FileInputStream(f);
-        
+                
         int len = 0;        
         while ((len = in.read(buf)) > 0) {
             out.write(buf, 0, len);    
@@ -75,18 +87,23 @@ public class LamaPlannerInterface implements PlannerInterface {
         out.close();                
     }
     
-    
     public List<Term> runPlanner(Domain domain, Problem problem) throws Exception {
+        return runPlanner(domain, problem, DEFAULT_TIMEOUT);
+    }
+    
+    public List<Term> runPlanner(Domain domain, Problem problem, long timeout) throws Exception {
         // This does look a bit like LAMA.sh. Calling the individual commands from here makes it easier to measure time
         
         long start;
         long end;
+    
         
         new CostPddlOutputCodec().writeToDisk(domain, problem, new FileWriter(new File(TEMPDOMAIN_FILE)),
                                                            new FileWriter(new File(TEMPPROBLEM_FILE)));
                                                                    
           
         // Run the LAMA translator
+        /*
         ProcessBuilder translate_pb = new ProcessBuilder(PYTHON_BIN, LAMA_PREFIX+LAMA_TRANSLATOR, TEMPDOMAIN_FILE, TEMPPROBLEM_FILE);
         Process translator = translate_pb.start();        
         translator.waitFor();
@@ -105,32 +122,88 @@ public class LamaPlannerInterface implements PlannerInterface {
         if (preprocessor.exitValue() != 0) {
             throw new RuntimeException("Couldn't run LAMA preprocessor "+PYTHON_BIN+" "+LAMA_PREFIX+LAMA_PREPROCESSOR);
         }        
+        */
         
         // Run search
         start = System.currentTimeMillis();
-        ProcessBuilder search_pb = new ProcessBuilder(LAMA_PREFIX+LAMA_SEARCH,LAMA_STRATEGIES,TEMPRESULT_FILE);
-        Process search = search_pb.start();
-        pipeFileToProcess(search, new File("output"));
-        search.waitFor();
+        Process lamaproc = Runtime.getRuntime().exec("bash -e "+LAMA_SCRIPT+" "+TEMPDOMAIN_FILE+" "+TEMPPROBLEM_FILE+" "+TEMPRESULT_FILE);      
+        
+        BufferedReader errstream = new BufferedReader(new InputStreamReader(lamaproc.getErrorStream()));
+        
+        Timer timer = new Timer();
+        timer.schedule(new InterruptScheduler(Thread.currentThread()), timeout);        
+        try{
+            lamaproc.waitFor();
+        } catch (InterruptedException e) {
+            lamaproc.destroy();
+            System.err.println("Planner timed out after "+timeout+" ms.");
+            return null;      
+        } finally {
+            timer.cancel();
+        }
+        
         end = System.currentTimeMillis();
-        this.searchTime = end-start;                
-        if (search.exitValue() != 0) {
-            throw new RuntimeException("Couldn't run LAMA search"+LAMA_PREFIX+LAMA_SEARCH);
+        this.totalTime = end-start;                
+        if (lamaproc.exitValue() != 0) {
+            throw new RuntimeException("LAMA in "+LAMA_SCRIPT+ " exited inappropriately.");
         }                
         
-        FileReader resultFileReader = new FileReader(new File(TEMPRESULT_FILE+".1"));
+                
+        extractPlanningTime(errstream);
+        
+        FileReader resultFileReader = new FileReader(new File(TEMPRESULT_FILE+".1"));        
+        
+        
         try{
             LamaPlanParser parser = new LamaPlanParser(resultFileReader);
             return parser.plan();
         } catch(Exception e) {
-            System.err.println("Exception while parsing planner input.");
+            System.err.println("Exception while parsing planner output.");
             return null;
         }
                                                                                            
     }
         
+    private long parseTimeSpan(String timespan){
+        String[] minutesSeconds = timespan.split("m");
+        long time = new Integer(minutesSeconds[0])*60000;
+        // Cut trailing "s"
+        String secondStr = minutesSeconds[1].substring(0,minutesSeconds[1].length()-1);
+        Float millisecondFloat = new Float(secondStr)*1000;
+        time = time + millisecondFloat.longValue();
+        return time;
+    }
+    
+    private void extractPlanningTime(BufferedReader plannerErrorStream) throws IOException{
+        String line;
+        int counter = 0;       
+        long instantiateTime = 0;
+        long preprocTime = 0;
+        while ((line = plannerErrorStream.readLine()) != null) {
+            if (line.startsWith("real")) {
+                switch (counter) {
+                    case 0:
+                        instantiateTime = parseTimeSpan(line.split("\\s")[1]);
+                        break;
+                    case 1:
+                        this.preprocessingTime = instantiateTime + parseTimeSpan(line.split("\\s")[1]);
+                        break;
+                    case 2:
+                        this.searchTime = parseTimeSpan(line.split("\\s")[1]);
+                        return;
+                }
+                counter++;
+            }
+        }
+        
+    }
+    
     public long getPreprocessingTime() {
         return preprocessingTime;
+    }
+    
+    public long getTotalTime() {
+        return totalTime;
     }
     
     public long getSearchTime() {
@@ -167,8 +240,8 @@ public class LamaPlannerInterface implements PlannerInterface {
         File problemfile = new File(args[1]);
                 
         System.out.println("Generating planning problem...");
-		new FastCRISPConverter().convert(grammar, problemfile, domain, problem);
-        //new ProbCRISPConverter().convert(grammar, problemfile, domain, problem);
+		//new FastCRISPConverter().convert(grammar, problemfile, domain, problem);
+        new ProbCRISPConverter().convert(grammar, problemfile, domain, problem);
 
 		long end = System.currentTimeMillis();
 
@@ -179,14 +252,19 @@ public class LamaPlannerInterface implements PlannerInterface {
             
         System.out.println("Running planner ... ");
         PlannerInterface planner = new LamaPlannerInterface();
-        List<Term> plan = planner.runPlanner(domain,problem);
+        List<Term> plan = planner.runPlanner(domain,problem,60000);
+        System.out.println(planner.getTotalTime());
+        System.out.println(planner.getPreprocessingTime());
+        System.out.println(planner.getSearchTime());
         System.out.println(plan);
-        DerivationTreeBuilder derivationTreeBuilder = new CrispDerivationTreeBuilder(grammar);
+        DerivationTreeBuilder derivationTreeBuilder = new PCrispDerivationTreeBuilder(grammar);
         DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
         System.out.println(derivTree);        
         DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
         System.out.println(derivedTree);
         System.out.println(derivedTree.yield());
+        
+        
         /*
         System.out.println(grammar.getTree("t27").lexicalize(grammar.getLexiconEntry("yielding","t27")));
         System.out.println(grammar.getTree("t26").lexicalize(grammar.getLexiconEntry("d_dot_","t26")));

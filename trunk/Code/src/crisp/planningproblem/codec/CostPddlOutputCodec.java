@@ -17,41 +17,9 @@ import crisp.planningproblem.goal.Goal;
 import de.saar.basic.StringTools;
 import de.saar.chorus.term.Term;
 
-public class CostPddlOutputCodec extends OutputCodec {
-    /**
-    * Writes the PDDL domain and problem to disk.
-    *
-    * @param domain
-    * @param problem
-    * @throws XPathExpressionException
-    * @throws IOException
-    */
-    @Override
-    public void writeToDisk(Domain domain, Problem problem, PrintWriter domainWriter, PrintWriter problemWriter) throws IOException {
-        writeDomain(domain, domainWriter);
-        writeProblem(problem, problemWriter);
-    }
+public class CostPddlOutputCodec extends PddlOutputCodec {
     
-    public void writeToDisk(Domain domain, Problem problem, Writer domainWriter, Writer problemWriter) throws IOException {
-        writeToDisk(domain, problem, new PrintWriter(domainWriter), new PrintWriter(problemWriter));        
-    }
-                    
-    
-    private void writeProblem(Problem problem, PrintWriter pw) {
-        pw.println("(define (problem " + problem.getName() + ")");
-        pw.println("   (:domain " + problem.getDomain().getName() + ")");
-        
-        pw.println("   (:init");
-        for( Term term : problem.getInitialState() ) {
-            pw.println("      " + term.toLispString());
-        }
-        pw.println("   )\n");
-        
-        pw.println("   (:goal " + toPddlString(problem.getGoal()) + ")");
-        pw.println(")");
-        pw.flush(); //otherwise output is incomplete 
-    }
-    
+    @Override    
     public void writeDomain(Domain domain, PrintWriter dw) {
         dw.println("(define (domain " + domain.getName() + ")");
         dw.println("        (:requirements " + StringTools.join(domain.getRequirements(), " ") + " :action-costs )");        
@@ -90,8 +58,8 @@ public class CostPddlOutputCodec extends OutputCodec {
         dw.flush(); //otherwise output is incomplete 
     }
     
-    
-    private String toPddlString(Action action) {
+    @Override
+    protected String toPddlString(Action action) {
         StringBuffer buf = new StringBuffer();
         String prefix = "      ";
         
@@ -112,33 +80,8 @@ public class CostPddlOutputCodec extends OutputCodec {
         return buf.toString();
     }
     
-    private String toPddlString(Goal goal) {
-        if( goal instanceof crisp.planningproblem.goal.Conjunction ) {
-            crisp.planningproblem.goal.Conjunction conj = (crisp.planningproblem.goal.Conjunction) goal;
-            StringBuffer buf = new StringBuffer("(and");
-            
-            for( Goal conjunct : conj.getConjuncts() ) {
-                buf.append(" " + toPddlString(conjunct));
-            }
-            
-            buf.append(")");
-            
-            return buf.toString();
-        } else if( goal instanceof crisp.planningproblem.goal.Universal ) {
-            crisp.planningproblem.goal.Universal univ = (crisp.planningproblem.goal.Universal) goal;
-            return "(forall (" + univ.getVariables().toLispString() + ") " + toPddlString(univ.getScope()) + ")";
-        } else if( goal instanceof crisp.planningproblem.goal.Negation ) {
-            crisp.planningproblem.goal.Negation neg = (crisp.planningproblem.goal.Negation) goal;
-            return "(not " + toPddlString(neg.getSubformula()) + ")";
-        } else if( goal instanceof crisp.planningproblem.goal.Literal ) {
-            crisp.planningproblem.goal.Literal lit = (crisp.planningproblem.goal.Literal) goal;
-            return (lit.getPolarity()?"":"(not ") + lit.getAtom().toLispString().replace("**equals**", "=") + (lit.getPolarity()?"":")");
-        } else {
-            return null;
-        }
-    }
-    
-    private String toPddlString(Effect effect) {
+    @Override
+    protected String toPddlString(Effect effect) {
         if( effect instanceof crisp.planningproblem.effect.Conjunction ) {
             crisp.planningproblem.effect.Conjunction conj = (crisp.planningproblem.effect.Conjunction) effect;
             StringBuffer buf = new StringBuffer("(and");

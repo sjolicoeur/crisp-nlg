@@ -93,6 +93,12 @@
       <javacc 
 	  javacchome="packages/javacc-4.0/bin/lib"
 	  target="src/crisp/evaluation/lamaplanparser/LamaPlanParser.jj" />
+      <javacc 
+	  javacchome="packages/javacc-4.0/bin/lib"
+	  target="src/crisp/evaluation/sgplanparser/SgPlanParser.jj" />
+      <javacc 
+	  javacchome="packages/javacc-4.0/bin/lib"
+	  target="src/crisp/evaluation/ffplanparser/FfPlanParser.jj" />
     </target>
 
 

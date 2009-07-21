@@ -22,6 +22,9 @@ import java.util.Map;
 /**
  * A parser for reading a plan that is output by the LAMA lanner and returning
  * it as a list of Atoms representing action instances.  
+ * 
+ * @author Daniel Bauer 
+ *
  */
  public class LamaPlanParser {	
 		

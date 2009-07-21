@@ -30,7 +30,7 @@ public class PddlOutputCodec extends OutputCodec {
         writeDomain(domain, domainWriter);
         writeProblem(problem, problemWriter);
     }
-    
+                
     private void writeProblem(Problem problem, PrintWriter pw) {
         pw.println("(define (problem " + problem.getName() + ")");
         pw.println("   (:domain " + problem.getDomain().getName() + ")");
@@ -48,8 +48,7 @@ public class PddlOutputCodec extends OutputCodec {
     
     public void writeDomain(Domain domain, PrintWriter dw) {
         dw.println("(define (domain " + domain.getName() + ")");
-        dw.println("        (:requirements " + StringTools.join(domain.getRequirements(), " ") + ")");
-        
+        dw.println("        (:requirements " + StringTools.join(domain.getRequirements(), " ") + ")");        
         dw.print("        (:types");
         for( String type : domain.getTypeHierarchy().getTypes() ) {
             if( !type.equals(TypeHierarchy.TOP) ) {
@@ -84,7 +83,7 @@ public class PddlOutputCodec extends OutputCodec {
     }
     
     
-    private String toPddlString(Action action) {
+    protected String toPddlString(Action action) {
         StringBuffer buf = new StringBuffer();
         String prefix = "      ";
         
@@ -106,7 +105,7 @@ public class PddlOutputCodec extends OutputCodec {
         return buf.toString();
     }
     
-    private String toPddlString(Goal goal) {
+    protected String toPddlString(Goal goal) {
         if( goal instanceof crisp.planningproblem.goal.Conjunction ) {
             crisp.planningproblem.goal.Conjunction conj = (crisp.planningproblem.goal.Conjunction) goal;
             StringBuffer buf = new StringBuffer("(and");
@@ -132,7 +131,7 @@ public class PddlOutputCodec extends OutputCodec {
         }
     }
     
-    private String toPddlString(Effect effect) {
+    protected String toPddlString(Effect effect) {
         if( effect instanceof crisp.planningproblem.effect.Conjunction ) {
             crisp.planningproblem.effect.Conjunction conj = (crisp.planningproblem.effect.Conjunction) effect;
             StringBuffer buf = new StringBuffer("(and");

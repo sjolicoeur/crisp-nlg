@@ -21,9 +21,10 @@ public class TypeHierarchy {
     }
 
     public void addSubtype(String subtype, String supertype) {
-        if( !containsType(supertype) ) {
-            System.err.println("Warning: Unknown supertype " + supertype );
-        }
+        // Turn off the warning for now
+        //if( !containsType(supertype) ) {
+        //    System.err.println("Warning: Unknown supertype " + supertype );
+        //}
 
         subtypes.put(subtype, supertype);
     }

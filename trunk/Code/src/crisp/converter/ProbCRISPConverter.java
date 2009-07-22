@@ -255,7 +255,7 @@ public class ProbCRISPConverter implements ProblemConverter {
         // the universal precondition involving needtoexpress predicates that do not occur        
         // elsewhere as an effect        
         for( Integer i : problem.getComgoalArities()) {
-            System.out.println("Found needtoexpress for arity "+i.toString());
+            //System.out.println("Found needtoexpress for arity "+i.toString());
             TypedVariableList tlPredicate = new TypedVariableList();
             tlPredicate.addItem(new Variable("?P"), "predicate");
             

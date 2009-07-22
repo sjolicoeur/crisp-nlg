@@ -61,7 +61,7 @@ public class LamaPlannerInterface implements PlannerInterface {
 
     public static final String LAMA_STRATEGIES = "f";
 
-    public static final long DEFAULT_TIMEOUT = 60000;
+    public static final long DEFAULT_TIMEOUT = 600000;
     
     private long preprocessingTime;
     private long searchTime;
@@ -252,7 +252,7 @@ public class LamaPlannerInterface implements PlannerInterface {
             
         System.out.println("Running planner ... ");
         PlannerInterface planner = new LamaPlannerInterface();
-        List<Term> plan = planner.runPlanner(domain,problem,60000);
+        List<Term> plan = planner.runPlanner(domain,problem, 600000);
         System.out.println(planner.getTotalTime());
         System.out.println(planner.getPreprocessingTime());
         System.out.println(planner.getSearchTime());

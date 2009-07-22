@@ -26,6 +26,8 @@ import java.io.StringReader;
 import java.io.StringWriter;    
 import java.io.File;
 
+import java.sql.SQLException;
+
 /**
  * Provides basic functionality for large scale experiments with the generation system. 
  */
@@ -66,9 +68,21 @@ public class BatchExperiment {
         processSentence(batch.poll());
     }
     
+    long creationTime = 0;
+    
     private void processSentence(int sentenceID) {
         System.out.println("Processing sentence #"+sentenceID);
+        
+        
+        DerivationTree derivTree = null;
+        DerivedTree derivedTree = null;
+        String yield = null;
+        long preprocessingTime = 0;
+        long searchTime = 0;
+        long creationTime = 0;
+        
         try{
+            this.planner = new LamaPlannerInterface();
             Set<Term> semantics = database.getSentenceSemantics("dbauer_PTB_semantics",sentenceID);
             String rootIndex = database.getRootIndex("dbauer_PTB_semantics",sentenceID);
         
@@ -77,27 +91,42 @@ public class BatchExperiment {
             Domain domain = new Domain();
             Problem problem = new Problem();
             System.out.print("  converting...");
+            
+            this.converter = new ProbCRISPConverter();
+                            
+            long start = System.currentTimeMillis();
             converter.convert(grammar, new StringReader(xmlProblem), domain, problem);
-            System.out.println("done.");
-            System.out.println("Starting planner... ");
+            creationTime = System.currentTimeMillis()-start;
+            
+            System.out.println("done in "+creationTime+"ms.");
+            System.out.println("  Starting planner... ");
             List<Term> plan = planner.runPlanner(domain, problem);
             
             // Build derivation and derived tree
             DerivationTreeBuilder derivationTreeBuilder = new PCrispDerivationTreeBuilder(grammar);
-            DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
-            DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
-            String yield = derivedTree.yield();
-            System.out.println("Result is: "+yield);
-
-                
-
-           
-        } catch (Exception e) {
-            System.out.println("FAIL!");
+            derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
+            derivedTree = derivTree.computeDerivedTree(grammar);
+            yield = derivedTree.yield();
+            preprocessingTime = planner.getPreprocessingTime();
+            searchTime = planner.getSearchTime();
+            System.out.println("   Result is: "+yield);
+            database.writeResults(resultTable, sentenceID, derivTree, derivedTree, creationTime, preprocessingTime, searchTime, null);
+        } catch (SQLException e) {            
+            System.err.println("Couldn't process sentence #"+sentenceID);
+            System.err.println("Error in SQL connection: "+e);
+            return;
+        } catch (Exception e) {         
             System.err.println("Couldn't process sentence #"+sentenceID);
             System.err.println(e);
-            // Write error tag to database            
-        }
+            // Write error tag to database
+            try {
+                database.writeResults(resultTable, sentenceID, null, null, creationTime, 0, 0 , e.toString());
+            }    catch (SQLException f) {            
+                System.err.println("Couldn't write error message to database.");
+                System.err.println("Error in SQL connection: "+f);                
+            }         
+        } 
+        
     }
           
     
@@ -111,7 +140,7 @@ public class BatchExperiment {
         writer.write("\" cat=\"S\" index=\"");
         writer.write(rootIndex);
         writer.write("\" plansize=\"");
-        writer.write(problemsize.toString());
+        writer.write(new Integer(semantics.size()).toString());
         writer.write("\">\n");
 
         // Everything in the KB becomes communicative goal
@@ -131,7 +160,7 @@ public class BatchExperiment {
     
     public static void main(String[] args) throws Exception{
         
-        System.out.print("Parsing gramar...");
+        System.out.print("Parsing grammar...");
         PCrispXmlInputCodec codec = new PCrispXmlInputCodec();
 		ProbabilisticGrammar<Term> grammar = new ProbabilisticGrammar<Term>();	
 		codec.parse(new File(args[0]), grammar);
@@ -142,11 +171,16 @@ public class BatchExperiment {
                                                    grammar,                                                   
                                                    new ProbCRISPConverter(),
                                                    new MySQLInterface("jdbc:mysql://forbin/penguin" ,"penguin_rw","xohD9xei"),
-                                                   "pcrisp_results1"
+                                                   "dbauer_pcrisp_results1"
                                                    );
-        exp1.addToBatch(1);
-        //exp1.addToBatch(2);        
-        //exp1.addToBatch(42);
+                                                   
+        int start = new Integer(args[1]);
+        int end = new Integer(args[2]);
+        
+        for (int i=start; i<=end; i++) {
+            exp1.addToBatch(i);
+        }
+        
         System.out.println("Done.");
         System.out.println("Running experiment...");
         exp1.runExperiment();

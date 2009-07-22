@@ -59,6 +59,12 @@ public class MySQLInterface extends DatabaseInterface {
      }
 
 
+     private int executeUpdate(String sql) throws SQLException{
+         Statement stmt = connection.createStatement();
+         int updatecount = stmt.executeUpdate(sql);
+         return updatecount;
+     }
+     
     /**
      * Retrieve a semantic representation for a sentence in the database.
      * @return Semantic representation for the sentence as a set of ground positive literals.
@@ -96,7 +102,7 @@ public class MySQLInterface extends DatabaseInterface {
 
     private void setResultString(String resultTableName, String column, int sentenceID, String text) throws Exception {
         String sql = "INSERT INTO " + resultTableName + " (sentence_id, "+column+") VALUES (" + sentenceID + ", '"+text+"');";
-        executeQuery(sql);
+        executeUpdate(sql);
     }
    
     /**
@@ -122,7 +128,7 @@ public class MySQLInterface extends DatabaseInterface {
     
     private void setResultTime(String resultTableName, String timeColumn, int sentenceID, long time) throws Exception {
         String sql = "INSERT INTO " + resultTableName + " (sentence_id, "+ timeColumn + ") VALUES (" + sentenceID + ", " + time + ");";
-        executeQuery(sql);
+        executeUpdate(sql);
     }
 
     /**
@@ -146,12 +152,32 @@ public class MySQLInterface extends DatabaseInterface {
         setResultTime(resultTableName, "search_time", sentenceID, time);
     }
 
+    
+    public void setResultTimes(String resultTableName, int sentenceID, long creationTime, long preprocessingTime, long searchTime) throws Exception{
+        setResultCreationTime(resultTableName, sentenceID, creationTime);
+        setResultPreprocessingTime(resultTableName, sentenceID, preprocessingTime);
+        setResultSearchTime(resultTableName, sentenceID, searchTime);
+    }
+    
 
     public void setResultError(String resultTableName, int sentenceID, String errormsg) throws Exception{
         setResultString(resultTableName, "error", sentenceID, errormsg);    
     }
 
 
+    public void writeResults(String resultTableName, int sentenceID, DerivationTree derivation, DerivedTree derivedTree, long creationTime, long preprocessingTime, long searchTime, String error) throws SQLException {
+
+        String sql;
+        if (derivation==null){
+            sql = "INSERT INTO "+resultTableName+" (sentence_id, derivation, derived_tree, surface, creation_time, preprocessing_time, search_time, error) VALUES (" +
+                     sentenceID + ",'','','',"+creationTime+","+preprocessingTime+","+searchTime+",'"+error+"');";
+        } else {
+         sql = "INSERT INTO "+resultTableName+" (sentence_id, derivation, derived_tree, surface, creation_time, preprocessing_time, search_time, error) VALUES (" +
+                     sentenceID + ",'" + derivation + "','"+derivedTree+"','"+derivedTree.yield()+"',"+creationTime+","+preprocessingTime+","+searchTime+",'"+error+"');";
+        }
+        executeUpdate(sql);                                          
+    }
+    
     /*
     public static void main(String[] args) throws Exception{
         MySQLInterface database = new MySQLInterface("jdbc:mysql://forbin/penguin" ,"penguin_rw","xohD9xei");

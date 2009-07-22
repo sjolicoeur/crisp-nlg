@@ -81,6 +81,10 @@ public class BatchExperiment {
         long searchTime = 0;
         long creationTime = 0;
         
+        this.converter = new ProbCRISPConverter();
+
+        System.gc();
+
         try{
             this.planner = new LamaPlannerInterface();
             Set<Term> semantics = database.getSentenceSemantics("dbauer_PTB_semantics",sentenceID);
@@ -92,7 +96,6 @@ public class BatchExperiment {
             Problem problem = new Problem();
             System.out.print("  converting...");
             
-            this.converter = new ProbCRISPConverter();
                             
             long start = System.currentTimeMillis();
             converter.convert(grammar, new StringReader(xmlProblem), domain, problem);

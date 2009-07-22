@@ -203,7 +203,7 @@ public class LamaPlannerInterface implements PlannerInterface {
     }
     
     public long getTotalTime() {
-        return totalTime;
+        return preprocessingTime + searchTime;
     }
     
     public long getSearchTime() {

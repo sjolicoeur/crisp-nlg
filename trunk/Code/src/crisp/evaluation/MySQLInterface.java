@@ -15,6 +15,8 @@ import java.util.Properties;
 import de.saar.chorus.term.Term;
 import de.saar.chorus.term.parser.TermParser;
 
+import de.saar.penguin.tag.derivation.DerivationTree;
+import de.saar.penguin.tag.derivation.DerivedTree;
 
 /**
  * An interface for connecting to a database that stores planning problems and result. 
@@ -24,8 +26,6 @@ import de.saar.chorus.term.parser.TermParser;
  */
 public class MySQLInterface extends DatabaseInterface {
 
-    private static final String semanticsTableName = "dbauer_PTB_semantics";
-    
     private Connection connection;
     private String url;
     private String username;
@@ -49,21 +49,27 @@ public class MySQLInterface extends DatabaseInterface {
         connection = DriverManager.getConnection(url, connectionProperties);
     }
     
-    
+     /**
+      * Execute a given SQL query on the database and return a result set.
+      */
+     private ResultSet executeQuery(String sql) throws SQLException{
+        Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,  ResultSet.CONCUR_READ_ONLY);
+        ResultSet srs = stmt.executeQuery(sql);
+        return srs;
+     }
+
+
     /**
      * Retrieve a semantic representation for a sentence in the database.
      * @return Semantic representation for the sentence as a set of ground positive literals.
      * @param sentenceID the id of the sentence for which to return semantics.
      */
-    public Set<Term> getSentenceSemantics(int sentenceID) throws Exception{
+    public Set<Term> getSentenceSemantics(String semanticsTableName, int sentenceID) throws Exception{
         
         Set<Term> literalSet = new HashSet<Term>();
         
         String sql = "SELECT DISTINCT atom FROM "+semanticsTableName+" WHERE sentence_id = " + sentenceID;         
-        
-        Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,  ResultSet.CONCUR_READ_ONLY);
-        ResultSet srs = stmt.executeQuery(sql);
-        
+        ResultSet srs = executeQuery(sql); 
         while (srs.next()){
             literalSet.add(TermParser.parse(srs.getString("atom")));
         }
@@ -76,12 +82,11 @@ public class MySQLInterface extends DatabaseInterface {
      * @param SentenceID the id of the sentence for which to return the root index.
      * @return The individual that is associated with the root of the derivation for the sentence. 
      */
-    public String getRootIndex(int sentenceID) throws Exception{
+    public String getRootIndex(String semanticsTableName, int sentenceID) throws Exception{
                 
         String sql = "SELECT DISTINCT root_index FROM "+semanticsTableName+" WHERE sentence_id = " + sentenceID;         
         
-        Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,  ResultSet.CONCUR_READ_ONLY);
-        ResultSet srs = stmt.executeQuery(sql);
+        ResultSet srs = executeQuery(sql);
         
         srs.first();
         String root_index = srs.getString("root_index");
@@ -89,17 +94,71 @@ public class MySQLInterface extends DatabaseInterface {
         return root_index;
     }
 
+    private void setResultString(String resultTableName, String column, int sentenceID, String text) throws Exception {
+        String sql = "INSERT INTO " + resultTableName + " (sentence_id, "+column+") VALUES (" + sentenceID + ", '"+text+"');";
+        executeQuery(sql);
+    }
+   
+    /**
+     * Write a derivation to the result database table. 
+     */
+    public void setResultDerivation(String resultTableName, int sentenceID, DerivationTree derivation) throws Exception {
+        setResultString(resultTableName, "derivation", sentenceID, derivation.toString());
+    }
 
+    /**
+     * Write a derived tree to the result database table. 
+     */
+    public void setResultDerivedTree(String resultTableName, int sentenceID, DerivedTree derivedTree ) throws Exception {
+        setResultString(resultTableName, "derived_tree", sentenceID, derivedTree.toString());
+    }
+
+    /**
+     * Write a derived tree yield to the result database table. 
+     */
+    public void setResultSurface(String resultTableName, int sentenceID, String surfaceString) throws Exception{
+        setResultString(resultTableName, "surface", sentenceID, surfaceString);
+    }
+    
+    private void setResultTime(String resultTableName, String timeColumn, int sentenceID, long time) throws Exception {
+        String sql = "INSERT INTO " + resultTableName + " (sentence_id, "+ timeColumn + ") VALUES (" + sentenceID + ", " + time + ");";
+        executeQuery(sql);
+    }
+
+    /**
+     * Write the time needed to create the planning problem to the result database table. 
+     */
+    public void setResultCreationTime(String resultTableName, int sentenceID, long time) throws Exception{
+        setResultTime(resultTableName, "creation_time", sentenceID, time);
+    }
+    
+    /**
+     * Write the time needed for preprocessing the planning problem to the result database table. 
+     */
+    public void setResultPreprocessingTime(String resultTableName, int sentenceID, long time) throws Exception{
+        setResultTime(resultTableName, "preprocessing_time", sentenceID, time);
+    }
+
+    /**
+     * Write the time needed for solving the planning problem to the result database table. 
+     */
+    public void setResultSearchTime(String resultTableName, int sentenceID, long time) throws Exception {
+        setResultTime(resultTableName, "search_time", sentenceID, time);
+    }
+
+
+    public void setResultError(String resultTableName, int sentenceID, String errormsg) throws Exception{
+        setResultString(resultTableName, "error", sentenceID, errormsg);    
+    }
+
+
+    /*
     public static void main(String[] args) throws Exception{
-
         MySQLInterface database = new MySQLInterface("jdbc:mysql://forbin/penguin" ,"penguin_rw","xohD9xei");
         Set<Term> sem = database.getSentenceSemantics(1);
         String rootIndex = database.getRootIndex(1);
         System.out.println(sem);
         System.out.println("Root index: "+rootIndex);
-
-    }
-
-
+    }*/
 
 }

@@ -86,14 +86,25 @@ public class SgPlannerInterface implements PlannerInterface {
             return null;
         }
                                                                                            
+    
     }
-        
+    
+     
+    public List<Term> runPlanner(Domain domain, Problem problem, long timeout) throws Exception {
+        //TODO: implement timeout for SGPlan
+        return runPlanner(domain, problem);
+    }
+
     public long getPreprocessingTime() {
         return preprocessingTime;
     }
     
     public long getSearchTime() {
         return searchTime;
+    }
+    
+    public long getTotalTime() {
+        return preprocessingTime + searchTime; 
     }
     
     

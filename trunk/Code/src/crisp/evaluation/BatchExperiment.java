@@ -2,10 +2,15 @@ package crisp.evaluation;
 
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.Domain;
+import crisp.result.DerivationTreeBuilder;
+import crisp.result.CrispDerivationTreeBuilder;
+import crisp.result.PCrispDerivationTreeBuilder;
 
 import de.saar.penguin.tag.grammar.Grammar;
 import de.saar.penguin.tag.grammar.ProbabilisticGrammar;
 import de.saar.penguin.tag.codec.PCrispXmlInputCodec;
+import de.saar.penguin.tag.derivation.DerivationTree;
+import de.saar.penguin.tag.derivation.DerivedTree;
 
 import de.saar.chorus.term.Term;
 
@@ -15,6 +20,7 @@ import crisp.converter.ProbCRISPConverter;
 import java.util.Set;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.List;
 
 import java.io.StringReader;
 import java.io.StringWriter;    
@@ -63,8 +69,8 @@ public class BatchExperiment {
     private void processSentence(int sentenceID) {
         System.out.println("Processing sentence #"+sentenceID);
         try{
-            Set<Term> semantics = database.getSentenceSemantics(sentenceID);
-            String rootIndex = database.getRootIndex(sentenceID);
+            Set<Term> semantics = database.getSentenceSemantics("dbauer_PTB_semantics",sentenceID);
+            String rootIndex = database.getRootIndex("dbauer_PTB_semantics",sentenceID);
         
             String xmlProblem = createXMLProblem(semantics, rootIndex, "problem-"+sentenceID, GRAMMAR_NAME, PROBLEM_SIZE);            
             
@@ -74,8 +80,18 @@ public class BatchExperiment {
             converter.convert(grammar, new StringReader(xmlProblem), domain, problem);
             System.out.println("done.");
             System.out.println("Starting planner... ");
-            planner.runPlanner(domain, problem);
-            // Write derivation, surface and time to result table
+            List<Term> plan = planner.runPlanner(domain, problem);
+            
+            // Build derivation and derived tree
+            DerivationTreeBuilder derivationTreeBuilder = new PCrispDerivationTreeBuilder(grammar);
+            DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
+            DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
+            String yield = derivedTree.yield();
+            System.out.println("Result is: "+yield);
+
+                
+
+           
         } catch (Exception e) {
             System.out.println("FAIL!");
             System.err.println("Couldn't process sentence #"+sentenceID);

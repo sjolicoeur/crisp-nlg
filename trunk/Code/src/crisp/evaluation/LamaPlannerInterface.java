@@ -55,11 +55,11 @@ public class LamaPlannerInterface implements PlannerInterface {
     public static final String LAMA_PREPROCESSOR = "preprocess/preprocess-mac";
     public static final String LAMA_SEARCH = "search/release-search-mac";
     
-    public static final String TEMPDOMAIN_FILE = "tmpdomain.lisp";
-    public static final String TEMPPROBLEM_FILE = "tmpproblem.lisp";
-    public static final String TEMPRESULT_FILE = "tmpresult";
+    public static final String TEMPDOMAIN_FILE = "/local/dbauer/tmpdomain.lisp";
+    public static final String TEMPPROBLEM_FILE = "/local/dbauer/tmpproblem.lisp";
+    public static final String TEMPRESULT_FILE = "/local/dbauer/tmpresult";
 
-    public static final String LAMA_STRATEGIES = "f";
+    public static final String LAMA_STRATEGIES = "fF";
 
     public static final long DEFAULT_TIMEOUT = 600000;
     

@@ -33,22 +33,16 @@ import java.sql.SQLException;
  */
 public class BatchExperiment {         
 
-    private static final Integer PROBLEM_SIZE = 40;
     private static final String GRAMMAR_NAME = "dummy";
 
     
-    PlannerInterface planner; 
     Grammar grammar; 
-    ProblemConverter converter; 
     DatabaseInterface database;
     String resultTable;
     Queue<Integer> batch;
     
-    public BatchExperiment(PlannerInterface planner, Grammar grammar, ProblemConverter converter,
-        DatabaseInterface database, String resultTable) {
-        this.planner = planner; 
+    public BatchExperiment(Grammar grammar, DatabaseInterface database, String resultTable) {
         this.grammar = grammar;
-        this.converter = converter;
         this.database = database;
         this.resultTable = resultTable;
         this.batch = new LinkedList<Integer>();       
@@ -73,7 +67,6 @@ public class BatchExperiment {
     private void processSentence(int sentenceID) {
         System.out.println("Processing sentence #"+sentenceID);
         
-        
         DerivationTree derivTree = null;
         DerivedTree derivedTree = null;
         String yield = null;
@@ -81,21 +74,21 @@ public class BatchExperiment {
         long searchTime = 0;
         long creationTime = 0;
         
-        this.converter = new ProbCRISPConverter();
+        ProbCRISPConverter converter = new ProbCRISPConverter();
 
-        System.gc();
+        PlannerInterface planner = new LamaPlannerInterface();
+        List<Term> plan = null;
+
+        Domain domain = new Domain();
+        Problem problem = new Problem();
 
         try{
-            this.planner = new LamaPlannerInterface();
             Set<Term> semantics = database.getSentenceSemantics("dbauer_PTB_semantics",sentenceID);
             String rootIndex = database.getRootIndex("dbauer_PTB_semantics",sentenceID);
         
-            String xmlProblem = createXMLProblem(semantics, rootIndex, "problem-"+sentenceID, GRAMMAR_NAME, PROBLEM_SIZE);            
+            String xmlProblem = createXMLProblem(semantics, rootIndex, "problem-"+sentenceID, GRAMMAR_NAME);
             
-            Domain domain = new Domain();
-            Problem problem = new Problem();
             System.out.print("  converting...");
-            
                             
             long start = System.currentTimeMillis();
             converter.convert(grammar, new StringReader(xmlProblem), domain, problem);
@@ -103,8 +96,8 @@ public class BatchExperiment {
             
             System.out.println("done in "+creationTime+"ms.");
             System.out.println("  Starting planner... ");
-            List<Term> plan = planner.runPlanner(domain, problem);
-            
+            plan = planner.runPlanner(domain, problem);
+           
             // Build derivation and derived tree
             DerivationTreeBuilder derivationTreeBuilder = new PCrispDerivationTreeBuilder(grammar);
             derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
@@ -128,12 +121,18 @@ public class BatchExperiment {
                 System.err.println("Couldn't write error message to database.");
                 System.err.println("Error in SQL connection: "+f);                
             }         
-        } 
-        
+        } finally {
+           converter = null;
+           planner = null;
+           plan = null;
+           problem = null;
+           domain = null;
+           System.gc();
+        }
     }
           
     
-    private String createXMLProblem(Set<Term> semantics, String rootIndex, String name, String grammar, Integer problemsize) {
+    private String createXMLProblem(Set<Term> semantics, String rootIndex, String name, String grammar) {
         StringWriter writer = new StringWriter();
         
         writer.write("<crispproblem name=\"");
@@ -166,16 +165,13 @@ public class BatchExperiment {
         System.out.print("Parsing grammar...");
         PCrispXmlInputCodec codec = new PCrispXmlInputCodec();
 		ProbabilisticGrammar<Term> grammar = new ProbabilisticGrammar<Term>();	
-		codec.parse(new File(args[0]), grammar);
+        codec.parse(new File(args[0]), grammar);
         System.out.println("done");
                 
         System.out.print("Initializing experiment 1...");       
-        BatchExperiment exp1 = new BatchExperiment(new LamaPlannerInterface(), 
-                                                   grammar,                                                   
-                                                   new ProbCRISPConverter(),
-                                                   new MySQLInterface("jdbc:mysql://forbin/penguin" ,"penguin_rw","xohD9xei"),
-                                                   "dbauer_pcrisp_results1"
-                                                   );
+        BatchExperiment exp1 = new BatchExperiment(grammar,                                                   
+                                                   new MySQLInterface("jdbc:mysql://forbin/penguin" ,"penguin_rw","xohD9xei"), 
+                                                   "dbauer_pcrisp_results1");
                                                    
         int start = new Integer(args[1]);
         int end = new Integer(args[2]);

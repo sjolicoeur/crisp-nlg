@@ -24,6 +24,7 @@ import crisp.converter.FastCRISPConverter;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.codec.CostPddlOutputCodec;
+import crisp.planningproblem.codec.OutputCodec;
 
 import crisp.evaluation.lamaplanparser.LamaPlanParser;
 
@@ -66,10 +67,12 @@ public class LamaPlannerInterface implements PlannerInterface {
     private long preprocessingTime;
     private long searchTime;
     private long totalTime;
-    
+    private OutputCodec outputCodec;
+
     LamaPlannerInterface() {
         preprocessingTime = 0;
         searchTime = 0;
+        outputCodec = new CostPddlOutputCodec();
     }
 
     
@@ -98,8 +101,8 @@ public class LamaPlannerInterface implements PlannerInterface {
         long end;
     
         
-        new CostPddlOutputCodec().writeToDisk(domain, problem, new FileWriter(new File(TEMPDOMAIN_FILE)),
-                                                           new FileWriter(new File(TEMPPROBLEM_FILE)));
+        outputCodec.writeToDisk(domain, problem, new FileWriter(new File(TEMPDOMAIN_FILE)),
+                                                 new FileWriter(new File(TEMPPROBLEM_FILE)));
                                                                    
           
         // Run the LAMA translator

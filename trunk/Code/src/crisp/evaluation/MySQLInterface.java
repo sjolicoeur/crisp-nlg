@@ -31,7 +31,7 @@ public class MySQLInterface extends DatabaseInterface {
     private String username;
     private String password;
     private Properties connectionProperties;        
-    
+
     /**
      * Open a new database interface.
      */

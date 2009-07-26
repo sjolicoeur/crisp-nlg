@@ -68,7 +68,13 @@ public class PCrispActionCreator {
         List<String> substNodes = new ArrayList<String>();
         List<String> adjNodes = new ArrayList<String>();                
         
+        HashMap<String,String> constants = new HashMap<String,String>();
+        
         for (String node : allNodes) {
+            String cat = tree.getNodeLabel(node);
+            if (cat==null || cat.equals("")) {
+                constants.put(cat, "category");
+            }
             if (tree.getNodeType(node) == NodeType.SUBSTITUTION) {
                 substNodes.add(node);
             } else {
@@ -102,7 +108,6 @@ public class PCrispActionCreator {
             I.put(n.get(role), "?x" + (roleno++));                       
         }                       
         
-        HashMap<String,String> constants = new HashMap<String,String>();
         
         constants.put("step0","stepindex");
         constants.put("step1","stepindex");
@@ -215,7 +220,6 @@ public class PCrispActionCreator {
             if (cat.equals(""))                             
                 cat = "NONE";            
             
-            constants.put(cat,"category");
                                
             effects.add(new crisp.planningproblem.effect.Literal("subst(" + treeName 
             +", " + substNode  +", "+roleN + ")", true));
@@ -272,7 +276,6 @@ public class PCrispActionCreator {
             if (cat.equals("")){                             
                 cat = "NONE";
             }
-            constants.put(cat,"category");
             
             // canadjoin            
             effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" + 
@@ -492,7 +495,6 @@ public class PCrispActionCreator {
                 if (cat.equals(""))                             
                     cat = "NONE";            
                 
-                constants.put(cat,"category");
                                        
                 effects.add(new crisp.planningproblem.effect.Literal("subst(" + childTreeName 
                 +", " + substNode +", "+roleN + ")", true));
@@ -549,7 +551,6 @@ public class PCrispActionCreator {
                 if (cat.equals("")){                             
                     cat = "NONE";
                 }
-                constants.put(cat,"category");
                 
                 // canadjoin                
                 effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" + 

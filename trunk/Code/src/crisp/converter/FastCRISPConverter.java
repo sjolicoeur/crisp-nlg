@@ -417,6 +417,11 @@ public class FastCRISPConverter  {
                 //System.out.println("  " + treeRef + ": " + tree.getSignatureString());
                 
                 for (String node : allNodes) {
+                    String cat = tree.getNodeLabel(node);
+                    if (cat==null || cat.equals("")) {
+                        cat = "NONE";
+                    }
+                    domain.addConstant(cat ,"category"); // add constants for categories to the domain
                     if (tree.getNodeType(node) == NodeType.SUBSTITUTION) {
                         substNodes.add(node);
                     } else {
@@ -571,9 +576,8 @@ public class FastCRISPConverter  {
                         //System.out.println(role+" "+roleN);
                         
                         String cat = tree.getNodeLabel(substNode);
-                        if (cat.equals(""))                             
+                        if (cat==null || cat.equals(""))                             
                             cat = "NONE";
-                        domain.addConstant(cat,"category"); // add constants for categories to the domain
                         
                         //subst 
                         effects.add(new crisp.planningproblem.effect.Literal("subst(" + cat +", "+roleN + ")", true));
@@ -622,7 +626,6 @@ public class FastCRISPConverter  {
                         
                         if (cat.equals(""))                             
                             cat = "NONE";
-                        domain.addConstant(cat,"category"); // add constants for categories to the domain
                         
                         // canadjoin
                         effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" + cat + ", " + roleN + ")", true));

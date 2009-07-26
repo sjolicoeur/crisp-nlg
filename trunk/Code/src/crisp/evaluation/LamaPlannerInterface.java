@@ -62,17 +62,15 @@ public class LamaPlannerInterface implements PlannerInterface {
 
     public static final String LAMA_STRATEGIES = "fF";
 
-    public static final long DEFAULT_TIMEOUT = 600000;
+    public static final long DEFAULT_TIMEOUT = 60000;
     
     private long preprocessingTime;
     private long searchTime;
     private long totalTime;
-    private OutputCodec outputCodec;
 
     LamaPlannerInterface() {
         preprocessingTime = 0;
         searchTime = 0;
-        outputCodec = new CostPddlOutputCodec();
     }
 
     
@@ -101,10 +99,12 @@ public class LamaPlannerInterface implements PlannerInterface {
         long end;
     
         
+        OutputCodec outputCodec = new CostPddlOutputCodec();
         outputCodec.writeToDisk(domain, problem, new FileWriter(new File(TEMPDOMAIN_FILE)),
                                                  new FileWriter(new File(TEMPPROBLEM_FILE)));
                                                                    
-          
+        
+        outputCodec = null;  
         // Run the LAMA translator
         /*
         ProcessBuilder translate_pb = new ProcessBuilder(PYTHON_BIN, LAMA_PREFIX+LAMA_TRANSLATOR, TEMPDOMAIN_FILE, TEMPPROBLEM_FILE);
@@ -138,18 +138,20 @@ public class LamaPlannerInterface implements PlannerInterface {
         try{
             lamaproc.waitFor();
         } catch (InterruptedException e) {
-            lamaproc.destroy();
             System.err.println("Planner timed out after "+timeout+" ms.");
             return null;      
         } finally {
             timer.cancel();
+            lamaproc.destroy();
         }
         
         end = System.currentTimeMillis();
         this.totalTime = end-start;                
         if (lamaproc.exitValue() != 0) {
             throw new RuntimeException("LAMA in "+LAMA_SCRIPT+ " exited inappropriately.");
-        }                
+        }              
+        lamaproc.destroy();
+        lamaproc = null;  
         
                 
         extractPlanningTime(errstream);
@@ -163,6 +165,8 @@ public class LamaPlannerInterface implements PlannerInterface {
         } catch(Exception e) {
             System.err.println("Exception while parsing planner output.");
             return null;
+        } finally {
+            resultFileReader = null;
         }
                                                                                            
     }

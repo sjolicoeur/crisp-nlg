@@ -171,6 +171,10 @@ public class Domain {
     public List<Action> getActions() {
         return new ArrayList(actions.values());
     }
+    
+    public int getDomainSize(){
+        return actions.size();
+    }
 
     public Action getAction(Predicate p) {
         return getAction(p.getLabel());

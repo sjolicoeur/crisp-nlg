@@ -130,6 +130,12 @@ public class MySQLInterface extends DatabaseInterface {
         String sql = "INSERT INTO " + resultTableName + " (sentence_id, "+ timeColumn + ") VALUES (" + sentenceID + ", " + time + ");";
         executeUpdate(sql);
     }
+    
+
+    public void setDomainSize(String resultTableName, int sentenceID, int size) throws Exception {
+        String sql = "INSERT INTO " + resultTableName + " (sentence_id, domain_size) VALUES (" + sentenceID + ", " + size + ");";
+        executeUpdate(sql);
+    }
 
     /**
      * Write the time needed to create the planning problem to the result database table. 
@@ -165,15 +171,15 @@ public class MySQLInterface extends DatabaseInterface {
     }
 
 
-    public void writeResults(String resultTableName, int sentenceID, DerivationTree derivation, DerivedTree derivedTree, long creationTime, long preprocessingTime, long searchTime, String error) throws SQLException {
+    public void writeResults(String resultTableName, int sentenceID, int domainSize, DerivationTree derivation, DerivedTree derivedTree, long creationTime, long preprocessingTime, long searchTime, String error) throws SQLException {
 
         String sql;
         if (derivation==null){
-            sql = "INSERT INTO "+resultTableName+" (sentence_id, derivation, derived_tree, surface, creation_time, preprocessing_time, search_time, error) VALUES (" +
-                     sentenceID + ",'','','',"+creationTime+","+preprocessingTime+","+searchTime+",'"+error+"');";
+            sql = "INSERT INTO "+resultTableName+" (sentence_id, domain_size, derivation, derived_tree, surface, creation_time, preprocessing_time, search_time, error) VALUES (" +
+                     sentenceID +"," + domainSize +",'','','',"+creationTime+","+preprocessingTime+","+searchTime+",'"+error+"');";
         } else {
          sql = "INSERT INTO "+resultTableName+" (sentence_id, derivation, derived_tree, surface, creation_time, preprocessing_time, search_time, error) VALUES (" +
-                     sentenceID + ",'" + derivation + "','"+derivedTree+"','"+derivedTree.yield()+"',"+creationTime+","+preprocessingTime+","+searchTime+",'"+error+"');";
+                     sentenceID +"," + domainSize + ",'" + derivation + "','"+derivedTree+"','"+derivedTree.yield()+"',"+creationTime+","+preprocessingTime+","+searchTime+",'"+error+"');";
         }
         executeUpdate(sql);                                          
     }

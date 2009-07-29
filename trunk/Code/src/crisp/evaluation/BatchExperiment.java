@@ -73,6 +73,7 @@ public class BatchExperiment {
         long preprocessingTime = 0;
         long searchTime = 0;
         long creationTime = 0;
+        int domainSize = 0;
         
         ProbCRISPConverter converter = new ProbCRISPConverter();
 
@@ -92,6 +93,8 @@ public class BatchExperiment {
                             
             long start = System.currentTimeMillis();
             converter.convert(grammar, new StringReader(xmlProblem), domain, problem);
+            domainSize = domain.getDomainSize();
+
             creationTime = System.currentTimeMillis()-start;
             
             System.out.println("done in "+creationTime+"ms.");
@@ -106,7 +109,7 @@ public class BatchExperiment {
             preprocessingTime = planner.getPreprocessingTime();
             searchTime = planner.getSearchTime();
             System.out.println("   Result is: "+yield);
-            database.writeResults(resultTable, sentenceID, derivTree, derivedTree, creationTime, preprocessingTime, searchTime, null);
+            database.writeResults(resultTable, sentenceID, domainSize, derivTree, derivedTree, creationTime, preprocessingTime, searchTime, null);
         } catch (SQLException e) {            
             System.err.println("Couldn't process sentence #"+sentenceID);
             System.err.println("Error in SQL connection: "+e);
@@ -116,7 +119,7 @@ public class BatchExperiment {
             System.err.println(e);
             // Write error tag to database
             try {
-                database.writeResults(resultTable, sentenceID, null, null, creationTime, 0, 0 , e.toString());
+                database.writeResults(resultTable, sentenceID, domainSize, null, null, creationTime, 0, 0 , e.toString());
             }    catch (SQLException f) {            
                 System.err.println("Couldn't write error message to database.");
                 System.err.println("Error in SQL connection: "+f);                

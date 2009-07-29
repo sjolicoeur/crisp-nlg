@@ -41,6 +41,7 @@ import de.saar.penguin.tag.visualize.JGraphVisualizer;
 import de.saar.chorus.term.Term; 
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Timer;
 
 //import javax.swing.JFrame;
@@ -73,7 +74,35 @@ public class LamaPlannerInterface implements PlannerInterface {
         searchTime = 0;
     }
 
+    /* Call PS to collect all process IDs of possible LAMA sub-processes
+     * WARNING: this will kill all your python processes running on that 
+     * machine!
+     */
+    private void killLamaChildProcesses() throws IOException, InterruptedException{
+        Process ps = Runtime.getRuntime().exec("bash ps -audbauer | grep -E python2\\.5|preprocess-unix|release-search-unix");    
+        ps.waitFor();
+        BufferedReader inputStream = new BufferedReader(new InputStreamReader(ps.getInputStream()));
     
+        List<String> pids = new ArrayList<String>();
+        
+        String line;
+        // Collect
+        while ((line = inputStream.readLine()) != null) {
+            String pid = line.split(" ")[0]; // Assume that tabular values in the 
+                                              // ps output are seperated by 
+                                              // whitespaces and that the first 
+                                              // value is the PID
+            pids.add(pid);
+        }
+
+        for (String pid : pids) {
+            System.out.println(pid);
+            Process kill = Runtime.getRuntime().exec("kill "+pid);
+            kill.waitFor();
+        }
+        
+    }
+
     private void pipeFileToProcess(Process p, File f) throws IOException {
         byte[] buf = new byte[1024];
         
@@ -143,6 +172,7 @@ public class LamaPlannerInterface implements PlannerInterface {
         } finally {
             timer.cancel();
             lamaproc.destroy();
+            killLamaChildProcesses();
         }
         
         end = System.currentTimeMillis();

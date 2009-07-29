@@ -178,8 +178,7 @@ public class MySQLInterface extends DatabaseInterface {
             sql = "INSERT INTO "+resultTableName+" (sentence_id, domain_size, derivation, derived_tree, surface, creation_time, preprocessing_time, search_time, error) VALUES (" +
                      sentenceID +"," + domainSize +",'','','',"+creationTime+","+preprocessingTime+","+searchTime+",'"+error+"');";
         } else {
-         sql = "INSERT INTO "+resultTableName+" (sentence_id, derivation, derived_tree, surface, creation_time, preprocessing_time, search_time, error) VALUES (" +
-                     sentenceID +"," + domainSize + ",'" + derivation + "','"+derivedTree+"','"+derivedTree.yield()+"',"+creationTime+","+preprocessingTime+","+searchTime+",'"+error+"');";
+         sql = "INSERT INTO "+resultTableName+" (sentence_id, domain_size, derivation, derived_tree, surface, creation_time, preprocessing_time, search_time, error) VALUES (" + sentenceID +"," + domainSize + ",'" + derivation + "','"+derivedTree+"','"+derivedTree.yield()+"',"+creationTime+","+preprocessingTime+","+searchTime+",'"+error+"');";
         }
         executeUpdate(sql);                                          
     }

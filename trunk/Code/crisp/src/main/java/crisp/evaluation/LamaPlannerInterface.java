@@ -1,25 +1,15 @@
 package crisp.evaluation;
 
-import java.lang.ProcessBuilder;
-import java.lang.Process;
 
 import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.BufferedOutputStream;
-import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.Reader;
-import java.io.Writer;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
 import crisp.converter.ProbCRISPConverter;
-import crisp.converter.FastCRISPConverter;
 
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
@@ -29,19 +19,17 @@ import crisp.planningproblem.codec.OutputCodec;
 import crisp.evaluation.lamaplanparser.LamaPlanParser;
 
 import crisp.result.PCrispDerivationTreeBuilder;
-import crisp.result.CrispDerivationTreeBuilder;
 import crisp.result.DerivationTreeBuilder;
 
 import de.saar.penguin.tag.grammar.ProbabilisticGrammar;
 import de.saar.penguin.tag.codec.PCrispXmlInputCodec;
 import de.saar.penguin.tag.derivation.DerivationTree;
 import de.saar.penguin.tag.derivation.DerivedTree;
-import de.saar.penguin.tag.visualize.JGraphVisualizer;
 
 import de.saar.chorus.term.Term; 
 
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Timer;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -51,39 +39,65 @@ import java.util.regex.Matcher;
 
 
 public class LamaPlannerInterface implements PlannerInterface {
-    
-    public static final String PYTHON_BIN = "/usr/bin/python";
-    public static final String LAMA_PREFIX = "/home/CE/dbauer/LAMA/";
-    public static final String LAMA_SCRIPT = "/home/CE/dbauer/LAMA/lama.sh";
-    public static final String LAMA_TRANSLATOR = "translate/translate.py";
-    public static final String LAMA_PREPROCESSOR = "preprocess/preprocess-mac";
-    public static final String LAMA_SEARCH = "search/release-search-mac";
-    
-    public static final String TEMPDOMAIN_FILE = "/local/dbauer/tmpdomain.lisp";
-    public static final String TEMPPROBLEM_FILE = "/local/dbauer/tmpproblem.lisp";
-    public static final String TEMPRESULT_FILE = "/local/dbauer/tmpresult";
 
-    public static final String LAMA_STRATEGIES = "fF";
+    public static final String LAMA_PROPERTIES_FILE = "lama.properties";
     
-    public static final String USERNAME = "dbauer";
-
+    public static final String DEF_LAMA_SCRIPT = "lama.sh";
+    public static final String DEF_TEMPDOMAIN_FILE = "tmpdomain.lisp";
+    public static final String DEF_TEMPPROBLEM_FILE = "tmpproblem.lisp";
+    public static final String DEF_TEMPRESULT_FILE = "tmpresult";
+    public static final String LAMA_STRATEGIES = "fF";    
     public static final long DEFAULT_TIMEOUT = 300000;
     
     private long preprocessingTime;
     private long searchTime;
     private long totalTime;
 
+    private String lamaScript;
+    private String tempDomainFile;
+    private String tempProblemFile;
+    private String tempResultFile;
+    private String lamaStrategies;
+    private String username;
+    private long defaultTimeout;
+    
+
     LamaPlannerInterface() {
+
+
+        // Read properties file.
+        Properties props = new Properties();
+
+        username = System.getProperty("user.name");
+
+        try {
+            props.load(new FileInputStream(LAMA_PROPERTIES_FILE));            
+            lamaScript = props.getProperty("lamaScript");
+            tempDomainFile = props.getProperty("tempDomainFile");
+            tempProblemFile = props.getProperty("tempProblemFile");
+            tempResultFile = props.getProperty("tempResultFile");
+            lamaStrategies = props.getProperty("lamaStrategies");            
+            defaultTimeout = new Integer(props.getProperty("defaultTimeout"));
+        } catch (IOException e) {
+            System.err.print("Couldn't read LAMA properties file "+LAMA_PROPERTIES_FILE +". Using default configuration.");
+            lamaScript = DEF_LAMA_SCRIPT;
+            tempDomainFile = DEF_TEMPDOMAIN_FILE;
+            tempProblemFile = DEF_TEMPPROBLEM_FILE;
+            tempResultFile = DEF_TEMPRESULT_FILE;
+            lamaStrategies = LAMA_STRATEGIES;
+            defaultTimeout = DEFAULT_TIMEOUT;
+        }
+
         preprocessingTime = 0;
         searchTime = 0;
     }
 
     /* Call PS to collect all process IDs of possible LAMA sub-processes
      * WARNING: this will kill all LAMA processes running on the machine  
-             * and other processes with the same name!
+     * and other processes with the same name!
      */
     private void killLamaChildProcesses() throws IOException, InterruptedException{
-        Process ps = Runtime.getRuntime().exec("ps -f -u"+USERNAME); 
+        Process ps = Runtime.getRuntime().exec("ps -f -u"+username);
         ps.waitFor();
         BufferedReader inputStream = new BufferedReader(new InputStreamReader(ps.getInputStream()));
     
@@ -96,7 +110,7 @@ public class LamaPlannerInterface implements PlannerInterface {
             
             // check if this is one of the LAMA binaries and if it is owned 
             // by this user
-            if (lineParts[0].equals(USERNAME) && matcher.find()) { 
+            if (lineParts[0].equals(username) && matcher.find()) {
                 String pid = lineParts[1]; // Assume that tabular values in the 
                                                   // ps output are seperated by 
                                                   // whitespaces and that the second 
@@ -115,7 +129,7 @@ public class LamaPlannerInterface implements PlannerInterface {
      * @return a list of ground (compound) Terms describing instantiated plan actions
      */
     public List<Term> runPlanner(Domain domain, Problem problem) throws Exception {
-        return runPlanner(domain, problem, DEFAULT_TIMEOUT);
+        return runPlanner(domain, problem, defaultTimeout);
     }
     
     /** 
@@ -131,8 +145,8 @@ public class LamaPlannerInterface implements PlannerInterface {
         long end;
     
         OutputCodec outputCodec = new CostPddlOutputCodec();
-        outputCodec.writeToDisk(domain, problem, new FileWriter(new File(TEMPDOMAIN_FILE)),
-                                                 new FileWriter(new File(TEMPPROBLEM_FILE)));
+        outputCodec.writeToDisk(domain, problem, new FileWriter(new File(tempDomainFile)),
+                                                 new FileWriter(new File(tempProblemFile)));
         
         outputCodec = null;  
         
@@ -141,14 +155,14 @@ public class LamaPlannerInterface implements PlannerInterface {
         
         Timer timer = new Timer();
         timer.schedule(new InterruptScheduler(Thread.currentThread()), timeout);        
-        Process lamaproc = Runtime.getRuntime().exec("bash -e "+LAMA_SCRIPT+" "+TEMPDOMAIN_FILE+" "+TEMPPROBLEM_FILE+" "+TEMPRESULT_FILE);      
+        Process lamaproc = Runtime.getRuntime().exec("bash -e "+lamaScript+" "+tempDomainFile+" "+tempProblemFile+" "+tempResultFile);
         BufferedReader errstream = new BufferedReader(new InputStreamReader(lamaproc.getErrorStream()));
         try{
             lamaproc.waitFor();
             end = System.currentTimeMillis();
             this.totalTime = end-start;                
             if (lamaproc.exitValue() != 0) {
-                throw new RuntimeException("LAMA in "+LAMA_SCRIPT+ " exited inappropriately. Probably no solution found.");
+                throw new RuntimeException("LAMA in "+lamaScript+ " exited inappropriately. Probably no solution found.");
             }              
                 
             extractPlanningTime(errstream);
@@ -164,7 +178,7 @@ public class LamaPlannerInterface implements PlannerInterface {
         
         
         
-        FileReader resultFileReader = new FileReader(new File(TEMPRESULT_FILE+".1"));        
+        FileReader resultFileReader = new FileReader(new File(tempResultFile+".1"));
         
         try{
             LamaPlanParser parser = new LamaPlanParser(resultFileReader);
@@ -276,6 +290,6 @@ public class LamaPlannerInterface implements PlannerInterface {
         System.out.println(derivedTree.yield());
         
     }
-    
-    
+
+
 }

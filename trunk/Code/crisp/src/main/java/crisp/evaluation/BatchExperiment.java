@@ -14,7 +14,6 @@ import de.saar.penguin.tag.derivation.DerivedTree;
 
 import de.saar.chorus.term.Term;
 
-import crisp.converter.ProblemConverter;
 import crisp.converter.ProbCRISPConverter;
 
 import java.util.Set;
@@ -26,7 +25,11 @@ import java.io.StringReader;
 import java.io.StringWriter;    
 import java.io.File;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.SQLException;
+
+import java.util.Properties;
 
 /**
  * Provides basic functionality for large scale experiments with the generation system. 
@@ -34,7 +37,12 @@ import java.sql.SQLException;
 public class BatchExperiment {         
 
     private static final String GRAMMAR_NAME = "dummy";
+    private static final String DATABASE_PROPERTIES_FILE = "database.properties";
+    
 
+
+    
+    
     
     Grammar grammar; 
     DatabaseInterface database;
@@ -43,7 +51,10 @@ public class BatchExperiment {
     
     ProbCRISPConverter converter; 
     
+    Properties properties;
+
     public BatchExperiment(Grammar grammar, DatabaseInterface database, String resultTable) {
+
         this.converter = new ProbCRISPConverter();
         this.grammar = grammar;
         this.database = database;
@@ -119,7 +130,7 @@ public class BatchExperiment {
             return;
         } catch (Exception e) {         
             System.err.println("Couldn't process sentence #"+sentenceID);
-            System.err.println(e);
+            e.printStackTrace();
             // Write error tag to database
             try {
                 database.writeResults(resultTable, sentenceID, domainSize, null, null, creationTime, 0, 0 , e.toString());
@@ -128,7 +139,7 @@ public class BatchExperiment {
                 System.err.println("Error in SQL connection: "+f);                
             }         
         } finally {
-           converter = null;
+           //converter = null;
            planner = null;
            plan = null;
            problem = null;
@@ -173,11 +184,25 @@ public class BatchExperiment {
 		ProbabilisticGrammar<Term> grammar = new ProbabilisticGrammar<Term>();	
         codec.parse(new File(args[0]), grammar);
         System.out.println("done");
-                
-        System.out.print("Initializing experiment 1...");       
+
+        // Read properties file.
+        Properties props = new Properties();
+
+        try {
+            props.load(new FileInputStream(DATABASE_PROPERTIES_FILE));
+        } catch (IOException e) {
+            System.err.print("Couldn't read properties file "+DATABASE_PROPERTIES_FILE);
+        }
+
+        String database = props.getProperty("databaseName");
+        String username = props.getProperty("userName");
+        String password = props.getProperty("password");
+        String resulttable = props.getProperty("resultTable");
+
+        System.out.print("Initializing experiment ...");       
         BatchExperiment exp1 = new BatchExperiment(grammar,                                                   
-                                                   new MySQLInterface("jdbc:mysql://forbin/penguin" ,"penguin_rw","xohD9xei"), 
-                                                   "dbauer_pcrisp_results1");
+                                                   new MySQLInterface(database, username, password),
+                                                   resulttable);
                                                    
         int start = new Integer(args[1]);
         int end = new Integer(args[2]);

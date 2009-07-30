@@ -503,7 +503,7 @@ public class CRISPConverter {
 
         domain.setName(xp("/crispproblem/@name"));
         problem.setName(xp("/crispproblem/@name"));
-        problem.setDomain(xp("/crispproblem/@name"));
+        problem.setDomain(domain);
 
         domain.addRequirement(":strips");
         domain.addRequirement(":equality");

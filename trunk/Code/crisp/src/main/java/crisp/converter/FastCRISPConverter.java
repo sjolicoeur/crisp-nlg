@@ -110,7 +110,7 @@ public class FastCRISPConverter  {
                 problemname = atts.getValue("name");  
                 domain.setName(problemname);
                 problem.setName(problemname);
-                problem.setDomain(problemname);
+                problem.setDomain(domain);
                 
                 try {
                     plansize = Integer.parseInt(atts.getValue("plansize"));

@@ -81,7 +81,7 @@ public class CRISPtoTempPDDL {
         
         String domainName = "domain-"+problem.getName();
         domain.setName(domainName);
-        problem.setDomain(domainName);
+        problem.setDomain(domain);
         computeGoal(domain,problem);
 		end = System.currentTimeMillis();
         long problemCreationTime = end-start;

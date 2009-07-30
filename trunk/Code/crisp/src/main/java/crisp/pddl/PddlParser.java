@@ -327,7 +327,7 @@ public class PddlParser implements PddlParserConstants {
     jj_consume_token(OPENBRACE);
     jj_consume_token(DOMAIN_TAG);
     t = jj_consume_token(NAME);
-                                              problem.setDomain(t.image);
+    //problem.setDomain(t.image);
     jj_consume_token(CLOSEBRACE);
   }
 

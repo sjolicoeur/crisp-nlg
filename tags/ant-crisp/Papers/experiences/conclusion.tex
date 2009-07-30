@@ -1,0 +1,63 @@
+\section{Conclusion} \label{sec:conclusion}
+
+In this paper, we introduced two novel planning domains arising from
+problems in natural language generation: the sentence generation
+domain and the GIVE navigation domain. We also reported on the results
+of a number of experiments in which we applied off-the-shelf planners
+to a set of problem instances in these domains.
+
+Our results were mixed. While modern planners do a pretty good job of
+controlling the complexity of search, they also suffer from practical
+problems that limit their performance in unexpected ways. In particular, in
+both domains the grounding step performed by FF and SGPLAN dominates the
+time it takes to perform the search itself. In future work, we hope to
+extend our analysis by exploring other planners, such as SHOP2
+\cite{DBLP:journals/jair/NauAIKMWY03}, which do not perform the initial
+grounding step. We also believe our domains would provide suitable
+challenges for planners entered in future editions of the IPC.
+%We are also considering to propose some of our domains as IPC benchmarks.
+
+The NLG community's recent interest in planning presents a valuable
+opportunity for planning researchers.  While GIVE highlights
+certain challenges such as plan execution monitoring and plan presentation
+(i.e., summarisation and elaboration), it also offers a platform on which
+such technologies can be evaluated in experiments with human users.
+Furthermore, research related to reasoning under uncertainty, resource
+management, and planning with knowledge and sensing, can also be
+investigated in this domain setting. Provided some of the challenges we
+have highlighted can be addressed, projects like GIVE (and other
+NLG-inspired problem domains) offer a constructive platform for the
+planning community to showcase their techniques to a wider audience---and
+to improve the quality of their tools for real-world planning tasks. 
+
+%The NLG community's recent interest in planning presents a valuable
+%opportunity for planning researchers: provided some of the challenges
+%we have highlighted can be addressed, projects like GIVE (and other
+%NLG-inspired problem domains) offer a constructive platform for the
+%planning community to showcase their techniques to a wider
+%audience---and to improve the quality of their tools for real-world
+%planning tasks.  Furthermore, GIVE highlights planning-related
+%challenges such as plan execution monitoring and plan presentation
+%and summarisation and offers a platform on which such technologies can
+%be evaluated in experiments with human users.
+
+\section{Acknowledgements}
+This work arose in the context of the Planning and Language Interest Group
+at the University of Edinburgh. We thank all members of this group,
+especially Hector Geffner and Mark Steedman, for interesting discussions.
+This work was partially supported by the DFG Research Fellowship ``CRISP:
+Efficient integrated realization and microplanning'' and by the European
+Commission through the PACO-PLUS project (FP6-2004-IST-4-27657).
+
+%\paragraph{Acknowledgments.} This work is a collaboration that arose
+%in the context of the ``planning and language'' group at the
+%University of Edinburgh.  We thank all members of this group,
+%especially Hector Geffner and Mark Steedman, for interesting
+%discussions.  This work was supported by the DFG Research Fellowship
+%``CRISP: Efficient integrated realization and microplanning'' and the
+%EU project XYZ PACO-PLUS.
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "experiences"
+%%% End: 

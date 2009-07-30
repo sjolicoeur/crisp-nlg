@@ -1,0 +1,94 @@
+options {
+	LOOKAHEAD = 2;
+	STATIC = false;
+    JDK_VERSION = "1.5";
+}
+
+
+
+PARSER_BEGIN(FfPlanParser)
+package crisp.evaluation.ffplanparser;
+
+import de.saar.chorus.term.Term;
+import de.saar.chorus.term.Compound;
+import de.saar.chorus.term.Constant;
+
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+
+/**
+ * A parser for reading a plan that is output by the FF planner and returning
+ * it as a list of {@link give.formula.Atom}s representing action instances.
+ *
+ * @author Alexander Koller
+ *
+ */
+ public class FfPlanParser {
+	private Map<String,String> normalizeUppercaseNames;
+	
+	public FfPlanParser(Reader reader, Map<String,String> normalizeUppercaseNames) {
+		this(reader);
+		
+		this.normalizeUppercaseNames = normalizeUppercaseNames;
+	}
+	
+	private String normalize(String s) {
+		if( normalizeUppercaseNames.containsKey(s) ) {
+			return normalizeUppercaseNames.get(s);
+		} else {
+			return s;
+		}
+	}
+	
+    public static List<Term> parse(String string, Map<String,String> normalizer) {
+        try {
+            FfPlanParser p = new FfPlanParser(new StringReader(string), normalizer);
+            return p.plan();
+        } catch(ParseException e) {
+            System.err.println("Exception while parsing " + string + ": " + e);
+            return null;
+        }
+    }
+}
+PARSER_END(FfPlanParser)
+
+
+
+
+SKIP : { " " | "\r" | "\t" | "\n" }
+
+TOKEN : {
+	<STEP: "step">
+|   <STEPNO: (["0"-"9"])+ ":">
+|   <IDENTIFIER: ["a"-"z", "A"-"Z", "*"] (["a"-"z", "A"-"Z", "_", "0"-"9", "-", "*"])*>
+
+}
+
+
+
+List<Term> plan() :
+{
+	List<Term> ret = new ArrayList<Term>();
+    Term atom;
+}
+{
+	<STEP> (<STEPNO> atom=planstep() { ret.add(atom); })* {
+		return ret;
+	}
+}
+
+
+Compound planstep() :
+{
+	List<Term> arguments = new ArrayList<Term>();
+	Token predicate, arg;
+}
+{
+	predicate=<IDENTIFIER> (arg=<IDENTIFIER> { arguments.add(new Constant(normalize(arg.image))); })* {
+		return new Compound(normalize(predicate.image), arguments);
+	}
+}
+

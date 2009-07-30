@@ -43,8 +43,8 @@ public class Problem {
         this.name = name;
     }
 
-    public void setDomain(String name) {
-        domain = Domain.getDomainForName(name);
+    public void setDomain(Domain aDomain) {
+        this.domain = aDomain;
     }
 
     public void setGoal(Goal g) {

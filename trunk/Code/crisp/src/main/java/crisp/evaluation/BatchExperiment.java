@@ -88,7 +88,8 @@ public class BatchExperiment {
         long searchTime = 0;
         long creationTime = 0;
         int domainSize = 0;
-        
+
+        converter = new ProbCRISPConverter();
         
 
         PlannerInterface planner = new LamaPlannerInterface();
@@ -108,6 +109,8 @@ public class BatchExperiment {
             long start = System.currentTimeMillis();
             converter.convert(grammar, new StringReader(xmlProblem), domain, problem);
             domainSize = domain.getDomainSize();
+
+
 
             creationTime = System.currentTimeMillis()-start;
             
@@ -144,7 +147,7 @@ public class BatchExperiment {
            plan = null;
            problem = null;
            domain = null;
-           System.gc();
+         //  System.gc();
         }
     }
           

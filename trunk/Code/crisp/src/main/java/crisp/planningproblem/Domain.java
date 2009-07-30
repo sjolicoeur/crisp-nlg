@@ -20,7 +20,7 @@ import de.saar.chorus.term.Substitution;
 
 
 public class Domain {
-    private static Map<String, Domain> domains = new HashMap<String, Domain>();
+    //private static Map<String, Domain> domains = new HashMap<String, Domain>();
 
     private String name;
     private final List<String> requirements;
@@ -41,9 +41,10 @@ public class Domain {
                                    //   actions with mustadjoin effects 
     							   //  This is not supposed to be here!
     
-    public static Domain getDomainForName(String name) {
+   /* public static Domain getDomainForName(String name) {
         return domains.get(name);
     }
+    */
 
     public void clear() {
         name = null;
@@ -79,7 +80,7 @@ public class Domain {
         this.name = name;
 
 
-        domains.put(name, this);
+        //domains.put(name, this);
     }
 
     public void addRequirement(String requirement) {

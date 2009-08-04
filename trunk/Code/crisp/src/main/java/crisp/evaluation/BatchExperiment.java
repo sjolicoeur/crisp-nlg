@@ -1,5 +1,6 @@
 package crisp.evaluation;
 
+import crisp.converter.FastCRISPConverter;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.Domain;
 import crisp.result.DerivationTreeBuilder;
@@ -49,13 +50,13 @@ public class BatchExperiment {
     String resultTable;
     Queue<Integer> batch;
     
-    ProbCRISPConverter converter; 
+    FastCRISPConverter converter;
     
     Properties properties;
 
     public BatchExperiment(Grammar grammar, DatabaseInterface database, String resultTable) {
 
-        this.converter = new ProbCRISPConverter();
+        this.converter = new FastCRISPConverter();
         this.grammar = grammar;
         this.database = database;
         this.resultTable = resultTable;
@@ -76,7 +77,6 @@ public class BatchExperiment {
         processSentence(batch.poll());
     }
     
-    long creationTime = 0;
     
     private void processSentence(int sentenceID) {
         System.out.println("Processing sentence #"+sentenceID);
@@ -88,10 +88,8 @@ public class BatchExperiment {
         long searchTime = 0;
         long creationTime = 0;
         int domainSize = 0;
-
-        converter = new ProbCRISPConverter();
         
-
+        
         PlannerInterface planner = new LamaPlannerInterface();
         List<Term> plan = null;
 
@@ -119,7 +117,7 @@ public class BatchExperiment {
             plan = planner.runPlanner(domain, problem);
            
             // Build derivation and derived tree
-            DerivationTreeBuilder derivationTreeBuilder = new PCrispDerivationTreeBuilder(grammar);
+            DerivationTreeBuilder derivationTreeBuilder = new CrispDerivationTreeBuilder(grammar);
             derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
             derivedTree = derivTree.computeDerivedTree(grammar);
             yield = derivedTree.yield();
@@ -202,7 +200,9 @@ public class BatchExperiment {
         String password = props.getProperty("password");
         String resulttable = props.getProperty("resultTable");
 
-        System.out.print("Initializing experiment ...");       
+        System.out.println("Will connect to "+database+" as user "+username);
+
+        System.out.print("Initializing experiment ...");
         BatchExperiment exp1 = new BatchExperiment(grammar,                                                   
                                                    new MySQLInterface(database, username, password),
                                                    resulttable);

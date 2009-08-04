@@ -10,7 +10,7 @@ package crisp.planningproblem;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Set;
 
@@ -26,10 +26,10 @@ public class Action {
     private Goal precondition;
     private Effect effect;
 
-    private HashMap<String,String> constants; // Store constants used by this action.
-    private ArrayList<Predicate> predicates; // Store (semantic) predicates used by this action
+    private Map<String,String> constants; // Store constants used by this action.
+    private List<Predicate> predicates; // Store (semantic) predicates used by this action
 
-    public Action(Predicate label, Goal precondition, Effect effect, HashMap<String, String> constants, ArrayList<Predicate> predicates) {
+    public Action(Predicate label, Goal precondition, Effect effect, Map<String, String> constants, List<Predicate> predicates) {
         this.effect = effect;
         this.label = label;
         this.precondition = precondition;
@@ -59,11 +59,11 @@ public class Action {
         return precondition;
     }
 
-    public HashMap<String, String> getDomainConstants(){
+    public Map<String, String> getDomainConstants(){
         return constants;
     }
 
-    public ArrayList<Predicate> getDomainPredicates(){
+    public List<Predicate> getDomainPredicates(){
         return predicates;
     }
 

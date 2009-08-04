@@ -90,11 +90,13 @@ public class ProbCRISPConverter implements ProblemConverter {
         
         
         // All of these methods are specified in the ContentHandler interface.    
+        @Override
         public void startDocument() throws SAXException {
             characterBuffer = new StringWriter();
         }
         
         
+        @Override
         public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
             
             elementStack.push(qName);
@@ -425,6 +427,47 @@ public class ProbCRISPConverter implements ProblemConverter {
                 }                                    
             }            
         }
+
+        // Add dummy action, needed to sidestep a LAMA bug
+        ArrayList<Goal> preconds = new ArrayList<Goal>();
+        preconds.add(new crisp.planningproblem.goal.Literal("step(step0)",true));
+        ArrayList<Effect> effects = new ArrayList<Effect>();
+        HashMap<String,String> constants = new HashMap<String,String>();
+        List<Predicate> predicates = new ArrayList<Predicate>();
+
+        domain.addConstant("dummyindiv", "individual");
+        domain.addConstant("dummypred", "predicate");
+        domain.addConstant("dummynodetype", "nodetype");
+        domain.addConstant("dummysyntaxnode", "syntaxnode");
+        domain.addConstant("dummytree", "treename");
+        
+        effects.add(new crisp.planningproblem.effect.Literal("referent(dummysyntaxnode, dummyindiv)",false));
+        effects.add(new crisp.planningproblem.effect.Literal("distractor(dummysyntaxnode, dummyindiv)",false));
+        effects.add(new crisp.planningproblem.effect.Literal("subst(dummytreename, dummynodetype, dummysyntaxnode)",false));
+        effects.add(new crisp.planningproblem.effect.Literal("canadjoin(dummytreename, dummynodetype, dummysyntaxnode)",false));
+        effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(dummytreename, dummynodetype, dummysyntaxnode)",false));
+        for(int i=1; i <= maximumArity; i++ ) {
+            List<Term> subterms = new ArrayList<Term>();
+            for (int j=1; j<=i; j++){
+                subterms.add(new Constant("dummyindiv"));
+            }
+            Compound c = new Compound("needtoexpress_"+i, subterms);
+            effects.add(new crisp.planningproblem.effect.Literal(c,false));
+        }
+
+
+        DurativeAction dummyAction = new DurativeAction(new Predicate("dummy"), 
+                                            new crisp.planningproblem.goal.Conjunction(preconds),
+                                            new crisp.planningproblem.effect.Conjunction(effects),
+                                            constants, predicates, 0);
+        domain.addAction(dummyAction);
+
+        problem.addToInitialState(TermParser.parse("referent(dummysyntaxnode, dummyindiv)"));
+        problem.addToInitialState(TermParser.parse("distractor(dummysyntaxnode, dummyindiv)"));
+        problem.addToInitialState(TermParser.parse("subst(dummytreename, dummynodetype, dummysyntaxnode)"));
+        problem.addToInitialState(TermParser.parse("canadjoin(dummytreename, dummynodetype, dummysyntaxnode)"));
+        problem.addToInitialState(TermParser.parse("mustadjoin(dummytreename, dummynodetype, dummysyntaxnode)"));
+
     }
     
     
@@ -442,7 +485,7 @@ public class ProbCRISPConverter implements ProblemConverter {
      * Add a new action to a planning domain and register all constants and predicates it uses.
      */
     private void addActionToDomain(Action action, Domain domain){
-        HashMap<String,String> constants = action.getDomainConstants();
+        Map<String,String> constants = action.getDomainConstants();
         
         domain.addAction(action);
         
@@ -454,7 +497,7 @@ public class ProbCRISPConverter implements ProblemConverter {
         }
         
         // register predicates used by this action
-        ArrayList<Predicate> predicates = action.getDomainPredicates();
+        List<Predicate> predicates = action.getDomainPredicates();
         if (predicates!=null) {
             for (Predicate pred : predicates) { 
                domain.addPredicate(pred);

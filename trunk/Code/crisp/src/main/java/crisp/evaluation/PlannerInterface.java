@@ -3,7 +3,6 @@ package crisp.evaluation;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
 
-import java.io.IOException;
 
 import de.saar.chorus.term.Term; 
 

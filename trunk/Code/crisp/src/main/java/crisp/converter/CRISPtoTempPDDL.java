@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.Map;
 
 public class CRISPtoTempPDDL {
 
@@ -63,13 +64,13 @@ public class CRISPtoTempPDDL {
         //  the domain        
         for (DurativeAction a: selectedActions){
             domain.addAction(a);
-            HashMap<String,String> constants = a.getDomainConstants();
+            Map<String,String> constants = a.getDomainConstants();
             if (constants!=null)
                 for (String key : constants.keySet())
                     domain.addConstant(key,constants.get(key));
 
             // Add semantic predicates
-            ArrayList<Predicate> predicates = a.getDomainPredicates();
+            List<Predicate> predicates = a.getDomainPredicates();
             if (predicates!=null)
                 for (Predicate pred : predicates) 
                    domain.addPredicate(pred);

@@ -104,9 +104,10 @@ public class PCrispDerivationTreeBuilder extends DerivationTreeBuilder {
         syntaxnodeToTreeId = new HashMap<String, String>();
         
         for (Term term : plan){
-            
-            Action instantiatedAction = computeInstantiatedAction(term, domain);                        
-            processPlanStep(instantiatedAction);                                    
+            if (! (term.toString().startsWith("dummy"))){
+                Action instantiatedAction = computeInstantiatedAction(term, domain);
+                processPlanStep(instantiatedAction);
+            }
             
         }
         return currentDerivation;

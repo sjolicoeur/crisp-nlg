@@ -60,7 +60,8 @@ List<Term> plan() :
 	Term atom;
 }
 {
-	("(" atom=planstep() { ret.add(atom); })* {
+	("(" atom=planstep() { if (not atom.getLabel().equals("dummy"))
+                                     ret.add(atom); })* {
 		return ret;
 	}
 }

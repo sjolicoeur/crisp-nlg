@@ -158,13 +158,13 @@ public class LamaPlannerInterface implements PlannerInterface {
         Process lamaproc = Runtime.getRuntime().exec("bash -e "+lamaScript+" "+tempDomainFile+" "+tempProblemFile+" "+tempResultFile);
         BufferedReader errstream = new BufferedReader(new InputStreamReader(lamaproc.getErrorStream()));
         try{
+            System.out.println("here.");
             lamaproc.waitFor();
             end = System.currentTimeMillis();
             this.totalTime = end-start;                
             if (lamaproc.exitValue() != 0) {
                 throw new RuntimeException("LAMA in "+lamaScript+ " exited inappropriately. Probably no solution found.");
-            }              
-                
+            }                              
             extractPlanningTime(errstream);
 
         } catch (InterruptedException e) {

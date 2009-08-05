@@ -142,7 +142,13 @@ public class FastCRISPConverter  {
                 
                 // Reinitialize the set of true atoms for each new problem
                 trueAtoms = new HashSet<Term>();
-                
+
+                // add initial dummy atoms to sidestep a bug in LAMA
+                problem.addToInitialState(TermParser.parse("referent(dummysyntaxnode, dummyindiv)"));
+                problem.addToInitialState(TermParser.parse("distractor(dummysyntaxnode, dummyindiv)"));
+                problem.addToInitialState(TermParser.parse("subst(dummycategory, dummysyntaxnode)"));
+                problem.addToInitialState(TermParser.parse("canadjoin(dummycategory, dummysyntaxnode)"));
+                problem.addToInitialState(TermParser.parse("mustadjoin(dummycategory, dummysyntaxnode)"));        
             }
             
             if (qName.equals("world")){
@@ -653,7 +659,40 @@ public class FastCRISPConverter  {
             }
             
         }
-        
+
+
+        // Add dummy action, needed to sidestep a LAMA bug
+        ArrayList<Goal> preconds = new ArrayList<Goal>();
+        preconds.add(new crisp.planningproblem.goal.Literal("step(step1)",true));
+        ArrayList<Effect> effects = new ArrayList<Effect>();
+        HashMap<String,String> constants = new HashMap<String,String>();
+        List<Predicate> predicates = new ArrayList<Predicate>();
+
+        domain.addConstant("dummyindiv", "individual");
+        domain.addConstant("dummypred", "predicate");       
+        domain.addConstant("dummysyntaxnode", "syntaxnode");
+        domain.addConstant("dummycategory", "category");
+
+        effects.add(new crisp.planningproblem.effect.Literal("referent(dummysyntaxnode, dummyindiv)",false));
+        effects.add(new crisp.planningproblem.effect.Literal("distractor(dummysyntaxnode, dummyindiv)",false));
+        effects.add(new crisp.planningproblem.effect.Literal("subst(dummycategory, dummysyntaxnode)",false));
+        effects.add(new crisp.planningproblem.effect.Literal("canadjoin(dummycategory, dummysyntaxnode)",false));
+        effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(dummycategory, dummysyntaxnode)",false));
+        for(int i=1; i <= maximumArity; i++ ) {
+            List<Term> subterms = new ArrayList<Term>();
+            for (int j=1; j<=i; j++){
+                subterms.add(new Constant("dummyindiv"));
+            }
+            Compound c = new Compound("needtoexpress_"+i, subterms);
+            effects.add(new crisp.planningproblem.effect.Literal(c,false));
+        }
+
+
+        Action dummyAction = new Action(new Predicate("dummy"),
+                                        new crisp.planningproblem.goal.Conjunction(preconds),
+                                        new crisp.planningproblem.effect.Conjunction(effects),
+                                        constants, predicates);
+        domain.addAction(dummyAction);
     }
     
     

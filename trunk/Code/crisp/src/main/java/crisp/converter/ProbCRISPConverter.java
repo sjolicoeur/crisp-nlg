@@ -443,15 +443,16 @@ public class ProbCRISPConverter implements ProblemConverter {
         
         effects.add(new crisp.planningproblem.effect.Literal("referent(dummysyntaxnode, dummyindiv)",false));
         effects.add(new crisp.planningproblem.effect.Literal("distractor(dummysyntaxnode, dummyindiv)",false));
-        effects.add(new crisp.planningproblem.effect.Literal("subst(dummytreename, dummynodetype, dummysyntaxnode)",false));
-        effects.add(new crisp.planningproblem.effect.Literal("canadjoin(dummytreename, dummynodetype, dummysyntaxnode)",false));
-        effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(dummytreename, dummynodetype, dummysyntaxnode)",false));
+        effects.add(new crisp.planningproblem.effect.Literal("subst(dummytree, dummynodetype, dummysyntaxnode)",false));
+        effects.add(new crisp.planningproblem.effect.Literal("canadjoin(dummytree, dummynodetype, dummysyntaxnode)",false));
+        effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(dummytree, dummynodetype, dummysyntaxnode)",false));
         for(int i=1; i <= maximumArity; i++ ) {
             List<Term> subterms = new ArrayList<Term>();
+            subterms.add(new Constant("dummypred"));
             for (int j=1; j<=i; j++){
                 subterms.add(new Constant("dummyindiv"));
             }
-            Compound c = new Compound("needtoexpress_"+i, subterms);
+            Compound c = new Compound("needtoexpress-"+i, subterms);
             effects.add(new crisp.planningproblem.effect.Literal(c,false));
         }
 

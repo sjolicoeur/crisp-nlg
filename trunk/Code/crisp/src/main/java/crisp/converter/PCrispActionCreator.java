@@ -7,13 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
-import java.util.Set;
+import java.util.Collections;
 
 import crisp.planningproblem.Action;
 import crisp.planningproblem.DurativeAction;
-import crisp.planningproblem.Domain;
 import crisp.planningproblem.Predicate;
-import crisp.planningproblem.Problem;
 import crisp.planningproblem.TypedVariableList;
 import crisp.planningproblem.effect.Effect;
 import crisp.planningproblem.goal.Goal;
@@ -23,24 +21,16 @@ import de.saar.chorus.term.Constant;
 import de.saar.chorus.term.Substitution;
 import de.saar.chorus.term.Term;
 import de.saar.chorus.term.Variable;
-import de.saar.chorus.term.parser.TermParser;
 
-import de.saar.penguin.tag.grammar.Grammar;
 import de.saar.penguin.tag.grammar.ProbabilisticGrammar;
 import de.saar.penguin.tag.grammar.LexiconEntry;
 import de.saar.penguin.tag.grammar.ElementaryTree;
 import de.saar.penguin.tag.grammar.NodeType;
 import de.saar.penguin.tag.grammar.Constraint;
 
-import crisp.converter.grammar.TAGrammar;
-import crisp.converter.grammar.TAGTree;
-import crisp.converter.grammar.TAGNode;
-import crisp.converter.grammar.TAGLeaf;
-import crisp.converter.grammar.TAGLexEntry;
 
 
 
-import java.lang.Math;
 
 
 public class PCrispActionCreator {
@@ -100,7 +90,12 @@ public class PCrispActionCreator {
         int roleno = 1;
         
         int i = 1;
-        for( String role : roles.get(entry.tree)) {            
+        List<String> rolelist = new ArrayList<String>(roles.get(entry.tree));
+        Collections.sort(rolelist);
+        rolelist.remove("self");
+        rolelist.add(0,"self");
+
+        for( String role : rolelist) {
             if (role.equals("self") )    
                 n.put("self","?u");
             else 
@@ -123,7 +118,7 @@ public class PCrispActionCreator {
         // Compute the predicate
         pred.setLabel(actionName + "-0");
         pred.addVariable("?u", "syntaxnode");
-        for (String role : roles.get(entry.tree))            
+        for (String role : rolelist)
             pred.addVariable(I.get(n.get(role)), "individual");
         
         // Syntaxnode must be referent for first individual
@@ -358,8 +353,15 @@ public class PCrispActionCreator {
             Map<String, String> n = new HashMap<String, String>();
             Map<String, String> I = new HashMap<String, String>();
             int roleno = 1;
-            
-            for ( String role : roles.get(childEntry.tree)) {
+
+           
+            List<String> rolelist = new ArrayList<String>(roles.get(childTreeRef));
+            Collections.sort(rolelist);
+            rolelist.remove("self");
+            rolelist.add(0,"self");
+
+
+            for ( String role : rolelist) {
                 if (role != null) {
                     if ( role.equals("self") )   
                         n.put("self","?u");
@@ -391,7 +393,7 @@ public class PCrispActionCreator {
             
             pred.setLabel(actionName + "-"+  (i-1));
             pred.addVariable("?u","syntaxnode");
-            for (String role : roles.get(childTreeRef))
+            for (String role : rolelist)
                 pred.addVariable(I.get(n.get(role)), "individual");
             
             

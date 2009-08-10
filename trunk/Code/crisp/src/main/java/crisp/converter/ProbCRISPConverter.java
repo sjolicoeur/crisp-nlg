@@ -465,9 +465,20 @@ public class ProbCRISPConverter implements ProblemConverter {
 
         problem.addToInitialState(TermParser.parse("referent(dummysyntaxnode, dummyindiv)"));
         problem.addToInitialState(TermParser.parse("distractor(dummysyntaxnode, dummyindiv)"));
-        problem.addToInitialState(TermParser.parse("subst(dummytreename, dummynodetype, dummysyntaxnode)"));
-        problem.addToInitialState(TermParser.parse("canadjoin(dummytreename, dummynodetype, dummysyntaxnode)"));
-        problem.addToInitialState(TermParser.parse("mustadjoin(dummytreename, dummynodetype, dummysyntaxnode)"));
+        problem.addToInitialState(TermParser.parse("subst(dummytree, dummynodetype, dummysyntaxnode)"));
+        problem.addToInitialState(TermParser.parse("canadjoin(dummytree, dummynodetype, dummysyntaxnode)"));
+        problem.addToInitialState(TermParser.parse("mustadjoin(dummytree, dummynodetype, dummysyntaxnode)"));
+
+        for(int i=1; i <= maximumArity; i++ ) {
+            List<Term> subterms = new ArrayList<Term>();
+            subterms.add(new Constant("dummypred"));
+            for (int j=1; j<=i; j++){
+                subterms.add(new Constant("dummyindiv"));
+            }
+            Compound c = new Compound("needtoexpress-"+i, subterms);
+            problem.addToInitialState(c);
+        }
+
 
     }
     

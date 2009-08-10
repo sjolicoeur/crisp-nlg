@@ -6,24 +6,15 @@ import de.saar.penguin.tag.grammar.LexiconEntry;
 
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Action;
-import crisp.planningproblem.Predicate;
 import crisp.planningproblem.TypedVariableList;
-import crisp.planningproblem.goal.Goal;
-import crisp.planningproblem.goal.Literal;
-import crisp.planningproblem.goal.Conjunction;
-import crisp.planningproblem.effect.Effect;
 
 
 import crisp.converter.TagActionType;
 
 import de.saar.chorus.term.Term;
 import de.saar.chorus.term.Compound;
-import de.saar.chorus.term.Variable;
-import de.saar.chorus.term.Substitution;
 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
 
 public class PCrispDerivationTreeBuilder extends DerivationTreeBuilder {

@@ -47,7 +47,7 @@ public class LamaPlannerInterface implements PlannerInterface {
     public static final String DEF_TEMPPROBLEM_FILE = "tmpproblem.lisp";
     public static final String DEF_TEMPRESULT_FILE = "tmpresult";
     public static final String LAMA_STRATEGIES = "fF";    
-    public static final long DEFAULT_TIMEOUT = 300000;
+    public static final long DEFAULT_TIMEOUT = 600000;
     
     private long preprocessingTime;
     private long searchTime;
@@ -157,8 +157,7 @@ public class LamaPlannerInterface implements PlannerInterface {
         timer.schedule(new InterruptScheduler(Thread.currentThread()), timeout);        
         Process lamaproc = Runtime.getRuntime().exec("bash -e "+lamaScript+" "+tempDomainFile+" "+tempProblemFile+" "+tempResultFile);
         BufferedReader errstream = new BufferedReader(new InputStreamReader(lamaproc.getErrorStream()));
-        try{
-            System.out.println("here.");
+        try{            
             lamaproc.waitFor();
             end = System.currentTimeMillis();
             this.totalTime = end-start;                
@@ -277,7 +276,7 @@ public class LamaPlannerInterface implements PlannerInterface {
             
         System.out.println("Running planner ... ");
         PlannerInterface planner = new LamaPlannerInterface();
-        List<Term> plan = planner.runPlanner(domain,problem, 300000);
+        List<Term> plan = planner.runPlanner(domain,problem, 600000);
         System.out.println(planner.getTotalTime());
         System.out.println(planner.getPreprocessingTime());
         System.out.println(planner.getSearchTime());

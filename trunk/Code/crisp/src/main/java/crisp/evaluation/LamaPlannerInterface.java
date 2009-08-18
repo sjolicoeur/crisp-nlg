@@ -10,15 +10,18 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import crisp.converter.ProbCRISPConverter;
+import crisp.converter.FastCRISPConverter;
 
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.codec.CostPddlOutputCodec;
 import crisp.planningproblem.codec.OutputCodec;
+import crisp.planningproblem.codec.PddlOutputCodec;
 
 import crisp.evaluation.lamaplanparser.LamaPlanParser;
 
 import crisp.result.PCrispDerivationTreeBuilder;
+import crisp.result.CrispDerivationTreeBuilder;
 import crisp.result.DerivationTreeBuilder;
 
 import de.saar.penguin.tag.grammar.ProbabilisticGrammar;
@@ -253,10 +256,9 @@ public class LamaPlannerInterface implements PlannerInterface {
         
         // TODO some exception handling
         
-		Domain domain = new Domain();
-		Problem problem = new Problem();
-
-		long start = System.currentTimeMillis();
+	Domain domain = new Domain();
+	Problem problem = new Problem();
+        long start = System.currentTimeMillis();
         
         
         System.out.println("Reading grammar...");
@@ -269,9 +271,9 @@ public class LamaPlannerInterface implements PlannerInterface {
         System.out.println("Generating planning problem...");
         new ProbCRISPConverter().convert(grammar, problemfile, domain, problem);
 
-		long end = System.currentTimeMillis();
+        long end = System.currentTimeMillis();
 
-		System.out.println("Total runtime for problem generation: " + (end-start) + "ms");
+	System.out.println("Total runtime for problem generation: " + (end-start) + "ms");
 
             
         System.out.println("Running planner ... ");

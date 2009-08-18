@@ -71,7 +71,10 @@ public class CostPddlOutputCodec extends PddlOutputCodec {
         buf.append(prefix + ":effect " + toPddlString(action.getEffect()) + "\n");
         if (isDurativeAction){           
             buf.append("(increase (total-cost) ");
-            buf.append(((DurativeAction) action).getDuration());
+            Double duration = ((DurativeAction) action).getDuration();
+            String durationString = String.format("%f",duration);
+
+            buf.append(durationString);
             buf.append(")");
         }
         

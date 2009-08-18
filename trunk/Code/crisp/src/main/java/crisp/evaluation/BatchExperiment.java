@@ -48,15 +48,13 @@ public class BatchExperiment {
     Grammar grammar; 
     DatabaseInterface database;
     String resultTable;
-    Queue<Integer> batch;
-    
-    ProbCRISPConverter converter;
+    Queue<Integer> batch;        
     
     Properties properties;
 
     public BatchExperiment(Grammar grammar, DatabaseInterface database, String resultTable) {
 
-        this.converter = new ProbCRISPConverter();
+
         this.grammar = grammar;
         this.database = database;
         this.resultTable = resultTable;
@@ -89,7 +87,8 @@ public class BatchExperiment {
         long creationTime = 0;
         int domainSize = 0;
         
-        
+
+        FastCRISPConverter converter = new FastCRISPConverter();
         PlannerInterface planner = new LamaPlannerInterface();
         List<Term> plan = null;
 
@@ -117,7 +116,7 @@ public class BatchExperiment {
             plan = planner.runPlanner(domain, problem);
            
             // Build derivation and derived tree
-            DerivationTreeBuilder derivationTreeBuilder = new PCrispDerivationTreeBuilder(grammar);
+            DerivationTreeBuilder derivationTreeBuilder = new CrispDerivationTreeBuilder(grammar);
             derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
             derivedTree = derivTree.computeDerivedTree(grammar);
             yield = derivedTree.yield();

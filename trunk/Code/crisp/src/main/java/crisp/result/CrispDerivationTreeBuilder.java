@@ -205,10 +205,10 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
         substitutionSites.put("root",rootSites);
         
         for (Term term : plan){
-                            
-            Action instantiatedAction = computeInstantiatedAction(term, domain);
-            processPlanStep(instantiatedAction);                                    
-            
+            if (! (term.toString().startsWith("dummy"))){
+                Action instantiatedAction = computeInstantiatedAction(term, domain);
+                processPlanStep(instantiatedAction);
+            }
         }
         return currentDerivation;
     }

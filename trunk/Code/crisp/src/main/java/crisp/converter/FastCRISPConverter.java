@@ -170,8 +170,8 @@ public class FastCRISPConverter  {
             " here. Expected "+lastElement+".",null);
             
             if (qName.equals("world")){ // Term definition ends here 
-                Term term = TermParser.parse(characterBuffer.toString()); // parse the Term
-                
+                Term term = TermParser.parse(characterBuffer.toString()); // parse the Term               
+
                 // This was in computeInitialState(Domain domain, Problem problem)
                 addPredicateInWorld((Compound) term);
                 domain.addPredicate(makeSemanticPredicate(term));
@@ -256,8 +256,8 @@ public class FastCRISPConverter  {
         new crisp.planningproblem.goal.Literal("subst(?a,?u)", false));
         
         // no positive "distractor" literals in the goal state
-        Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
-        new crisp.planningproblem.goal.Literal("distractor(?u,?x)", false));
+        //Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
+        //new crisp.planningproblem.goal.Literal("distractor(?u,?x)", false));
         
         // no positive "mustadjoin" literals in the goal state
         //   this is only added if there is an action that creates a mustadjoin constraint
@@ -270,7 +270,7 @@ public class FastCRISPConverter  {
         }
         
         finalStateGoals.add(noSubst);
-        finalStateGoals.add(noDistractors);
+        //finalStateGoals.add(noDistractors);
         
         
         // no positive needtoexpress-* literals, for any arity used in the communicative 

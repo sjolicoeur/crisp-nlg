@@ -158,6 +158,7 @@ public class PCrispActionCreator {
             constants.put(renamePredicate(semContCompound.getLabel()), "predicate");
             
             // remove distractors
+            
             Variable distractorVar = new Variable("?y");
             Substitution distractorSubst = new Substitution(new Variable("?x1"), distractorVar);
             TypedVariableList distractorQuantifierVars = new TypedVariableList();

@@ -234,8 +234,9 @@ public class ProbCRISPConverter implements ProblemConverter {
                 
         
         // no positive "distractor" literals in the goal state
-        Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
-                new crisp.planningproblem.goal.Literal("distractor(?u,?x)", false));
+        // Not needed for realization experiment as for realization we do not have to select referring expressions
+        //Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
+        //        new crisp.planningproblem.goal.Literal("distractor(?u,?x)", false));
 
         // TODO
         // no positive "mustadjoin" literals in the goal state
@@ -249,7 +250,7 @@ public class ProbCRISPConverter implements ProblemConverter {
         //}
 
         finalStateGoals.add(noSubst);
-        finalStateGoals.add(noDistractors);
+        //finalStateGoals.add(noDistractors);
         
         
         // no positive needtoexpress-* literals, for any arity used in the communicative 

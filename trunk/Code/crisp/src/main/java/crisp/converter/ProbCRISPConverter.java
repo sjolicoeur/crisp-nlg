@@ -34,17 +34,13 @@ import crisp.planningproblem.effect.Effect;
 import crisp.planningproblem.goal.Goal;
 import de.saar.chorus.term.Compound;
 import de.saar.chorus.term.Constant;
-import de.saar.chorus.term.Substitution;
 import de.saar.chorus.term.Term;                         
 import de.saar.chorus.term.Variable;
 import de.saar.chorus.term.parser.TermParser;
-import de.saar.penguin.tag.grammar.Constraint;
 import de.saar.penguin.tag.grammar.ElementaryTree;
-import de.saar.penguin.tag.grammar.ElementaryTreeType;
 import de.saar.penguin.tag.grammar.Grammar;
 import de.saar.penguin.tag.grammar.ProbabilisticGrammar;
 import de.saar.penguin.tag.grammar.LexiconEntry;
-import de.saar.penguin.tag.grammar.NodeType;
 import de.saar.penguin.tag.grammar.filter.GrammarFilterer;
 import de.saar.penguin.tag.grammar.filter.SemanticsPredicateListFilter;
 import de.saar.penguin.tag.grammar.filter.LexiconEntryFilter;
@@ -60,15 +56,15 @@ public class ProbCRISPConverter implements ProblemConverter {
                                                           // parse error handling and registering the handler
                                                           // with a parser.                
     
-    private int plansize;         // the maximum plan size as specified in the problem file
-    private int maximumArity = 0; // the maximum arity of any predicate in the problem file
+    protected int plansize;         // the maximum plan size as specified in the problem file
+    protected int maximumArity = 0; // the maximum arity of any predicate in the problem file
     
     private String problemname;   // the name for the problem as specified in the problem file 
     
     private String mainCat;       // main category for the problem in the problem file      
     
     
-    private class ProblemfileHandler extends DefaultHandler {
+    protected class ProblemfileHandler extends DefaultHandler {
         // Member variables for instances of the Content Handler
         private Stack<String> elementStack = new Stack<String>(); 
         private StringWriter characterBuffer;
@@ -79,7 +75,10 @@ public class ProbCRISPConverter implements ProblemConverter {
         private Set<Term> trueAtoms;
         
         private Map<String,Set<Integer>> predicatesInWorld;
-        
+
+        public Map<String, Set<Integer>> getPredicatesInWorld(){
+            return predicatesInWorld;
+        }
         
         /************************ Methods for the content handler *****************/    
         public ProblemfileHandler(Domain aDomain, Problem aProblem) {
@@ -197,6 +196,7 @@ public class ProbCRISPConverter implements ProblemConverter {
         }
         
         
+        @Override
         public void characters(char[] ch, int start, int length) {                        
             
             characterBuffer.write(ch, start, length);
@@ -213,7 +213,7 @@ public class ProbCRISPConverter implements ProblemConverter {
     * @param domain
     * @param problem
     */
-    private void computeGoal(Domain domain, Problem problem) {
+    protected void computeGoal(Domain domain, Problem problem) {
 
       TypedVariableList tlNodeIndiv = new TypedVariableList();
       tlNodeIndiv.addItem(new Variable("?u"), "syntaxnode");
@@ -301,7 +301,7 @@ public class ProbCRISPConverter implements ProblemConverter {
     * @param domain
     * @param problem
     */
-    private void setupDomain(Domain domain, Problem problem) {
+    protected void setupDomain(Domain domain, Problem problem) {
         domain.clear();
         problem.clear();
 
@@ -488,7 +488,7 @@ public class ProbCRISPConverter implements ProblemConverter {
      * Add a collection of actions to a planning domain and register all constants and predicates
      * they use.
      */
-    private void addActionsToDomain(Collection<Action> actions, Domain domain) {        
+    protected void addActionsToDomain(Collection<Action> actions, Domain domain) {
         for (Action action : actions) {
             addActionToDomain(action,domain);
         }
@@ -497,7 +497,7 @@ public class ProbCRISPConverter implements ProblemConverter {
     /**
      * Add a new action to a planning domain and register all constants and predicates it uses.
      */
-    private void addActionToDomain(Action action, Domain domain){
+    protected void addActionToDomain(Action action, Domain domain){
         Map<String,String> constants = action.getDomainConstants();
         
         domain.addAction(action);

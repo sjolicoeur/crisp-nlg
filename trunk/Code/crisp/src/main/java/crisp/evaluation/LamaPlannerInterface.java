@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import crisp.converter.TreeModelProbCRISPConverter;
 import crisp.converter.ProbCRISPConverter;
 import crisp.converter.FastCRISPConverter;
 
@@ -269,7 +270,7 @@ public class LamaPlannerInterface implements PlannerInterface {
         File problemfile = new File(args[1]);
                 
         System.out.println("Generating planning problem...");
-        new ProbCRISPConverter().convert(grammar, problemfile, domain, problem);
+        new TreeModelProbCRISPConverter().convert(grammar, problemfile, domain, problem);
 
         long end = System.currentTimeMillis();
 

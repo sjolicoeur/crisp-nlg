@@ -72,6 +72,7 @@ public class TreeModelProbCRISPConverter extends ProbCRISPConverter {
                     throw new NoSuchElementException();
                 }
                 currentInList1 = iter1.next();
+                iter2 = this.list2.iterator(); // reinitialize iterator for 2nd collection
             }
             return new Pair(currentInList1, iter2.next());
         }
@@ -126,9 +127,9 @@ public class TreeModelProbCRISPConverter extends ProbCRISPConverter {
             Collection<LexiconEntry> entries = grammar.getLexiconEntries(word);
             for (LexiconEntry entry : entries) {
                 if (!treesToEntries.containsKey(entry.tree)) {
-                    treesToEntries.put(entry.tree, new ArrayList<LexiconEntry>());
-                    treesToEntries.get(entry.tree).add(entry);
+                    treesToEntries.put(entry.tree, new ArrayList<LexiconEntry>());                    
                 }
+                treesToEntries.get(entry.tree).add(entry);
             }
         }
 
@@ -171,9 +172,9 @@ public class TreeModelProbCRISPConverter extends ProbCRISPConverter {
                 Map<String, Double> adjProbs =
                         grammar.getTreeAdjunctionProbabilities(tree, node);
                 for (String childTree : adjProbs.keySet()) {
-
+                    
                     Collection<LexiconEntry> parentEntries = treesToEntries.get(tree);
-                    Collection<LexiconEntry> childEntries = treesToEntries.get(childTree);
+                    Collection<LexiconEntry> childEntries = treesToEntries.get(childTree);                    
 
                     Double prob = adjProbs.get(childTree);
 
@@ -181,7 +182,7 @@ public class TreeModelProbCRISPConverter extends ProbCRISPConverter {
                     while (pairIter.hasNext()) {
                         Pair<LexiconEntry,LexiconEntry> pair = pairIter.next();                        
                         LexiconEntry parentEntry = pair.getFirst();
-                        LexiconEntry childEntry = pair.getSecond();                                                
+                        LexiconEntry childEntry = pair.getSecond();                        
                         Collection<Action> adjActions =
                                 PCrispActionCreator.createActions(grammar, parentEntry, node, childEntry, TagActionType.ADJUNCTION, prob, plansize, roles);
                         addActionsToDomain(adjActions, domain);

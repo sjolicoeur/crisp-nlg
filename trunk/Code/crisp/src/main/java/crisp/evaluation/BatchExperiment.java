@@ -17,6 +17,7 @@ import de.saar.chorus.term.Term;
 
 import crisp.converter.ProbCRISPConverter;
 
+import crisp.converter.TreeModelProbCRISPConverter;
 import java.util.Set;
 import java.util.Queue;
 import java.util.LinkedList;
@@ -88,7 +89,7 @@ public class BatchExperiment {
         int domainSize = 0;
         
 
-        FastCRISPConverter converter = new FastCRISPConverter();
+        TreeModelProbCRISPConverter converter = new TreeModelProbCRISPConverter();
         PlannerInterface planner = new LamaPlannerInterface();
         List<Term> plan = null;
 
@@ -116,7 +117,7 @@ public class BatchExperiment {
             plan = planner.runPlanner(domain, problem);
            
             // Build derivation and derived tree
-            DerivationTreeBuilder derivationTreeBuilder = new CrispDerivationTreeBuilder(grammar);
+            DerivationTreeBuilder derivationTreeBuilder = new PCrispDerivationTreeBuilder(grammar);
             derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
             derivedTree = derivTree.computeDerivedTree(grammar);
             yield = derivedTree.yield();

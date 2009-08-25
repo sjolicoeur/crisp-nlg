@@ -1,6 +1,7 @@
 package crisp.evaluation;
 
 
+import crisp.converter.BackoffModelProbCRISPConverter;
 import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
@@ -270,7 +271,7 @@ public class LamaPlannerInterface implements PlannerInterface {
         File problemfile = new File(args[1]);
                 
         System.out.println("Generating planning problem...");
-        new TreeModelProbCRISPConverter().convert(grammar, problemfile, domain, problem);
+        new BackoffModelProbCRISPConverter().convert(grammar, problemfile, domain, problem);
 
         long end = System.currentTimeMillis();
 

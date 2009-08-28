@@ -14,7 +14,7 @@ In order to build the CRISP system, you will need the following software:
 Assuming your Java and Maven are installed properly, build CRISP as follows:
  * Check out the Subversion repository using the following command:
    {{{
-   svn checkout http://crisp-nlg.googlecode.com/svn/trunk/Code crisp-nlg
+   svn checkout http://crisp-nlg.googlecode.com/svn/trunk/Code/crisp
    }}}
  (See also the [http://code.google.com/p/crisp-nlg/source instructions for checking out from the Google Code repository].)
  * Change to the new `crisp-nlg` subdirectory.

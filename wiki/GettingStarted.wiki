@@ -17,10 +17,10 @@ Assuming your Java and Maven are installed properly, build CRISP as follows:
    svn checkout http://crisp-nlg.googlecode.com/svn/trunk/Code/crisp
    }}}
  (See also the [http://code.google.com/p/crisp-nlg/source instructions for checking out from the Google Code repository].)
- * Change to the new `crisp-nlg` subdirectory.
+ * Change to the new `crisp` subdirectory.
  * Build the system using Maven:
    {{{
-   mvn assembly:assembly
+   mvn install assembly:assembly
    }}}
    Maven will automatically download all required dependencies and store them in your local maven repository. 
    It will then compile CRISP and finally assemble an executable jar file that contains CRISP and all required libraries.

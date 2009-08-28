@@ -1,4 +1,5 @@
 #summary Instructions on compiling and running the old Ant based CRISP system.
+#labels Deprecated
 
 Notice that this page describes how to build and run an old tag of CRISP using Apache Ant.
 The latest version uses the Maven build manager. Information on how to get started with the latest version can be found [GettingStarted here]

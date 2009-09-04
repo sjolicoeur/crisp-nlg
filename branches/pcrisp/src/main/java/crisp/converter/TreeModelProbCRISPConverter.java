@@ -2,12 +2,12 @@ package crisp.converter;
 
 import crisp.planningproblem.Action;
 import crisp.planningproblem.Domain;
-import crisp.planningproblem.DurativeAction;
-import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
-import crisp.planningproblem.effect.Effect;
-import crisp.planningproblem.goal.Goal;
-import crisp.termparser.TermParser;
+import crisp.planningproblem.formula.Conjunction;
+import crisp.planningproblem.formula.Formula;
+import crisp.planningproblem.formula.Literal;
+
+import de.saar.chorus.term.parser.TermParser;
 import crisp.tools.Pair;
 import de.saar.chorus.term.Compound;
 import de.saar.chorus.term.Constant;
@@ -204,11 +204,11 @@ public class TreeModelProbCRISPConverter extends ProbCRISPConverter {
 
 
         // Add dummy action, needed to sidestep a LAMA bug
-        ArrayList<Goal> preconds = new ArrayList<Goal>();
-        preconds.add(new crisp.planningproblem.goal.Literal("step(step0)", true));
-        ArrayList<Effect> effects = new ArrayList<Effect>();
-        HashMap<String, String> constants = new HashMap<String, String>();
-        List<Predicate> predicates = new ArrayList<Predicate>();
+        ArrayList<Formula> preconds = new ArrayList<Formula>();
+        preconds.add(new Literal("step(step0)",true));
+        ArrayList<Formula> effects = new ArrayList<Formula>();
+        HashMap<String,String> constants = new HashMap<String,String>();
+        Map<Compound, List<String>> predicates = new HashMap<Compound, List<String>>();
 
         domain.addConstant("dummyindiv", "individual");
         domain.addConstant("dummypred", "predicate");
@@ -216,26 +216,26 @@ public class TreeModelProbCRISPConverter extends ProbCRISPConverter {
         domain.addConstant("dummysyntaxnode", "syntaxnode");
         domain.addConstant("dummytree", "treename");
 
-        effects.add(new crisp.planningproblem.effect.Literal("referent(dummysyntaxnode, dummyindiv)", false));
-        effects.add(new crisp.planningproblem.effect.Literal("distractor(dummysyntaxnode, dummyindiv)", false));
-        effects.add(new crisp.planningproblem.effect.Literal("subst(dummytree, dummynodetype, dummysyntaxnode)", false));
-        effects.add(new crisp.planningproblem.effect.Literal("canadjoin(dummytree, dummynodetype, dummysyntaxnode)", false));
-        effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(dummytree, dummynodetype, dummysyntaxnode)", false));
-        for (int i = 1; i <= maximumArity; i++) {
+        effects.add(new Literal("referent(dummysyntaxnode, dummyindiv)",false));
+        effects.add(new Literal("distractor(dummysyntaxnode, dummyindiv)",false));
+        effects.add(new Literal("subst(dummytree, dummynodetype, dummysyntaxnode)",false));
+        effects.add(new Literal("canadjoin(dummytree, dummynodetype, dummysyntaxnode)",false));
+        effects.add(new Literal("mustadjoin(dummytree, dummynodetype, dummysyntaxnode)",false));
+        for(int i=1; i <= maximumArity; i++ ) {
             List<Term> subterms = new ArrayList<Term>();
             subterms.add(new Constant("dummypred"));
-            for (int j = 1; j <= i; j++) {
+            for (int j=1; j<=i; j++){
                 subterms.add(new Constant("dummyindiv"));
             }
-            Compound c = new Compound("needtoexpress-" + i, subterms);
-            effects.add(new crisp.planningproblem.effect.Literal(c, false));
+            Compound c = new Compound("needtoexpress-"+i, subterms);
+            effects.add(new Literal(c,false));
         }
 
 
-        DurativeAction dummyAction = new DurativeAction(new Predicate("dummy"),
-                new crisp.planningproblem.goal.Conjunction(preconds),
-                new crisp.planningproblem.effect.Conjunction(effects),
-                constants, predicates, 0);
+        Action dummyAction = new Action(new Compound("dummy", new ArrayList<Term>()), new ArrayList<String>(),
+                                            new Conjunction(preconds),
+                                            new Conjunction(effects),
+                                            1.0, constants, predicates);
         domain.addAction(dummyAction);
 
         problem.addToInitialState(TermParser.parse("referent(dummysyntaxnode, dummyindiv)"));
@@ -244,16 +244,15 @@ public class TreeModelProbCRISPConverter extends ProbCRISPConverter {
         problem.addToInitialState(TermParser.parse("canadjoin(dummytree, dummynodetype, dummysyntaxnode)"));
         problem.addToInitialState(TermParser.parse("mustadjoin(dummytree, dummynodetype, dummysyntaxnode)"));
 
-        for (int i = 1; i <= maximumArity; i++) {
+        for(int i=1; i <= maximumArity; i++ ) {
             List<Term> subterms = new ArrayList<Term>();
             subterms.add(new Constant("dummypred"));
-            for (int j = 1; j <= i; j++) {
+            for (int j=1; j<=i; j++){
                 subterms.add(new Constant("dummyindiv"));
             }
-            Compound c = new Compound("needtoexpress-" + i, subterms);
+            Compound c = new Compound("needtoexpress-"+i, subterms);
             problem.addToInitialState(c);
         }
-
 
     }
 

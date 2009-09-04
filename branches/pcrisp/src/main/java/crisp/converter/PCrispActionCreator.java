@@ -10,11 +10,15 @@ import java.util.Collection;
 import java.util.Collections;
 
 import crisp.planningproblem.Action;
-import crisp.planningproblem.DurativeAction;
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.TypedVariableList;
-import crisp.planningproblem.effect.Effect;
-import crisp.planningproblem.goal.Goal;
+
+import crisp.planningproblem.formula.Formula;
+import crisp.planningproblem.formula.Conjunction;
+import crisp.planningproblem.formula.Literal;
+import crisp.planningproblem.formula.Negation;
+import crisp.planningproblem.formula.Universal;
+import crisp.planningproblem.formula.Conditional;
 
 import de.saar.chorus.term.Compound;
 import de.saar.chorus.term.Constant;
@@ -47,7 +51,7 @@ public class PCrispActionCreator {
         return actionName;
     }
     
-    public static DurativeAction createInitAction(ProbabilisticGrammar grammar, LexiconEntry entry, double prob, Map<String,HashSet<String>> roles){               
+    public static Action createInitAction(ProbabilisticGrammar grammar, LexiconEntry entry, double prob, Map<String,HashSet<String>> roles){               
         
         // Get the tree for this lexical entry from the hash map
         String treeRef = entry.tree;
@@ -58,7 +62,7 @@ public class PCrispActionCreator {
         List<String> substNodes = new ArrayList<String>();
         List<String> adjNodes = new ArrayList<String>();                
         
-        HashMap<String,String> constants = new HashMap<String,String>();
+        Map<String,String> constants = new HashMap<String,String>();
         
         for (String node : allNodes) {
             String cat = tree.getNodeLabel(node);
@@ -107,32 +111,39 @@ public class PCrispActionCreator {
         constants.put("step0","stepindex");
         constants.put("step1","stepindex");
         
-        ArrayList<Predicate> predicates = new ArrayList<Predicate>();
+        Map<Compound, List<String>> predicates = new HashMap<Compound, List<String>>();
         constants.put(treeName,"treename");
         constants.put(rootCategory,"category");                
         
-        Predicate pred = new Predicate();
-        ArrayList<Goal> preconds = new ArrayList<Goal>();
-        ArrayList<Effect> effects = new ArrayList<Effect>();
+        
+        ArrayList<Formula> preconds = new ArrayList<Formula>();
+        ArrayList<Formula> effects = new ArrayList<Formula>();
         
         // Compute the predicate
-        pred.setLabel(actionName + "-0");
-        pred.addVariable("?u", "syntaxnode");
-        for (String role : rolelist)
-            pred.addVariable(I.get(n.get(role)), "individual");
+        String label = actionName + "-0";
+        List<Term> variables = new ArrayList<Term>();
+        List<String> types = new ArrayList<String>();
+        variables.add(new Variable("?u"));
+        types.add("syntaxnode");
         
+        for (String role : rolelist)
+            variables.add(new Variable(I.get(n.get(role))));
+            types.add("individual");
+
+        Compound pred = new Compound(label, variables);
+
         // Syntaxnode must be referent for first individual
-        preconds.add(new crisp.planningproblem.goal.Literal("referent(?u,"+I.get(n.get("self"))+")", true));
+        preconds.add(new Literal("referent(?u,"+I.get(n.get("self"))+")", true));
         
         // Count the step
-        preconds.add(new crisp.planningproblem.goal.Literal("step(step0)", true));
-        effects.add(new crisp.planningproblem.effect.Literal("step(step0)", false));
-        effects.add(new crisp.planningproblem.effect.Literal("step(step1)", true));
+        preconds.add(new Literal("step(step0)", true));
+        effects.add(new Literal("step(step0)", false));
+        effects.add(new Literal("step(step1)", true));
         
         constants.put("init", "syntaxnode");
         
-        preconds.add(new crisp.planningproblem.goal.Literal("subst(root, none, ?u)", true));
-        effects.add(new crisp.planningproblem.effect.Literal("subst(root, none, ?u)", false));
+        preconds.add(new Literal("subst(root, none, ?u)", true));
+        effects.add(new Literal("subst(root, none, ?u)", false));
         constants.put("none", "nodetype");           
         
         List<Term> contentWithVariables = new ArrayList<Term>();        
@@ -143,13 +154,18 @@ public class PCrispActionCreator {
             Compound semContCompound = ((Compound) semContTerm);                                                                
             Compound termWithVariables = (Compound) substituteVariablesForRoles(semContCompound, n, I);
             
-            
-            predicates.add(makeSemanticPredicate(semContCompound));
-            preconds.add(new crisp.planningproblem.goal.Literal(termWithVariables, true));
+
+            Compound semPredicate = makeSemanticPredicate(semContCompound);
+            List<String> semPredicateTypes = new ArrayList<String>();
+            for (int j=0; j < semPredicate.getSubterms().size(); j++) {
+                semPredicateTypes.add("individual");
+            }
+            predicates.put(semPredicate, semPredicateTypes);
+            preconds.add(new Literal(termWithVariables, true));
             
             contentWithVariables.add(termWithVariables);
             
-            effects.add(new crisp.planningproblem.effect.Literal(flattenTerm(termWithVariables, "needtoexpress"), false));
+            effects.add(new Literal((Compound) flattenTerm(termWithVariables, "needtoexpress"),false));
             
             if ( semContCompound.getSubterms().size() > maximumArity ) { 
                 maximumArity = semContCompound.getSubterms().size();
@@ -161,19 +177,22 @@ public class PCrispActionCreator {
             
             Variable distractorVar = new Variable("?y");
             Substitution distractorSubst = new Substitution(new Variable("?x1"), distractorVar);
-            TypedVariableList distractorQuantifierVars = new TypedVariableList();
-            distractorQuantifierVars.addItem(distractorVar, "individual");
             
-            List<crisp.planningproblem.goal.Goal> literals = new ArrayList<crisp.planningproblem.goal.Goal>();
+            List<Term> distractorQuantifierVars = new ArrayList<Term>();
+            List<String> distractorQuantifierTypes= new ArrayList<String>();
+            distractorQuantifierVars.add(distractorVar);
+            distractorQuantifierTypes.add("individual");
+            
+            List<Formula> literals = new ArrayList<Formula>();
             for ( Term t: contentWithVariables ) 
-                literals.add(new crisp.planningproblem.goal.Literal(distractorSubst.apply(t), true));
+                literals.add(new Literal((Compound) distractorSubst.apply(t), true));
             
-            Goal distractorPrecondition = 
-            new crisp.planningproblem.goal.Negation(new crisp.planningproblem.goal.Conjunction(literals));
+            Formula distractorPrecondition =
+            new Negation(new Conjunction(literals));
             
-            effects.add(new crisp.planningproblem.effect.Universal(distractorQuantifierVars,
-            new crisp.planningproblem.effect.Conditional(distractorPrecondition,
-            new crisp.planningproblem.effect.Literal("distractor(?u,?y)", false))));
+            effects.add(new Universal(distractorQuantifierVars, distractorQuantifierTypes,
+            new Conditional(distractorPrecondition,
+            new Literal("distractor(?u,?y)", false))));
             
         }
         
@@ -217,8 +236,7 @@ public class PCrispActionCreator {
                 cat = "NONE";            
             
                                
-            effects.add(new crisp.planningproblem.effect.Literal("subst(" + treeName 
-            +", " + substNode  +", "+roleN + ")", true));
+            effects.add(new Literal("subst(" + treeName + ", " + substNode  +", "+roleN + ")", true));
             
             constants.put(substNode,"nodetype");
                         
@@ -226,22 +244,24 @@ public class PCrispActionCreator {
                 constants.put(roleN, "syntaxnode");
             
             //referent
-            effects.add(new crisp.planningproblem.effect.Literal("referent(" + roleN + ", " + 
-            I.get(roleN) + ")", true));
+            effects.add(new Literal("referent(" + roleN + ", " + I.get(roleN) + ")", true));
             
             
             //distractors
             Variable distractorVar = new Variable("?y");
             Substitution distractorSubst = new Substitution(new Variable(I.get(roleN)), distractorVar);
-            TypedVariableList distractorQuantifierVars = new TypedVariableList();
-            distractorQuantifierVars.addItem(distractorVar, "individual");
+            
+            List<Term> distractorQuantifierVars = new ArrayList<Term>();
+            List<String> distractorQuantifierTypes = new ArrayList<String>();
+            distractorQuantifierVars.add(distractorVar);
+            distractorQuantifierTypes.add("individual");
             
             
             // TODO - it's a bit of a hack that we use the same semantic requirement
             // (modulo substitution) for each substitution node, even if it is irrelevant
             // for the distractors of this substitution node.  But it seems to be ok.
-            List<Goal> distractorPreconditions = new ArrayList<Goal>();
-            distractorPreconditions.add(new crisp.planningproblem.goal.Literal("**equals**(?y," +
+            List<Formula> distractorPreconditions = new ArrayList<Formula>();
+            distractorPreconditions.add(new Literal("**equals**(?y," +
             I.get(roleN) + ")", false));
             
             /*for( String sr : entry.getSemReqs() ) {
@@ -250,12 +270,10 @@ public class PCrispActionCreator {
                 distractorPreconditions.add(new crisp.planningproblem.goal.Literal(semReqTerm, true));
             } */
             
-            Goal distractorPrecondition = 
-            new crisp.planningproblem.goal.Conjunction(distractorPreconditions);
+            Formula distractorPrecondition = new Conjunction(distractorPreconditions);
             
-            effects.add(new crisp.planningproblem.effect.Universal(distractorQuantifierVars,
-            new crisp.planningproblem.effect.Conditional(distractorPrecondition,
-            new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", true))));
+            effects.add(new Universal(distractorQuantifierVars, distractorQuantifierTypes,
+            new Conditional(distractorPrecondition, new Literal("distractor(" + roleN + ",?y)", true))));
             
         }
         
@@ -274,11 +292,9 @@ public class PCrispActionCreator {
             }
             
             // canadjoin            
-            effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" + 
-            treeName + ", " + adjNode + ", "+ roleN+ ")", true));
+            effects.add(new Literal("canadjoin(" + treeName + ", " + adjNode + ", "+ roleN+ ")", true));
             // Allways put a mustadjoin constraint
-            effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" +
-            treeName + ", " + adjNode + ", "+ roleN+ ")", true));
+            effects.add(new Literal("mustadjoin(" + treeName + ", " + adjNode + ", "+ roleN+ ")", true));
             
             constants.put(adjNode, "nodetype");
             
@@ -287,10 +303,9 @@ public class PCrispActionCreator {
         }
         
         // Assemble action
-        DurativeAction newAction = new DurativeAction(pred, 
-        new crisp.planningproblem.goal.Conjunction(preconds), 
-        new crisp.planningproblem.effect.Conjunction(effects), 
-        constants, predicates, probabilityToDuration(prob));
+        Action newAction = new Action(pred, types,
+        new Conjunction(preconds), new Conjunction(effects),
+        probabilityToDuration(prob), constants, predicates);
         
         return newAction;       
     }
@@ -382,79 +397,95 @@ public class PCrispActionCreator {
             constants.put("step"+(i-1),"stepindex");
             constants.put("step"+i,"stepindex");
             
-            ArrayList<Predicate> predicates = new ArrayList<Predicate>();
+            Map<Compound, List<String>> predicates = new HashMap<Compound, List<String>>();
             
             //constants.put(rootCategory,"category");                       
             
             
-            // Compute the predicate            
-            Predicate pred = new Predicate();
-            ArrayList<Goal> preconds = new ArrayList<Goal>();
-            ArrayList<Effect> effects = new ArrayList<Effect>();
+            // Compute the predicate                        
+            ArrayList<Formula> preconds = new ArrayList<Formula>();
+            ArrayList<Formula> effects = new ArrayList<Formula>();
             
-            pred.setLabel(actionName + "-"+  (i-1));
-            pred.addVariable("?u","syntaxnode");
+            String label = (actionName + "-"+  (i-1));
+
+            List<Term> variables = new ArrayList<Term>();
+            List<String> types = new ArrayList<String>();
+            variables.add(new Variable("?u"));
+            types.add("syntaxnode");
             for (String role : rolelist)
-                pred.addVariable(I.get(n.get(role)), "individual");
+                variables.add(new Variable(I.get(n.get(role))));
+                types.add("individual");
             
-            
+            Compound pred = new Compound(label, variables);
+
             // Syntaxnode must be referent for first individual
-            preconds.add(new crisp.planningproblem.goal.Literal("referent(?u,?x1)", true));
+            preconds.add(new Literal("referent(?u,?x1)", true));
             
             // Count the step
-            preconds.add(new crisp.planningproblem.goal.Literal("step(step"+(i-1)+")",true));
-            effects.add(new crisp.planningproblem.effect.Literal("step(step"+(i-1)+")",false));
-            effects.add(new crisp.planningproblem.effect.Literal("step(step"+i+")",true));            
+            preconds.add(new Literal("step(step"+(i-1)+")",true));
+            effects.add(new Literal("step(step"+(i-1)+")",false));
+            effects.add(new Literal("step(step"+i+")",true));            
             
             constants.put(nodeID,"nodetype");
             
             // Satisfy open substitution or adjunction
             if (actionType == TagActionType.SUBSTITUTION) {                
-                preconds.add(new crisp.planningproblem.goal.Literal("subst(" + parentTreeName+ ", " + nodeID + ", ?u)", true));
-                effects.add(new crisp.planningproblem.effect.Literal("subst(" + parentTreeName+ ", " + nodeID + ", ?u)", false));                
+                preconds.add(new Literal("subst(" + parentTreeName+ ", " + nodeID + ", ?u)", true));
+                effects.add(new Literal("subst(" + parentTreeName+ ", " + nodeID + ", ?u)", false));                
             } else if (actionType == TagActionType.ADJUNCTION) {                
-                preconds.add(new crisp.planningproblem.goal.Literal("canadjoin(" + parentTreeName+ ","+ nodeID + ", ?u)", true));
-                effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" + parentTreeName+ ","+ nodeID + ", ?u)", false));
-                effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" + parentTreeName+ ","+ nodeID + ", ?u)", false));                
+                preconds.add(new Literal("canadjoin(" + parentTreeName+ ","+ nodeID + ", ?u)", true));
+                effects.add(new Literal("mustadjoin(" + parentTreeName+ ","+ nodeID + ", ?u)", false));
+                effects.add(new Literal("canadjoin(" + parentTreeName+ ","+ nodeID + ", ?u)", false));                
             } 
-            
+
+
+
             
             // semantic content must be satisfied
             List<Term> contentWithVariables = new ArrayList<Term>();
             for (Term semContTerm : semantics) {
-                
-                Compound semContCompound = ((Compound) semContTerm);                                                                
-                Compound termWithVariables = (Compound) substituteVariablesForRoles(semContCompound, n, I);                
-                
-                predicates.add(makeSemanticPredicate(semContCompound));
-                preconds.add(new crisp.planningproblem.goal.Literal(termWithVariables, true));
-                
-                contentWithVariables.add(termWithVariables);
-                
-                effects.add(new crisp.planningproblem.effect.Literal(flattenTerm(termWithVariables, "needtoexpress"), false));
-                
-                if ( semContCompound.getSubterms().size() > maximumArity ) { 
-                    maximumArity = semContCompound.getSubterms().size();
-                }
-                
-                constants.put(renamePredicate(semContCompound.getLabel()), "predicate");
-                
+
+                                        Compound semContCompound = ((Compound) semContTerm);
+            Compound termWithVariables = (Compound) substituteVariablesForRoles(semContCompound, n, I);
+
+
+            Compound semPredicate = makeSemanticPredicate(semContCompound);
+            List<String> semPredicateTypes = new ArrayList<String>();
+            for (int j=0; j < semPredicate.getSubterms().size(); j++) {
+                semPredicateTypes.add("individual");
+            }
+            predicates.put(semPredicate, semPredicateTypes);
+            preconds.add(new Literal(termWithVariables, true));
+
+            contentWithVariables.add(termWithVariables);
+
+            effects.add(new Literal((Compound) flattenTerm(termWithVariables, "needtoexpress"),false));
+
+            if ( semContCompound.getSubterms().size() > maximumArity ) {
+                maximumArity = semContCompound.getSubterms().size();
+            }
+
+            constants.put(renamePredicate(semContCompound.getLabel()), "predicate");
+
                 // remove distractors
                 Variable distractorVar = new Variable("?y");
                 Substitution distractorSubst = new Substitution(new Variable("?x1"), distractorVar);
-                TypedVariableList distractorQuantifierVars = new TypedVariableList();
-                distractorQuantifierVars.addItem(distractorVar, "individual");
+
+                List<Term> distractorQuantifierVars = new ArrayList<Term>();
+                List<String> distractorQuantifierTypes = new ArrayList<String>();
+                distractorQuantifierVars.add(distractorVar);
+                distractorQuantifierTypes.add("individual");
                 
-                List<crisp.planningproblem.goal.Goal> literals = new ArrayList<crisp.planningproblem.goal.Goal>();
+                List<Formula> literals = new ArrayList<Formula>();
                 for ( Term t: contentWithVariables ) 
-                    literals.add(new crisp.planningproblem.goal.Literal(distractorSubst.apply(t), true));
+                    literals.add(new Literal((Compound) distractorSubst.apply(t), true));
                 
-                Goal distractorPrecondition = 
-                new crisp.planningproblem.goal.Negation(new crisp.planningproblem.goal.Conjunction(literals));
+                Formula distractorPrecondition =
+                new Negation(new Conjunction(literals));
                 
-                effects.add(new crisp.planningproblem.effect.Universal(distractorQuantifierVars,
-                new crisp.planningproblem.effect.Conditional(distractorPrecondition,
-                new crisp.planningproblem.effect.Literal("distractor(?u,?y)", false))));                
+                effects.add(new Universal(distractorQuantifierVars, distractorQuantifierTypes,
+                new Conditional(distractorPrecondition,
+                new Literal("distractor(?u,?y)", false))));                
             }            
             
             
@@ -499,8 +530,7 @@ public class PCrispActionCreator {
                     cat = "NONE";            
                 
                                        
-                effects.add(new crisp.planningproblem.effect.Literal("subst(" + childTreeName 
-                +", " + substNode +", "+roleN + ")", true));
+                effects.add(new Literal("subst(" + childTreeName +", " + substNode +", "+roleN + ")", true));
                 
                 constants.put(substNode,"nodetype");
                 
@@ -508,23 +538,24 @@ public class PCrispActionCreator {
                     constants.put(roleN, "syntaxnode");
                 
                 //referent
-                effects.add(new crisp.planningproblem.effect.Literal("referent(" + roleN + ", " + 
-                I.get(roleN) + ")", true));
+                effects.add(new Literal("referent(" + roleN + ", " + I.get(roleN) + ")", true));
                 
                 
                 //distractors
                 Variable distractorVar = new Variable("?y");
                 Substitution distractorSubst = new Substitution(new Variable(I.get(roleN)), distractorVar);
-                TypedVariableList distractorQuantifierVars = new TypedVariableList();
-                distractorQuantifierVars.addItem(distractorVar, "individual");
+                
+                List<Term> distractorQuantifierVars = new ArrayList<Term>();
+                List<String> distractorQuantifierTypes = new ArrayList<String>();
+                distractorQuantifierVars.add(distractorVar);
+                distractorQuantifierTypes.add("individual");
                 
                 
                 // TODO - it's a bit of a hack that we use the same semantic requirement
                 // (modulo substitution) for each substitution node, even if it is irrelevant
                 // for the distractors of this substitution node.  But it seems to be ok.
-                List<Goal> distractorPreconditions = new ArrayList<Goal>();
-                distractorPreconditions.add(new crisp.planningproblem.goal.Literal("**equals**(?y," +
-                I.get(roleN) + ")", false));
+                List<Formula> distractorPreconditions = new ArrayList<Formula>();
+                distractorPreconditions.add(new Literal("**equals**(?y," + I.get(roleN) + ")" , false));
                 
                 /*for( String sr : entry.getSemReqs() ) {
                     Term semReqTerm = distractorSubst.apply(substituteVariablesForRoles(TermParser.parse(sr), n, I));
@@ -532,12 +563,12 @@ public class PCrispActionCreator {
                     distractorPreconditions.add(new crisp.planningproblem.goal.Literal(semReqTerm, true));
                 } */
                 
-                Goal distractorPrecondition = 
-                new crisp.planningproblem.goal.Conjunction(distractorPreconditions);
+                Formula distractorPrecondition =
+                new Conjunction(distractorPreconditions);
                 
-                effects.add(new crisp.planningproblem.effect.Universal(distractorQuantifierVars,
-                new crisp.planningproblem.effect.Conditional(distractorPrecondition,
-                new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", true))));
+                effects.add(new Universal(distractorQuantifierVars, distractorQuantifierTypes,
+                new Conditional(distractorPrecondition,
+                new Literal("distractor(" + roleN + ",?y)", true))));
                 
             }
             
@@ -556,10 +587,10 @@ public class PCrispActionCreator {
                 }
                 
                 // canadjoin                
-                effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" + 
+                effects.add(new Literal("canadjoin(" + 
                 childTreeName + ", " + adjNode + ", "+ roleN+ ")", true));
                 // Allways put a mustadjoin constraint
-                effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" +
+                effects.add(new Literal("mustadjoin(" +
                 childTreeName + ", " + adjNode + ", "+ roleN+ ")", true));
                 
                 constants.put(adjNode, "nodetype");
@@ -569,45 +600,51 @@ public class PCrispActionCreator {
             }
             
             // Assemble action
-            DurativeAction newAction = new DurativeAction(pred, 
-            new crisp.planningproblem.goal.Conjunction(preconds), 
-            new crisp.planningproblem.effect.Conjunction(effects), 
-            constants, predicates, probabilityToDuration(prob));
+            Action newAction = new Action(pred, types,
+            new Conjunction(preconds), 
+            new Conjunction(effects),  probabilityToDuration(prob),
+            constants, predicates);
             
             retList.add(newAction);
         }
         return retList;
     }
     
-    public static DurativeAction createNoAdjoinAction(LexiconEntry entry, String nodeID, Double prob, int plansize) {
+    public static Action createNoAdjoinAction(LexiconEntry entry, String nodeID, Double prob, int plansize) {
         
         // Get the tree for this lexical entry from the hash map
         String treeRef = entry.tree;        
         String treeName = getTreeName(entry);                
         String actionName = "noadj-"+treeName+"-"+nodeID;        
         
-        HashMap<String, String> constants = new HashMap<String, String>();                 
+        HashMap<String, String> constants = new HashMap<String, String>();
         constants.put(treeName,"treename");        
         
         // Compute the predicate           
-        Predicate pred = new Predicate();
-        ArrayList<Goal> preconds = new ArrayList<Goal>();
-        ArrayList<Effect> effects = new ArrayList<Effect>();
+
+
+
+        ArrayList<Formula> preconds = new ArrayList<Formula>();
+        ArrayList<Formula> effects = new ArrayList<Formula>();
+                
+        List<Term> variables = new ArrayList<Term>();
+        List<String> types = new ArrayList<String>();
+        variables.add(new Variable("?u"));
+        types.add("syntaxnode");
         
-        pred.setLabel(actionName);
-        pred.addVariable("?u","syntaxnode");
-        
+        Compound pred = new Compound(actionName, variables);
+
         // Don't need to count the step for NoAdjoin, because we can only apply it once for a given node anyways
         // and it blocks all further operations involving this node.
         
         constants.put(nodeID,"nodetype");            
-        preconds.add(new crisp.planningproblem.goal.Literal("canadjoin(" + treeName+ ","+ nodeID + ", ?u)", true));
-        effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" + treeName+ ","+ nodeID + ", ?u)", false));
-        effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" + treeName+ ","+ nodeID + ", ?u)", false));
+        preconds.add(new Literal("canadjoin(" + treeName+ ","+ nodeID + ", ?u)", true));
+        effects.add(new Literal("mustadjoin(" + treeName+ ","+ nodeID + ", ?u)", false));
+        effects.add(new Literal("canadjoin(" + treeName+ ","+ nodeID + ", ?u)", false));
         
-        ArrayList<Predicate> predicates = new ArrayList<Predicate>();           
+        Map<Compound, List<String>> predicates = new HashMap<Compound, List<String>>();
         // Assemble and store action          
-        DurativeAction newAction = new DurativeAction(pred, new crisp.planningproblem.goal.Conjunction(preconds), new crisp.planningproblem.effect.Conjunction(effects), constants, predicates, probabilityToDuration(prob));
+        Action newAction = new Action(pred, types, new Conjunction(preconds), new Conjunction(effects),  probabilityToDuration(prob), constants, predicates);
         return newAction;             
     }
     
@@ -640,15 +677,15 @@ public class PCrispActionCreator {
     * @param term
     * @return
     */
-    private static Predicate makeSemanticPredicate(Term term) {
-        Predicate ret = new Predicate();
+    public static Compound makeSemanticPredicate(Term term) {
+       
         Compound t = (Compound) term;
-        
-        ret.setLabel(t.getLabel());
+
+        List<Term> subterms = new ArrayList<Term>();
         for( int i = 1; i <= t.getSubterms().size(); i++ ) 
-            ret.addVariable("?y" + i, "individual");
+            subterms.add(new Variable("?y" + i));
         
-        return ret;
+        return new Compound(t.getLabel(),subterms);
     }
     
     

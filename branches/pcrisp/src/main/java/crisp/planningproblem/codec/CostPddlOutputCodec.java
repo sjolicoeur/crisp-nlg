@@ -7,19 +7,17 @@ import java.io.Writer;
 import javax.xml.xpath.XPathExpressionException;
 
 import crisp.planningproblem.Action;
-import crisp.planningproblem.DurativeAction;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.TypeHierarchy;
-import crisp.planningproblem.effect.Effect;
-import crisp.planningproblem.goal.Goal;
+import crisp.planningproblem.formula.Formula;
 import de.saar.basic.StringTools;
 import de.saar.chorus.term.Term;
 
 public class CostPddlOutputCodec extends PddlOutputCodec {
     
-    @Override    
+    
     public void writeDomain(Domain domain, PrintWriter dw) {
         dw.println("(define (domain " + domain.getName() + ")");
         dw.println("        (:requirements " + StringTools.join(domain.getRequirements(), " ") + " :action-costs )");        
@@ -58,33 +56,30 @@ public class CostPddlOutputCodec extends PddlOutputCodec {
         dw.flush(); //otherwise output is incomplete 
     }
     
-    @Override
+
     protected String toPddlString(Action action) {
         StringBuffer buf = new StringBuffer();
         String prefix = "      ";
-        
-        boolean isDurativeAction = (action instanceof DurativeAction);
-        
+                        
         buf.append("   (:action " + action.getPredicate().getLabel() + "\n");
         buf.append(prefix + ":parameters (" + action.getPredicate().getVariables().toLispString() + ")\n");
         buf.append(prefix + ":precondition " + toPddlString(action.getPrecondition()) + "\n");
         buf.append(prefix + ":effect " + toPddlString(action.getEffect()) + "\n");
-        if (isDurativeAction){           
+        
             buf.append("(increase (total-cost) ");
-            Double duration = ((DurativeAction) action).getDuration();
+            Double duration = action.getCost();
             String durationString = String.format("%f",duration);
 
             buf.append(durationString);
             buf.append(")");
-        }
+        
         
         buf.append(") \n      )\n");
         
         return buf.toString();
     }
     
-    @Override
-    protected String toPddlString(Effect effect) {
+    protected String toPddlString(Formula effect) {
         if( effect instanceof crisp.planningproblem.effect.Conjunction ) {
             crisp.planningproblem.effect.Conjunction conj = (crisp.planningproblem.effect.Conjunction) effect;
             StringBuffer buf = new StringBuffer("(and");

@@ -2,15 +2,21 @@ package crisp.main;
 
 import java.util.List;
 
-import crisp.converter.CRISPConverter;
+import crisp.converter.FastCRISPConverter;
 import crisp.planner.lazygp.Plan;
 import crisp.planner.lazygp.Planner;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.codec.PddlOutputCodec;
-import crisp.result.DerivationTree;
-import crisp.result.Grammar;
-import crisp.result.TreeNode;
+import crisp.result.CrispDerivationTreeBuilder;
+import crisp.result.DerivationTreeBuilder;
+import de.saar.chorus.term.Term;
+import de.saar.penguin.tag.codec.CrispXmlInputCodec;
+import de.saar.penguin.tag.derivation.DerivedTree;
+import de.saar.penguin.tag.derivation.DerivationTree;
+import de.saar.penguin.tag.grammar.Grammar;
+import java.io.File;
+import java.io.FileReader;
 
 /**
  * This is Mark Wilding's version of Generate. This alternative front-end
@@ -28,12 +34,19 @@ public class GenerateSentence {
 		 * plan our sentence.
 		 */
 		Domain domain = new Domain();
-		Problem problem = new Problem();
-		String problemFile = args[0];
+		Problem problem = new Problem();		
+
+                long start = System.currentTimeMillis();
+                CrispXmlInputCodec codec = new CrispXmlInputCodec();
+		Grammar<Term> grammar = new Grammar<Term>();
+		codec.parse(new FileReader(new File(args[0])), grammar);
+        System.out.println("Grammar parsed in "+ (System.currentTimeMillis()-start) + "ms .");
+
+            File problemFile = new File(args[1]);
 
 		/*** read CRISP problem specification and convert it to PDDL domain/problem ***/
-		long start = System.currentTimeMillis();
-		new CRISPConverter().convert(problemFile, domain, problem);
+		start = System.currentTimeMillis();
+		new FastCRISPConverter().convert(grammar, problemFile, domain, problem);
 		long end = System.currentTimeMillis();
 
 		new PddlOutputCodec().writeToDisk(domain, problem, "./", domain.getName());
@@ -53,24 +66,22 @@ public class GenerateSentence {
     	/*
     	 * Here we use crisp.result to produce the final
     	 * sentence and the derivation tree.
-    	 */
-    	Grammar grammar = new Grammar(problemFile);
+    	 */    
 
     	System.out.println("\n\n\nFound " + plans.size() + " plan(s):");
     	for( Plan plan : plans ) {
     		System.out.println(plan);
 
+                DerivationTreeBuilder derivationTreeBuilder = new CrispDerivationTreeBuilder(grammar);
+            //DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
+            //System.out.println(derivTree);
+            //    		System.out.println("\nBuilt derivation tree:\n"+derivTree);
+            //DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
+            //System.out.println("\nBuilt derived tree:\n"+derivedTree);
+            //System.out.println("\nFinal sentence:");
+            //System.out.println(derivedTree.yield());
+
     		// Build the derivation tree
-    		DerivationTree derivation = new DerivationTree("S", plan, grammar);
-    		System.out.println("\nBuilt derivation tree:\n"+derivation);
-
-    		// Derive the TAG tree from the derivation tree
-    		TreeNode derived = derivation.buildDerivedTree();
-    		System.out.println("\nBuilt derived tree:\n"+derived);
-
-    		// Output the sentence
-    		System.out.println("\nFinal sentence:");
-    		System.out.println(derived.getSentenceString());
     	}
 
     	System.err.println("\nRuntime:");

@@ -11,10 +11,9 @@ import crisp.planningproblem.Domain;
 import crisp.planningproblem.Action;
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.TypedVariableList;
-import crisp.planningproblem.goal.Goal;
-import crisp.planningproblem.goal.Literal;
-import crisp.planningproblem.goal.Conjunction;
-import crisp.planningproblem.effect.Effect;
+import crisp.planningproblem.formula.Formula;
+import crisp.planningproblem.formula.Literal;
+import crisp.planningproblem.formula.Conjunction;
 
 
 import crisp.converter.TagActionType;
@@ -124,9 +123,8 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
    
     @Override 
     public void processPlanStep(Action action) {
-
-            TypedVariableList t = action.getPredicate().getVariables();                    
-            Compound pred = (Compound) action.getPredicate().toTerm();
+           
+            Compound pred = (Compound) action.getPredicate();
             String predicateName = action.getPredicate().getLabel();
            
             String[] predicateParts = predicateName.split("-");

@@ -1,7 +1,6 @@
 package crisp.result;
 
 import crisp.planner.lazygp.ActionInstance;
-import crisp.planningproblem.effect.Literal;
 
 /**
  * Represents a substitution branch in the derivation tree.

@@ -25,13 +25,16 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import crisp.planningproblem.Action;
-import crisp.planningproblem.DurativeAction;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.TypedVariableList;
-import crisp.planningproblem.effect.Effect;
-import crisp.planningproblem.goal.Goal;
+import crisp.planningproblem.formula.Formula;
+import crisp.planningproblem.formula.Conditional;
+import crisp.planningproblem.formula.Conjunction;
+import crisp.planningproblem.formula.Universal;
+import crisp.planningproblem.formula.Literal;
+import crisp.planningproblem.formula.Negation;
 import de.saar.chorus.term.Compound;
 import de.saar.chorus.term.Constant;
 import de.saar.chorus.term.Term;                         
@@ -107,7 +110,7 @@ public class ProbCRISPConverter implements ProblemConverter {
                 problemname = atts.getValue("name");  
                 domain.setName(problemname);
                 problem.setName(problemname);
-                problem.setDomain(domain);
+                //problem.setDomain(domain);
                 
                 try {
                     plansize = Integer.parseInt(atts.getValue("plansize"));
@@ -141,6 +144,7 @@ public class ProbCRISPConverter implements ProblemConverter {
         }
         
         
+        @Override
         public void endElement(String namespaceURI, String localName, String qName)
         throws SAXException {
             
@@ -152,8 +156,14 @@ public class ProbCRISPConverter implements ProblemConverter {
                 Term term = TermParser.parse(characterBuffer.toString()); // parse the Term
                 
                 // This was in computeInitialState(Domain domain, Problem problem)
-                addPredicateInWorld((Compound) term);
-                domain.addPredicate(makeSemanticPredicate(term));
+                Compound compoundTerm = (Compound) term;
+                addPredicateInWorld(compoundTerm);
+
+                List<String> types = new ArrayList<String>();
+                for (int i=0; i<compoundTerm.getSubterms().size(); i++){
+                    types.add("individual");
+                }
+                domain.addPredicate(compoundTerm.getLabel(), types);
                 addIndividualConstants(term,domain);
                 
                 problem.addToInitialState(term);
@@ -215,24 +225,30 @@ public class ProbCRISPConverter implements ProblemConverter {
     */
     protected void computeGoal(Domain domain, Problem problem) {
 
-      TypedVariableList tlNodeIndiv = new TypedVariableList();
-      tlNodeIndiv.addItem(new Variable("?u"), "syntaxnode");
-      tlNodeIndiv.addItem(new Variable("?x"), "individual");
+      List<Term> tlNodeIndiv = new ArrayList<Term>();
+      List<String> tlNodeIndivTypes= new ArrayList<String>();
+      tlNodeIndiv.add(new Variable("?u"));
+      tlNodeIndivTypes.add("syntaxnode");
+      tlNodeIndiv.add(new Variable("?x"));      
+      tlNodeIndivTypes.add("individual");
 
-      TypedVariableList tlCatNode = new TypedVariableList();
-      tlCatNode.addItem(new Variable("?t"), "treename");
-      tlCatNode.addItem(new Variable("?n"), "nodetype");
-      tlCatNode.addItem(new Variable("?u"), "syntaxnode");
+
+      List<Term> tlCatNode = new ArrayList<Term>();
+      List<String> tlCatNodeTypes = new ArrayList<String>();
+      tlCatNode.add(new Variable("?t"));
+      tlCatNodeTypes.add("treename");
+      tlCatNode.add(new Variable("?n"));
+      tlCatNodeTypes.add("nodetype");
+      tlCatNode.add(new Variable("?u"));
+      tlCatNodeTypes.add("syntaxnode");
 
         // collect all goals in this list
-        List<Goal> finalStateGoals = new ArrayList<Goal>();
+        List<Formula> finalStateGoals = new ArrayList<Formula>();
 
         // no positive "subst" literals in the goal state
-        Goal noSubst = new crisp.planningproblem.goal.Universal(tlCatNode,
-                new crisp.planningproblem.goal.Literal("subst(?t,?n,?u)", false));
-
-                
-        
+        Formula noSubst = new Universal(tlCatNode, tlCatNodeTypes,
+                new Literal("subst(?t,?n,?u)", false));
+                        
         // no positive "distractor" literals in the goal state
         // Not needed for realization experiment as for realization we do not have to select referring expressions
         //Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
@@ -244,8 +260,8 @@ public class ProbCRISPConverter implements ProblemConverter {
         //   because otherwise the LAMA planner cannot handle universal preconditions 
         //   involving this predicate
         //if (domain.sawMustadjoin()){ 
-            Goal noMustAdj= new crisp.planningproblem.goal.Universal(tlCatNode,
-                new crisp.planningproblem.goal.Literal("mustadjoin(?t, ?n, ?u)", false));
+            Formula noMustAdj= new Universal(tlCatNode, tlCatNodeTypes,
+                new Literal("mustadjoin(?t, ?n, ?u)", false));
             finalStateGoals.add(noMustAdj);
         //}
 
@@ -259,35 +275,43 @@ public class ProbCRISPConverter implements ProblemConverter {
         // elsewhere as an effect        
         for( Integer i : problem.getComgoalArities()) {
             //System.out.println("Found needtoexpress for arity "+i.toString());
-            TypedVariableList tlPredicate = new TypedVariableList();
-            tlPredicate.addItem(new Variable("?P"), "predicate");
+            List<Term> tlPredicate = new ArrayList<Term>();
+            List<String> tlPredicateTypes = new ArrayList<String>();
+
+            tlPredicate.add(new Variable("?P"));
+            tlPredicateTypes.add("predicate");
             
             List<Term> subterms = new ArrayList<Term>();
             subterms.add(new Variable("?P"));
 
             for( int j = 1; j <= i; j++ ) {
-                tlPredicate.addItem(new Variable("?x" + j), "individual");
+                tlPredicate.add(new Variable("?x" + j));
+                tlPredicateTypes.add("individual");
                 subterms.add(new Variable("?x" + j));           
             }
 
-            finalStateGoals.add(new crisp.planningproblem.goal.Universal(tlPredicate,
-                    new crisp.planningproblem.goal.Literal(new Compound("needtoexpress-" + i, subterms), false)));            
+            finalStateGoals.add(new Universal(tlPredicate, tlPredicateTypes,
+                    new Literal(new Compound("needtoexpress-" + i, subterms), false)));            
         }
         
         // since negated needtoexpress-* literals can also occur with other arity we  
         // need to add predicates for any arity to the domain.        
         for (int i = 1; i <= maximumArity; i++){
-            Predicate predNTE = new Predicate();
-            predNTE.setLabel("needtoexpress-" + i);
-            predNTE.addVariable("?P", "predicate");
-
-            for( int j = 1; j <= i; j++ ) 
-                predNTE.addVariable("?x" + j, "individual");
             
-            domain.addPredicate(predNTE);
+            List<Term> variables = new ArrayList<Term>();
+            List<String> types = new ArrayList<String>();
+            variables.add(new Variable("?P"));
+            types.add("predicate");
+            for( int j = 1; j <= i; j++ ) {
+                variables.add(new Variable("?x" + j));
+                types.add("individual");
+            }
+
+            Compound predNTE = new Compound("needtoexpress-" + i, variables);
+            domain.addPredicate(predNTE.getLabel(), types);
         }
 
-        problem.setGoal(new crisp.planningproblem.goal.Conjunction(finalStateGoals));
+        problem.setGoal(new Conjunction(finalStateGoals));
     }
     
     
@@ -320,33 +344,33 @@ public class ProbCRISPConverter implements ProblemConverter {
         domain.addSubtype("rolename", "object");
         domain.addSubtype("treename", "object");
         domain.addSubtype("nodetype", "object"); // Identifiers for nodes in trees (tree types)
+        
+        List<String> substTypeList = new ArrayList<String>();
+        substTypeList.add("treename");
+        substTypeList.add("nodetype");
+        substTypeList.add("syntaxnode");
+        domain.addPredicate("subst", substTypeList);
+        
+        List<String> stepTypeList = new ArrayList<String>();
+        stepTypeList.add("stepindex");
+        domain.addPredicate("step",stepTypeList);
 
-        Predicate predSubst = new Predicate(); predSubst.setLabel("subst");
-        predSubst.addVariable("?t", "treename");
-        predSubst.addVariable("?x", "nodetype"); predSubst.addVariable("?y", "syntaxnode");
-        domain.addPredicate(predSubst);
+        List<String> distractorTypeList = new ArrayList<String>();
+        distractorTypeList.add("syntaxnode");
+        distractorTypeList.add("individual");
+        domain.addPredicate("distractor",distractorTypeList);
 
-        Predicate predStep = new Predicate(); predStep.setLabel("step");
-        predStep.addVariable("?i", "stepindex");
-        domain.addPredicate(predStep);
+        List<String> referentTypeList = new ArrayList<String>();
+        referentTypeList.add("syntaxnode");
+        referentTypeList.add("individual");
+        domain.addPredicate("referent", referentTypeList);
 
-        Predicate predDistractor = new Predicate(); predDistractor.setLabel("distractor");
-        predDistractor.addVariable("?u", "syntaxnode"); predDistractor.addVariable("?x", "individual");
-        domain.addPredicate(predDistractor);
-
-        Predicate predReferent = new Predicate(); predReferent.setLabel("referent");
-        predReferent.addVariable("?u", "syntaxnode"); predReferent.addVariable("?x", "individual");
-        domain.addPredicate(predReferent);
-
-        Predicate predCanadjoin = new Predicate(); predCanadjoin.setLabel("canadjoin");
-        predCanadjoin.addVariable("?t", "treename"); predCanadjoin.addVariable("?x","nodetype"); 
-        predCanadjoin.addVariable("?y", "syntaxnode");
-        domain.addPredicate(predCanadjoin);
-
-        Predicate predMustadjoin = new Predicate(); predMustadjoin.setLabel("mustadjoin");
-        predMustadjoin.addVariable("?t", "treename"); predMustadjoin.addVariable("?x","nodetype"); 
-        predMustadjoin.addVariable("?y", "syntaxnode");
-        domain.addPredicate(predMustadjoin);
+        List<String> adjoinTypeList = new ArrayList<String>();
+        adjoinTypeList.add("treename");
+        adjoinTypeList.add("nodetype");
+        adjoinTypeList.add("syntaxnode");
+        domain.addPredicate("canadjoin", adjoinTypeList);
+        domain.addPredicate("mustadjoin", adjoinTypeList);
         
         domain.addConstant("S","category");
         domain.addConstant("init","syntaxnode");
@@ -430,11 +454,11 @@ public class ProbCRISPConverter implements ProblemConverter {
         }
 
         // Add dummy action, needed to sidestep a LAMA bug
-        ArrayList<Goal> preconds = new ArrayList<Goal>();
-        preconds.add(new crisp.planningproblem.goal.Literal("step(step0)",true));
-        ArrayList<Effect> effects = new ArrayList<Effect>();
+        ArrayList<Formula> preconds = new ArrayList<Formula>();
+        preconds.add(new Literal("step(step0)",true));
+        ArrayList<Formula> effects = new ArrayList<Formula>();
         HashMap<String,String> constants = new HashMap<String,String>();
-        List<Predicate> predicates = new ArrayList<Predicate>();
+        Map<Compound, List<String>> predicates = new HashMap<Compound, List<String>>();
 
         domain.addConstant("dummyindiv", "individual");
         domain.addConstant("dummypred", "predicate");
@@ -442,11 +466,11 @@ public class ProbCRISPConverter implements ProblemConverter {
         domain.addConstant("dummysyntaxnode", "syntaxnode");
         domain.addConstant("dummytree", "treename");
         
-        effects.add(new crisp.planningproblem.effect.Literal("referent(dummysyntaxnode, dummyindiv)",false));
-        effects.add(new crisp.planningproblem.effect.Literal("distractor(dummysyntaxnode, dummyindiv)",false));
-        effects.add(new crisp.planningproblem.effect.Literal("subst(dummytree, dummynodetype, dummysyntaxnode)",false));
-        effects.add(new crisp.planningproblem.effect.Literal("canadjoin(dummytree, dummynodetype, dummysyntaxnode)",false));
-        effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(dummytree, dummynodetype, dummysyntaxnode)",false));
+        effects.add(new Literal("referent(dummysyntaxnode, dummyindiv)",false));
+        effects.add(new Literal("distractor(dummysyntaxnode, dummyindiv)",false));
+        effects.add(new Literal("subst(dummytree, dummynodetype, dummysyntaxnode)",false));
+        effects.add(new Literal("canadjoin(dummytree, dummynodetype, dummysyntaxnode)",false));
+        effects.add(new Literal("mustadjoin(dummytree, dummynodetype, dummysyntaxnode)",false));
         for(int i=1; i <= maximumArity; i++ ) {
             List<Term> subterms = new ArrayList<Term>();
             subterms.add(new Constant("dummypred"));
@@ -454,14 +478,14 @@ public class ProbCRISPConverter implements ProblemConverter {
                 subterms.add(new Constant("dummyindiv"));
             }
             Compound c = new Compound("needtoexpress-"+i, subterms);
-            effects.add(new crisp.planningproblem.effect.Literal(c,false));
+            effects.add(new Literal(c,false));
         }
 
 
-        DurativeAction dummyAction = new DurativeAction(new Predicate("dummy"), 
-                                            new crisp.planningproblem.goal.Conjunction(preconds),
-                                            new crisp.planningproblem.effect.Conjunction(effects),
-                                            constants, predicates, 0);
+        Action dummyAction = new Action(new Compound("dummy", new ArrayList<Term>()), new ArrayList<String>(),
+                                            new Conjunction(preconds),
+                                            new Conjunction(effects),
+                                            1.0, constants, predicates);
         domain.addAction(dummyAction);
 
         problem.addToInitialState(TermParser.parse("referent(dummysyntaxnode, dummyindiv)"));
@@ -510,10 +534,10 @@ public class ProbCRISPConverter implements ProblemConverter {
         }
         
         // register predicates used by this action
-        List<Predicate> predicates = action.getDomainPredicates();
+        Map<Compound, List<String>> predicates = action.getDomainPredicates();
         if (predicates!=null) {
-            for (Predicate pred : predicates) { 
-               domain.addPredicate(pred);
+            for (Compound pred : predicates.keySet()) { 
+               domain.addPredicate(pred.getLabel(), predicates.get(pred));
             }
         }
     }
@@ -708,24 +732,6 @@ public class ProbCRISPConverter implements ProblemConverter {
         }
     }
     
-    /**
-    * Translates a Term into a Predicate.  This method assumes that the argument
-    * is really an object of class Compound.
-    *
-    * @param term
-    * @return
-    */
-    private Predicate makeSemanticPredicate(Term term) {
-        Predicate ret = new Predicate();
-        Compound t = (Compound) term;
-        
-        ret.setLabel(t.getLabel());
-        for( int i = 1; i <= t.getSubterms().size(); i++ ) {
-            ret.addVariable("?y" + i, "individual");
-        }
-        
-        return ret;
-    }
     
     /*
     public static File convertGrammarPath(String filename){

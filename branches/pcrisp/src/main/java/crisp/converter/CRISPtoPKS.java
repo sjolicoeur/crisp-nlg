@@ -4,6 +4,13 @@ import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.codec.PksOutputCodec;
 
+import de.saar.penguin.tag.codec.CrispXmlInputCodec;
+import de.saar.penguin.tag.grammar.Grammar;
+import de.saar.chorus.term.Term;
+
+import java.io.FileReader;
+import java.io.File;
+
 public class CRISPtoPKS {
 
 	/**
@@ -18,7 +25,14 @@ public class CRISPtoPKS {
 		Problem problem = new Problem();
 
 		long start = System.currentTimeMillis();
-		CRISPConverter.convert(args[0], domain, problem);
+
+                CrispXmlInputCodec codec = new CrispXmlInputCodec();
+		Grammar<Term> grammar = new Grammar<Term>();
+		codec.parse(new FileReader(new File(args[0])), grammar);
+
+                File problemFile =  new File(args[1]);
+
+		new FastCRISPConverter().convert(grammar, problemFile, domain, problem);
 		long end = System.currentTimeMillis();
 
 		System.err.println("Total runtime: " + (end-start) + "ms");

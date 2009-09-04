@@ -8,7 +8,6 @@ import javax.xml.xpath.XPathExpressionException;
 
 import crisp.planner.lazygp.ActionInstance;
 import crisp.planner.lazygp.Plan;
-import crisp.planningproblem.goal.Literal;
 import crisp.result.AuxiliaryTree.WrongFootCategoryException;
 import crisp.result.DerivationNode.DerivationException;
 import crisp.result.Grammar.CouldNotLoadGrammarTreeException;

@@ -7,7 +7,6 @@ package crisp.planningproblem.codec;
 
 import crisp.planningproblem.Action;
 import crisp.planningproblem.Domain;
-import crisp.planningproblem.DurativeAction;
 import crisp.planningproblem.Predicate;
 import crisp.planningproblem.TypeHierarchy;
 import de.saar.basic.StringTools;
@@ -19,7 +18,6 @@ import java.io.PrintWriter;
  */
 public class TempPddlOutputCodec extends PddlOutputCodec{
 
-     @Override
     public void writeDomain(Domain domain, PrintWriter dw) {
         dw.println("(define (domain " + domain.getName() + ")");
         dw.println("        (:requirements " + StringTools.join(domain.getRequirements(), " ") + " :durative-actions )");
@@ -56,18 +54,15 @@ public class TempPddlOutputCodec extends PddlOutputCodec{
         dw.flush(); //otherwise output is incomplete
     }
 
-    @Override
     protected String toPddlString(Action action) {
         StringBuffer buf = new StringBuffer();
         String prefix = "      ";
 
-        boolean isDurativeAction = (action instanceof DurativeAction);
 
-        if (isDurativeAction) {
-            buf.append("   (:durative-action ");            
-        } else {
-            buf.append("   (:action ");
-        }
+
+        buf.append("   (:durative-action ");
+            
+        
         buf.append(action.getPredicate().getLabel() + "\n");
         buf.append(prefix + ":parameters (" + action.getPredicate().getVariables().toLispString() + ")\n");
         buf.append(prefix + ":precondition " + toPddlString(action.getPrecondition()) + "\n");

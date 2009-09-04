@@ -619,7 +619,7 @@ public class PCrispActionCreator {
     * @return the corresponding duration -log(p) for the action.
     */ 
     private static double probabilityToDuration(double prob){
-        return ((prob==1.0) ? 0: Math.round(-Math.log(prob)*1000000));
+        return ((prob==1.0) ? 1: 1 - Math.log(prob));
     }
     
     

@@ -271,8 +271,7 @@ public class FastCRISPConverter  {
         
         finalStateGoals.add(noSubst);
         //finalStateGoals.add(noDistractors);
-        
-        
+                
         // no positive needtoexpress-* literals, for any arity used in the communicative 
         // goals. If we would just do this for all arities the LAMA planner cannot handle 
         // the universal precondition involving needtoexpress predicates that do not occur        

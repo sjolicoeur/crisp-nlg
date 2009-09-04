@@ -149,7 +149,7 @@ public class LamaPlannerInterface implements PlannerInterface {
         long start;
         long end;
     
-        OutputCodec outputCodec = new CostPddlOutputCodec();
+        OutputCodec outputCodec = new PddlOutputCodec();
         outputCodec.writeToDisk(domain, problem, new FileWriter(new File(tempDomainFile)),
                                                  new FileWriter(new File(tempProblemFile)));
         

@@ -7,7 +7,7 @@ import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.effect.Effect;
 import crisp.planningproblem.goal.Goal;
-import crisp.termparser.TermParser;
+
 import crisp.tools.Pair;
 import de.saar.chorus.term.Compound;
 import de.saar.chorus.term.Constant;
@@ -15,6 +15,7 @@ import de.saar.penguin.tag.grammar.ProbabilisticGrammar;
 import de.saar.penguin.tag.grammar.LexiconEntry;
 
 import de.saar.chorus.term.Term;
+import de.saar.chorus.term.parser.TermParser;
 
 import de.saar.penguin.tag.grammar.ElementaryTree;
 

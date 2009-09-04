@@ -1,0 +1,547 @@
+/**
+ * JavaCC file
+ */
+ 
+options {
+  JDK_VERSION = "1.5";
+  
+    IGNORE_CASE = true;
+    DEBUG_PARSER = false;
+    LOOKAHEAD = 2;
+    STATIC = false;
+}
+
+
+ 
+
+PARSER_BEGIN(PddlParser)
+package crisp.pddl;
+
+import crisp.planningproblem.*;
+import crisp.planningproblem.goal.*;
+import crisp.planningproblem.effect.*;
+
+import de.saar.chorus.term.*;
+
+import java.io.*;
+import java.util.*;
+
+public class PddlParser {
+	private Domain domain;
+	private Problem problem;
+	
+	public PddlParser(Domain domain, Problem problem) {
+		this((Reader) null);
+		
+	    this.domain = domain;
+	    this.problem = problem;
+	    
+	    domain.clear();
+	    problem.clear();
+	}
+	
+	public static void parse(File domainReader, Domain domain, File problemReader, Problem problem) 
+	throws ParseException, FileNotFoundException
+	{
+		parse(new FileReader(domainReader), domain, new FileReader(problemReader), problem);
+	}
+	
+	
+	public static void parse(Reader domainReader, Domain domain, Reader problemReader, Problem problem) 
+	throws ParseException
+	{
+		PddlParser parser = new PddlParser(domain, problem);
+		
+		parser.ReInit(domainReader);
+		parser.Domain();
+		
+		parser.ReInit(problemReader);
+		parser.Problem();
+		
+		problem.addEqualityLiterals();
+	}
+	
+}
+PARSER_END(PddlParser)
+
+
+
+SKIP : /* White space and NewLine */
+{
+    " "
+|   "\t"
+|   "\n"
+|   "\r"
+|   "\f"
+}
+
+SPECIAL_TOKEN: /* Comments */
+{
+    <SINGLE_LINE_COMMENT: ";" (~["\n", "\r"])* ("\n" | "\r" | "\r\n")>
+}
+
+
+TOKEN: /* Reserved Words and Literals */
+{
+    <DEFINE: "define">
+
+		 /* Domain related tokens */
+		 |   <DOMAIN: "domain">
+		 |   <FUNCTION: ":functions">
+		 |   <REQUIREMENTS: ":requirements">
+		 |   <TYPES: ":types">
+		 |   <CONSTANTS: ":constants">
+		 |   <PREDICATES: ":predicates">
+
+		 /* For PROBLEM files */
+		 |   <PROBLEM: "problem">
+		 |   <DOMAIN_TAG: ":domain">
+		 |   <OBJECT: ":objects">
+		 |   <GOAL: ":goal">
+		 |   <INIT: ":init">
+		 |   <METRIC: ":metric">
+		 |   <MAXIMIZE: "maximize">
+		 |   <MINIMIZE:	"minimize">
+		 /* |   <TOTAL_TIME: "total-time"> */
+		 |   <LENGTH: ":length">
+		 |   <SERIAL: ":serial">
+		 |   <PARALLEL: ":parallel">
+		 
+		 /* For UPDATE files */
+		 |   <UPDATE: "update">
+		 |   <PROBLEM_TAG: ":problem">
+		 |   <EXEC: ":exec">
+		 |   <FAILURE: ":failure">
+		 |   <GOALADD: ":goal-add">
+		 |   <GOALDEL: ":goal-delete">
+		 |   <COMMIT:  ":commit">
+
+		 
+		 /* Domain requirements */
+		 |   <REQUIREMENT: ":strips" | ":typing" | ":negative-preconditions" |
+		     ":disjunctive-preconditions" | ":equality" |
+		      ":existential-preconditions" | ":universal-preconditions" |
+		      ":quantified-preconditions" | ":conditional-effects" | ":fluents" | 
+		      ":adl" | ":durative-actions" |
+		      ":duration-inequalities" | ":continuous-effects">
+		 /* Domain requirements 
+		 |   <TYPING: ":typing">
+		 |   <STRIPS: ":strips">
+		 |   <EQUALITY: ":equality">
+		 |   <ADL: ":adl">		 
+		 |   <DURATIVE_ACTIONS: ":durative-actions">
+		 |   <DURATION_INEQUAL: ":duration-inequalities">
+		 |   <CONT_EFFECT: ":continuous-effects"> */
+
+		 /* Action-related terms */
+		 |   <ACTION: ":action">
+		 |   <DURATIVE_ACTION: ":durative-action">
+		 |   <VARS: ":vars">
+		 |   <PARAMETERS: ":parameters">
+		 |   <DURATION: ":duration">
+		 |   <DURATION_VAR: "?duration">
+		 |   <COST: ":cost">
+		 |   <CONDITION: ":condition">
+		 |   <PRECONDITION: ":precondition">
+		 |   <EFFECT: ":effect">
+
+		 /* Time-related terms */
+		 /*
+		 |   <AT: "at">
+		 |   <START: "start">
+		 |   <END: "end">
+		 |   <OVER: "over">
+		 |   <ALL: "all">
+		 |   <TIME_VAR: "#t">
+		 */
+
+		 /* Logical relations */
+		 |   <AND: "and">
+		 |   <OR: "or">
+		 |   <NOT: "not">
+		 |   <FORALL: "forall">
+		 |   <WHEN:   "when">
+		 |   <EXISTS: "exists">
+		 |   <EITHER: "either">
+
+		 /* For GOALs in PSP */
+		 |	 <HARD: "hard">
+		 |	 <SOFT: "soft">
+}	    
+
+TOKEN: /* Literals */
+{
+    <NUMBER:
+	"0" | ["1"-"9"] (["0"-"9"])*
+	    | (["0"-"9"])+ "." (["0"-"9"])+ >
+
+|   <ASSIGN: "assign" | ":=">
+|   <INCREASE: "increase" | "+=">
+|   <DECREASE: "decrease" | "-=">
+|   <SCALEUP: "scale-up" | "*=">
+|   <SCALEDOWN: "scale-down" | "/=">
+|   <EQ: "=">
+|	<LT: "<">
+|	<GT: ">">
+|	<LTE: "<=">
+|	<GTE: ">=">
+|   <ADD: "+">
+|   <DASH: "-">
+|   <MUL: "*">
+|   <DIV: "/">
+|   <VAR: "?" ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z","-","_","0"-"9"])* >
+|   <NAME: ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z","-","_","0"-"9"])* >
+/* |   <REQUIREMENT: ":" (["a"-"z","A"-"Z"])+ > */
+|   <OPENBRACE: "(">
+|   <CLOSEBRACE: ")">
+|   <COMMA: ",">
+}
+
+
+
+
+/***** DOMAIN ******/
+
+void Domain() : 
+{
+	Token t;
+}
+{
+	<OPENBRACE> <DEFINE> <OPENBRACE> <DOMAIN> t=<NAME> <CLOSEBRACE>
+	(Requirements() | Types() | Constants() | Predicates() | Action())*
+	<CLOSEBRACE>
+	{
+		domain.setName(t.image);
+	}
+}
+
+void Requirements() :
+{ Token t; }
+{
+	<OPENBRACE> <REQUIREMENTS> 
+	(t = <REQUIREMENT> { domain.addRequirement(t.image); })*
+	<CLOSEBRACE>
+}
+
+void Types() :
+{ 
+	TypedNameList types;
+}
+{ 
+	<OPENBRACE> <TYPES>
+	types = TypedNameList()
+	<CLOSEBRACE>
+	{
+		for( String type : types.getItems() ) {
+			domain.addSubtype(type, types.getType(type));
+		}
+	}
+}
+
+
+void Constants() :
+{ 
+	TypedNameList constants;
+}
+{ 
+	<OPENBRACE> <CONSTANTS>
+	constants = TypedNameList()
+	<CLOSEBRACE>
+	{
+		for( String constant : constants.getItems() ) {
+			domain.addConstant(constant, constants.getType(constant));
+		}
+	}
+	
+}
+
+void Predicates() :
+{ }
+{
+	 <OPENBRACE> <PREDICATES>  ( Predicate() )+
+     <CLOSEBRACE>
+}
+
+void Predicate() :
+{
+	Predicate pred = new Predicate();
+	TypedVariableList arguments = new TypedVariableList();
+	Token t;
+	
+}
+{
+	<OPENBRACE> 
+	  t = <NAME> { pred.setLabel(t.image); }
+	  arguments = TypedVarList()
+	<CLOSEBRACE>
+	{
+		for( Variable arg : arguments.getItems() ) {
+			pred.addVariable( arg, arguments.getType(arg) );
+		}
+		
+		domain.addPredicate(pred);
+	 }
+}
+
+void Action() :
+{ 
+	Token t;
+	Predicate pred = new Predicate();
+	Goal precondition = new crisp.planningproblem.goal.Conjunction();
+	Effect effect = new crisp.planningproblem.effect.Conjunction();
+}
+{
+	<OPENBRACE> <ACTION> t = <NAME> { pred.setLabel(t.image); }
+	( ActionParameters(pred) 
+	  | <PRECONDITION> precondition = ActionPrecondition() 
+	  | <EFFECT> effect = ActionEffect()
+	)*
+	<CLOSEBRACE>
+	{
+		Action a = new Action(pred, precondition, effect);
+		domain.addAction(a);
+	}
+}
+
+
+void ActionParameters(Predicate pred) :
+{
+	TypedVariableList parameters = new TypedVariableList();
+}
+{
+	<PARAMETERS> <OPENBRACE>
+	parameters = TypedVarList()
+	<CLOSEBRACE>
+	{
+		for( Variable parameter : parameters.getItems() ) {
+	 		pred.addVariable(parameter, parameters.getType(parameter));
+	 	}
+	}
+}
+
+Goal ActionPrecondition() :
+{
+	Goal sub;
+	List<Goal> conjuncts = new ArrayList<Goal>();
+	Term term;
+	
+	TypedVariableList variables = new TypedVariableList();
+}
+{
+	<OPENBRACE> <AND> (sub = ActionPrecondition() { conjuncts.add(sub); })* <CLOSEBRACE>
+	 { Collections.reverse(conjuncts); 
+	   return new crisp.planningproblem.goal.Conjunction(conjuncts); }
+	 
+	| term = Atom() 
+	 { return new crisp.planningproblem.goal.Literal(term, true); }
+	 
+	 // TODO: allow only if :negative-preconditions
+	| <OPENBRACE> <NOT> sub = ActionPrecondition() <CLOSEBRACE>
+	 { if( sub instanceof crisp.planningproblem.goal.Literal ) {
+	 	 Term t = ((crisp.planningproblem.goal.Literal) sub).getAtom();
+	 	 return new crisp.planningproblem.goal.Literal(t, false);
+	   } else {
+	   	 return new crisp.planningproblem.goal.Negation(sub);
+	   }
+	 } 
+	 
+	 // TODO: allow only if :universal-preconditions
+	| <OPENBRACE> <FORALL> 
+	      <OPENBRACE> variables = TypedVarList() <CLOSEBRACE>
+	      sub = ActionPrecondition()
+	  <CLOSEBRACE>
+	 { return new crisp.planningproblem.goal.Universal(variables, sub); }
+	 
+}
+
+Effect ActionEffect() :
+{
+	Effect sub;
+	List<Effect> conjuncts = new ArrayList<Effect>();
+	Term term;
+
+	TypedVariableList variables = new TypedVariableList();
+	Goal condition;
+}
+{
+	<OPENBRACE> <AND> (sub = ActionEffect() { conjuncts.add(sub); })* <CLOSEBRACE>
+	 { return new crisp.planningproblem.effect.Conjunction(conjuncts); }
+	 
+	| term = Atom() 
+	 { return new crisp.planningproblem.effect.Literal(term, true); }
+	 
+	| <OPENBRACE> <NOT> term = Atom() <CLOSEBRACE>
+	 { return new crisp.planningproblem.effect.Literal(term, false); }
+	 
+	 // TODO: allow only if :conditional-effects	 
+	| <OPENBRACE> <FORALL> 
+	      <OPENBRACE> variables = TypedVarList() <CLOSEBRACE>
+	      sub = ActionEffect()
+	  <CLOSEBRACE>
+	 { return new crisp.planningproblem.effect.Universal(variables, sub); }
+	 
+	 // TODO: allow only if :conditional-effects	 	 
+	| <OPENBRACE> <WHEN> 
+	     condition = ActionPrecondition() 
+	     sub = ActionEffect()
+	  <CLOSEBRACE>
+	  { return new crisp.planningproblem.effect.Conditional(condition, sub); }
+}
+
+
+
+/******* PROBLEM ************/
+
+void Problem() :
+{
+	Token t;
+}
+{
+	<OPENBRACE> <DEFINE> <OPENBRACE> <PROBLEM> t = <NAME> { problem.setName(t.image); } <CLOSEBRACE>
+	ProblemDomain() 
+	(ProblemObjects())?
+	ProblemInit() 
+	ProblemGoal()
+	<CLOSEBRACE>
+}
+
+void ProblemDomain() :
+{
+	Token t;
+}
+{
+	<OPENBRACE> <DOMAIN_TAG> t = <NAME> { problem.setDomain(t.image); } <CLOSEBRACE>
+}
+
+
+void ProblemObjects() :
+{ 
+	TypedNameList constants;
+}
+{ 
+	<OPENBRACE> <OBJECT>
+	constants = TypedNameList()
+	<CLOSEBRACE>
+	{
+		for( String constant : constants.getItems() ) {
+			domain.addConstant(constant, constants.getType(constant));
+		}
+	}
+	
+}
+
+void ProblemInit() :
+{
+	Term t;
+}
+{
+	<OPENBRACE> <INIT>
+	(t = Atom() { problem.addToInitialState(t); }) *
+	<CLOSEBRACE>
+}
+
+void ProblemGoal() :
+{
+	Goal g;
+}
+{
+	<OPENBRACE> <GOAL>
+	g = ActionPrecondition() { problem.setGoal(g); }
+	<CLOSEBRACE>
+}
+
+
+
+
+
+/****** UTILITY NONTERMINALS *******/
+
+Term Atom() :
+{
+	Token t,v,x,y;
+	List<Term> subterms = new ArrayList<Term>();
+	Term t1, t2;
+}
+{
+	<OPENBRACE> t = <NAME> 
+	(v = <VAR> { subterms.add(new Variable(v.image)); }
+	    | v = <NAME> { subterms.add(new Constant(v.image)); }) *
+	<CLOSEBRACE>
+	{
+		return new Compound(t.image, subterms);
+	}
+	
+	| <OPENBRACE> <EQ> t1 = Term() t2 = Term() <CLOSEBRACE> {
+		subterms.add(t1);
+		subterms.add(t2);
+		return new Compound("**equals**", subterms);
+	}
+}
+
+Term Term() :
+{
+	Token t;
+}
+{
+	t = <VAR> { return new Variable(t.image); }
+	| t = <NAME> { return new Constant(t.image); }
+}
+
+TypedVariableList TypedVarList() :
+{
+	List<Variable> variables = new ArrayList<Variable>();
+	Token t, v, type_tok = null;
+	String type;
+	TypedVariableList ret = new TypedVariableList();
+}
+{
+	((v = <VAR> { variables.add(new Variable(v.image)); })+
+	 (<DASH> type_tok = <NAME>) ?
+	 {
+	 	if( type_tok == null ) {
+	 		type = TypeHierarchy.TOP;
+	 	} else {
+	 		type = type_tok.image;
+	 	}
+	 	
+	 	for( Variable variable : variables ) {
+	 		ret.addItem(variable, type);
+	 	}
+	 	
+	 	variables.clear();
+	 	type_tok = null;
+	 })*
+	{
+		return ret;
+	}
+}
+
+TypedNameList TypedNameList() :
+{
+	List<String> names = new ArrayList<String>();
+	Token t, v, type_tok = null;
+	String type;
+	TypedNameList ret = new TypedNameList();
+}
+{
+	((v = <NAME> { names.add(v.image); })+
+	 (<DASH> type_tok = <NAME>) ?
+	 {
+	 	if( type_tok == null ) {
+	 		type = TypeHierarchy.TOP;
+	 	} else {
+	 		type = type_tok.image;
+	 	}
+	 	
+	 	for( String variable : names ) {
+	 		ret.addItem(variable, type);
+	 	}
+	 	
+	 	names.clear();
+	 	type_tok = null;
+	 })*
+	{
+		return ret;
+	}
+}
+

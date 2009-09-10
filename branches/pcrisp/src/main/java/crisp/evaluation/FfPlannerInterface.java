@@ -1,32 +1,21 @@
 package crisp.evaluation;
 
-import java.lang.ProcessBuilder;
-import java.lang.Process;
 
 import java.io.FileWriter;
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.BufferedOutputStream;
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.Reader;
-import java.io.Writer;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
 import crisp.converter.FastCRISPConverter;
 
+import crisp.converter.ProbCRISPConverter;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.codec.PddlOutputCodec;
 
 import crisp.evaluation.ffplanparser.FfPlanParser;
 
-import crisp.result.PCrispDerivationTreeBuilder;
 import crisp.result.CrispDerivationTreeBuilder;
 import crisp.result.DerivationTreeBuilder;
 
@@ -34,10 +23,10 @@ import de.saar.penguin.tag.grammar.ProbabilisticGrammar;
 import de.saar.penguin.tag.codec.PCrispXmlInputCodec;
 import de.saar.penguin.tag.derivation.DerivationTree;
 import de.saar.penguin.tag.derivation.DerivedTree;
-import de.saar.penguin.tag.visualize.JGraphVisualizer;
 
 import de.saar.chorus.term.Term; 
 
+import java.io.PrintWriter;
 import java.util.List;
 
 //import javax.swing.JFrame;
@@ -65,8 +54,8 @@ public class FfPlannerInterface implements PlannerInterface {
         long start;
         long end;
         
-        new PddlOutputCodec().writeToDisk(domain, problem, new FileWriter(new File(TEMPDOMAIN_FILE)),
-                                                           new FileWriter(new File(TEMPPROBLEM_FILE)));
+        new PddlOutputCodec().writeToDisk(domain, problem, new PrintWriter(new FileWriter(new File(TEMPDOMAIN_FILE))),
+                                                           new PrintWriter(new FileWriter(new File(TEMPPROBLEM_FILE))));
                                                                    
           
         // Run the FfPlanner
@@ -138,7 +127,7 @@ public class FfPlannerInterface implements PlannerInterface {
                 
         System.out.println("Generating planning problem...");
 		//new FastCRISPConverter().convert(grammar, problemfile, domain, problem);
-        new FastCRISPConverter().convert(grammar, problemfile, domain, problem);
+        new ProbCRISPConverter().convert(grammar, problemfile, domain, problem);
 
 		long end = System.currentTimeMillis();
 

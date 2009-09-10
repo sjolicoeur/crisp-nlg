@@ -328,6 +328,7 @@ public class TreeModelProbCRISPConverter extends ProbCRISPConverter {
     * @param domain reference to an empty planning domain, will be completed by convert.
     * @param problem reference to an empty planning problem, will be completed by convert
     */
+    @Override
     public void convert(Grammar<Term> grammar, Reader problemfile, Domain domain, Problem problem) throws Exception {
 
         //initialize domain
@@ -351,9 +352,12 @@ public class TreeModelProbCRISPConverter extends ProbCRISPConverter {
         } catch (ParserConfigurationException e){
             throw new SAXException("Parser misconfigured: "+e);
         }
+        problem.setName(domain.getName());
+        System.out.println("PROBLEMNAME: "+problem.getName());
 
     }
 
+    @Override
     public void convert(Grammar<Term> grammar, File problemfile, Domain domain, Problem problem) throws Exception {
         convert(grammar, new FileReader(problemfile), domain, problem);
 

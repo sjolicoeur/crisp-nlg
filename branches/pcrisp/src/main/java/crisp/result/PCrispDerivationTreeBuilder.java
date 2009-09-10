@@ -6,7 +6,6 @@ import de.saar.penguin.tag.grammar.LexiconEntry;
 
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Action;
-import crisp.planningproblem.TypedVariableList;
 
 
 import crisp.converter.TagActionType;
@@ -26,10 +25,11 @@ public class PCrispDerivationTreeBuilder extends DerivationTreeBuilder {
   
     @Override 
     public void processPlanStep(Action action) {
+                  
+            Compound pred = (Compound) action.getPredicate();
+            List<Term> variables = pred.getSubterms();
+            List<String> variableTypes = action.getParameterTypes();
 
-            TypedVariableList t = action.getPredicate().getVariables();            
-        
-            Compound pred = (Compound) action.getPredicate().toTerm();
             String[] predicateParts = pred.getLabel().split("-");                        
             TagActionType operation = decodeActionType(predicateParts[0]);
             String childTree = predicateParts[1];

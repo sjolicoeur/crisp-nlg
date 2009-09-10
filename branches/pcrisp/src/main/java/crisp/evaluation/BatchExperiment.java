@@ -106,7 +106,7 @@ public class BatchExperiment {
                             
             long start = System.currentTimeMillis();
             converter.convert(grammar, new StringReader(xmlProblem), domain, problem);
-            domainSize = domain.getDomainSize();
+            domainSize = domain.getActions().size();
 
 
 

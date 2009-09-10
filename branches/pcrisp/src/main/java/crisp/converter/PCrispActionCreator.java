@@ -126,9 +126,10 @@ public class PCrispActionCreator {
         variables.add(new Variable("?u"));
         types.add("syntaxnode");
         
-        for (String role : rolelist)
+        for (String role : rolelist) {
             variables.add(new Variable(I.get(n.get(role))));
             types.add("individual");
+        }
 
         Compound pred = new Compound(label, variables);
 

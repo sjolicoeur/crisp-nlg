@@ -120,7 +120,7 @@ public class ProbCRISPConverter implements ProblemConverter {
                 
                 domain.addConstant(atts.getValue("index"),"individual");
                 
-                mainCat = atts.getValue("cat"); // TODO: do we really need this as a member variable?
+                mainCat = atts.getValue("cat").toLowerCase(); // TODO: do we really need this as a member variable?
                 domain.addConstant(mainCat,"category");
                 
                 // This was in computeInitialState(Domain domain, Problem problem)
@@ -504,7 +504,6 @@ public class ProbCRISPConverter implements ProblemConverter {
             problem.addToInitialState(c);
         }
 
-
     }
     
     
@@ -638,6 +637,7 @@ public class ProbCRISPConverter implements ProblemConverter {
         } catch (ParserConfigurationException e){
             throw new SAXException("Parser misconfigured: "+e);    
         }
+        problem.setDomain(domain.getName());
         
     }        
     

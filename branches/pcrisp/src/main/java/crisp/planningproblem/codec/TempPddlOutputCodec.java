@@ -7,10 +7,17 @@ package crisp.planningproblem.codec;
 
 import crisp.planningproblem.Action;
 import crisp.planningproblem.Domain;
-import crisp.planningproblem.Predicate;
 import crisp.planningproblem.TypeHierarchy;
+import crisp.planningproblem.formula.Conditional;
+import crisp.planningproblem.formula.Conjunction;
+import crisp.planningproblem.formula.Formula;
+import crisp.planningproblem.formula.Literal;
+import crisp.planningproblem.formula.Negation;
+import crisp.planningproblem.formula.Universal;
 import de.saar.basic.StringTools;
+import de.saar.chorus.term.Term;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  *
@@ -39,9 +46,9 @@ public class TempPddlOutputCodec extends PddlOutputCodec{
         dw.println("       )");
 
         dw.println("       (:predicates");
-        for( Predicate pred : domain.getPredicates() ) {
-            if( !pred.getLabel().equals("**equals**")) {
-                dw.println("         (" + pred.getLabel() + " " + pred.getVariables().toLispString() + ")");
+        for (String pred : domain.getPredicates()) {
+            if (!pred.equals("**equals**")) {
+                dw.println("         (" + pred + " " + makeLispString(domain.getSignature(pred)) + ")");
             }
         }
         dw.println("        )");
@@ -64,19 +71,73 @@ public class TempPddlOutputCodec extends PddlOutputCodec{
             
         
         buf.append(action.getPredicate().getLabel() + "\n");
-        buf.append(prefix + ":parameters (" + action.getPredicate().getVariables().toLispString() + ")\n");
+        buf.append(prefix + ":parameters (" + makeLispString(action.getPredicate().getSubterms(), action.getParameterTypes()) + ")\n");
         buf.append(prefix + ":precondition " + toPddlString(action.getPrecondition()) + "\n");
-        buf.append(prefix + ":effect " + toPddlString(action.getEffect()) + "\n");
-        if (isDurativeAction){
-            buf.append(prefix + ":duration ");
-            Double duration = ((DurativeAction) action).getDuration();
-            String durationString = String.format("%f", duration);
-            buf.append(durationString);            
-        }
+        buf.append(prefix + ":effect " + toPddlString(action.getEffect()) + "\n");        
+        buf.append(prefix + ":duration ");
+        Double duration = (action.getCost());
+        String durationString = String.format("%f", duration);
+        buf.append(durationString);            
+        
 
         buf.append(") \n");
 
         return buf.toString();
     }
+
+
+    private String toPddlString(Formula goal) {
+        if (goal instanceof Conjunction) {
+            Conjunction conj = (Conjunction) goal;
+            StringBuffer buf = new StringBuffer("(and");
+
+            for (Formula conjunct : conj.getConjuncts()) {
+                buf.append(" " + toPddlString(conjunct));
+            }
+
+            buf.append(")");
+
+            return buf.toString();
+        } else if (goal instanceof Universal) {
+            Universal univ = (Universal) goal;
+            return "(forall (" + makeLispString(univ.getVariables(), univ.getVariableTypes()) + ") " + toPddlString(univ.getScope()) + ")";
+        } else if (goal instanceof Conditional) {
+            Conditional cond = (Conditional) goal;
+            return "(when " + toPddlString(cond.getCondition()) + " " + toPddlString(cond.getEffect()) + ")";
+
+        } else if (goal instanceof Negation) {
+            Negation neg = (Negation) goal;
+            return "(not " + toPddlString(neg.getSubformula()) + ")";
+        } else if (goal instanceof Literal) {
+            Literal lit = (Literal) goal;
+            return (lit.getPolarity() ? "" : "(not ") + lit.getAtom().toLispString().replace("**equals**", "=") + (lit.getPolarity() ? "" : ")");
+        } else {
+            return null;
+        }
+    }
+
+        private String makeLispString(List<Term> subterms, List<String> parameterTypes) {
+        StringBuffer buf = new StringBuffer();
+
+        for (int i = 0; i < subterms.size(); i++) {
+            buf.append(subterms.get(i) + " - " + parameterTypes.get(i) + "  ");
+        }
+
+        return buf.toString();
+    }
+
+
+    private String makeLispString(List<String> argumentTypes) {
+        StringBuffer buf = new StringBuffer();
+
+        for (int i = 0; i < argumentTypes.size(); i++) {
+            buf.append("?x" + (i + 1) + " - " + argumentTypes.get(i) + "  ");
+        }
+
+        return buf.toString();
+
+    }
+
+
 
 }

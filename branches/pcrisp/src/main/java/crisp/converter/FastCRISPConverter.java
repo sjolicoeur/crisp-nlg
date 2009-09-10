@@ -134,7 +134,7 @@ public class FastCRISPConverter  {
                 // add Index TODO: what does this attribute do?
                 domain.addConstant(atts.getValue("index"),"individual");
                 
-                mainCat = atts.getValue("cat"); // TODO: do we really need this as a member variable?
+                mainCat = atts.getValue("cat").toLowerCase(); // TODO: do we really need this as a member variable?
                 
                 // This was in computeInitialState(Domain domain, Problem problem)
                 problem.addToInitialState(TermParser.parse("subst(" + mainCat+ ", root)"));
@@ -500,9 +500,10 @@ public class FastCRISPConverter  {
                     List<String> variableTypes = new ArrayList<String>();
                     variables.add(new Variable("?u"));
                     variableTypes.add("syntaxnode");
-                    for ( String role : roles.get(treeRef) ) 
+                    for ( String role : roles.get(treeRef) ) {
                        variables.add(new Variable(I.get(n.get(role))));
                        variableTypes.add("individual");
+                    }
 
                     Compound pred = new Compound(label, variables);
 
@@ -708,10 +709,11 @@ public class FastCRISPConverter  {
         effects.add(new Literal("mustadjoin(dummycategory, dummysyntaxnode)",false));
         for(int i=1; i <= maximumArity; i++ ) {
             List<Term> subterms = new ArrayList<Term>();
+            subterms.add(new Constant("dummypred"));
             for (int j=1; j<=i; j++){
                 subterms.add(new Constant("dummyindiv"));
             }
-            Compound c = new Compound("needtoexpress_"+i, subterms);
+            Compound c = new Compound("needtoexpress-"+i, subterms);
             effects.add(new Literal(c,false));
         }
 

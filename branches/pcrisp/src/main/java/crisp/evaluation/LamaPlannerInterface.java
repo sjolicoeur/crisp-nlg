@@ -33,6 +33,7 @@ import de.saar.penguin.tag.derivation.DerivedTree;
 
 import de.saar.chorus.term.Term; 
 
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Properties;
 import java.util.Timer;
@@ -149,9 +150,10 @@ public class LamaPlannerInterface implements PlannerInterface {
         long start;
         long end;
     
-        OutputCodec outputCodec = new PddlOutputCodec();
-        outputCodec.writeToDisk(domain, problem, new FileWriter(new File(tempDomainFile)),
-                                                 new FileWriter(new File(tempProblemFile)));
+        OutputCodec outputCodec = new CostPddlOutputCodec();
+        
+        outputCodec.writeToDisk(domain, problem, new PrintWriter(new FileWriter(new File(tempDomainFile))),
+                                                 new PrintWriter(new FileWriter(new File(tempProblemFile))));
         
         outputCodec = null;  
         

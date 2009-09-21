@@ -106,7 +106,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>crisp.main.GenerateSentence</mainClass>
+              <mainClass>crisp.evaluation.BatchExperiment</mainClass>
             </manifest>
           </archive>
         </configuration>

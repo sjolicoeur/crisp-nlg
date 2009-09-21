@@ -2,6 +2,7 @@ package crisp.evaluation;
 
 
 import crisp.converter.BackoffModelProbCRISPConverter;
+import crisp.converter.FancyBackoffProbCRISPConverter;
 import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +34,7 @@ import de.saar.penguin.tag.derivation.DerivedTree;
 
 import de.saar.chorus.term.Term; 
 
+import de.saar.penguin.tag.grammar.LinearInterpolationProbabilisticGrammar;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Properties;
@@ -195,6 +197,7 @@ public class LamaPlannerInterface implements PlannerInterface {
         } finally {
             resultFileReader = null;
         }
+               
                                                                                            
     }
         
@@ -267,22 +270,24 @@ public class LamaPlannerInterface implements PlannerInterface {
         
         System.out.println("Reading grammar...");
         PCrispXmlInputCodec codec = new PCrispXmlInputCodec();
-		ProbabilisticGrammar<Term> grammar = new ProbabilisticGrammar<Term>();	
-		codec.parse(new File(args[0]), grammar);         
+	LinearInterpolationProbabilisticGrammar<Term> grammar = new LinearInterpolationProbabilisticGrammar<Term>(0.8,0.8,0.8,1000);
+	codec.parse(new File(args[0]), grammar);         
  
+        grammar.initBackoff();
+
         File problemfile = new File(args[1]);
                 
         System.out.println("Generating planning problem...");
-        new BackoffModelProbCRISPConverter().convert(grammar, problemfile, domain, problem);
+        new FancyBackoffProbCRISPConverter().convert_backoff(grammar, new FileReader(problemfile), domain, problem);
 
         long end = System.currentTimeMillis();
 
 	System.out.println("Total runtime for problem generation: " + (end-start) + "ms");
-
-            
+        
         System.out.println("Running planner ... ");
         PlannerInterface planner = new LamaPlannerInterface();
         List<Term> plan = planner.runPlanner(domain,problem, 600000);
+        
         System.out.println(planner.getTotalTime());
         System.out.println(planner.getPreprocessingTime());
         System.out.println(planner.getSearchTime());

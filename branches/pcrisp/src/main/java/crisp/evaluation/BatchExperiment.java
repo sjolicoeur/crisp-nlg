@@ -1,5 +1,6 @@
 package crisp.evaluation;
 
+import crisp.converter.BackoffModelProbCRISPConverter;
 import crisp.converter.FastCRISPConverter;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.Domain;
@@ -89,7 +90,7 @@ public class BatchExperiment {
         int domainSize = 0;
         
 
-        TreeModelProbCRISPConverter converter = new TreeModelProbCRISPConverter();
+        BackoffModelProbCRISPConverter converter = new BackoffModelProbCRISPConverter();
         PlannerInterface planner = new LamaPlannerInterface();
         List<Term> plan = null;
 

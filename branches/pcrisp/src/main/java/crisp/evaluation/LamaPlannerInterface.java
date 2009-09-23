@@ -197,8 +197,8 @@ public class LamaPlannerInterface implements PlannerInterface {
         } finally {
             resultFileReader = null;
         }
-               
-                                                                                           
+          
+
     }
         
     private long parseTimeSpan(String timespan){
@@ -274,6 +274,7 @@ public class LamaPlannerInterface implements PlannerInterface {
 	codec.parse(new File(args[0]), grammar);         
  
         grammar.initBackoff();
+        //grammar.preSmoothe();
 
         File problemfile = new File(args[1]);
                 
@@ -299,7 +300,7 @@ public class LamaPlannerInterface implements PlannerInterface {
         System.out.println(derivedTree);
         System.out.println(derivedTree.yield());
         
-    }
+        }
 
 
 }

@@ -140,36 +140,40 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
 
 
         for (LexiconEntry parentEntry : initEntries) {
+            //System.out.println(parentEntry);
             ElementaryTree<Term> parentTree = grammar.getTree(parentEntry.tree);
 
             double initProb = probGrammar.getSmoothedInitProbability(parentEntry);
             if (initProb > 0) {
                 Action initAction = PCrispActionCreator.createInitAction(probGrammar, parentEntry, initProb, roles);
                 addActionToDomain(initAction, domain);
-            }
+            } 
 
             for (String node : parentTree.getAllNodes()) {
 
                 if (parentTree.getNodeType(node) == NodeType.SUBSTITUTION)  {
                     for (LexiconEntry childEntry : initEntries) {
-                        double substProbability = probGrammar.getSmoothedSubstitutionProbability(parentEntry, node, childEntry);
-                        if (substProbability > 0) {
+                        double substProbability = probGrammar.getSmoothedSubstitutionProbability(parentEntry, node, childEntry);                        
+                        if (substProbability > 1E-2) {
+                            //System.out.println("subst "+parentEntry.tree+" "+parentEntry.word+ " : "+childEntry.tree + " "+childEntry.word+" at "+node+" : "+substProbability );
                             Collection<Action> substActions = PCrispActionCreator.createActions(probGrammar, parentEntry, node, childEntry, TagActionType.SUBSTITUTION, substProbability, plansize, roles);
                             addActionsToDomain(substActions, domain);
                         }
                     }
-                } else if (parentTree.getNodeType(node) == NodeType.INTERNAL) {
+                } else {
 
                     for (LexiconEntry childEntry : auxEntries) {
                         double adjProbability = probGrammar.getSmoothedAdjunctionProbability(parentEntry, node, childEntry);
-                        if (adjProbability > 0) {
+                        
+                        if (adjProbability > 1E-2) {
+                            //System.out.println("adj "+parentEntry.tree+" "+parentEntry.word+ " : "+childEntry.tree + " "+childEntry.word+" at "+node+" : "+adjProbability );
                             Collection<Action> adjActions = PCrispActionCreator.createActions(probGrammar, parentEntry, node, childEntry, TagActionType.ADJUNCTION, adjProbability, plansize, roles);
                             addActionsToDomain(adjActions, domain);
                         }
                     }
 
                     double noAdjProbability = probGrammar.getSmoothedNoAdjunctionProbability(parentEntry, node);
-                    if (noAdjProbability > 0) {
+                    if (noAdjProbability > 1E-2) {
                         Action noAdjoinAction = PCrispActionCreator.createNoAdjoinAction(parentEntry, node, noAdjProbability, plansize);
                         addActionToDomain(noAdjoinAction, domain);
                     }
@@ -178,6 +182,7 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
             }
         }
 
+        //System.out.println("Auxiliary trees...");
         for (LexiconEntry parentEntry : auxEntries) {
             ElementaryTree<Term> parentTree = grammar.getTree(parentEntry.tree);
 
@@ -186,26 +191,27 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
                 if (parentTree.getNodeType(node) == NodeType.SUBSTITUTION)  {
                     for (LexiconEntry childEntry : initEntries) {
                         double substProbability = probGrammar.getSmoothedSubstitutionProbability(parentEntry, node, childEntry);
-                        if (substProbability > 0) {
+                        if (substProbability > 1E-2) {
                             Collection<Action> substActions = PCrispActionCreator.createActions(probGrammar, parentEntry, node, childEntry, TagActionType.SUBSTITUTION, substProbability, plansize, roles);
                             addActionsToDomain(substActions, domain);
                         }
                     }
-                } else if (parentTree.getNodeType(node) == NodeType.INTERNAL) {
+                } else {
 
                     for (LexiconEntry childEntry : auxEntries) {
                         double adjProbability = probGrammar.getSmoothedAdjunctionProbability(parentEntry, node, childEntry);
-                        if (adjProbability > 0) {
+                        if (adjProbability > 1E-2) {
                             Collection<Action> adjActions = PCrispActionCreator.createActions(probGrammar, parentEntry, node, childEntry, TagActionType.ADJUNCTION, adjProbability, plansize, roles);
                             addActionsToDomain(adjActions, domain);
                         }
                     }
 
-                    double noAdjProbability = probGrammar.getSmoothedNoAdjunctionProbability(parentEntry, node);
-                    if (noAdjProbability > 0) {
+                    double noAdjProbability = probGrammar.getSmoothedNoAdjunctionProbability(parentEntry, node);                    
+                    if (noAdjProbability > 1E-2) {
                         Action noAdjoinAction = PCrispActionCreator.createNoAdjoinAction(parentEntry, node, noAdjProbability, plansize);
                         addActionToDomain(noAdjoinAction, domain);
                     }
+
                 }
 
             }
@@ -267,10 +273,15 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
 
     }
 
-    @Override
-    public LinearInterpolationProbabilisticGrammar<Term> filterProbabilisticGrammar(ProbabilisticGrammar<Term> grammar, LexiconEntryFilter filter) {
-        Grammar<Term> filteredGrammar = new GrammarFilterer<Term>().filter(grammar, filter);
-        LinearInterpolationProbabilisticGrammar<Term> ret = new LinearInterpolationProbabilisticGrammar(0.8,0.8,0.8,1000);
+    
+    public LinearInterpolationProbabilisticGrammar<Term> filterProbabilisticGrammar(ProbabilisticGrammar<Term> grammar, SemanticsPredicateListFilter filter) {
+       Grammar<Term> filteredGrammar = new GrammarFilterer<Term>().filter(grammar, filter);
+
+       if (! filter.allPredicatesSatisfied()) {
+           throw new RuntimeException("Some semantic predicate cannot be realized by the grammar.");
+       }
+
+       LinearInterpolationProbabilisticGrammar<Term> ret = new LinearInterpolationProbabilisticGrammar(1,0,0.8,1000);
 
        Set<LexiconEntry> filteredEntries = new HashSet<LexiconEntry>();
 
@@ -357,7 +368,14 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
             SAXParser parser = factory.newSAXParser();
             parser.parse(new InputSource(problemfile), handler);
 
-            Grammar<Term> filteredGrammar = new GrammarFilterer<Term>().filter(grammar, new SemanticsPredicateListFilter(handler.getPredicatesInWorld()));            
+            SemanticsPredicateListFilter filter = new SemanticsPredicateListFilter(handler.getPredicatesInWorld());
+            Grammar<Term> filteredGrammar = new GrammarFilterer<Term>().filter(grammar, filter);
+
+            if (!filter.allPredicatesSatisfied()) {
+                throw new RuntimeException("Some semantic predicates cannot be realized by this grammar.");
+            }
+
+
             computeDomain(domain, problem, grammar, filteredGrammar);
             computeGoal(domain, problem);
 

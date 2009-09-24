@@ -22,6 +22,10 @@ public class PCrispDerivationTreeBuilder extends DerivationTreeBuilder {
         super(grammar);
     }   
     
+    @Override
+    protected List<Compound> getAdjEffects(Action action) {
+        return this.getEffectsByLabel(action, "mustadjoin");
+    }
   
     @Override 
     public void processPlanStep(Action action) {

@@ -369,7 +369,7 @@ public class ProbCRISPConverter implements ProblemConverter {
         adjoinTypeList.add("treename");
         adjoinTypeList.add("nodetype");
         adjoinTypeList.add("syntaxnode");
-        domain.addPredicate("canadjoin", adjoinTypeList);
+        //domain.addPredicate("canadjoin", adjoinTypeList);
         domain.addPredicate("mustadjoin", adjoinTypeList);
         
         domain.addConstant("S","category");
@@ -469,7 +469,7 @@ public class ProbCRISPConverter implements ProblemConverter {
         effects.add(new Literal("referent(dummysyntaxnode, dummyindiv)",false));
         effects.add(new Literal("distractor(dummysyntaxnode, dummyindiv)",false));
         effects.add(new Literal("subst(dummytree, dummynodetype, dummysyntaxnode)",false));
-        effects.add(new Literal("canadjoin(dummytree, dummynodetype, dummysyntaxnode)",false));
+        //effects.add(new Literal("canadjoin(dummytree, dummynodetype, dummysyntaxnode)",false));
         effects.add(new Literal("mustadjoin(dummytree, dummynodetype, dummysyntaxnode)",false));
         for(int i=1; i <= maximumArity; i++ ) {
             List<Term> subterms = new ArrayList<Term>();
@@ -491,7 +491,7 @@ public class ProbCRISPConverter implements ProblemConverter {
         problem.addToInitialState(TermParser.parse("referent(dummysyntaxnode, dummyindiv)"));
         problem.addToInitialState(TermParser.parse("distractor(dummysyntaxnode, dummyindiv)"));
         problem.addToInitialState(TermParser.parse("subst(dummytree, dummynodetype, dummysyntaxnode)"));
-        problem.addToInitialState(TermParser.parse("canadjoin(dummytree, dummynodetype, dummysyntaxnode)"));
+        //problem.addToInitialState(TermParser.parse("canadjoin(dummytree, dummynodetype, dummysyntaxnode)"));
         problem.addToInitialState(TermParser.parse("mustadjoin(dummytree, dummynodetype, dummysyntaxnode)"));
 
         for(int i=1; i <= maximumArity; i++ ) {

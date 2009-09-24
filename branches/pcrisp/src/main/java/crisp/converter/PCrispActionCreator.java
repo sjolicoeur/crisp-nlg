@@ -175,7 +175,7 @@ public class PCrispActionCreator {
             constants.put(renamePredicate(semContCompound.getLabel()), "predicate");
             
             // remove distractors
-            
+            /*
             Variable distractorVar = new Variable("?y");
             Substitution distractorSubst = new Substitution(new Variable("?x1"), distractorVar);
             
@@ -194,6 +194,7 @@ public class PCrispActionCreator {
             effects.add(new Universal(distractorQuantifierVars, distractorQuantifierTypes,
             new Conditional(distractorPrecondition,
             new Literal("distractor(?u,?y)", false))));
+            */
             
         }
         
@@ -247,7 +248,7 @@ public class PCrispActionCreator {
             //referent
             effects.add(new Literal("referent(" + roleN + ", " + I.get(roleN) + ")", true));
             
-            
+            /*
             //distractors
             Variable distractorVar = new Variable("?y");
             Substitution distractorSubst = new Substitution(new Variable(I.get(roleN)), distractorVar);
@@ -270,11 +271,12 @@ public class PCrispActionCreator {
                 predicates.add(makeSemanticPredicate(semReqTerm));
                 distractorPreconditions.add(new crisp.planningproblem.goal.Literal(semReqTerm, true));
             } */
-            
+            /*
             Formula distractorPrecondition = new Conjunction(distractorPreconditions);
             
             effects.add(new Universal(distractorQuantifierVars, distractorQuantifierTypes,
             new Conditional(distractorPrecondition, new Literal("distractor(" + roleN + ",?y)", true))));
+             */
             
         }
         
@@ -293,7 +295,7 @@ public class PCrispActionCreator {
             }
             
             // canadjoin            
-            effects.add(new Literal("canadjoin(" + treeName + ", " + adjNode + ", "+ roleN+ ")", true));
+            //effects.add(new Literal("canadjoin(" + treeName + ", " + adjNode + ", "+ roleN+ ")", true));
             // Allways put a mustadjoin constraint
             effects.add(new Literal("mustadjoin(" + treeName + ", " + adjNode + ", "+ roleN+ ")", true));
             
@@ -434,9 +436,9 @@ public class PCrispActionCreator {
                 preconds.add(new Literal("subst(" + parentTreeName+ ", " + nodeID + ", ?u)", true));
                 effects.add(new Literal("subst(" + parentTreeName+ ", " + nodeID + ", ?u)", false));                
             } else if (actionType == TagActionType.ADJUNCTION) {                
-                preconds.add(new Literal("canadjoin(" + parentTreeName+ ","+ nodeID + ", ?u)", true));
+                preconds.add(new Literal("mustadjoin(" + parentTreeName+ ","+ nodeID + ", ?u)", true));
                 effects.add(new Literal("mustadjoin(" + parentTreeName+ ","+ nodeID + ", ?u)", false));
-                effects.add(new Literal("canadjoin(" + parentTreeName+ ","+ nodeID + ", ?u)", false));                
+                //effects.add(new Literal("canadjoin(" + parentTreeName+ ","+ nodeID + ", ?u)", false));
             } 
 
 
@@ -469,6 +471,7 @@ public class PCrispActionCreator {
             constants.put(renamePredicate(semContCompound.getLabel()), "predicate");
 
                 // remove distractors
+                /*
                 Variable distractorVar = new Variable("?y");
                 Substitution distractorSubst = new Substitution(new Variable("?x1"), distractorVar);
 
@@ -486,7 +489,8 @@ public class PCrispActionCreator {
                 
                 effects.add(new Universal(distractorQuantifierVars, distractorQuantifierTypes,
                 new Conditional(distractorPrecondition,
-                new Literal("distractor(?u,?y)", false))));                
+                new Literal("distractor(?u,?y)", false))));
+                 */
             }            
             
             
@@ -541,7 +545,8 @@ public class PCrispActionCreator {
                 //referent
                 effects.add(new Literal("referent(" + roleN + ", " + I.get(roleN) + ")", true));
                 
-                
+
+                /*
                 //distractors
                 Variable distractorVar = new Variable("?y");
                 Substitution distractorSubst = new Substitution(new Variable(I.get(roleN)), distractorVar);
@@ -562,7 +567,7 @@ public class PCrispActionCreator {
                     Term semReqTerm = distractorSubst.apply(substituteVariablesForRoles(TermParser.parse(sr), n, I));
                     predicates.add(makeSemanticPredicate(semReqTerm));
                     distractorPreconditions.add(new crisp.planningproblem.goal.Literal(semReqTerm, true));
-                } */
+                } 
                 
                 Formula distractorPrecondition =
                 new Conjunction(distractorPreconditions);
@@ -570,7 +575,7 @@ public class PCrispActionCreator {
                 effects.add(new Universal(distractorQuantifierVars, distractorQuantifierTypes,
                 new Conditional(distractorPrecondition,
                 new Literal("distractor(" + roleN + ",?y)", true))));
-                
+                */
             }
             
             // internal nodes: allow adjunction
@@ -588,8 +593,8 @@ public class PCrispActionCreator {
                 }
                 
                 // canadjoin                
-                effects.add(new Literal("canadjoin(" + 
-                childTreeName + ", " + adjNode + ", "+ roleN+ ")", true));
+                //effects.add(new Literal("canadjoin(" +
+                //childTreeName + ", " + adjNode + ", "+ roleN+ ")", true));
                 // Allways put a mustadjoin constraint
                 effects.add(new Literal("mustadjoin(" +
                 childTreeName + ", " + adjNode + ", "+ roleN+ ")", true));
@@ -639,9 +644,9 @@ public class PCrispActionCreator {
         // and it blocks all further operations involving this node.
         
         constants.put(nodeID,"nodetype");            
-        preconds.add(new Literal("canadjoin(" + treeName+ ","+ nodeID + ", ?u)", true));
+        preconds.add(new Literal("mustadjoin(" + treeName+ ","+ nodeID + ", ?u)", true));
         effects.add(new Literal("mustadjoin(" + treeName+ ","+ nodeID + ", ?u)", false));
-        effects.add(new Literal("canadjoin(" + treeName+ ","+ nodeID + ", ?u)", false));
+        //effects.add(new Literal("canadjoin(" + treeName+ ","+ nodeID + ", ?u)", false));
         
         Map<Compound, List<String>> predicates = new HashMap<Compound, List<String>>();
         // Assemble and store action          

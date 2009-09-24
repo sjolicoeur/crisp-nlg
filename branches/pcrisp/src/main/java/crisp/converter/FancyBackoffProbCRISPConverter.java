@@ -165,7 +165,7 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
                     for (LexiconEntry childEntry : auxEntries) {
                         double adjProbability = probGrammar.getSmoothedAdjunctionProbability(parentEntry, node, childEntry);
                         
-                        if (adjProbability > 1E-2) {
+                        if (adjProbability > 0) {
                             //System.out.println("adj "+parentEntry.tree+" "+parentEntry.word+ " : "+childEntry.tree + " "+childEntry.word+" at "+node+" : "+adjProbability );
                             Collection<Action> adjActions = PCrispActionCreator.createActions(probGrammar, parentEntry, node, childEntry, TagActionType.ADJUNCTION, adjProbability, plansize, roles);
                             addActionsToDomain(adjActions, domain);
@@ -173,7 +173,7 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
                     }
 
                     double noAdjProbability = probGrammar.getSmoothedNoAdjunctionProbability(parentEntry, node);
-                    if (noAdjProbability > 1E-2) {
+                    if (noAdjProbability > 0) {
                         Action noAdjoinAction = PCrispActionCreator.createNoAdjoinAction(parentEntry, node, noAdjProbability, plansize);
                         addActionToDomain(noAdjoinAction, domain);
                     }
@@ -200,14 +200,14 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
 
                     for (LexiconEntry childEntry : auxEntries) {
                         double adjProbability = probGrammar.getSmoothedAdjunctionProbability(parentEntry, node, childEntry);
-                        if (adjProbability > 1E-2) {
+                        if (adjProbability > 0) {
                             Collection<Action> adjActions = PCrispActionCreator.createActions(probGrammar, parentEntry, node, childEntry, TagActionType.ADJUNCTION, adjProbability, plansize, roles);
                             addActionsToDomain(adjActions, domain);
                         }
                     }
 
                     double noAdjProbability = probGrammar.getSmoothedNoAdjunctionProbability(parentEntry, node);                    
-                    if (noAdjProbability > 1E-2) {
+                    if (noAdjProbability > 0) {
                         Action noAdjoinAction = PCrispActionCreator.createNoAdjoinAction(parentEntry, node, noAdjProbability, plansize);
                         addActionToDomain(noAdjoinAction, domain);
                     }
@@ -236,7 +236,7 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
         effects.add(new Literal("referent(dummysyntaxnode, dummyindiv)",false));
         effects.add(new Literal("distractor(dummysyntaxnode, dummyindiv)",false));
         effects.add(new Literal("subst(dummytree, dummynodetype, dummysyntaxnode)",false));
-        effects.add(new Literal("canadjoin(dummytree, dummynodetype, dummysyntaxnode)",false));
+        //effects.add(new Literal("canadjoin(dummytree, dummynodetype, dummysyntaxnode)",false));
         effects.add(new Literal("mustadjoin(dummytree, dummynodetype, dummysyntaxnode)",false));
         for(int i=1; i <= maximumArity; i++ ) {
             List<Term> subterms = new ArrayList<Term>();
@@ -258,7 +258,7 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
         problem.addToInitialState(TermParser.parse("referent(dummysyntaxnode, dummyindiv)"));
         problem.addToInitialState(TermParser.parse("distractor(dummysyntaxnode, dummyindiv)"));
         problem.addToInitialState(TermParser.parse("subst(dummytree, dummynodetype, dummysyntaxnode)"));
-        problem.addToInitialState(TermParser.parse("canadjoin(dummytree, dummynodetype, dummysyntaxnode)"));
+        //problem.addToInitialState(TermParser.parse("canadjoin(dummytree, dummynodetype, dummysyntaxnode)"));
         problem.addToInitialState(TermParser.parse("mustadjoin(dummytree, dummynodetype, dummysyntaxnode)"));
 
         for(int i=1; i <= maximumArity; i++ ) {
@@ -281,7 +281,7 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
            throw new RuntimeException("Some semantic predicate cannot be realized by the grammar.");
        }
 
-       LinearInterpolationProbabilisticGrammar<Term> ret = new LinearInterpolationProbabilisticGrammar(1,0,0.8,1000);
+       LinearInterpolationProbabilisticGrammar<Term> ret = new LinearInterpolationProbabilisticGrammar(1,0,0,1000);
 
        Set<LexiconEntry> filteredEntries = new HashSet<LexiconEntry>();
 

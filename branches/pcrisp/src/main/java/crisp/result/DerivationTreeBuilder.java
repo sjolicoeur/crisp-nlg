@@ -71,7 +71,7 @@ public abstract class DerivationTreeBuilder{
     }
     
     protected List<Compound> getAdjPreconditions(Action action) {
-        return this.getPreconditionByLabel(action, "canadjoin");
+        return this.getPreconditionByLabel(action, "mustadjoin");
     }
 
 

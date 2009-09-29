@@ -134,17 +134,18 @@ public class PCrispActionCreator {
         Compound pred = new Compound(label, variables);
 
         // Syntaxnode must be referent for first individual
-        preconds.add(new Literal("referent(?u,"+I.get(n.get("self"))+")", true));
+        preconds.add(makeLiteral(true, "referent","?u",I.get(n.get("self"))));
         
         // Count the step
-        preconds.add(new Literal("step(step0)", true));
-        effects.add(new Literal("step(step0)", false));
-        effects.add(new Literal("step(step1)", true));
+        
+        preconds.add(makeLiteral(true, "step", "step0"));
+        effects.add(makeLiteral(false, "step","step0"));
+        effects.add(makeLiteral(true, "step","step1"));
         
         constants.put("init", "syntaxnode");
         
-        preconds.add(new Literal("subst(root, none, ?u)", true));
-        effects.add(new Literal("subst(root, none, ?u)", false));
+        preconds.add(makeLiteral(true, "subst","root","none","?u"));
+        effects.add(makeLiteral(false, "subst","root", "none", "?u"));
         constants.put("none", "nodetype");           
         
         List<Term> contentWithVariables = new ArrayList<Term>();        
@@ -238,7 +239,7 @@ public class PCrispActionCreator {
                 cat = "NONE";            
             
                                
-            effects.add(new Literal("subst(" + treeName + ", " + substNode  +", "+roleN + ")", true));
+            effects.add(makeLiteral(true, "subst",treeName, substNode, roleN ));
             
             constants.put(substNode,"nodetype");
                         
@@ -246,7 +247,7 @@ public class PCrispActionCreator {
                 constants.put(roleN, "syntaxnode");
             
             //referent
-            effects.add(new Literal("referent(" + roleN + ", " + I.get(roleN) + ")", true));
+            effects.add(makeLiteral(true, "referent", roleN, I.get(roleN)));
             
             /*
             //distractors
@@ -297,7 +298,7 @@ public class PCrispActionCreator {
             // canadjoin            
             //effects.add(new Literal("canadjoin(" + treeName + ", " + adjNode + ", "+ roleN+ ")", true));
             // Allways put a mustadjoin constraint
-            effects.add(new Literal("mustadjoin(" + treeName + ", " + adjNode + ", "+ roleN+ ")", true));
+            effects.add(makeLiteral(true, "mustadjoin", treeName, adjNode, roleN));
             
             constants.put(adjNode, "nodetype");
             
@@ -415,29 +416,30 @@ public class PCrispActionCreator {
             List<String> types = new ArrayList<String>();
             variables.add(new Variable("?u"));
             types.add("syntaxnode");
-            for (String role : rolelist)
+            for (String role : rolelist) {
                 variables.add(new Variable(I.get(n.get(role))));
                 types.add("individual");
+            }
             
             Compound pred = new Compound(label, variables);
 
             // Syntaxnode must be referent for first individual
-            preconds.add(new Literal("referent(?u,?x1)", true));
+            preconds.add(makeLiteral(true, "referent","?u","?x1"));
             
             // Count the step
-            preconds.add(new Literal("step(step"+(i-1)+")",true));
-            effects.add(new Literal("step(step"+(i-1)+")",false));
-            effects.add(new Literal("step(step"+i+")",true));            
+            preconds.add(makeLiteral(true, "step", "step"+(i-1)));
+            effects.add(makeLiteral(false, "step", "step"+(i-1)));
+            effects.add(makeLiteral(true, "step", "step"+i));
             
             constants.put(nodeID,"nodetype");
             
             // Satisfy open substitution or adjunction
             if (actionType == TagActionType.SUBSTITUTION) {                
-                preconds.add(new Literal("subst(" + parentTreeName+ ", " + nodeID + ", ?u)", true));
-                effects.add(new Literal("subst(" + parentTreeName+ ", " + nodeID + ", ?u)", false));                
+                preconds.add(makeLiteral(true, "subst", parentTreeName, nodeID , "?u"));
+                effects.add(makeLiteral(false, "subst", parentTreeName, nodeID , "?u"));
             } else if (actionType == TagActionType.ADJUNCTION) {                
-                preconds.add(new Literal("mustadjoin(" + parentTreeName+ ","+ nodeID + ", ?u)", true));
-                effects.add(new Literal("mustadjoin(" + parentTreeName+ ","+ nodeID + ", ?u)", false));
+                preconds.add(makeLiteral(true,"mustadjoin",parentTreeName,nodeID, "?u"));
+                effects.add(makeLiteral(false,"mustadjoin", parentTreeName,nodeID, "?u"));
                 //effects.add(new Literal("canadjoin(" + parentTreeName+ ","+ nodeID + ", ?u)", false));
             } 
 
@@ -535,7 +537,7 @@ public class PCrispActionCreator {
                     cat = "NONE";            
                 
                                        
-                effects.add(new Literal("subst(" + childTreeName +", " + substNode +", "+roleN + ")", true));
+                effects.add(makeLiteral(true, "subst", childTreeName, substNode, roleN));
                 
                 constants.put(substNode,"nodetype");
                 
@@ -543,7 +545,7 @@ public class PCrispActionCreator {
                     constants.put(roleN, "syntaxnode");
                 
                 //referent
-                effects.add(new Literal("referent(" + roleN + ", " + I.get(roleN) + ")", true));
+                effects.add(makeLiteral(true, "referent",roleN, I.get(roleN)));
                 
 
                 /*
@@ -596,8 +598,7 @@ public class PCrispActionCreator {
                 //effects.add(new Literal("canadjoin(" +
                 //childTreeName + ", " + adjNode + ", "+ roleN+ ")", true));
                 // Allways put a mustadjoin constraint
-                effects.add(new Literal("mustadjoin(" +
-                childTreeName + ", " + adjNode + ", "+ roleN+ ")", true));
+                effects.add(makeLiteral(true, "mustadjoin", childTreeName, adjNode,roleN));
                 
                 constants.put(adjNode, "nodetype");
                 
@@ -644,8 +645,8 @@ public class PCrispActionCreator {
         // and it blocks all further operations involving this node.
         
         constants.put(nodeID,"nodetype");            
-        preconds.add(new Literal("mustadjoin(" + treeName+ ","+ nodeID + ", ?u)", true));
-        effects.add(new Literal("mustadjoin(" + treeName+ ","+ nodeID + ", ?u)", false));
+        preconds.add(makeLiteral(true, "mustadjoin",treeName,nodeID ,"?u"));
+        effects.add(makeLiteral(false, "mustadjoin",treeName,nodeID ,"?u"));
         //effects.add(new Literal("canadjoin(" + treeName+ ","+ nodeID + ", ?u)", false));
         
         Map<Compound, List<String>> predicates = new HashMap<Compound, List<String>>();
@@ -746,8 +747,31 @@ public class PCrispActionCreator {
         return new Compound(newLabel + "-" + t.getSubterms().size(), subterms);
     }
     
-    private static String renamePredicate(String predicate) {
-        return "pred-"+predicate;
+    private static String renamePredicate(String predicate) {        
+        return "pred-"+predicate;        
     }
-    
+
+
+    /**
+     * Construct a Literal from a label name and an array of Strings describing constants or variables.
+     * This should be much faster then using the TermParser to construct Literals.
+     * @param label label for the new literal
+     * @param subterms an array containing the names of constants and variables
+     * @param polarity polarity of the literal
+     * @return the literal
+     */
+    private static Literal makeLiteral(boolean polarity, String label, String...constants){
+        Term[] subterms = new Term[constants.length];
+        int i = 0;
+        for (String constant : constants){
+        if (constant.startsWith("?")) {
+                subterms[i] = new Variable(constant);
+            } else {
+                subterms[i] = new Constant(constant);
+            }
+            i++;
+        }
+        return new Literal(new Compound(label, subterms), polarity);
+    }
+
 }

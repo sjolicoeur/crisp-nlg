@@ -118,7 +118,7 @@ public class TempPddlOutputCodec extends PddlOutputCodec{
 
         private String makeLispString(List<Term> subterms, List<String> parameterTypes) {
         StringBuffer buf = new StringBuffer();
-
+        
         for (int i = 0; i < subterms.size(); i++) {
             buf.append(subterms.get(i) + " - " + parameterTypes.get(i) + "  ");
         }

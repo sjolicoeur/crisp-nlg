@@ -270,7 +270,7 @@ public class LamaPlannerInterface implements PlannerInterface {
         
         System.out.println("Reading grammar...");
         PCrispXmlInputCodec codec = new PCrispXmlInputCodec();
-	LinearInterpolationProbabilisticGrammar<Term> grammar = new LinearInterpolationProbabilisticGrammar<Term>(0.9,0,0.8,1000);
+	LinearInterpolationProbabilisticGrammar<Term> grammar = new LinearInterpolationProbabilisticGrammar<Term>(0.9,0,1000);
 	codec.parse(new File(args[0]), grammar);         
  
         grammar.initBackoff();

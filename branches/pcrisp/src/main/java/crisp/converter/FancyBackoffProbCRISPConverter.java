@@ -51,6 +51,19 @@ import org.xml.sax.SAXException;
  */
 public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
 
+
+    double init_cutoff;
+    double adj_cutoff;
+    double subst_cutoff;
+    double noadj_cutoff;
+
+    public FancyBackoffProbCRISPConverter(){
+        this.init_cutoff = 0;
+        this.adj_cutoff = 1E-3;
+        this.subst_cutoff = 1E-3;
+        this.noadj_cutoff = 1E-4;
+    }
+
     /**
      * Iterator that enumerates all possible ordered pairs from two list.
      */
@@ -144,7 +157,7 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
             ElementaryTree<Term> parentTree = grammar.getTree(parentEntry.tree);
 
             double initProb = probGrammar.getSmoothedInitProbability(parentEntry);
-            if (initProb > 0) {
+            if (initProb > init_cutoff) {
                 Action initAction = PCrispActionCreator.createInitAction(probGrammar, parentEntry, initProb, roles);
                 addActionToDomain(initAction, domain);
             } 
@@ -153,9 +166,9 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
 
                 if (parentTree.getNodeType(node) == NodeType.SUBSTITUTION)  {
                     for (LexiconEntry childEntry : initEntries) {
-                        double substProbability = probGrammar.getSmoothedSubstitutionProbability(parentEntry, node, childEntry);                        
-                        if (substProbability > 1E-2) {
-                            //System.out.println("subst "+parentEntry.tree+" "+parentEntry.word+ " : "+childEntry.tree + " "+childEntry.word+" at "+node+" : "+substProbability );
+                        double substProbability = probGrammar.getSmoothedSubstitutionProbability(parentEntry, node, childEntry);
+                        
+                        if (substProbability > subst_cutoff) {                            
                             Collection<Action> substActions = PCrispActionCreator.createActions(probGrammar, parentEntry, node, childEntry, TagActionType.SUBSTITUTION, substProbability, plansize, roles);
                             addActionsToDomain(substActions, domain);
                         }
@@ -165,7 +178,7 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
                     for (LexiconEntry childEntry : auxEntries) {
                         double adjProbability = probGrammar.getSmoothedAdjunctionProbability(parentEntry, node, childEntry);
                         
-                        if (adjProbability > 0) {
+                        if (adjProbability > adj_cutoff) {
                             //System.out.println("adj "+parentEntry.tree+" "+parentEntry.word+ " : "+childEntry.tree + " "+childEntry.word+" at "+node+" : "+adjProbability );
                             Collection<Action> adjActions = PCrispActionCreator.createActions(probGrammar, parentEntry, node, childEntry, TagActionType.ADJUNCTION, adjProbability, plansize, roles);
                             addActionsToDomain(adjActions, domain);
@@ -173,7 +186,7 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
                     }
 
                     double noAdjProbability = probGrammar.getSmoothedNoAdjunctionProbability(parentEntry, node);
-                    if (noAdjProbability > 0) {
+                    if (noAdjProbability > noadj_cutoff) {
                         Action noAdjoinAction = PCrispActionCreator.createNoAdjoinAction(parentEntry, node, noAdjProbability, plansize);
                         addActionToDomain(noAdjoinAction, domain);
                     }
@@ -191,7 +204,7 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
                 if (parentTree.getNodeType(node) == NodeType.SUBSTITUTION)  {
                     for (LexiconEntry childEntry : initEntries) {
                         double substProbability = probGrammar.getSmoothedSubstitutionProbability(parentEntry, node, childEntry);
-                        if (substProbability > 1E-2) {
+                        if (substProbability > subst_cutoff) {
                             Collection<Action> substActions = PCrispActionCreator.createActions(probGrammar, parentEntry, node, childEntry, TagActionType.SUBSTITUTION, substProbability, plansize, roles);
                             addActionsToDomain(substActions, domain);
                         }
@@ -200,14 +213,14 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
 
                     for (LexiconEntry childEntry : auxEntries) {
                         double adjProbability = probGrammar.getSmoothedAdjunctionProbability(parentEntry, node, childEntry);
-                        if (adjProbability > 0) {
+                        if (adjProbability > adj_cutoff) {
                             Collection<Action> adjActions = PCrispActionCreator.createActions(probGrammar, parentEntry, node, childEntry, TagActionType.ADJUNCTION, adjProbability, plansize, roles);
                             addActionsToDomain(adjActions, domain);
                         }
                     }
 
                     double noAdjProbability = probGrammar.getSmoothedNoAdjunctionProbability(parentEntry, node);                    
-                    if (noAdjProbability > 0) {
+                    if (noAdjProbability > noadj_cutoff) {
                         Action noAdjoinAction = PCrispActionCreator.createNoAdjoinAction(parentEntry, node, noAdjProbability, plansize);
                         addActionToDomain(noAdjoinAction, domain);
                     }
@@ -281,7 +294,7 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
            throw new RuntimeException("Some semantic predicate cannot be realized by the grammar.");
        }
 
-       LinearInterpolationProbabilisticGrammar<Term> ret = new LinearInterpolationProbabilisticGrammar(1,0,0,1000);
+       LinearInterpolationProbabilisticGrammar<Term> ret = new LinearInterpolationProbabilisticGrammar(1,1,1000);
 
        Set<LexiconEntry> filteredEntries = new HashSet<LexiconEntry>();
 

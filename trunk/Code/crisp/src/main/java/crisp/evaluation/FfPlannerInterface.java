@@ -55,7 +55,7 @@ public class FfPlannerInterface implements PlannerInterface {
     private long preprocessingTime;
     private long searchTime;
     
-    FfPlannerInterface() {
+    public FfPlannerInterface() {
         preprocessingTime = 0;
         searchTime = 0;
     }
@@ -90,8 +90,7 @@ public class FfPlannerInterface implements PlannerInterface {
     }
     
      
-    public List<Term> runPlanner(Domain domain, Problem problem, long timeout) throws Exception {
-        //TODO: implement timeout for SGPlan
+    public List<Term> runPlanner(Domain domain, Problem problem, long timeout) throws Exception {        
         return runPlanner(domain, problem);
     }
 

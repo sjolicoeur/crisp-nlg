@@ -1,0 +1,13 @@
+package crisp.main;
+
+/**
+ * The standard Exception that is thrown by CRISP if anything goes wrong.
+ * @author dbauer
+ */
+class CrispGeneratorException extends Exception{
+
+    public CrispGeneratorException(String string) {
+        super(string);
+    }
+
+}

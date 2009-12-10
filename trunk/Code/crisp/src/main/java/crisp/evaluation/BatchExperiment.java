@@ -182,7 +182,7 @@ public class BatchExperiment {
         
         System.out.print("Parsing grammar...");
         PCrispXmlInputCodec codec = new PCrispXmlInputCodec();
-		ProbabilisticGrammar<Term> grammar = new ProbabilisticGrammar<Term>();	
+	ProbabilisticGrammar<Term> grammar = new ProbabilisticGrammar<Term>();	
         codec.parse(new File(args[0]), grammar);
         System.out.println("done");
 

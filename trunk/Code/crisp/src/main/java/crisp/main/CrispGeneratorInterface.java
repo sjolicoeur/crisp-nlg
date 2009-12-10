@@ -1,7 +1,9 @@
 package crisp.main;
 
-import crisp.result.Grammar;
+import de.saar.penguin.tag.codec.ParserException;
 import de.saar.penguin.tag.derivation.DerivationTree;
+import de.saar.penguin.tag.grammar.Grammar;
+import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
 
@@ -17,18 +19,18 @@ public interface CrispGeneratorInterface {
      * @param xmlDomainReader A reader that accesses a CRISP grammar specification in XML format.
      */
     public void setGrammar(Grammar grammar);
-    public void setGrammar(Reader xmlGrammarReader);
-    public void setGrammar(String xmlGrammar);
+    public void setGrammar(Reader xmlGrammarReader) throws ParserException, IOException;
+    public void setGrammar(String xmlGrammar) throws ParserException;
 
     /**
      * Solve a generation problem using a preset domain. 
      * @param xmlProblemReader
      * @return The output sentence as a String
      */
-    public String generateSentence(Reader xmlProblemReader);
-    public String generateSentence(String xmlProblem);
-    public List<String> generateWordSequence(Reader xmlProblemReader);
-    public List<String> generateWordSequence(String xmlProblem);
-    public DerivationTree generate(Reader xmlProblemReader);
-    public DerivationTree generate(String xmlProblem);
+    public String generateSentence(Reader xmlProblemReader) throws CrispGeneratorException;
+    public String generateSentence(String xmlProblem) throws CrispGeneratorException;
+    public List<String> generateWordSequence(Reader xmlProblemReader) throws CrispGeneratorException;
+    public List<String> generateWordSequence(String xmlProblem) throws CrispGeneratorException;
+    public DerivationTree generate(Reader xmlProblemReader) throws CrispGeneratorException;
+    public DerivationTree generate(String xmlProblem) throws CrispGeneratorException;
 }

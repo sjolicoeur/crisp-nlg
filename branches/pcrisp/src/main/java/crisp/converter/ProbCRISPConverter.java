@@ -26,15 +26,11 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import crisp.planningproblem.Action;
 import crisp.planningproblem.Domain;
-import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
-import crisp.planningproblem.TypedVariableList;
 import crisp.planningproblem.formula.Formula;
-import crisp.planningproblem.formula.Conditional;
 import crisp.planningproblem.formula.Conjunction;
 import crisp.planningproblem.formula.Universal;
 import crisp.planningproblem.formula.Literal;
-import crisp.planningproblem.formula.Negation;
 import de.saar.chorus.term.Compound;
 import de.saar.chorus.term.Constant;
 import de.saar.chorus.term.Term;                         
@@ -454,6 +450,7 @@ public class ProbCRISPConverter implements ProblemConverter {
         }
 
         // Add dummy action, needed to sidestep a LAMA bug
+        /*
         ArrayList<Formula> preconds = new ArrayList<Formula>();
         preconds.add(new Literal("step(step0)",true));
         ArrayList<Formula> effects = new ArrayList<Formula>();
@@ -503,7 +500,7 @@ public class ProbCRISPConverter implements ProblemConverter {
             Compound c = new Compound("needtoexpress-"+i, subterms);
             problem.addToInitialState(c);
         }
-
+        */
     }
     
     
@@ -637,7 +634,7 @@ public class ProbCRISPConverter implements ProblemConverter {
         } catch (ParserConfigurationException e){
             throw new SAXException("Parser misconfigured: "+e);    
         }
-        problem.setDomain(domain.getName());
+        problem.setDomain(domain);
         
     }        
     

@@ -20,8 +20,8 @@
   <world>in(f2,h1)</world>
   <world>in(f1,h3)</world>
 
-  <world>name(p,peter)</world>
-  <world>animate(p)</world>
+  <world>name(pet,peter)</world>
+  <world>animate(pet)</world>
 
   <world>name(m,mary)</world>
 

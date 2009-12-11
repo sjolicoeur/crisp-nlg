@@ -1,16 +1,9 @@
 package crisp.evaluation;
 
 
-import crisp.converter.BackoffModelProbCRISPConverter;
 import crisp.converter.FancyBackoffProbCRISPConverter;
-import crisp.converter.FastCRISPConverter;
-import crisp.converter.ProbCRISPConverter;
-import crisp.converter.TreeModelProbCRISPConverter;
 import java.io.File;
-import java.io.IOException;
 import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 
 import crisp.planningproblem.Domain;
@@ -18,21 +11,16 @@ import crisp.planningproblem.Problem;
 import crisp.planningproblem.codec.CostPddlOutputCodec;
 import crisp.planningproblem.codec.OutputCodec;
 
-import crisp.evaluation.lamaplanparser.LamaPlanParser;
 
 import crisp.pddl.PddlParser;
-import crisp.planner.lazyff.ActionFinder;
-import crisp.planner.lazyff.BestFirstSearch;
 import crisp.planner.lazyff.CostRelaxedGraphplanEvaluator;
+import crisp.planner.lazyff.FindAllBFS;
 import crisp.planner.lazyff.GoalStateCondition;
-import crisp.planner.lazyff.GreedySearch;
 import crisp.planner.lazyff.HelpfulActionFinder;
-import crisp.planner.lazyff.HspEvaluator;
 import crisp.planner.lazyff.RelaxedGraphplanEvaluator;
+import crisp.planner.lazyff.BestFirstSearch;
 import crisp.planner.lazyff.Search;
-import crisp.planner.lazyff.SimpleCostEvaluator;
 import crisp.planner.lazyff.State;
-import crisp.planner.lazyff.StateEvaluator;
 import crisp.planningproblem.Action;
 import crisp.planner.reachability.ReachabilityAnalyzer;
 import crisp.planner.reachability.GroundPlanningProblem;
@@ -41,7 +29,6 @@ import crisp.planningproblem.codec.TempPddlOutputCodec;
 import crisp.result.PCrispDerivationTreeBuilder;
 import crisp.result.DerivationTreeBuilder;
 
-import de.saar.penguin.tag.grammar.ProbabilisticGrammar;
 import de.saar.penguin.tag.codec.PCrispXmlInputCodec;
 import de.saar.penguin.tag.derivation.DerivationTree;
 import de.saar.penguin.tag.derivation.DerivedTree;
@@ -64,15 +51,49 @@ import java.util.Timer;
 
 public class LazyFfInterface implements PlannerInterface {
 
+
+    private class SearchRunnable implements Runnable {
+
+        State initState;
+        State result;
+        GoalStateCondition condition;
+        Search search;
+
+        public SearchRunnable(Search search, State initState, GoalStateCondition condition) {
+            this.initState = initState;
+            this.condition = condition;
+            this.search = search;
+        }
+      
+        public void run() {
+            result = search.search(initState, condition);
+            if (Thread.currentThread().isInterrupted()) {
+                System.out.println("Thread interrupted.");
+            }
+            System.out.println("Ending thread");
+
+        }
+
+        public State getResult(){
+            return result;
+        }
+    }
+
     
     private long preprocessingTime;
     private long searchTime;
     private long totalTime;
+    private boolean timedOut;
 
     LazyFfInterface() {
 
         preprocessingTime = 0;
         searchTime = 0;
+        timedOut = false;
+    }
+
+    public boolean isTimedOut(){
+        return timedOut;
     }
 
     /**
@@ -97,8 +118,8 @@ public class LazyFfInterface implements PlannerInterface {
         long start;
         long end;
 
-        OutputCodec outputCodec = new TempPddlOutputCodec();
-        OutputCodec outputCodec2 = new CostPddlOutputCodec();
+        OutputCodec outputCodec = new PddlOutputCodec();
+        //OutputCodec outputCodec2 = new CostPddlOutputCodec();
 
         StringWriter domainWriter = new StringWriter();
         StringWriter problemWriter = new StringWriter();
@@ -107,8 +128,8 @@ public class LazyFfInterface implements PlannerInterface {
 
 
         System.out.println(domain.getActions().size() + " operators in domain.");
-        outputCodec2.writeToDisk(domain, problem, new PrintWriter(new FileWriter(new File("tmpdomain.lisp"))),
-                                                 new PrintWriter(new FileWriter(new File("tmpproblem.lisp"))));
+        //outputCodec2.writeToDisk(domain, problem, new PrintWriter(new FileWriter(new File("tmpdomain.lisp"))),
+        //                                         new PrintWriter(new FileWriter(new File("tmpproblem.lisp"))));
 
         outputCodec = null;
 
@@ -134,16 +155,42 @@ public class LazyFfInterface implements PlannerInterface {
         Search search = new BestFirstSearch(gpp, new HelpfulActionFinder(eval), eval);
 
         //StateEvaluator eval = new SimpleCostEvaluator(gpp);
-        //Search search = new GreedySearch(gpp, new ActionFinder(), eval);
-
+        //Search search = new GreedySearch(gpp, new ActionFinder(), eval);        
         start = System.currentTimeMillis();
-        State result = search.search(new State(gpp), new GoalStateCondition(gpp));
-        end = System.currentTimeMillis();
+        this.timedOut = false;
+        State result;
+        SearchRunnable sr = new SearchRunnable(search, new State(gpp), new GoalStateCondition(gpp));
+        Thread searchThread = new Thread(sr);                    
 
-        searchTime = end-start;
-        System.out.println(search + "ms.");
-        totalTime = searchTime + preprocessingTime;
-        System.out.println("Total: " + totalTime + "ms.");
+        System.out.println("will time out in "+timeout+"ms.");
+        Timer timer = new Timer();
+        timer.schedule(new InterruptScheduler(Thread.currentThread()), timeout);  
+        try{
+            searchThread.start();
+            searchThread.join();            
+            result = sr.getResult();
+            searchThread.interrupt();
+        } catch (InterruptedException e) {
+            timer.cancel();
+            System.out.println("Timed out.");
+            searchThread.interrupt();
+            this.timedOut = true;
+            return null;
+        } finally {
+            timer.cancel();
+            searchThread.interrupt();
+            end = System.currentTimeMillis();
+            searchTime = end-start;
+            System.out.println(search + "ms.");
+            totalTime = searchTime + preprocessingTime;
+            System.out.println("Total: " + totalTime + "ms.");
+        }
+        timer.cancel();
+        
+
+        
+        
+        
 
         List<Term> resultAsTerm = new ArrayList<Term>();
 
@@ -155,6 +202,84 @@ public class LazyFfInterface implements PlannerInterface {
         }
 
         return resultAsTerm;
+    }
+
+
+    public List<List<Term>> findAllPlans(Domain domain, Problem problem, long timeout, LinearInterpolationProbabilisticGrammar grammar) throws Exception {
+        // This does look a bit like LAMA.sh. Calling the individual commands from here makes it easier to measure time
+
+        long start;
+        long end;
+
+        OutputCodec outputCodec = new TempPddlOutputCodec();
+        OutputCodec outputCodec2 = new CostPddlOutputCodec();
+
+        StringWriter domainWriter = new StringWriter();
+        StringWriter problemWriter = new StringWriter();
+        outputCodec.writeToDisk(domain, problem, new PrintWriter(domainWriter),
+                                                 new PrintWriter(problemWriter));
+
+
+        System.out.println(domain.getActions().size() + " operators in domain.");
+        //outputCodec2.writeToDisk(domain, problem, new PrintWriter(new FileWriter(new File("tmpdomain.lisp"))),
+        //                                       new PrintWriter(new FileWriter(new File("tmpproblem.lisp"))));
+
+        outputCodec = null;
+
+        // Run the planner
+        System.out.println("Reachability analysis...");
+        start = System.currentTimeMillis();
+
+        StringReader domainReader = new StringReader(domainWriter.toString());
+        StringReader problemReader = new StringReader(problemWriter.toString());
+        PddlParser.parse(domainReader, domain, problemReader, problem);
+
+
+        ReachabilityAnalyzer analyzer = new ReachabilityAnalyzer(domain);
+        GroundPlanningProblem gpp = analyzer.analyzeReachability(problem);
+
+        end = System.currentTimeMillis();
+
+        preprocessingTime = end-start;
+        System.out.println(preprocessingTime + "ms.");
+        System.out.println("Search...");
+
+        RelaxedGraphplanEvaluator eval = new CostRelaxedGraphplanEvaluator(gpp);
+        FindAllBFS search = new FindAllBFS(gpp, new HelpfulActionFinder(eval), eval);
+        search.search(new State(gpp), new GoalStateCondition(gpp));
+
+        List<List<Term>> plans = new ArrayList<List<Term>>();
+        start = System.currentTimeMillis();
+
+
+        State state = search.findNext();
+
+        while (state!=null) {
+            
+            List<Term> resultAsTerm = new ArrayList<Term>();                
+            for (Action a : state.getPlanToHere()) {
+                resultAsTerm.add(a.getPredicate());
+            }
+             DerivationTreeBuilder derivationTreeBuilder = new PCrispDerivationTreeBuilder(grammar);
+             DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(resultAsTerm, domain);
+             System.out.println(derivTree);
+             System.out.println("Total probability: "+ grammar.computeTreeProbability(derivTree));
+             DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
+             System.out.println(derivedTree);
+             System.out.println(derivedTree.yield());
+
+             plans.add(resultAsTerm);
+             state = search.findNext();
+        }
+
+        end = System.currentTimeMillis();
+
+        searchTime = end-start;
+        System.out.println(search + "ms.");
+        totalTime = searchTime + preprocessingTime;
+        System.out.println("Total: " + totalTime + "ms.");
+       
+        return plans;
     }
 
     public long getPreprocessingTime() {
@@ -191,7 +316,7 @@ public class LazyFfInterface implements PlannerInterface {
 
         System.out.println("Reading grammar...");
         PCrispXmlInputCodec codec = new PCrispXmlInputCodec();
-	LinearInterpolationProbabilisticGrammar<Term> grammar = new LinearInterpolationProbabilisticGrammar<Term>(0.8,1,1000);
+	LinearInterpolationProbabilisticGrammar<Term> grammar = new LinearInterpolationProbabilisticGrammar<Term>(0.9,1,1000);
 	codec.parse(new File(args[0]), grammar);
 
         grammar.initBackoff();
@@ -207,24 +332,26 @@ public class LazyFfInterface implements PlannerInterface {
 
 
         System.out.println("Running planner ... ");
-        PlannerInterface planner = new LazyFfInterface();
-        List<Term> plan = planner.runPlanner(domain,problem, 600000);
-        System.out.println(planner.getTotalTime());
-        System.out.println(planner.getPreprocessingTime());
-        System.out.println(planner.getSearchTime());
-        if (plan == null) {
-            System.err.println("No plan found!");
-            System.exit(0);
-        }
-        for (Term instance : plan ){
-            System.out.println(instance);
-        }
-        DerivationTreeBuilder derivationTreeBuilder = new PCrispDerivationTreeBuilder(grammar);
-        DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
-        System.out.println(derivTree);
-        DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
-        System.out.println(derivedTree);
-        System.out.println(derivedTree.yield());
+        LazyFfInterface planner = new LazyFfInterface();
+        planner.findAllPlans(domain, problem, 60000, grammar);
+        //List<Term> plan = planner.runPlanner(domain,problem, 600000);
+
+        //System.out.println(planner.getTotalTime());
+        //System.out.println(planner.getPreprocessingTime());
+        //System.out.println(planner.getSearchTime());
+        //if (plan == null) {
+        //    System.err.println("No plan found!");
+        //    System.exit(0);
+        // }
+        //for (Term instance : plan ){
+        //    System.out.println(instance);
+        //}
+        //DerivationTreeBuilder derivationTreeBuilder = new PCrispDerivationTreeBuilder(grammar);
+        //DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
+        //System.out.println(derivTree);
+        //DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
+        //System.out.println(derivedTree);
+        //System.out.println(derivedTree.yield());
 
     }
 

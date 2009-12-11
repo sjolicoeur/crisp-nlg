@@ -1,6 +1,7 @@
 package crisp.evaluation;
 
 
+import crisp.evaluation.ffplanparser.ParseException;
 import java.io.FileWriter;
 import java.io.File;
 import java.io.Reader;
@@ -27,7 +28,13 @@ import de.saar.penguin.tag.derivation.DerivedTree;
 import de.saar.chorus.term.Term; 
 
 import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //import javax.swing.JFrame;
 //import org.jgraph.JGraph;
@@ -35,16 +42,16 @@ import java.util.List;
 
 public class FfPlannerInterface implements PlannerInterface {
     
-    public static final String FF_BIN = "/proj/penguin/planners/FF-v2.3/ff-linux64";
+    public static final String FF_BIN = "./new-ff-mac";
        
-    public static final String TEMPDOMAIN_FILE = "tmpdomain.lisp";
-    public static final String TEMPPROBLEM_FILE = "tmpproblem.lisp";
-    public static final String TEMPRESULT_FILE = "tmpresult";
+    public static final String TEMPDOMAIN_FILE = "/tmp/tmpdomain.lisp";
+    public static final String TEMPPROBLEM_FILE = "/tmp/tmpproblem.lisp";
+    public static final String TEMPRESULT_FILE = "/tmp/tmpresult";
     
     private long preprocessingTime;
     private long searchTime;
     
-    FfPlannerInterface() {
+    public FfPlannerInterface() {
         preprocessingTime = 0;
         searchTime = 0;
     }
@@ -59,25 +66,51 @@ public class FfPlannerInterface implements PlannerInterface {
                                                                    
           
         // Run the FfPlanner
-        ProcessBuilder ff_pb = new ProcessBuilder(FF_BIN, "-o "+TEMPDOMAIN_FILE, "-f "+TEMPPROBLEM_FILE);
-        Process ffplanner = ff_pb.start();        
+        Process ffplanner = Runtime.getRuntime().exec(FF_BIN+" -o "+TEMPDOMAIN_FILE+" -f "+TEMPPROBLEM_FILE );
         ffplanner.waitFor();
-        if (ffplanner.exitValue() != 0) {
-            throw new RuntimeException("FF in "+FF_BIN+" terminated inappropriately.");
-        }        
-        
         Reader resultReader = new BufferedReader(new InputStreamReader(ffplanner.getInputStream()));
-        try{
-            FfPlanParser parser = new FfPlanParser(resultReader);
-            return parser.plan();
-        } catch(Exception e) {
-            System.err.println("Exception while parsing planner input.");
-            return null;
+        
+        if (ffplanner.exitValue() != 0) {
+            throw new RuntimeException("FF in "+FF_BIN+" terminated inappropriately. Exit Value was "+ffplanner.exitValue()+".");
         }
+
+        StringWriter str = new StringWriter();
+        char[] buffer = new char[100];
+        while (resultReader.read(buffer)!=-1)
+            str.write(buffer);
+                                  
+            List<Term> plan = parsePlan(str.toString());
+            System.out.println("FOO");
+            System.out.println(plan.size());
+
+            System.out.println(domain.getActions());
+            return plan;
+        
                                                                                            
     
     }
-    
+
+
+    private List<Term> parsePlan(String string) {
+        Pattern p = Pattern.compile(".*found legal plan as follows(.*)time spent.*", Pattern.DOTALL);
+        Matcher m = p.matcher(string);
+
+        if( !m.matches() ) {
+            return null;
+        } else {
+            System.out.println(m.group(1));
+            try {
+                FfPlanParser parser = new FfPlanParser(new StringReader(m.group(1)));
+                List<Term> ret = parser.plan();
+                return ret;
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+                return null;
+            }
+        }
+
+    }
+
      
     public List<Term> runPlanner(Domain domain, Problem problem, long timeout) throws Exception {
         //TODO: implement timeout for SGPlan

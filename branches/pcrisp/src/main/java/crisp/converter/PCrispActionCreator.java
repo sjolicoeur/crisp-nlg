@@ -10,19 +10,13 @@ import java.util.Collection;
 import java.util.Collections;
 
 import crisp.planningproblem.Action;
-import crisp.planningproblem.Predicate;
-import crisp.planningproblem.TypedVariableList;
 
 import crisp.planningproblem.formula.Formula;
 import crisp.planningproblem.formula.Conjunction;
 import crisp.planningproblem.formula.Literal;
-import crisp.planningproblem.formula.Negation;
-import crisp.planningproblem.formula.Universal;
-import crisp.planningproblem.formula.Conditional;
 
 import de.saar.chorus.term.Compound;
 import de.saar.chorus.term.Constant;
-import de.saar.chorus.term.Substitution;
 import de.saar.chorus.term.Term;
 import de.saar.chorus.term.Variable;
 
@@ -36,7 +30,11 @@ import de.saar.penguin.tag.grammar.Constraint;
 
 
 
-
+/**
+ * Create CRISP actions whose preconditions specify a specific lexicalized
+ * parent tree and node as target for substitution and adjunction.
+ * @author dbauer
+ */
 public class PCrispActionCreator {
     
     /******************** Methods to create actions ***************/    
@@ -53,8 +51,7 @@ public class PCrispActionCreator {
     
     public static Action createInitAction(ProbabilisticGrammar grammar, LexiconEntry entry, double prob, Map<String,HashSet<String>> roles){               
         
-        // Get the tree for this lexical entry from the hash map
-        String treeRef = entry.tree;
+        // Get the tree for this lexical entry from the hash map        
         ElementaryTree<Term> tree = grammar.getTree(entry.tree);
         Collection<String> allNodes = tree.getAllNodes();
         
@@ -65,7 +62,7 @@ public class PCrispActionCreator {
         Map<String,String> constants = new HashMap<String,String>();
         
         for (String node : allNodes) {
-            String cat = tree.getNodeLabel(node);
+            String cat = tree.getNodeLabel(node).toLowerCase();
             if (cat==null || cat.equals("")) {
                 constants.put(cat, "category");
             }
@@ -86,7 +83,7 @@ public class PCrispActionCreator {
         
         List<Term> semantics = entry.semantics;        
         
-        String rootCategory = tree.getNodeLabel(tree.getRoot());                      
+        String rootCategory = tree.getNodeLabel(tree.getRoot()).toLowerCase();
         
         // compute n and I as in the paper
         Map<String, String> n = new HashMap<String, String>();
@@ -166,7 +163,8 @@ public class PCrispActionCreator {
             preconds.add(new Literal(termWithVariables, true));
             
             contentWithVariables.add(termWithVariables);
-            
+
+            preconds.add(new Literal((Compound) flattenTerm(termWithVariables, "needtoexpress"),true));
             effects.add(new Literal((Compound) flattenTerm(termWithVariables, "needtoexpress"),false));
             
             if ( semContCompound.getSubterms().size() > maximumArity ) { 
@@ -234,7 +232,7 @@ public class PCrispActionCreator {
                 roleN = "?u";
             }
             
-            String cat = tree.getNodeLabel(substNode);                        
+            String cat = tree.getNodeLabel(substNode).toLowerCase();
             if (cat.equals(""))                             
                 cat = "NONE";            
             
@@ -290,9 +288,9 @@ public class PCrispActionCreator {
                 roleN = "?u";
             }
             
-            String cat = tree.getNodeLabel(adjNode);                   
+            String cat = tree.getNodeLabel(adjNode).toLowerCase();
             if (cat.equals("")){                             
-                cat = "NONE";
+                cat = "none";
             }
             
             // canadjoin            
@@ -464,6 +462,7 @@ public class PCrispActionCreator {
 
             contentWithVariables.add(termWithVariables);
 
+            preconds.add(new Literal((Compound) flattenTerm(termWithVariables, "needtoexpress"),true));
             effects.add(new Literal((Compound) flattenTerm(termWithVariables, "needtoexpress"),false));
 
             if ( semContCompound.getSubterms().size() > maximumArity ) {
@@ -532,7 +531,7 @@ public class PCrispActionCreator {
                     roleN = "?u";
                 }
                 
-                String cat = childTree.getNodeLabel(substNode);                        
+                String cat = childTree.getNodeLabel(substNode).toLowerCase();
                 if (cat.equals(""))                             
                     cat = "NONE";            
                 
@@ -589,7 +588,7 @@ public class PCrispActionCreator {
                     roleN = "?u";
                 }
                 
-                String cat = childTree.getNodeLabel(adjNode);                   
+                String cat = childTree.getNodeLabel(adjNode).toLowerCase();
                 if (cat.equals("")){                             
                     cat = "NONE";
                 }
@@ -620,7 +619,6 @@ public class PCrispActionCreator {
     public static Action createNoAdjoinAction(LexiconEntry entry, String nodeID, Double prob, int plansize) {
         
         // Get the tree for this lexical entry from the hash map
-        String treeRef = entry.tree;        
         String treeName = getTreeName(entry);                
         String actionName = "noadj-"+treeName+"-"+nodeID;        
         

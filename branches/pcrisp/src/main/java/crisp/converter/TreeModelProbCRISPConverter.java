@@ -202,7 +202,7 @@ public class TreeModelProbCRISPConverter extends ProbCRISPConverter {
             }
         }
 
-
+        /*
         // Add dummy action, needed to sidestep a LAMA bug
         ArrayList<Formula> preconds = new ArrayList<Formula>();
         preconds.add(new Literal("step(step0)",true));
@@ -253,7 +253,7 @@ public class TreeModelProbCRISPConverter extends ProbCRISPConverter {
             Compound c = new Compound("needtoexpress-"+i, subterms);
             problem.addToInitialState(c);
         }
-
+        */
     }
 
     public ProbabilisticGrammar<Term> filterProbabilisticGrammar(ProbabilisticGrammar<Term> grammar, LexiconEntryFilter filter) {

@@ -1,50 +1,50 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <crisp-grammar>
 
-  <!-- GRAMMAR -->
+  <!-- grammar -->
 
-  <tree id="i.propername">
-    <node cat="NP" index="r" sem="self">
-      <leaf cat="PN" type="anchor" sem="self"/>
+  <tree id="initpropername">
+    <node cat="np" index="r" sem="self">
+      <leaf cat="pn" type="anchor" sem="self"/>
     </node>
   </tree>
 
-  <tree id="i.nx0Vnx1">
-    <node cat="S" index="r" sem="self">
-      <leaf cat="NP" type="substitution" index="0" sem="subj" />
-      <node cat="VP" sem="self">
-	<leaf cat="V" type="anchor" sem="self"/>
-	<leaf cat="NP" type="substitution" index="0" sem="obj" />
+  <tree id="initnx0vnx1">
+    <node cat="s" index="r" sem="self">
+      <leaf cat="np" type="substitution" index="0" sem="subj" />
+      <node cat="vp" sem="self">
+	<leaf cat="v" type="anchor" sem="self"/>
+	<leaf cat="np" type="substitution" index="0" sem="obj" />
       </node>
     </node>
   </tree>
 
-  <tree id="i.N">
-    <leaf cat="N" type="anchor" sem="self" />
+  <tree id="initn">
+    <leaf cat="n" type="anchor" sem="self" />
   </tree>
 
-  <tree id="a.An">
-    <node cat="N" index="r" sem="self">
-      <leaf cat="A" type="anchor" sem="self"/>
-      <leaf cat="N" type="foot" index="f" sem="self" />
+  <tree id="auxan">
+    <node cat="n" index="r" sem="self">
+      <leaf cat="a" type="anchor" sem="self"/>
+      <leaf cat="n" type="foot" index="f" sem="self" />
     </node>
   </tree>
 
 
-  <tree id="i.nx0Vnx1Pnx2">
-    <node cat="S" index="r" sem="self">
-      <leaf cat="NP" type="substitution" index="0" sem="subj"/>
-      <node cat="VP" sem="self">
-        <leaf cat="V" type="anchor" sem="self"/>
-        <leaf cat="NP" type="substitution" index="1" sem="obj"/>
-        <node cat="VP" index="e" sem="self">
-          <node cat="V" index="e" sem="self">
+  <tree id="initnx0vnx1pnx2">
+    <node cat="s" index="r" sem="self">
+      <leaf cat="np" type="substitution" index="0" sem="subj"/>
+      <node cat="vp" sem="self">
+        <leaf cat="v" type="anchor" sem="self"/>
+        <leaf cat="np" type="substitution" index="1" sem="obj"/>
+        <node cat="vp" index="e" sem="self">
+          <node cat="v" index="e" sem="self">
             <leaf cat="" type="terminal" index="v" sem="self"/>
           </node>
-          <node cat="PP" sem="ppobj">
-            <leaf cat="P" type="lex" sem="ppobj"/>
-            <leaf cat="NP" type="substitution" index="2" sem="ppobj"/>
+          <node cat="pp" sem="ppobj">
+            <leaf cat="p" type="lex" sem="ppobj"/>
+            <leaf cat="np" type="substitution" index="2" sem="ppobj"/>
           </node>
         </node>
       </node>
@@ -52,18 +52,18 @@
   </tree>
 
 
-  <tree id="i.transImperative">
-    <node cat="S" index="r" sem="self">
-      <node cat="VP" sem="self">
-        <leaf cat="V" type="anchor" sem="self"/>
-        <leaf cat="NP" type="substitution" index="1" sem="obj"/>
-        <node cat="VP" index="e" sem="self">
-          <node cat="V" index="e" sem="self">
+  <tree id="inittransimperative">
+    <node cat="s" index="r" sem="self">
+      <node cat="vp" sem="self">
+        <leaf cat="v" type="anchor" sem="self"/>
+        <leaf cat="np" type="substitution" index="1" sem="obj"/>
+        <node cat="vp" index="e" sem="self">
+          <node cat="v" index="e" sem="self">
             <leaf cat="" type="terminal" index="v" sem="self"/>
           </node>
-          <node cat="PP" sem="ppobj">
-            <leaf cat="P" type="lex" sem="ppobj"/>
-            <leaf cat="NP" type="substitution" index="2" sem="ppobj"/>
+          <node cat="pp" sem="ppobj">
+            <leaf cat="p" type="lex" sem="ppobj"/>
+            <leaf cat="np" type="substitution" index="2" sem="ppobj"/>
           </node>
         </node>
       </node>
@@ -71,59 +71,59 @@
   </tree>
 
 
- <!-- non-XTAG -->
+ <!-- non-xtag -->
   <!--
-  <tree id="i.Dn">  
-    <node cat="NP" index="r" sem="self">
-      <leaf cat="D" type="anchor" sem="self" />
-      <node type="substitution" cat="N" index="0" sem="self" />
+  <tree id="initdn">  
+    <node cat="np" index="r" sem="self">
+      <leaf cat="d" type="anchor" sem="self" />
+      <node type="substitution" cat="n" index="0" sem="self" />
     </node>
   </tree>
 -->
 
-  <tree id="a.Dn">
-    <node cat="NP" index="r" sem="self">
-      <leaf cat="Det" type="anchor" sem="self"/>
-      <leaf cat="NP" type="foot" index="f" sem="self" />
+  <tree id="auxdn">
+    <node cat="np" index="r" sem="self">
+      <leaf cat="det" type="anchor" sem="self"/>
+      <leaf cat="np" type="foot" index="f" sem="self" />
     </node>
   </tree>
 
   
-  <tree id="i.NP">
-    <node cat="NP" sem="self" constraint="oa">
-      <node cat="N" sem="self">
-	<leaf cat="N" type="anchor" sem="self" />
+  <tree id="initnp">
+    <node cat="np" sem="self" constraint="oa">
+      <node cat="n" sem="self">
+	<leaf cat="n" type="anchor" sem="self" />
       </node>
     </node>
   </tree>
 
 
-  <!-- LEXICON -->
+  <!-- lexicon -->
 
-  <entry word='Mary' pos='PN'>
-    <tree refid='i.propername'>
+  <entry word='mary' pos='pn'>
+    <tree refid='initpropername'>
       <semcontent>name(self,mary)</semcontent>
     </tree>
   </entry>
 
-  <entry word='Peter' pos='PN'>
-    <tree refid='i.propername'>
+  <entry word='peter' pos='pn'>
+    <tree refid='initpropername'>
       <semcontent>name(self,peter)</semcontent>
     </tree>
   </entry>
 
 
-  <entry word='likes' pos='V'>
-    <tree refid="i.nx0Vnx1">
+  <entry word='likes' pos='v'>
+    <tree refid="initnx0vnx1">
       <semcontent>like(self,subj,obj)</semcontent>
       <semreq>animate(subj)</semreq>
     </tree>
   </entry>
 
 <!--
-  <entry word='takes' pos='V'>
-    <tree refid="i.nx0Vnx1Pnx2">
-      <lex pos="P" word="from" />
+  <entry word='takes' pos='v'>
+    <tree refid="initnx0vnx1pnx2">
+      <lex pos="p" word="from" />
       <semcontent>takefrom(self,subj,obj,ppobj)</semcontent>
       <semreq>animate(subj)</semreq>
       <semreq>in(obj,ppobj)</semreq>
@@ -131,78 +131,78 @@
   </entry>
 -->
 
-  <entry word='take' pos='V'>
-    <tree refid="i.transImperative">
-      <lex pos="P" word="from" />
+  <entry word='take' pos='v'>
+    <tree refid="inittransimperative">
+      <lex pos="p" word="from" />
       <semcontent>takefrom(self,obj,ppobj)</semcontent>
       <semreq>in(obj,ppobj)</semreq>
     </tree>
   </entry>
 
 
-  <entry word='rabbit' pos='N'>
-    <tree refid="i.NP">
+  <entry word='rabbit' pos='n'>
+    <tree refid="initnp">
       <semcontent>rabbit(self)</semcontent>
     </tree>
   </entry>
 
-  <entry word='hat' pos='N'>
-    <tree refid="i.NP">
+  <entry word='hat' pos='n'>
+    <tree refid="initnp">
       <semcontent>hat(self)</semcontent>
     </tree>
   </entry>
 
-  <entry word='flower' pos='N'>
-    <tree refid="i.NP">
+  <entry word='flower' pos='n'>
+    <tree refid="initnp">
       <semcontent>flower(self)</semcontent>
     </tree>
   </entry>
 
-  <entry word='bowl' pos='N'>
-    <tree refid="i.NP">
+  <entry word='bowl' pos='n'>
+    <tree refid="initnp">
       <semcontent>bowl(self)</semcontent>
     </tree>
   </entry>
 
 
-  <entry word='the' pos='D'>
-    <tree refid="a.Dn">
+  <entry word='the' pos='d'>
+    <tree refid="auxdn">
     </tree>
   </entry>
 
 
-  <entry word='white' pos='A'>
-    <tree refid='a.An'>
+  <entry word='white' pos='a'>
+    <tree refid='auxan'>
       <semcontent>white(self)</semcontent>
     </tree>
   </entry>
 
-  <entry word='foo1' pos='A'>
-    <tree refid='a.An'>
+  <entry word='foo1' pos='a'>
+    <tree refid='auxan'>
       <semcontent>foo1(self)</semcontent>
     </tree>
   </entry>
 
-  <entry word='foo2' pos='A'>
-    <tree refid='a.An'>
+  <entry word='foo2' pos='a'>
+    <tree refid='auxan'>
       <semcontent>foo2(self)</semcontent>
     </tree>
   </entry>
 
-  <entry word='foo3' pos='A'>
-    <tree refid='a.An'>
+  <entry word='foo3' pos='a'>
+    <tree refid='auxan'>
       <semcontent>foo3(self)</semcontent>
     </tree>
   </entry>
 
-  <entry word='foo4' pos='A'>
-    <tree refid='a.An'>
+  <entry word='foo4' pos='a'>
+    <tree refid='auxan'>
       <semcontent>foo4(self)</semcontent>
     </tree>
   </entry>
 
-  <entry word='foo5' pos='A'>
-    <tree refid='a.An'>
+  <entry word='foo5' pos='a'>
+    <tree refid='auxan'>
       <semcontent>foo5(self)</semcontent>
     </tree>
   </entry>

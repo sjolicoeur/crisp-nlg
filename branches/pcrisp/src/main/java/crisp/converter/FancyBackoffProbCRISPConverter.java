@@ -3,19 +3,12 @@ package crisp.converter;
 import crisp.planningproblem.Action;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
-import crisp.planningproblem.formula.Conjunction;
-import crisp.planningproblem.formula.Formula;
-import crisp.planningproblem.formula.Literal;
 
-import de.saar.chorus.term.parser.TermParser;
 import crisp.tools.Pair;
-import de.saar.chorus.term.Compound;
-import de.saar.chorus.term.Constant;
 import de.saar.penguin.tag.grammar.Grammar;
 import de.saar.penguin.tag.grammar.ProbabilisticGrammar;
 import de.saar.penguin.tag.grammar.LexiconEntry;
 import de.saar.penguin.tag.grammar.filter.GrammarFilterer;
-import de.saar.penguin.tag.grammar.filter.LexiconEntryFilter;
 
 import de.saar.chorus.term.Term;
 
@@ -24,12 +17,9 @@ import de.saar.penguin.tag.grammar.ElementaryTreeType;
 import de.saar.penguin.tag.grammar.LinearInterpolationProbabilisticGrammar;
 import de.saar.penguin.tag.grammar.NodeType;
 import de.saar.penguin.tag.grammar.filter.SemanticsPredicateListFilter;
-import java.io.FileReader;
 import java.io.Reader;
-import java.io.File;
 
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,7 +36,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- *
+ *  Calculate probabilities for actions by linear interpolation between three Backoff levels.
  * @author dbauer
  */
 public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
@@ -59,9 +49,9 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
 
     public FancyBackoffProbCRISPConverter(){
         this.init_cutoff = 0;
-        this.adj_cutoff = 1E-3;
-        this.subst_cutoff = 1E-3;
-        this.noadj_cutoff = 1E-4;
+        this.adj_cutoff = 5E-5;
+        this.subst_cutoff = 5E-5;
+        this.noadj_cutoff = 5E-5;
     }
 
     /**
@@ -232,7 +222,7 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
 
 
 
-
+        /*
         // Add dummy action, needed to sidestep a LAMA bug
         ArrayList<Formula> preconds = new ArrayList<Formula>();
         preconds.add(new Literal("step(step0)",true));
@@ -283,6 +273,7 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
             Compound c = new Compound("needtoexpress-"+i, subterms);
             problem.addToInitialState(c);
         }
+         */
 
     }
 
@@ -400,10 +391,5 @@ public class FancyBackoffProbCRISPConverter extends ProbCRISPConverter {
 
     }
 
-    @Override
-    public void convert(Grammar<Term> grammar, File problemfile, Domain domain, Problem problem) throws Exception {
-        convert(grammar, new FileReader(problemfile), domain, problem);
-
-    }
 
 }

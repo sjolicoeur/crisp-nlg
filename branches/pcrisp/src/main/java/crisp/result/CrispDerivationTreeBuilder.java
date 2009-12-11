@@ -61,12 +61,14 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
    }       
                
    
-   private void addNewSubstAndAdjSites(ElementaryTree tree, Site targetSide, String derivationNode, String selfSem, String step) {
+   private void addNewSubstAndAdjSites(ElementaryTree tree, String derivationNode, String selfSem, String step) {
        
        // Get lists of nodes that are open for substitution and adjunction
        ArrayList<String> substNodes = new ArrayList<String>();
        ArrayList<String> adjNodes = new ArrayList<String>();
-       
+
+       System.out.println(tree);
+
        for (String node : tree.getAllNodes()) {
            if (tree.getNodeType(node) == NodeType.SUBSTITUTION) {
                substNodes.add(node);
@@ -129,13 +131,15 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
            
             String[] predicateParts = predicateName.split("-");
             String treename = predicateParts[0];
-            String word = predicateParts[1];
-            String step = predicateParts[2];
+            String word = predicateParts[1];            
+            List<Compound> stepTerms = getPreconditionByLabel(action, "step");
+
+            String step = ((Constant) stepTerms.get(0).getSubterms().get(0)).getName().replace("step", "");
             
             ElementaryTree childTree = grammar.getTree(treename);
             LexiconEntry childEntry = grammar.getLexiconEntry(word, treename);
             
-  			// Won't be doing subst and adj. Only check for adj if subst not found.
+            // Won't be doing subst and adj. Only check for adj if subst not found.
             boolean operationFound = false;
 
             for (Compound comp : getSubstPreconditions(action)) {
@@ -148,6 +152,7 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
                 List<Site> substSites = substitutionSites.get(sem);
                 
                 if (substSites==null) {
+                    System.out.println(substitutionSites);
                     throw new RuntimeException("No suitable substitution site found for role "+sem);                    
                 }                     
                 
@@ -157,7 +162,7 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
                         
                         String newDerivNode = currentDerivation.addNode(substSite.derivationNode, substSite.treeNode, treename, childEntry);                                                
                         substituted = substSite;
-                        addNewSubstAndAdjSites(childTree, substSite, newDerivNode, sem, step);
+                        addNewSubstAndAdjSites(childTree, newDerivNode, sem, step);
                                                 
                     }
                     break;
@@ -183,7 +188,7 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
                     } else {
                         Site adjoinTo = adjSites.get(0);
                         String newDerivNode = currentDerivation.addNode(adjoinTo.derivationNode, adjoinTo.treeNode, treename, childEntry);
-                        addNewSubstAndAdjSites(childTree, adjoinTo, newDerivNode, sem, step);
+                        addNewSubstAndAdjSites(childTree, newDerivNode, sem, step);
                     }
                 }
             }

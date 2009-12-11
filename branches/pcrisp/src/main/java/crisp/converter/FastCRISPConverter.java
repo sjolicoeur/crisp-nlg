@@ -102,6 +102,7 @@ public class FastCRISPConverter  {
             characterBuffer = new StringWriter();
         }
         
+        @Override
         public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
             
             elementStack.push(qName);
@@ -110,7 +111,7 @@ public class FastCRISPConverter  {
             if (qName.equals("crispproblem")){
                 
                 // Retrieve and set name for the problem
-                problemname = atts.getValue("name");  
+                problemname = atts.getValue("name").toLowerCase();
                 domain.setName(problemname);
                 problem.setName(problemname);
                 //problem.setDomain(domain);
@@ -132,14 +133,13 @@ public class FastCRISPConverter  {
                 */
                 
                 // add Index TODO: what does this attribute do?
-                domain.addConstant(atts.getValue("index"),"individual");
+                domain.addConstant(atts.getValue("index").toLowerCase(),"individual");
                 
                 mainCat = atts.getValue("cat").toLowerCase(); // TODO: do we really need this as a member variable?
                 
                 // This was in computeInitialState(Domain domain, Problem problem)
                 problem.addToInitialState(TermParser.parse("subst(" + mainCat+ ", root)"));
-                problem.addToInitialState(TermParser.parse("referent(root, " + 
-                atts.getValue("index") + ")"));
+                problem.addToInitialState(TermParser.parse("referent(root, " +atts.getValue("index") + ")"));
                 // TODO: maybe there is a better place for this
                 problem.addToInitialState(TermParser.parse("step(step1)")); 
                 
@@ -147,11 +147,11 @@ public class FastCRISPConverter  {
                 trueAtoms = new HashSet<Term>();
 
                 // add initial dummy atoms to sidestep a bug in LAMA
-                problem.addToInitialState(TermParser.parse("referent(dummysyntaxnode, dummyindiv)"));
-                problem.addToInitialState(TermParser.parse("distractor(dummysyntaxnode, dummyindiv)"));
-                problem.addToInitialState(TermParser.parse("subst(dummycategory, dummysyntaxnode)"));
-                problem.addToInitialState(TermParser.parse("canadjoin(dummycategory, dummysyntaxnode)"));
-                problem.addToInitialState(TermParser.parse("mustadjoin(dummycategory, dummysyntaxnode)"));        
+                //problem.addToInitialState(TermParser.parse("referent(dummysyntaxnode, dummyindiv)"));
+                //problem.addToInitialState(TermParser.parse("distractor(dummysyntaxnode, dummyindiv)"));
+                //problem.addToInitialState(TermParser.parse("subst(dummycategory, dummysyntaxnode)"));
+                //problem.addToInitialState(TermParser.parse("canadjoin(dummycategory, dummysyntaxnode)"));
+                //problem.addToInitialState(TermParser.parse("mustadjoin(dummycategory, dummysyntaxnode)"));
             }
             
             if (qName.equals("world")){
@@ -371,7 +371,7 @@ public class FastCRISPConverter  {
         stepTypeList.add("stepindex");
         domain.addPredicate("step", stepTypeList);
 
-
+        
         List<String> referentAndDistractorTypeList = new ArrayList<String>();
         
         referentAndDistractorTypeList.add("syntaxnode");
@@ -401,7 +401,7 @@ public class FastCRISPConverter  {
         // for each tree in the grammar
         for(String treeName : grammar.getAllTreeNames() ) {
             
-            domain.addConstant(treeName, "treename");
+            domain.addConstant(normalizeTreename(treeName), "treename");
             
             // Get all nodes in the tree
             ElementaryTree<Term> tree = grammar.getTree(treeName);
@@ -430,7 +430,7 @@ public class FastCRISPConverter  {
             //System.out.println(entries.size());
             for (LexiconEntry entry: entries){
                 // Get the tree for this lexical entry from the hash map
-                String treeRef = entry.tree;
+                String treeRef = normalizeTreename(entry.tree);
                 ElementaryTree<Term> tree = grammar.getTree(entry.tree);
                 Collection<String> allNodes = tree.getAllNodes();
                 
@@ -441,9 +441,9 @@ public class FastCRISPConverter  {
                 //System.out.println("  " + treeRef + ": " + tree.getSignatureString());
                 
                 for (String node : allNodes) {
-                    String cat = tree.getNodeLabel(node);
+                    String cat = tree.getNodeLabel(node).toLowerCase();
                     if (cat==null || cat.equals("")) {
-                        cat = "NONE";
+                        cat = "none";
                     }
                     domain.addConstant(cat ,"category"); // add constants for categories to the domain
                     if (tree.getNodeType(node) == NodeType.SUBSTITUTION) {
@@ -471,7 +471,7 @@ public class FastCRISPConverter  {
                 
                 //System.out.println(actionName);
                 
-                String rootCategory = tree.getNodeLabel(tree.getRoot());
+                String rootCategory = tree.getNodeLabel(tree.getRoot()).toLowerCase();
                 
                 for ( int i = 1; i <= plansize; i++ ) { 
                     domain.addConstant("step" + i, "stepindex");
@@ -484,7 +484,7 @@ public class FastCRISPConverter  {
                     Map<String, String> I = new HashMap<String, String>();
                     int roleno = 1;
                     
-                    for ( String role : roles.get(treeRef)) {
+                    for ( String role : roles.get(entry.tree)) {
                         //System.out.println(role);                        
                         if ( role.equals("self") )   
                             n.put(role,"?u");
@@ -500,7 +500,7 @@ public class FastCRISPConverter  {
                     List<String> variableTypes = new ArrayList<String>();
                     variables.add(new Variable("?u"));
                     variableTypes.add("syntaxnode");
-                    for ( String role : roles.get(treeRef) ) {
+                    for ( String role : roles.get(entry.tree) ) {
                        variables.add(new Variable(I.get(n.get(role))));
                        variableTypes.add("individual");
                     }
@@ -568,7 +568,8 @@ public class FastCRISPConverter  {
                     
                     
                     // remove distractors
-                    if ( hasContent ) {
+                    
+                    /*if ( hasContent ) {
                         Variable distractorVar = new Variable("?y");
                         Substitution distractorSubst = new Substitution(new Variable("?x1"), distractorVar);
                         List<Term> distractorQuantifierVars = new ArrayList<Term>();
@@ -586,7 +587,7 @@ public class FastCRISPConverter  {
                         
                         effects.add(new Universal(distractorQuantifierVars, distractorQuantifierVarTypes,
                         new Conditional(distractorPrecondition, new Literal("distractor(?u,?y)", false))));
-                    }
+                    }*/
                     
                     // TODO
                     /* pragmatic effects
@@ -612,7 +613,7 @@ public class FastCRISPConverter  {
                         //System.out.println("    For substNode "+substNode);                            
                         //System.out.println(role+" "+roleN);
                         
-                        String cat = tree.getNodeLabel(substNode);
+                        String cat = tree.getNodeLabel(substNode).toLowerCase();
                         if (cat==null || cat.equals(""))                             
                             cat = "NONE";
                         
@@ -626,6 +627,7 @@ public class FastCRISPConverter  {
                         effects.add(new Literal("referent(" + roleN + ", " + I.get(roleN) + ")", true));
                         
                         //distractors
+                       
                         Variable distractorVar = new Variable("?y");
                         Substitution distractorSubst = new Substitution(new Variable(I.get(roleN)), distractorVar);
 
@@ -640,20 +642,21 @@ public class FastCRISPConverter  {
                         // for the distractors of this substitution node.  But it seems to be ok.
                         List<Formula> distractorPreconditions = new ArrayList<Formula>();
                         distractorPreconditions.add(new Literal("**equals**(?y," + I.get(roleN) + ")", false));
-                        
-                        /*
+                          /*
                         *for( String sr : entry.getSemReqs() ) {
                             *    Term term = distractorSubst.apply(substituteVariablesForRoles(TermParser.parse(sr), n, I));
                             *    domain.addPredicate(makeSemanticPredicate(term));
                             *    distractorPreconditions.add(new crisp.planningproblem.goal.Literal(term, true));
                         *}
                         */
-                        
+
+                        /*
                         Formula distractorPrecondition = new Conjunction(distractorPreconditions);
                         
                         effects.add(new Universal(distractorQuantifierVars, distractorQuantifierVarTypes,
                         new Conditional(distractorPrecondition, 
                                     new Literal("distractor(" + roleN + ",?y)", true))));
+                         */
                     }
                     
                     // internal nodes: allow adjunction
@@ -661,7 +664,7 @@ public class FastCRISPConverter  {
                         
                         String role = tree.getNodeDecoration(adjNode).toString();
                         String roleN = n.get(role);
-                        String cat = tree.getNodeLabel(adjNode);
+                        String cat = tree.getNodeLabel(adjNode).toLowerCase();
                         
                         if (cat.equals(""))                             
                             cat = "NONE";
@@ -813,10 +816,11 @@ public class FastCRISPConverter  {
     * @param treename
     * @return
     *
-    * private  String normalizeTreename(String treename) {
-        *   return treename.replace("i.", "init-").replace("a.", "aux-");
-    * }
     */
+    private  String normalizeTreename(String treename) {
+        return treename.replace("i.", "init-").replace("a.", "aux-");
+    }
+    
     
     /**
     * Translates a term into one in which the predicate symbol of the original

@@ -28,7 +28,8 @@ import java.util.List;
 import java.util.HashSet;
 
 /**
- *
+ * A pCRISP converter that uses lexicalized probabilities if available and backoffs to normalized
+ * unlexicalized tree model probabilities if necessary.
  * @author dbauer
  */
 public class BackoffModelProbCRISPConverter extends TreeModelProbCRISPConverter {

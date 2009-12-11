@@ -1,40 +1,80 @@
-\section{Experiences with FF}
+
+
+\section{Why FF off-the-shelf doesn't work, and how to fix it (partially)}
 \label{sec:crisp-ff}
+
+
+
+
+\subsection{Pre-Processing}
+\label{sec:crisp-ff:preprocess}
+
+
+
 
 
 Things that went wrong with FF:
 
 \begin{enumerate}
-\item Enforced hillclimbing: Initial state of example problem has a
-  relaxed graph of length one because ``expressed'' and ``subst''
-  goals are achieved, and newly introduced violations of ``subst'' and
-  ``distractor'' are not noticed. As a consequence, EHC on the second
-  state spends all of its time in breadth-first search.
+\item Tautology detection in reachability analysis: The old FF
+  performed a pairwise comparison of the ground literals in the
+  instantiated goal to remove tautologies and obvious contradictions.
+  In the sentence generation problems, the instantiated goal can
+  contain lots of literals, so this takes a long time.  FIX: Removing
+  the check helped a lot.  Another way to fix this problem would have
+  been to sort the list of ground literals appropriately and then only
+  compare neighboring literals.
+\item Unnecessary computation of hard action template data structure:
+  FF computed a big data structure that was only useful for hard
+  action templates, although the sentence generation planning problems
+  only contain easy action templates.  Because the universe can be
+  relatively big, this again wasted a lot of time. FIX: just add this
+  tuiny bit of intelligence to FF to not do the data structure if it
+  is not needed. .. interesting that no-one had this problem before.
+\end{enumerate}
+
+
+
+
+
+
+
+\subsection{Heuristics and Search}
+\label{sec:crisp-ff:preprocess:heuristics}
+
+
+
+
+
+
+\begin{enumerate}
 \item Goal agenda: For some reason that I don't understand in detail,
-  the goal agenda heuristic can choose that the ``subst'' goal must be
+  the goal agenda heuristic chooses that the ``subst'' goal must be
   reached before even the ``expressed'' goal. This leads the planner
   to generating some arbitrary sentence. Because the example grammar
   is so small, this leads to a state from which the ``expressed'' goal
   can no longer be achieved. (A realistic big grammar should be able
   to recover from this by introducing a conjunction or relative clause
   or some such -- but of course, this would still lead to a stupid
-  sentence.)
-\item No helpful actions in best-first search: After the initial
-  failure of the goal agenda, FF fell back to best-first search, but
-  didn't use the helpful actions heuristic in this search.
-\item Tautology detection in reachability analysis: The old FF
-  performed a pairwise comparison of the ground literals in the
-  instantiated goal to remove tautologies and obvious contradictions.
-  In the sentence generation problems, the instantiated goal can
-  contain lots of literals, so this takes a long time.  Removing the
-  check helped a lot.  Another way to fix this problem would have been
-  to sort the list of ground literals appropriately and then only
-  compare neighboring literals.
-\item Unnecessary computation of hard action template data structure:
-  FF computed a big data structure that was only useful for hard
-  action templates, although the sentence generation planning problems
-  only contain easy action templates.  Because the universe can be
-  relatively big, this again wasted a lot of time.
+  sentence.) FIX: turn goal agenda off. alternatively, develop
+  appropriate goal ordering techniques.
+\item Subst and distractor atoms have a weird lifecycle: They start as
+  false, then get made true at some point, and then false again.
+  After they have been made false, they can never become true
+  again. FIX: no fix just yet. highly non-trivial challenge to
+  generation of h fns. {\bf (QUESTION: does lama do better? do any of
+    the known admissible heuristics do better?)}
+\item As a consequence, Enforced hillclimbing: Initial state of
+  example problem has a relaxed graph of length one because
+  ``expressed'' and ``subst'' goals are achieved, and newly introduced
+  violations of ``subst'' and ``distractor'' are not noticed. As a
+  consequence, EHC on the second state spends all of its time in
+  breadth-first search. FIX: don't use EHC.
+\item The only thing that works well is helpful actions. However,
+  these didn't get around to be used due to no helpful actions in
+  best-first search: After failure of EHC, FF falls back to best-first
+  search, but doesn't use the helpful actions heuristic in this
+  search. FIX: simply go straight to BFS with helpful actions.
 \end{enumerate}
 
 
@@ -45,6 +85,11 @@ Other observations:
   false, then get made true at some point, and then false again.
   After they have been made false, they can never become true again.
 \end{enumerate}
+
+
+
+
+
 
 %%% Local Variables: 
 %%% mode: latex

@@ -1,7 +1,35 @@
 
 
-\section{Why FF off-the-shelf doesn't work, and how to fix it (partially)}
+
+
+
+\section{FF Pitfalls and Fixes}
 \label{sec:crisp-ff}
+
+
+
+
+It turns out that, as far as the suitability of commonly used
+pre-processing and search techniques are concerned, sentence
+generation diverges significantly from most known benchmark
+domains. We examine this here, in detail, for the case of FF
+\cite{HoffmannNebel01}. We show how certain hitherto irrelevant
+details of the pre-processing suddenly become deadly obstacles to
+performance, and how certain widely used search techniques -- namely
+goal orderings and the relaxed plan heuristic -- are completely off
+the mark and partly even detrimental. For some of the observed
+pitfalls, we are able to provide simple fixes; others pose serious
+challenges to planning research. We focus first on the pre-processing,
+then on the search techniques.
+
+
+
+
+
+
+
+
+
 
 
 
@@ -13,78 +41,205 @@
 
 
 
-Things that went wrong with FF:
 
-\begin{enumerate}
-\item Tautology detection in reachability analysis: The old FF
-  performed a pairwise comparison of the ground literals in the
-  instantiated goal to remove tautologies and obvious contradictions.
-  In the sentence generation problems, the instantiated goal can
-  contain lots of literals, so this takes a long time.  FIX: Removing
-  the check helped a lot.  Another way to fix this problem would have
-  been to sort the list of ground literals appropriately and then only
-  compare neighboring literals.
-\item Unnecessary computation of hard action template data structure:
-  FF computed a big data structure that was only useful for hard
-  action templates, although the sentence generation planning problems
-  only contain easy action templates.  Because the universe can be
-  relatively big, this again wasted a lot of time. FIX: just add this
-  tuiny bit of intelligence to FF to not do the data structure if it
-  is not needed. .. interesting that no-one had this problem before.
-\end{enumerate}
+
+FF's pre-process contains two details that, for a long time until they
+were detected, were so detrimental in our domain that we were not able
+to seriously propose FF as a practical solution. Simple fixes to these
+details are so effective that FF is now a practical (if not perfect)
+possibility.
 
 
 
+First, while pre-processing the ADL formulas, FF has a sub-routine
+that checks the instantiated formulas -- quantifiers already compiled
+into grounded conjunctions and disjunctions -- for tautologies. This
+involves a loop checking all pairs of sub-formulas within every
+conjunction and disjunction, testing whether they are
+identical/identical modulo their sign. For example, if we find $\phi$
+and $\neg \phi$ within a disjunction, then the disjunction is replaced
+by TRUE. Now, we haven't tested thoroughly whether this sub-routine
+has any notable effect on the formulas in other benchmarks. It
+certainly has no such effect in our domain. The effect it {\em does}
+have is take a huge amount of runtime on the long conjunctions that
+characterize {\bf \dots} For example {\bf \dots before/after}.
+
+
+
+Second, FF's pre-process contains a very small imprudence that
+apparently didn't surface in other domains, but that does in ours. FF
+distinguishes operators into ``easy'' (DNF precondition) and ``hard''
+(non-DNF precondition). The easy ones are instantiated in a
+spezialized very effectively implemented procedure, while the hard
+ones go through a much less effectively implemented more general
+procedure. In particular, that latter procedure uses a data structure
+encompassing an integer for every possible instantiation of all
+predicates. Since this does not take into account reachability, it is
+prohibitively huge in our domain. Now, there actually are no hard
+operators in our domain. But FF builds the data structure anyway, even
+though it is not needed. For example {\bf \dots before/after.}
 
 
 
 
-\subsection{Heuristics and Search}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Search Techniques}
 \label{sec:crisp-ff:preprocess:heuristics}
 
 
 
 
 
-
-\begin{enumerate}
-\item Goal agenda: For some reason that I don't understand in detail,
-  the goal agenda heuristic chooses that the ``subst'' goal must be
-  reached before even the ``expressed'' goal. This leads the planner
-  to generating some arbitrary sentence. Because the example grammar
-  is so small, this leads to a state from which the ``expressed'' goal
-  can no longer be achieved. (A realistic big grammar should be able
-  to recover from this by introducing a conjunction or relative clause
-  or some such -- but of course, this would still lead to a stupid
-  sentence.) FIX: turn goal agenda off. alternatively, develop
-  appropriate goal ordering techniques.
-\item Subst and distractor atoms have a weird lifecycle: They start as
-  false, then get made true at some point, and then false again.
-  After they have been made false, they can never become true
-  again. FIX: no fix just yet. highly non-trivial challenge to
-  generation of h fns. {\bf (QUESTION: does lama do better? do any of
-    the known admissible heuristics do better?)}
-\item As a consequence, Enforced hillclimbing: Initial state of
-  example problem has a relaxed graph of length one because
-  ``expressed'' and ``subst'' goals are achieved, and newly introduced
-  violations of ``subst'' and ``distractor'' are not noticed. As a
-  consequence, EHC on the second state spends all of its time in
-  breadth-first search. FIX: don't use EHC.
-\item The only thing that works well is helpful actions. However,
-  these didn't get around to be used due to no helpful actions in
-  best-first search: After failure of EHC, FF falls back to best-first
-  search, but doesn't use the helpful actions heuristic in this
-  search. FIX: simply go straight to BFS with helpful actions.
-\end{enumerate}
+FF's pre-processing pitfalls -- and the fact that they didn't occur to
+anyone before -- are certainly baffling, although easily fixed. We now
+turn our attention to some of FF's search techniques, variations of
+which are used in many planners and which are very much not easily
+fixed.
 
 
-Other observations:
+%\item Goal agenda: For some reason that I don't understand in detail,
+%  the goal agenda heuristic chooses that the ``subst'' goal must be
+%  reached before even the ``expressed'' goal. This leads the planner
+%  to generating some arbitrary sentence. Because the example grammar
+%  is so small, this leads to a state from which the ``expressed'' goal
+%  can no longer be achieved. (A realistic big grammar should be able
+%  to recover from this by introducing a conjunction or relative clause
+%  or some such -- but of course, this would still lead to a stupid
+%  sentence.) FIX: turn goal agenda off. alternatively, develop
+%  appropriate goal ordering techniques.
 
-\begin{enumerate}
-\item Subst and distractor atoms have a weird lifecycle: They start as
-  false, then get made true at some point, and then false again.
-  After they have been made false, they can never become true again.
-\end{enumerate}
+
+First, we consider Koehler and Hoffmann's
+\shortcite{koehler:hoffmann:jair-00} ``reasonable goal orderings'',
+variants and extensions of which are used in several planning systems
+today, e.g.\ \cite{hoffmann:etal:jair-04,richter:etal:aaai-08}. FF as
+used in the 2000 competition implements the ideas from
+\cite{koehler:hoffmann:jair-00}, approximating reasonable orders as a
+pre-process and then partitioning the goal set into a {\em goal
+  agenda}, a sequence of goal subsets. Each subset is posed to the
+planner in isolation, ignoring all other goals. The final plan is the
+concatenation of the plans for all entries.
+
+While the goal agenda and related techniques have proved quite useful
+in many domains, in the sentence generation domain they are completely
+off-target. Reasonable orders exist {\bf \dots explain using the
+  example dedicated to this point how we get to have only the
+  ``subst'' goal in the first entry \dots} When achieving this first
+goal agenda entry, the planner decides to generate {\em any}
+sentence. If it happens to be the wrong sentence, the planner is stuck
+in a dead-end. While that dead end is recognized by the relaxed plan
+heuristic -- i.e., it is easy to see that the actions needed for
+achieving the goal cannot be applied anymore -- certainly this is an
+entirely unintended (and a bit amusing) outcome of this
+technique. Switching it off, we {\bf \dots example before/after.}
+
+{\bf \dots pose as a challenge \dots if sensible based on example
+  observations, speculate a bit how/whether goal ordering techniques
+  could be modified to work}
+
+
+
+
+
+
+
+
+
+%\item Subst and distractor atoms have a weird lifecycle: They start as
+%  false, then get made true at some point, and then false again.
+%  After they have been made false, they can never become true
+%  again. FIX: no fix just yet. highly non-trivial challenge to
+%  generation of h fns. {\bf (QUESTION: does lama do better? do any of
+%    the known admissible heuristics do better?)}
+
+
+While the goal agenda meltdown may be more amusing than alarming, we
+next report that the relaxed plan heuristic is not far from such a
+meltdown either. They are fatally confused by the weird lifecycle of
+the ``subst'' and ``distractor'' atoms: in valid plans, these start
+off being false, then they get made true at some point, and then they
+are made false again in order to achieve the goal. In other words,
+from the perspective of the relaxed plan heuristic, from one state to
+the next whole classes of goals suddenly appear ``out of the
+blue''. These goals are not accounted for in the preceding state, and
+hence the relaxed plan is completely un-informative.
+
+
+To give just one concrete example, say we are in the initial state,
+and have not yet committed to a sentence. The relaxed plan has length
+$1$ because the we only need to choose a sentence communicating the
+desired meaning. However, in the state $s$ resulting from this action,
+the mechanisms of the planning task introduce all the sub-goals that
+are required in order to pin-point that meaning (in particular we get
+a new goal for all the distractors that must be removed). Hence the
+relaxed plan is much longer than before -- arbitrarily longer, in
+general. For FF's particular search algorithm, this means that {\em
+  enforced hill-climbing turns into a breadth-first search}: it starts
+at $h$ value $1$ and thereafter needs to solve the whole problem in
+order to find a (goal) state with lower $h$ value.
+
+
+%\item As a consequence, Enforced hillclimbing: Initial state of
+%  example problem has a relaxed graph of length one because
+%  ``expressed'' and ``subst'' goals are achieved, and newly introduced
+%  violations of ``subst'' and ``distractor'' are not noticed. As a
+%  consequence, EHC on the second state spends all of its time in
+%  breadth-first search. FIX: don't use EHC.
+
+
+More generally, from this example we immediately see that, in the
+terms of Hoffmann \shortcite{hoffmann:jair-05}, the exit distance from
+local minima under $h^+$ is unbounded. Also, we have unrecognized
+dead-ends, i.e., dead-end states that have a relaxed plan. An example
+is the initial state of a task that features distractors for which
+there is no means of removal -- ignoring the distractors, the initial
+$h$ value will still be $1$. So our domain is in the most difficult
+class of Hoffmann's \shortcite{hoffmann:jair-05} ``plannin domain
+taxonomy''. While it shares this property with several other
+challenging domains, the extremity of turning enforced hill-climbing
+into a breadth-first search is unheard of.
+
+
+
+{\bf \dots pose as a challenge \dots if sensible based on example
+  observations, speculate a bit how/whether heuristics could be
+  modified to work \dots a question that we should ideally at least
+  partially answer in here is whether other existing heuristics
+  actually work better.. we could try at least a little bit with PDBs,
+  merge\&shrink, etc}
+
+
+
+The only FF technique that appears to work reasonably well is its
+action pruning technique, the ``helpful actions''. While the relaxed
+plan is often much too short, it appears to always contain at least
+one of the actions that actually are useful, and it certainly prunes
+the set of avaibale actions quite effectively. {\bf \dots now
+  something on example and BFS with helpful actions vs. without \dots}
+
+
+
+
+%\item The only thing that works well is helpful actions. However,
+%  these didn't get around to be used due to no helpful actions in
+%  best-first search: After failure of EHC, FF falls back to best-first
+%  search, but doesn't use the helpful actions heuristic in this
+%  search. FIX: simply go straight to BFS with helpful actions.
+
+
 
 
 

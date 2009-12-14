@@ -13,7 +13,6 @@ import crisp.planningproblem.codec.OutputCodec;
 
 
 import crisp.pddl.PddlParser;
-import crisp.planner.lazyff.CostRelaxedGraphplanEvaluator;
 import crisp.planner.lazyff.FindAllBFS;
 import crisp.planner.lazyff.GoalStateCondition;
 import crisp.planner.lazyff.HelpfulActionFinder;
@@ -85,7 +84,7 @@ public class LazyFfInterface implements PlannerInterface {
     private long totalTime;
     private boolean timedOut;
 
-    LazyFfInterface() {
+    public LazyFfInterface() {
 
         preprocessingTime = 0;
         searchTime = 0;
@@ -151,7 +150,7 @@ public class LazyFfInterface implements PlannerInterface {
         System.out.println(preprocessingTime + "ms.");
         System.out.println("Search...");
 
-        RelaxedGraphplanEvaluator eval = new CostRelaxedGraphplanEvaluator(gpp);
+        RelaxedGraphplanEvaluator eval = new RelaxedGraphplanEvaluator(gpp);
         Search search = new BestFirstSearch(gpp, new HelpfulActionFinder(eval), eval);
 
         //StateEvaluator eval = new SimpleCostEvaluator(gpp);
@@ -244,7 +243,7 @@ public class LazyFfInterface implements PlannerInterface {
         System.out.println(preprocessingTime + "ms.");
         System.out.println("Search...");
 
-        RelaxedGraphplanEvaluator eval = new CostRelaxedGraphplanEvaluator(gpp);
+        RelaxedGraphplanEvaluator eval = new RelaxedGraphplanEvaluator(gpp);
         FindAllBFS search = new FindAllBFS(gpp, new HelpfulActionFinder(eval), eval);
         search.search(new State(gpp), new GoalStateCondition(gpp));
 

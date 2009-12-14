@@ -1,6 +1,6 @@
 package crisp.result;
 
-import crisp.planner.lazygp.ActionInstance;
+import crisp.planningproblem.Action;
 
 /**
  * Represents a substitution branch in the derivation tree.
@@ -40,7 +40,7 @@ public class SubstitutionDerivationNode extends DerivationNode {
 	 * 
 	 * @param tree
 	 */
-	public void makeSubstitution(InitialTree tree, ActionInstance action) {
+	public void makeSubstitution(InitialTree tree, Action action) {
 		if (isOpenSubstitutionSite()) {
 			this.tree = tree;
 		}

@@ -40,6 +40,8 @@ import de.saar.chorus.term.Term;
 import de.saar.chorus.term.Variable;
 import de.saar.chorus.term.parser.TermParser;
 import de.saar.penguin.tag.grammar.Constraint;
+import de.saar.penguin.tag.grammar.CrispGrammar;
+import de.saar.penguin.tag.grammar.CrispLexiconEntry;
 import de.saar.penguin.tag.grammar.ElementaryTree;
 import de.saar.penguin.tag.grammar.ElementaryTreeType;
 import de.saar.penguin.tag.grammar.Grammar;
@@ -182,7 +184,8 @@ public class CurrentNextCrispConverter  {
                     types.add("individual");
                 }
                 domain.addPredicate(compoundTerm.getLabel(), types);
-                addIndividualConstants(term,domain);
+                //addIndividualConstants(term,domain);
+                addObjectsToProblem(term,problem);
 
                 problem.addToInitialState(term);
                 trueAtoms.add(term);
@@ -225,6 +228,7 @@ public class CurrentNextCrispConverter  {
         }
 
 
+        @Override
         public void characters(char[] ch, int start, int length)
         throws SAXException {
 
@@ -270,8 +274,8 @@ public class CurrentNextCrispConverter  {
         new Literal("subst(?a,?u)", false));
 
         // no positive "distractor" literals in the goal state
-        //Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
-        //new crisp.planningproblem.goal.Literal("distractor(?u,?x)", false));
+        Formula noDistractors = new Universal(tlNodeIndiv, tlNodeIndivTypes,
+        new Literal("distractor(?u,?x)", false));
 
         // no positive "mustadjoin" literals in the goal state
         //   this is only added if there is an action that creates a mustadjoin constraint
@@ -284,7 +288,7 @@ public class CurrentNextCrispConverter  {
         //}
 
         finalStateGoals.add(noSubst);
-        //finalStateGoals.add(noDistractors);
+        finalStateGoals.add(noDistractors);
 
         // no positive needtoexpress-* literals, for any arity used in the communicative
         // goals. If we would just do this for all arities the LAMA planner cannot handle
@@ -396,7 +400,7 @@ public class CurrentNextCrispConverter  {
         domain.addPredicate("canadjoin",adjoinTypeList);
         domain.addPredicate("mustadjoin",adjoinTypeList);
 
-        domain.addConstant("root", "syntaxnode");
+        problem.addObject("root", "syntaxnode");
     }
 
 
@@ -406,7 +410,7 @@ public class CurrentNextCrispConverter  {
     *
     * @param grammar The grammar from which actions are generated
     */
-    private  void computeDomain(Domain domain, Problem problem, Grammar<Term> grammar) {
+    private  void computeDomain(Domain domain, Problem problem, CrispGrammar grammar) {
         Map<String,HashSet<String>> roles = new HashMap<String, HashSet<String>>();
 
         // for each tree in the grammar
@@ -434,7 +438,7 @@ public class CurrentNextCrispConverter  {
         // Add syntaxnode literals
 
         String lastSyntaxNode = "n1";
-        domain.addConstant(lastSyntaxNode, "syntaxnode");
+        problem.addObject(lastSyntaxNode, "syntaxnode");
 
         List<Term> currentSubterms = new ArrayList<Term>();
         currentSubterms.add(new Constant(lastSyntaxNode));
@@ -443,7 +447,7 @@ public class CurrentNextCrispConverter  {
         String newSyntaxNode;
         for (int i = 2; i <= plansize; i++) {
             newSyntaxNode = "n" + i;
-            domain.addConstant(newSyntaxNode, "syntaxnode");
+            problem.addObject(newSyntaxNode, "syntaxnode");
 
             if (lastSyntaxNode != null) {
                 List<Term> subterms = new ArrayList<Term>();
@@ -454,17 +458,14 @@ public class CurrentNextCrispConverter  {
             lastSyntaxNode = newSyntaxNode;
 
         }
-
-
-        //System.out.println(roles);
-
+        
         // compute actions from lexical entries
         for (String word : grammar.getAllWords())  {
             //System.out.println("\n" + word + ":");
 
-            Collection<LexiconEntry> entries = grammar.getLexiconEntries(word);
+            Collection<CrispLexiconEntry> entries = grammar.getCrispLexiconEntries(word);
             //System.out.println(entries.size());
-            for (LexiconEntry entry: entries){
+            for (CrispLexiconEntry entry: entries){
                 // Get the tree for this lexical entry from the hash map
                 String treeRef = normalizeTreename(entry.tree);
                 ElementaryTree<Term> tree = grammar.getTree(entry.tree);
@@ -635,25 +636,29 @@ public class CurrentNextCrispConverter  {
 
                     // remove distractors
 
-                    /*if ( hasContent ) {
+                    if ( hasContent ) {
                         Variable distractorVar = new Variable("?y");
-                        Substitution distractorSubst = new Substitution(new Variable("?x1"), distractorVar);
+                        Substitution distractorSubst = new Substitution(new Variable("?x"), distractorVar);
                         List<Term> distractorQuantifierVars = new ArrayList<Term>();
                         List<String> distractorQuantifierVarTypes = new ArrayList<String>();
-
                         distractorQuantifierVars.add(distractorVar);
                         distractorQuantifierVarTypes.add("individual");
 
                         List<Formula> literals = new ArrayList<Formula>();
-                        for ( Term t: contentWithVariables )
-                           literals.add(new Literal((Compound) distractorSubst.apply(t), true));
+                        for ( Term t: contentWithVariables ) {
+                           System.out.println(t);
+                           Literal l = new Literal((Compound) distractorSubst.apply(t), true);
+                           System.out.println(l);
+                           literals.add(l);
+                        }
 
+                        System.out.println("LITERALS:" +literals);
                         Formula distractorPrecondition =
-                        new Negation(new Conjunction(literals));
+                            new Negation(new Conjunction(literals));
 
                         effects.add(new Universal(distractorQuantifierVars, distractorQuantifierVarTypes,
                         new Conditional(distractorPrecondition, new Literal("distractor(?u,?y)", false))));
-                    }*/
+                    }
 
                     // TODO
                     /* pragmatic effects
@@ -690,7 +695,7 @@ public class CurrentNextCrispConverter  {
                         effects.add(new Literal("referent(" + roleN + ", " + I.get(roleN) + ")", true));
 
                         //distractors
-
+                        if (hasContent) {
                         Variable distractorVar = new Variable("?y");
                         Substitution distractorSubst = new Substitution(new Variable(I.get(roleN)), distractorVar);
 
@@ -705,21 +710,27 @@ public class CurrentNextCrispConverter  {
                         // for the distractors of this substitution node.  But it seems to be ok.
                         List<Formula> distractorPreconditions = new ArrayList<Formula>();
                         distractorPreconditions.add(new Literal("**equals**(?y," + I.get(roleN) + ")", false));
-                          /*
-                        *for( String sr : entry.getSemReqs() ) {
-                            *    Term term = distractorSubst.apply(substituteVariablesForRoles(TermParser.parse(sr), n, I));
-                            *    domain.addPredicate(makeSemanticPredicate(term));
-                            *    distractorPreconditions.add(new crisp.planningproblem.goal.Literal(term, true));
-                        *}
-                        */
+                         
+                        for( Term sr : entry.getSemanticRequirements()) {
+                                Term term = distractorSubst.apply(substituteVariablesForRoles(sr, n, I));
+                                distractorPreconditions.add(new Literal((Compound) term, true));
 
-                        /*
+                                Compound distractorPredicate = makeSemanticPredicate(term);
+                                List<String> distractorPredicateTypes = new ArrayList<String>();
+                                for (int j=0; j<distractorPredicate.getSubterms().size(); j++){
+                                    distractorPredicateTypes.add("individual");
+                                }
+
+                                domain.addPredicate(distractorPredicate.getLabel(), distractorPredicateTypes);
+                                
+                        }
+                                                
                         Formula distractorPrecondition = new Conjunction(distractorPreconditions);
 
                         effects.add(new Universal(distractorQuantifierVars, distractorQuantifierVarTypes,
                         new Conditional(distractorPrecondition,
                                     new Literal("distractor(" + roleN + ",?y)", true))));
-                         */
+                        }
                     }
 
                     // internal nodes: allow adjunction
@@ -776,7 +787,7 @@ public class CurrentNextCrispConverter  {
     * @param domain reference to an empty planning domain, will be completed by convert.
     * @param problem reference to an empty planning problem, will be completed by convert
     */
-    public  void convert(Grammar<Term> grammar, Reader problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException {
+    public  void convert(CrispGrammar grammar, Reader problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException {
 
         //initialize domain
         setupDomain(domain, problem);
@@ -791,8 +802,8 @@ public class CurrentNextCrispConverter  {
             SAXParser parser = factory.newSAXParser();
             parser.parse(new InputSource(problemfile), handler);
 
-            Grammar<Term> filteredGrammar = new GrammarFilterer<Term>().filter(grammar, new SemanticsPredicateListFilter(handler.predicatesInWorld) );
-            computeDomain(domain, problem, filteredGrammar);
+            //CrispGrammar filteredGrammar = (CrispGrammar) new GrammarFilterer<Term>().filter(grammar, new SemanticsPredicateListFilter(handler.predicatesInWorld) );
+            computeDomain(domain, problem, grammar);
             computeGoal(domain, problem);
 
         } catch (ParserConfigurationException e){
@@ -801,7 +812,7 @@ public class CurrentNextCrispConverter  {
 
     }
 
-    public  void convert(Grammar<Term> grammar, File problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException {
+    public  void convert(CrispGrammar grammar, File problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException {
         convert(grammar, new FileReader(problemfile), domain, problem);
 
     }
@@ -892,6 +903,23 @@ public class CurrentNextCrispConverter  {
             domain.addConstant(((Constant) term).getName(), "individual");
         }
     }
+
+   /**
+    * Adds all constants that occur as arguments of the term to the problem.
+    *
+    * @param term
+    * @param problem
+    */
+    private  void addObjectsToProblem(Term term, Problem problem) {
+        if( term instanceof Compound ) {
+            for( Term sub : ((Compound) term).getSubterms() ) {
+                addObjectsToProblem(sub, problem);
+            }
+        } else if( term instanceof Constant ) {
+            problem.addObject(((Constant) term).getName(), "individual");
+        }
+    }
+
 
    /**
     * Translates a Term into a Predicate.  This method assumes that the argument

@@ -21,7 +21,9 @@
   </tree>
 
   <tree id="i.N">
+    <node cat="N" sem="self">
     <leaf cat="N" type="anchor" sem="self" />
+    </node>
   </tree>
 
   <tree id="a.An">

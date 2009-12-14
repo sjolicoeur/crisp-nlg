@@ -431,8 +431,6 @@ public class CurrentNextCrispConverter  {
             }
             roles.put(treeName, localRoles);
 
-
-
         }
 
         // Add syntaxnode literals
@@ -623,6 +621,26 @@ public class CurrentNextCrispConverter  {
                         domain.addConstant(renamePredicate(semContCompound.getLabel()), "predicate");
                     
                     }
+
+                    // Add semantic requirements to preconditions
+                    for (Term semReqTerm : entry.getSemanticRequirements()) {                       
+                        Compound termWithVariables = (Compound) substituteVariablesForRoles(semReqTerm, n, I);
+                        goals.add(new Literal(termWithVariables, true));
+                    }
+                    /*
+                    // Add pragmatic preconditions
+                    for (Term pragPrecondTerm : entry.getPragmaticPreconditions()) {
+                        Compound termWithVariables = (Compound) substituteVariablesForRoles(pragPrecondTerm, n, I);
+                        goals.add(new Literal(termWithVariables, true));
+                    }
+
+                    // Add pragmatic effects
+                    for (Term pragEffectTerm : entry.getPragmaticEffects()) {
+                        Compound termWithVariables = (Compound) substituteVariablesForRoles(pragEffectTerm, n, I);
+                        effects.add(new Literal(termWithVariables, true));
+                    }
+                    */
+
                     // TODO
                     // pragmatic requirements must be satisfied
                     // (for now, this is handled exactly like the semantic content)
@@ -635,7 +653,6 @@ public class CurrentNextCrispConverter  {
 
 
                     // remove distractors
-
                     if ( hasContent ) {
                         Variable distractorVar = new Variable("?y");
                         Substitution distractorSubst = new Substitution(new Variable("?x"), distractorVar);

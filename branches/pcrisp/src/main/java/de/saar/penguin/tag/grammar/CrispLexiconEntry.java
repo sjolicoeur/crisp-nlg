@@ -13,12 +13,14 @@ import java.util.Map;
 public class CrispLexiconEntry extends LexiconEntry {
 
     private List<Term> semanticRequirements;
-    private List<Term> pragmaticConditions;
+    private List<Term> pragmaticPreconditions;
     private List<Term> pragmaticEffects;
 
     public CrispLexiconEntry(String word, String tree, Map<String, String> auxLexicalItems, List<Term> semantics) {
 	super(word,tree,auxLexicalItems, semantics);
         semanticRequirements = new ArrayList();
+        pragmaticPreconditions = new ArrayList();
+        pragmaticEffects = new ArrayList();
     }
 
     public void addSemanticRequirements(List<Term> requirements){
@@ -30,11 +32,11 @@ public class CrispLexiconEntry extends LexiconEntry {
     }
 
     public void addPragmaticPreconditions(List<Term> requirements){
-        pragmaticConditions.addAll(requirements);
+        pragmaticPreconditions.addAll(requirements);
     }
 
     public List<Term> getPragmaticPreconditions(){
-        return pragmaticConditions;
+        return pragmaticPreconditions;
     }
 
     public void addPragmaticEffects(List<Term> requirements){

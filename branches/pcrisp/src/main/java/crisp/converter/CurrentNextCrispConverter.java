@@ -627,7 +627,7 @@ public class CurrentNextCrispConverter  {
                         Compound termWithVariables = (Compound) substituteVariablesForRoles(semReqTerm, n, I);
                         goals.add(new Literal(termWithVariables, true));
                     }
-                    /*
+                    
                     // Add pragmatic preconditions
                     for (Term pragPrecondTerm : entry.getPragmaticPreconditions()) {
                         Compound termWithVariables = (Compound) substituteVariablesForRoles(pragPrecondTerm, n, I);
@@ -639,7 +639,7 @@ public class CurrentNextCrispConverter  {
                         Compound termWithVariables = (Compound) substituteVariablesForRoles(pragEffectTerm, n, I);
                         effects.add(new Literal(termWithVariables, true));
                     }
-                    */
+                    
 
                     // TODO
                     // pragmatic requirements must be satisfied

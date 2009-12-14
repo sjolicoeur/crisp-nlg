@@ -109,8 +109,8 @@ public class SituatedCrispXmlInputCodec implements InputCodec<Term> {
 				if( withinEntry ) {
                                     CrispLexiconEntry newEntry = new CrispLexiconEntry(currentLexWord, currentLexTree, currentAux, currentSem);
                                     newEntry.addSemanticRequirements(currentSemReq);
-                                    //newEntry.addPragmaticPreconditions(currentPragCond);
-                                    //newEntry.addPragmaticEffects(currentPragEff);
+                                    newEntry.addPragmaticPreconditions(currentPragCond);
+                                    newEntry.addPragmaticEffects(currentPragEff);
                                     grammar.addLexiconEntry(newEntry);
 				}
 			} else if( name.equals("entry")) {

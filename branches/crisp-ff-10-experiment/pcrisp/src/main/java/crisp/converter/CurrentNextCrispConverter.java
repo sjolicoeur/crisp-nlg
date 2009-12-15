@@ -662,14 +662,11 @@ public class CurrentNextCrispConverter  {
                         distractorQuantifierVarTypes.add("individual");
 
                         List<Formula> literals = new ArrayList<Formula>();
-                        for ( Term t: contentWithVariables ) {
-                           System.out.println(t);
-                           Literal l = new Literal((Compound) distractorSubst.apply(t), true);
-                           System.out.println(l);
+                        for ( Term t: contentWithVariables ) {                           
+                           Literal l = new Literal((Compound) distractorSubst.apply(t), true);                           
                            literals.add(l);
                         }
-
-                        System.out.println("LITERALS:" +literals);
+                        
                         Formula distractorPrecondition =
                             new Negation(new Conjunction(literals));
 

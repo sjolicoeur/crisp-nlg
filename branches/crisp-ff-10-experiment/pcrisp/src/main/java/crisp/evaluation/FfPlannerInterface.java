@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 
 public class FfPlannerInterface implements PlannerInterface {
     
-    public static final String FF_BIN = "./new-ff-mac";
+    public static final String FF_BIN = "/proj/penguin/planners/FF-v2.3/new-ff-mac";
        
     public static final String TEMPDOMAIN_FILE = "/tmp/tmpdomain.lisp";
     public static final String TEMPPROBLEM_FILE = "/tmp/tmpproblem.lisp";
@@ -77,17 +77,10 @@ public class FfPlannerInterface implements PlannerInterface {
         StringWriter str = new StringWriter();
         char[] buffer = new char[100];
         while (resultReader.read(buffer)!=-1)
-            str.write(buffer);
-                                  
-            List<Term> plan = parsePlan(str.toString());
-            System.out.println("FOO");
-            System.out.println(plan.size());
-
-            System.out.println(domain.getActions());
-            return plan;
-        
-                                                                                           
-    
+        str.write(buffer);                                  
+        List<Term> plan = parsePlan(str.toString());
+          
+        return plan;                                                                                                       
     }
 
 
@@ -98,7 +91,6 @@ public class FfPlannerInterface implements PlannerInterface {
         if( !m.matches() ) {
             return null;
         } else {
-            System.out.println(m.group(1));
             try {
                 FfPlanParser parser = new FfPlanParser(new StringReader(m.group(1)));
                 List<Term> ret = parser.plan();

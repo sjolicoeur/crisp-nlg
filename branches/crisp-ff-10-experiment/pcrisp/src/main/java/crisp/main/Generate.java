@@ -1,8 +1,10 @@
 package crisp.main;
 
+import crisp.converter.CurrentNextCrispConverter;
 import java.util.List;
 
 import crisp.converter.FastCRISPConverter;
+import crisp.evaluation.FfPlannerInterface;
 import crisp.evaluation.LazyFfInterface;
 import crisp.planner.lazyff.Planner;
 import crisp.planningproblem.Domain;
@@ -14,6 +16,8 @@ import de.saar.penguin.tag.codec.CrispXmlInputCodec;
 
 import de.saar.chorus.term.Term; 
 
+import de.saar.penguin.tag.grammar.CrispGrammar;
+import de.saar.penguin.tag.grammar.SituatedCrispXmlInputCodec;
 import java.io.File;
 import java.io.FileReader;
 
@@ -28,14 +32,14 @@ public class Generate {
 		/*** read CRISP problem specification and convert it to PDDL domain/problem ***/
 		long start = System.currentTimeMillis();		
                 
-        CrispXmlInputCodec codec = new CrispXmlInputCodec();
-		Grammar<Term> grammar = new Grammar<Term>();	
+                SituatedCrispXmlInputCodec codec = new SituatedCrispXmlInputCodec();
+		CrispGrammar grammar = new CrispGrammar();
 		codec.parse(new FileReader(new File(args[0])), grammar);         
-        System.out.println("Grammar parsed in "+ (System.currentTimeMillis()-start) + "ms .");
+                System.out.println("Grammar parsed in "+ (System.currentTimeMillis()-start) + "ms .");
         
-        File problemfile = new File(args[1]);
+                File problemfile = new File(args[1]);
         
-		new FastCRISPConverter().convert(grammar, problemfile, domain, problem);
+		new CurrentNextCrispConverter().convert(grammar, problemfile, domain, problem);
         
 		long end = System.currentTimeMillis();
 
@@ -45,9 +49,9 @@ public class Generate {
 
 		/*** run the planner ***/
 
-		problem.addEqualityLiterals();
+		//problem.addEqualityLiterals();
 
-                LazyFfInterface planner = new LazyFfInterface();
+                FfPlannerInterface planner = new FfPlannerInterface();
                 List<Term> plan = planner.runPlanner(domain, problem);
 
 		

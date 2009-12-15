@@ -1,94 +1,93 @@
 package crisp.main;
 
-import java.util.List;
-
-import crisp.converter.FastCRISPConverter;
-import crisp.planner.lazygp.Plan;
-import crisp.planner.lazygp.Planner;
+import crisp.converter.CurrentNextCrispConverter;
+import crisp.planner.external.FfPlannerInterface;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
-import crisp.planningproblem.codec.PddlOutputCodec;
-import crisp.result.CrispDerivationTreeBuilder;
-import crisp.result.DerivationTreeBuilder;
 import de.saar.chorus.term.Term;
-import de.saar.penguin.tag.codec.CrispXmlInputCodec;
-import de.saar.penguin.tag.derivation.DerivedTree;
-import de.saar.penguin.tag.derivation.DerivationTree;
-import de.saar.penguin.tag.grammar.Grammar;
+import de.saar.penguin.tag.codec.ParserException;
+import de.saar.penguin.tag.grammar.CrispGrammar;
+import de.saar.penguin.tag.grammar.SituatedCrispXmlInputCodec;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
+import java.util.Properties;
+import javax.xml.parsers.ParserConfigurationException;
 
-/**
- * This is Mark Wilding's version of Generate. This alternative front-end
- * extends the original project to allow the final sentence to be
- * output, rather than just a plan. This is done using classes in
- * the package crisp.sentence.
- *
- * @author Mark Wilding
- *
- */
-public class GenerateSentence {
+
+public class GenerateSentence {       
+
+        public static void usage(){
+                    System.out.println("crisp.main.GenerateSentence [grammar file] [problem file]");
+        }
+
 	public static void main(String[] args) throws Exception {
-		/*
-		 * First we do the same as Generate, calling the planner to
-		 * plan our sentence.
-		 */
-		Domain domain = new Domain();
-		Problem problem = new Problem();		
 
-                long start = System.currentTimeMillis();
-                CrispXmlInputCodec codec = new CrispXmlInputCodec();
-		Grammar<Term> grammar = new Grammar<Term>();
-		codec.parse(new FileReader(new File(args[0])), grammar);
-        System.out.println("Grammar parsed in "+ (System.currentTimeMillis()-start) + "ms .");
+        Properties crispProps = new Properties();
+        crispProps.load(new FileReader(new File(Generate.PROPERTIES_FILE)));
 
-            File problemFile = new File(args[1]);
+        if (args.length != 2) {
+            System.err.println("Wrong number of arguments.");
+            usage();
+            System.exit(1);
+        }
 
-		/*** read CRISP problem specification and convert it to PDDL domain/problem ***/
-		start = System.currentTimeMillis();
-		new FastCRISPConverter().convert(grammar, problemFile, domain, problem);
-		long end = System.currentTimeMillis();
+         Domain domain = new Domain();
+        Problem problem = new Problem();
 
-		new PddlOutputCodec().writeToDisk(domain, problem, "./", domain.getName());
+        /// read CRISP problem specification and convert it to PDDL domain/problem
+        long start = System.currentTimeMillis();
 
-		/*** run the planner ***/
+        SituatedCrispXmlInputCodec codec = new SituatedCrispXmlInputCodec();
+        CrispGrammar grammar = new CrispGrammar();
+        try {
+            codec.parse(new FileReader(new File(args[0])), grammar);
+        } catch (ParserException ex) {
+            System.err.println("Could not parse grammar File. Exiting.");
+            System.exit(1);
+        } catch (IOException ex) {
+            System.err.println("Could not read grammar File " + args[0] + ". Exiting.");
+            System.exit(1);
+        }
+        System.out.println("Grammar parsed in " + (System.currentTimeMillis() - start) + "ms .");
 
-        problem.addEqualityLiterals();
+        File problemfile = new File(args[1]);
+        try {
+            new CurrentNextCrispConverter().convert(grammar, problemfile, domain, problem);
+        } catch (ParserConfigurationException ex) {
+            System.err.println("Error configuring the XML parser. Exiting.");
+            System.exit(1);        
+        } catch (IOException ex) {
+            System.err.println("Could not read problem File " + args[1] + ". Exiting.");
+        }
 
-		long startPlanner = System.currentTimeMillis();
-    	Planner p = new Planner(domain, problem);
-    	boolean success = p.computeGraph();
-    	long endPlanner = System.currentTimeMillis();
+        long end = System.currentTimeMillis();
 
-    	List<Plan> plans = p.backwardsSearch();
-    	long endPlanner2 = System.currentTimeMillis();
+        /*** run the planner ***/
+        //problem.addEqualityLiterals();
+        FfPlannerInterface planner = new FfPlannerInterface();
+        List<Term> plan = null;
+        try {
+            plan = planner.runPlanner(domain, problem);
+        } catch (Exception ex) {
+            System.err.println("Could not run the planner: " + ex);
+            System.exit(1);
+        }
 
-    	/*
-    	 * Here we use crisp.result to produce the final
-    	 * sentence and the derivation tree.
-    	 */    
+        System.err.println("\n\nRuntime:");
+        System.err.println("  conversion:        " + (end - start) + "ms\n");
+        System.out.println("  preproc: " + planner.getPreprocessingTime() + " ms");
+        System.out.println("  search:            " + planner.getSearchTime() + " ms");
+        System.out.println("  total planning:    " + planner.getTotalTime() + " ms");
 
-    	System.out.println("\n\n\nFound " + plans.size() + " plan(s):");
-    	for( Plan plan : plans ) {
-    		System.out.println(plan);
 
-                DerivationTreeBuilder derivationTreeBuilder = new CrispDerivationTreeBuilder(grammar);
-            //DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
-            //System.out.println(derivTree);
-            //    		System.out.println("\nBuilt derivation tree:\n"+derivTree);
-            //DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
-            //System.out.println("\nBuilt derived tree:\n"+derivedTree);
-            //System.out.println("\nFinal sentence:");
-            //System.out.println(derivedTree.yield());
 
-    		// Build the derivation tree
-    	}
+        
+        if (plan == null) {
+            System.err.println("Planner returned empty plan. No solution found.");
+            System.exit(0);
+        }       
 
-    	System.err.println("\nRuntime:");
-		System.err.println("  conversion:        " + (end-start) + "ms\n");
-    	System.out.println("  graph computation: " + (endPlanner-startPlanner) + " ms");
-    	System.out.println("  search:            " + (endPlanner2-endPlanner) + " ms");
-    	System.out.println("  total planning:    " + (endPlanner2-startPlanner) + " ms");
-	}
-
+}
 }

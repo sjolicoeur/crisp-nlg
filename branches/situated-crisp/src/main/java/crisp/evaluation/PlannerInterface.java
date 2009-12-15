@@ -1,4 +1,4 @@
-package crisp.evaluation;
+package crisp.planner.external;
 
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;

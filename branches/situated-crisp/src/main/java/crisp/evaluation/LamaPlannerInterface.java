@@ -1,6 +1,7 @@
-package crisp.evaluation;
+package crisp.planner.external;
 
 
+import crisp.planner.external.PlannerInterface;
 import crisp.converter.BackoffModelProbCRISPConverter;
 import crisp.converter.FancyBackoffProbCRISPConverter;
 import java.io.FileWriter;

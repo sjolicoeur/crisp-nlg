@@ -1,6 +1,7 @@
-package crisp.evaluation;
+package crisp.planner.external;
 
 
+import crisp.planner.external.PlannerInterface;
 import crisp.converter.FancyBackoffProbCRISPConverter;
 import java.io.File;
 import java.io.FileReader;
@@ -13,7 +14,6 @@ import crisp.planningproblem.codec.OutputCodec;
 
 
 import crisp.pddl.PddlParser;
-import crisp.planner.lazyff.CostRelaxedGraphplanEvaluator;
 import crisp.planner.lazyff.FindAllBFS;
 import crisp.planner.lazyff.GoalStateCondition;
 import crisp.planner.lazyff.HelpfulActionFinder;
@@ -36,7 +36,6 @@ import de.saar.penguin.tag.derivation.DerivedTree;
 import de.saar.chorus.term.Term;
 
 import de.saar.penguin.tag.grammar.LinearInterpolationProbabilisticGrammar;
-import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -151,7 +150,7 @@ public class LazyFfInterface implements PlannerInterface {
         System.out.println(preprocessingTime + "ms.");
         System.out.println("Search...");
 
-        RelaxedGraphplanEvaluator eval = new CostRelaxedGraphplanEvaluator(gpp);
+        RelaxedGraphplanEvaluator eval = new RelaxedGraphplanEvaluator(gpp);
         Search search = new BestFirstSearch(gpp, new HelpfulActionFinder(eval), eval);
 
         //StateEvaluator eval = new SimpleCostEvaluator(gpp);
@@ -244,7 +243,7 @@ public class LazyFfInterface implements PlannerInterface {
         System.out.println(preprocessingTime + "ms.");
         System.out.println("Search...");
 
-        RelaxedGraphplanEvaluator eval = new CostRelaxedGraphplanEvaluator(gpp);
+        RelaxedGraphplanEvaluator eval = new RelaxedGraphplanEvaluator(gpp);
         FindAllBFS search = new FindAllBFS(gpp, new HelpfulActionFinder(eval), eval);
         search.search(new State(gpp), new GoalStateCondition(gpp));
 

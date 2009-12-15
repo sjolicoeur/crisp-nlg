@@ -1,14 +1,15 @@
-package crisp.evaluation;
+package crisp.planner.external;
 
 
+import crisp.planner.external.PlannerInterface;
 import crisp.evaluation.ffplanparser.ParseException;
 import java.io.FileWriter;
 import java.io.File;
+import java.io.IOException;
 import java.io.Reader;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import crisp.converter.FastCRISPConverter;
 
 import crisp.converter.ProbCRISPConverter;
 import crisp.planningproblem.Domain;
@@ -27,12 +28,12 @@ import de.saar.penguin.tag.derivation.DerivedTree;
 
 import de.saar.chorus.term.Term; 
 
+import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,10 +51,21 @@ public class FfPlannerInterface implements PlannerInterface {
     
     private long preprocessingTime;
     private long searchTime;
+    private String binaryLocation;
     
     public FfPlannerInterface() {
         preprocessingTime = 0;
         searchTime = 0;
+
+
+        try {
+            Properties crispProps = new Properties();
+            crispProps.load(new FileReader(new File(crisp.main.Generate.PROPERTIES_FILE)));
+            binaryLocation = crispProps.getProperty("FfBinary");
+        } catch (IOException ex) {
+            binaryLocation = FF_BIN;
+        }
+
     }
     
     public List<Term> runPlanner(Domain domain, Problem problem) throws Exception {        
@@ -66,12 +78,12 @@ public class FfPlannerInterface implements PlannerInterface {
                                                                    
           
         // Run the FfPlanner
-        Process ffplanner = Runtime.getRuntime().exec(FF_BIN+" -o "+TEMPDOMAIN_FILE+" -f "+TEMPPROBLEM_FILE );
+        Process ffplanner = Runtime.getRuntime().exec(binaryLocation+" -o "+TEMPDOMAIN_FILE+" -f "+TEMPPROBLEM_FILE );
         ffplanner.waitFor();
         Reader resultReader = new BufferedReader(new InputStreamReader(ffplanner.getInputStream()));
         
         if (ffplanner.exitValue() != 0) {
-            throw new RuntimeException("FF in "+FF_BIN+" terminated inappropriately. Exit Value was "+ffplanner.exitValue()+".");
+            throw new RuntimeException("FF in "+binaryLocation+" terminated inappropriately. Exit Value was "+ffplanner.exitValue()+".");
         }
 
         StringWriter str = new StringWriter();
@@ -80,10 +92,6 @@ public class FfPlannerInterface implements PlannerInterface {
             str.write(buffer);
                                   
             List<Term> plan = parsePlan(str.toString());
-            System.out.println("FOO");
-            System.out.println(plan.size());
-
-            System.out.println(domain.getActions());
             return plan;
         
                                                                                            
@@ -98,7 +106,6 @@ public class FfPlannerInterface implements PlannerInterface {
         if( !m.matches() ) {
             return null;
         } else {
-            System.out.println(m.group(1));
             try {
                 FfPlanParser parser = new FfPlanParser(new StringReader(m.group(1)));
                 List<Term> ret = parser.plan();

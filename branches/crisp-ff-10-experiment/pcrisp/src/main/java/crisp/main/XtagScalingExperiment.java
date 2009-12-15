@@ -1,21 +1,6 @@
 package crisp.main;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
-import crisp.converter.FastCRISPConverter;
+import crisp.converter.CurrentNextCrispConverter;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.codec.PddlOutputCodec;
@@ -24,11 +9,20 @@ import de.saar.chorus.term.Term;
 import de.saar.penguin.tag.codec.ParserException;
 import de.saar.penguin.tag.codec.xtag.ParseException;
 import de.saar.penguin.tag.codec.xtag.XtagInputCodec;
+import de.saar.penguin.tag.grammar.CrispGrammar;
 import de.saar.penguin.tag.grammar.Grammar;
 import de.saar.penguin.tag.grammar.LexiconEntry;
 import de.saar.penguin.tag.grammar.converter.XtagToCrispConverter;
 import de.saar.penguin.tag.grammar.filter.GrammarFilterer;
 import de.saar.penguin.tag.grammar.filter.WordListFilter;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.*;
 
 public class XtagScalingExperiment {
 	public static void main(String[] args) throws ParserException, IOException, ParseException, ParserConfigurationException, SAXException {
@@ -64,7 +58,7 @@ public class XtagScalingExperiment {
 		// compute modified grammar
 		Map<String,Integer> multiplicity = new HashMap<String, Integer>();
 		multiplicity.put("businessman", k*n);
-		Grammar<Term> mGrammar = multiplyLexiconEntries(multiplicity, grammar);
+		CrispGrammar mGrammar = multiplyLexiconEntries(multiplicity, grammar);
 		
 		// compute problem
 		StringBuffer buf = new StringBuffer();
@@ -102,9 +96,9 @@ public class XtagScalingExperiment {
 		Domain domain = new Domain();
 		Problem problem = new Problem();
 
-        FastCRISPConverter converter = new FastCRISPConverter();
+        //FastCRISPConverter converter = new FastCRISPConverter();
 		long start = System.currentTimeMillis();		
-		converter.convert(mGrammar, new StringReader(buf.toString()), domain, problem);
+		new CurrentNextCrispConverter().convert(mGrammar, new StringReader(buf.toString()), domain, problem);
 		long end = System.currentTimeMillis();
 		
 		System.err.println("done, " + (end-start) + "ms.");
@@ -133,8 +127,9 @@ public class XtagScalingExperiment {
 
 
 
-	private static Grammar<Term> multiplyLexiconEntries(Map<String,Integer> rules, Grammar<Term> grammar) {
-		Grammar<Term> ret = new Grammar<Term>();
+	private static CrispGrammar multiplyLexiconEntries(Map<String,Integer> rules, Grammar<Term> grammar) {
+		//Grammar<Term> ret = new Grammar<Term>();
+        CrispGrammar ret = new CrispGrammar();
 		
 		for( String word : grammar.getAllWords() ) {
 			for( LexiconEntry entry : grammar.getLexiconEntries(word)) {

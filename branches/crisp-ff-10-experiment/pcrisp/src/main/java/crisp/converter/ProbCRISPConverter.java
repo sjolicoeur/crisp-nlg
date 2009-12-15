@@ -634,6 +634,7 @@ public class ProbCRISPConverter implements ProblemConverter {
         } catch (ParserConfigurationException e){
             throw new SAXException("Parser misconfigured: "+e);    
         }
+
         problem.setDomain(domain);
         
     }        

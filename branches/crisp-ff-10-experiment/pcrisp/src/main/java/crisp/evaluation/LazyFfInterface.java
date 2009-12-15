@@ -1,10 +1,10 @@
 package crisp.evaluation;
 
 
-import crisp.converter.FancyBackoffProbCRISPConverter;
 import java.io.File;
 import java.io.FileReader;
 
+import crisp.converter.FastCRISPConverter;
 
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
@@ -13,7 +13,6 @@ import crisp.planningproblem.codec.OutputCodec;
 
 
 import crisp.pddl.PddlParser;
-import crisp.planner.lazyff.FindAllBFS;
 import crisp.planner.lazyff.GoalStateCondition;
 import crisp.planner.lazyff.HelpfulActionFinder;
 import crisp.planner.lazyff.RelaxedGraphplanEvaluator;
@@ -28,12 +27,13 @@ import crisp.planningproblem.codec.TempPddlOutputCodec;
 import crisp.result.PCrispDerivationTreeBuilder;
 import crisp.result.DerivationTreeBuilder;
 
-import de.saar.penguin.tag.codec.PCrispXmlInputCodec;
+import de.saar.penguin.tag.codec.CrispXmlInputCodec;
 import de.saar.penguin.tag.derivation.DerivationTree;
 import de.saar.penguin.tag.derivation.DerivedTree;
 
 import de.saar.chorus.term.Term;
 
+import de.saar.penguin.tag.grammar.Grammar;
 import de.saar.penguin.tag.grammar.LinearInterpolationProbabilisticGrammar;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -244,16 +244,14 @@ public class LazyFfInterface implements PlannerInterface {
         System.out.println("Search...");
 
         RelaxedGraphplanEvaluator eval = new RelaxedGraphplanEvaluator(gpp);
-        FindAllBFS search = new FindAllBFS(gpp, new HelpfulActionFinder(eval), eval);
-        search.search(new State(gpp), new GoalStateCondition(gpp));
+        Search search = new BestFirstSearch(gpp, new HelpfulActionFinder(eval), eval);
+        State state = search.search(new State(gpp), new GoalStateCondition(gpp));
 
         List<List<Term>> plans = new ArrayList<List<Term>>();
         start = System.currentTimeMillis();
 
 
-        State state = search.findNext();
-
-        while (state!=null) {
+        if (state!=null) {
             
             List<Term> resultAsTerm = new ArrayList<Term>();                
             for (Action a : state.getPlanToHere()) {
@@ -268,7 +266,6 @@ public class LazyFfInterface implements PlannerInterface {
              System.out.println(derivedTree.yield());
 
              plans.add(resultAsTerm);
-             state = search.findNext();
         }
 
         end = System.currentTimeMillis();
@@ -314,16 +311,14 @@ public class LazyFfInterface implements PlannerInterface {
         long start = System.currentTimeMillis();
 
         System.out.println("Reading grammar...");
-        PCrispXmlInputCodec codec = new PCrispXmlInputCodec();
-	LinearInterpolationProbabilisticGrammar<Term> grammar = new LinearInterpolationProbabilisticGrammar<Term>(0.9,1,1000);
-	codec.parse(new File(args[0]), grammar);
-
-        grammar.initBackoff();
+        CrispXmlInputCodec codec = new CrispXmlInputCodec();
+	Grammar<Term> grammar = new Grammar<Term>();
+	codec.parse(new FileReader(new File(args[0])), grammar);
 
         File problemfile = new File(args[1]);
 
         System.out.println("Generating planning problem...");
-        new FancyBackoffProbCRISPConverter().convert_backoff(grammar, new FileReader(problemfile), domain, problem);
+        new FastCRISPConverter().convert(grammar, new FileReader(problemfile), domain, problem);
 
         long end = System.currentTimeMillis();
 
@@ -332,7 +327,7 @@ public class LazyFfInterface implements PlannerInterface {
 
         System.out.println("Running planner ... ");
         LazyFfInterface planner = new LazyFfInterface();
-        planner.findAllPlans(domain, problem, 60000, grammar);
+        planner.runPlanner(domain, problem);
         //List<Term> plan = planner.runPlanner(domain,problem, 600000);
 
         //System.out.println(planner.getTotalTime());

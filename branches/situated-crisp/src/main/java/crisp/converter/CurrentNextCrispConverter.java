@@ -640,6 +640,23 @@ public class CurrentNextCrispConverter  {
                         effects.add(new Literal(termWithVariables, true));
                     }
                     
+                    // Add imperative effects
+                    for (Term imperativeEffectTerm : entry.getImperativeEffects()) {
+                        Compound impEffCompound = ((Compound) imperativeEffectTerm);
+                        Compound termWithVariables = (Compound) substituteVariablesForRoles(impEffCompound, n, I);
+
+                        Compound semImpPredicate = makeSemanticPredicate(impEffCompound);
+                        List<String> impEffPredicateTypes = new ArrayList<String>();
+                        for (int j=0; j<semImpPredicate.getSubterms().size(); j++) {
+                            impEffPredicateTypes.add("individual");
+                        }
+                        domain.addPredicate(semImpPredicate.getLabel(), impEffPredicateTypes);
+                        effects.add(new Literal((Compound) flattenTerm(termWithVariables, "needtoexpress"), false));
+
+                        domain.addConstant(renamePredicate(semImpPredicate.getLabel()), "predicate");
+
+                    }
+
 
                     // TODO
                     // pragmatic requirements must be satisfied
@@ -662,14 +679,11 @@ public class CurrentNextCrispConverter  {
                         distractorQuantifierVarTypes.add("individual");
 
                         List<Formula> literals = new ArrayList<Formula>();
-                        for ( Term t: contentWithVariables ) {
-                           System.out.println(t);
-                           Literal l = new Literal((Compound) distractorSubst.apply(t), true);
-                           System.out.println(l);
+                        for ( Term t: contentWithVariables ) {                          
+                           Literal l = new Literal((Compound) distractorSubst.apply(t), true);                           
                            literals.add(l);
                         }
-
-                        System.out.println("LITERALS:" +literals);
+                        
                         Formula distractorPrecondition =
                             new Negation(new Conjunction(literals));
 

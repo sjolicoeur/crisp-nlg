@@ -6,6 +6,7 @@ import crisp.planningproblem.Problem;
 import crisp.planningproblem.codec.PddlOutputCodec;
 import de.saar.chorus.term.Compound;
 import de.saar.chorus.term.Term;
+import de.saar.penguin.tag.codec.CrispXmlOutputCodec;
 import de.saar.penguin.tag.codec.ParserException;
 import de.saar.penguin.tag.codec.xtag.ParseException;
 import de.saar.penguin.tag.codec.xtag.XtagInputCodec;
@@ -59,7 +60,12 @@ public class XtagScalingExperiment {
 		Map<String,Integer> multiplicity = new HashMap<String, Integer>();
 		multiplicity.put("businessman", k*n);
 		CrispGrammar mGrammar = multiplyLexiconEntries(multiplicity, grammar);
-		
+
+        FileWriter gf = new FileWriter(new File("xtag-grammar-" + n + "-" + k + ".xml"));
+        new CrispXmlOutputCodec().write(mGrammar, gf);
+        gf.flush();
+        gf.close();
+
 		// compute problem
 		StringBuffer buf = new StringBuffer();
 		int plansize = n*(2*k+2);
@@ -91,7 +97,8 @@ public class XtagScalingExperiment {
 		f.flush();
 		f.close();
 		
-		
+
+        /*
 		// generate planning problem		
 		Domain domain = new Domain();
 		Problem problem = new Problem();
@@ -104,6 +111,7 @@ public class XtagScalingExperiment {
 		System.err.println("done, " + (end-start) + "ms.");
 
 		new PddlOutputCodec().writeToDisk(domain, problem, "./", "xtag-" + n + "-" + k);
+		*/
 	}
 
 

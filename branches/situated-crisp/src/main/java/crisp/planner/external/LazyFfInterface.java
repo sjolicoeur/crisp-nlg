@@ -84,7 +84,7 @@ public class LazyFfInterface implements PlannerInterface {
     private long totalTime;
     private boolean timedOut;
 
-    LazyFfInterface() {
+    public LazyFfInterface() {
 
         preprocessingTime = 0;
         searchTime = 0;

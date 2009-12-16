@@ -84,10 +84,10 @@ certainly has no such effect in our domain. The effect it {\em does}
 have is take a huge amount of runtime on the long goal conjunctions
 stating that we do not wish to have any open substitution nodes nor
 any distractors. The simple fix is hence to switch this sub-routine
-off. In smaller examples, this gives advantages like $0.29s$
-vs.\ $11s$ pre-processing time; in a larger example we ran, original
-FF's pre-process doesn't finish within 15 minutes whereas our fix
-yields a pre-processing time of about $3s$.
+off. In small instances, this gives advantages like $0.29s$ vs.\ $11s$
+pre-processing time; in a larger instance we ran, original FF's
+pre-process doesn't finish within 15 minutes whereas our fix yields a
+pre-processing time of about $3s$.
 
 
 Second, FF's pre-process contains a very small imprudence that
@@ -101,8 +101,8 @@ encompassing an integer for every possible instantiation of all
 predicates. Since this does not take into account reachability, it is
 prohibitively huge in our domain. Now, there actually are no hard
 operators in our domain. But FF builds the data structure anyway, even
-though it is not needed. In small examples, this results in a couple
-of seconds runtime overhead. In larger examples, it exhausts memory
+though it is not needed. In small instances, this results in a couple
+of seconds runtime overhead. In larger instances, it exhausts memory
 and causes FF to terminate with a segmentation fault.
 
 
@@ -164,21 +164,40 @@ concatenation of the plans for all entries.
 %EXAMPLE missing
 
 While the goal agenda and related techniques have proved quite useful
-in many domains, in the sentence generation domain they are completely
-off-target. Reasonable orders exist {\bf \dots explain using the
-  example dedicated to this point how we get to have only the
-  ``subst'' goal in the first entry \dots} When achieving this first
-goal agenda entry, the planner decides to generate {\em any}
-sentence. If it happens to be the wrong sentence, the planner is stuck
-in a dead-end. While that dead end is recognized by the relaxed plan
-heuristic -- i.e., it is easy to see that the actions needed for
-achieving the goal cannot be applied anymore -- certainly this is an
-entirely unintended (and a bit amusing) outcome of this
-technique. Switching it off, we {\bf \dots example before/after.}
+in many domains, in the sentence generation domain they often are
+completely off-target. The most striking point concerns the
+interaction between the goal to create a sentence -- $\neg
+\mathsf{subst}(S,\mathsf{root})$ in the rabbit example -- and the goal
+to express a certain meaning -- $\mathsf{sleep}(e,r_1)$ in the
+rabbit example. The goal agenda orders the former before the latter
+because it detects that, once a meaning is expressed, the sentence
+creation has started and it is not possible to start anew
+anymore. Unless the inverse also holds,\footnote{The inverse holds if,
+  in the given grammar, the only way to create a meaning is to create
+  a full sentence -- i.e., there are no side sentences like ``the
+  sleeping rabbit''.} $\mathsf{subst}(S,\mathsf{root})$ is alone in
+the first goal agenda entry, i.e., there is no goal stating the actual
+meaning the sentence is supposed to have. Consequently, the planner
+decides to generate {\em any} sentence. If it happens to be the wrong
+sentence, the planner is stuck in a dead-end. While that dead end is
+recognized by the relaxed plan heuristic -- i.e., it is easy to see
+that the actions needed for achieving the goal cannot be applied
+anymore -- certainly this is an entirely unintended (and a bit
+amusing) outcome of this technique. 
+% Switching it off, we {\bf \dots
+%example before/after.}
 
-{\bf \dots pose as a challenge \dots if sensible based on example
-  observations, speculate a bit how/whether goal ordering techniques
-  could be modified to work}
+
+It is not clear to us, at this point, how goal ordering techniques
+could be modified so that they return sensible results in the sentence
+generation domain. The issue explained above regarding $\neg
+\mathsf{subst}(S,\mathsf{root})$ and $\mathsf{sleep}(e,r_1)$ could be
+addressed by recognizing that, once the latter is achieved, the former
+is already true anyway. More generally however, the life-cycle of
+substitution nodes and distractors is weird -- as we outline below, it
+follows a false-true-false pattern -- and seems difficult to detect
+based on domain analysis.
+
 
 
 
@@ -211,19 +230,29 @@ goals are not accounted for in the preceding state, and hence the
 relaxed plan is completely un-informative.
 
 
-To give just one concrete example, say we are in the initial state,
-and have not yet committed to a sentence. For certain kinds of
-sentences ({\bf more concrete here???}), the relaxed plan has length
-$1$ because the we only need to choose the desired meaning. However,
-in the state $s$ resulting from this action, the mechanisms of the
-planning task introduce all the sub-goals that are required in order
-to pin-point that meaning (in particular we get a new goal for all the
-distractors that must be removed). Hence the relaxed plan is much
-longer than before -- arbitrarily longer, in general. For FF's
-particular search algorithm, enforced hill-climbing (EHC), this means
-that {\em FF performs a blind breadth-first search}: EHC starts at $h$
-value $1$ and thereafter needs to solve the whole problem in order to
-find a (goal) state with lower $h$ value.
+Consider again the rabbit example. In the initial state, the relaxed
+plan has length $1$ because we only need to achieve $\neg
+\mathsf{subst}(S,\mathsf{root})$ and $\mathsf{sleep}(e,r_1)$, which is
+done by the single action ``sleeps''. However, that action has the
+effect ``forall (?y - individual) (when (not (= ?y ?xself))
+(distractor ?subjnode ?y))'' which introduces new distractors. Those
+must be removed, so they form ``new'' goals. In the given case, the
+relaxed plan now contains two actions to achieve these goals. In
+general (if there are $n$ rabbits, say), the relaxed plan may become
+arbitrarily long.
+%To give just one concrete example, say we are in the initial state,
+%and have not yet committed to a sentence. For certain kinds of
+%sentences ({\bf more concrete here???}), the relaxed plan has length
+%$1$ because the we only need to choose the desired meaning. However,
+%in the state $s$ resulting from this action, the mechanisms of the
+%planning task introduce all the sub-goals that are required in order
+%to pin-point that meaning (in particular we get a new goal for all the
+%distractors that must be removed). Hence the relaxed plan is much
+%longer than before -- arbitrarily longer, in general.  
+For FF's particular search algorithm, enforced hill-climbing (EHC),
+this means that {\em FF performs a blind breadth-first search}: EHC
+starts at $h$ value $1$ and thereafter needs to solve the whole
+problem in order to find a (goal) state with lower $h$ value.
 
 %../ff -o modifiers-10-10-domain.lisp -f modifiers-10-10-problem.lisp -T -H
 
@@ -248,13 +277,23 @@ challenging domains, the extremity of turning EHC into a breadth-first
 search is unheard of.
 
 
+Can we design heuristics that are better at deadling with the
+lifecycle of substitution nodes and distractors? The problem of not
+noticing them in the initial state is present for all approaches that
+are dominated by $h^+$,
+e.g.\ \cite{karpas:domshlak-ijcai-09,helmert:domshlak:icaps-09}, and
+is also present for the known inadmissible landmarks heuristics
+\cite{richter:etal:aaai-08}. As far as known heuristics are concerned,
+hope thus resides mainly in the $h^m$ family and in abstraction
+heuristics. We ran a few tests with an example like the rabbit one,
+except that there are 10 distractors. The Graphplan estimate for the
+initial state is $4$, i.e., $h^2$ is better than $h^+$ here. Still,
+$4$ is far away from the real goal distance $14$. With merge\&shrink
+\cite{helmert:etal:icaps07}, {\bf \dots (malte agreed to run a test on
+  modifiers-10-10-)}
 
-{\bf \dots pose as a challenge \dots if sensible based on example
-  observations, speculate a bit how/whether heuristics could be
-  modified to work \dots a question that we should ideally at least
-  partially answer in here is whether other existing heuristics
-  actually work better.. we could try at least a little bit with PDBs,
-  merge\&shrink, etc}
+
+
 
 
 
@@ -266,8 +305,9 @@ the set of avaibale actions quite effectively. For example, in one of
 the instances where EHC turns into a breadth-first search, $16875$
 nodes are explored without helpful actions; with helpful actions, this
 reduces to $3078$. For larger examples, the factor between the two
-numbers tends to become larger. {\bf use here larger version of
-  modifiers-10-10???}
+numbers tends to become larger. 
+%{\bf use here larger version of
+%  modifiers-10-10???}
 
 
 

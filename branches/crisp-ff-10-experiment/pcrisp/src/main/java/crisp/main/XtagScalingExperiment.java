@@ -79,15 +79,15 @@ public class XtagScalingExperiment {
 				int bmanIndex = j + k*(i-1);
 				
 				verbpred.append("," + aij);
-				appendpred(buf, "the(" + aij + ")");
-				appendpred(buf, "businessman" + bmanIndex + "(" + aij + ")");
+				appendpred(buf, "the-1(" + aij + ")");
+				appendpred(buf, "businessman-1" + bmanIndex + "(" + aij + ")");
 			}
 			
 			verbpred.append(")");
 			appendpred(buf, verbpred.toString());
 			
 			if( i < n ) {
-				appendpred(buf, "but(e" + i + ",e" + (i+1) + ")");
+				appendpred(buf, "but-2(e" + i + ",e" + (i+1) + ")");
 			}
 		}
 		buf.append("</crispproblem>");
@@ -103,7 +103,6 @@ public class XtagScalingExperiment {
 		Domain domain = new Domain();
 		Problem problem = new Problem();
 
-        //FastCRISPConverter converter = new FastCRISPConverter();
 		long start = System.currentTimeMillis();		
 		new CurrentNextCrispConverter().convert(mGrammar, new StringReader(buf.toString()), domain, problem);
 		long end = System.currentTimeMillis();
@@ -125,9 +124,9 @@ public class XtagScalingExperiment {
 
 	private static String getVerbPred(int k) {
 		switch(k) {
-		case 1: return "sneeze";
-		case 2: return "admire";
-		case 3: return "give";
+		case 1: return "sneeze-2";
+		case 2: return "admire-3";
+		case 3: return "give-4";
 		}
 		
 		return null;
@@ -136,7 +135,6 @@ public class XtagScalingExperiment {
 
 
 	private static CrispGrammar multiplyLexiconEntries(Map<String,Integer> rules, Grammar<Term> grammar) {
-		//Grammar<Term> ret = new Grammar<Term>();
         CrispGrammar ret = new CrispGrammar();
 		
 		for( String word : grammar.getAllWords() ) {

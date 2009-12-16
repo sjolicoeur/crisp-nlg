@@ -3,9 +3,10 @@ package crisp.converter;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.codec.PddlOutputCodec;
+
+
 import de.saar.penguin.tag.grammar.CrispGrammar;
 import de.saar.penguin.tag.grammar.SituatedCrispXmlInputCodec;
-
 import java.io.File;
 import java.io.FileReader;
 
@@ -15,7 +16,7 @@ public class CRISPtoOldPDDL {
      * Print a usage message
      */
     public static void usage() {
-        System.out.println("Usage: java crisp.converter.CRISPtoPPDL [CRISP grammar] [CRISP problem]");
+        System.out.println("Usage: java crisp.converter.CRISPtoOldPPDL [CRISP grammar] [CRISP problem]");
     }
 
     /**

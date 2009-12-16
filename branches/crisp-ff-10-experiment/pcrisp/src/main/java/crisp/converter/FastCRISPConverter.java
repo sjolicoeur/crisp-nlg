@@ -272,23 +272,23 @@ public class FastCRISPConverter  {
         Formula noSubst = new Universal(tlCatNode, tlCatNodeTypes,
         new Literal("subst(?a,?u)", false));
         
-        // no positive "distractor" literals in the goal state
-        //Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
-        //new crisp.planningproblem.goal.Literal("distractor(?u,?x)", false));
-        
+             // no positive "distractor" literals in the goal state
+        Formula noDistractors = new Universal(tlNodeIndiv, tlNodeIndivTypes,
+                new Literal("distractor(?u,?x)", false));
+
         // no positive "mustadjoin" literals in the goal state
         //   this is only added if there is an action that creates a mustadjoin constraint
-        //   because otherwise the LAMA planner cannot handle universal preconditions 
-        //   involving this predicate.   
+        //   because otherwise the LAMA planner cannot handle universal preconditions
+        //   involving this predicate.
         //if (domain.sawMustadjoin()){
         //    Goal noMustAdj= new crisp.planningproblem.goal.Universal(tlCatNode,
         //    new crisp.planningproblem.goal.Literal("mustadjoin(?a,?u)", false));
         //    finalStateGoals.add(noMustAdj);
         //}
-        
+
         finalStateGoals.add(noSubst);
-        //finalStateGoals.add(noDistractors);
-                
+        finalStateGoals.add(noDistractors);
+        
         // no positive needtoexpress-* literals, for any arity used in the communicative 
         // goals. If we would just do this for all arities the LAMA planner cannot handle 
         // the universal precondition involving needtoexpress predicates that do not occur        
@@ -410,8 +410,9 @@ public class FastCRISPConverter  {
             // store list of roles in each tree in a map by name
             HashSet<String> localRoles = new HashSet<String>();            
             for (String node : allNodeIds) {
-            	if( tree.getNodeDecoration(node) != null ) {
-            		localRoles.add(tree.getNodeDecoration(node).toString());
+                String decoration = tree.getNodeDecoration(node).toString();
+                if (decoration != null && (decoration.toString() != null) && tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION) {
+                    localRoles.add(tree.getNodeDecoration(node).toString());
             	}
             }            
             roles.put(treeName, localRoles);
@@ -450,8 +451,9 @@ public class FastCRISPConverter  {
                         substNodes.add(node);
                     } else {
                         if (tree.getNodeType(node) == NodeType.INTERNAL &&
-                            tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION &&
-                            tree.getNodeDecoration(node) != null) {
+                                tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION &&
+                                tree.getNodeDecoration(node) != null &&
+                                tree.getNodeDecoration(node).toString() != null) {
                                 adjNodes.add(node);            
                         }
                     }        
@@ -569,7 +571,7 @@ public class FastCRISPConverter  {
                     
                     // remove distractors
                     
-                    /*if ( hasContent ) {
+                    if ( hasContent ) {
                         Variable distractorVar = new Variable("?y");
                         Substitution distractorSubst = new Substitution(new Variable("?x1"), distractorVar);
                         List<Term> distractorQuantifierVars = new ArrayList<Term>();
@@ -587,24 +589,23 @@ public class FastCRISPConverter  {
                         
                         effects.add(new Universal(distractorQuantifierVars, distractorQuantifierVarTypes,
                         new Conditional(distractorPrecondition, new Literal("distractor(?u,?y)", false))));
-                    }*/
+                    }
                     
-                    // TODO
-                    /* pragmatic effects
-                     *for( String pragEffect : entry.getPragEffects() ) {
-                     *   Compound effect = (Compound) TermParser.parse(pragEffect);
-                     * 
-                     *    if ( "uniqueref".equals(effect.getLabel())) {
-                     *       String roleN = n.get(effect.getSubterms().get(0).toString());
-                     *        TypedVariableList vars = new TypedVariableList();
-                     *        vars.addItem(new Variable("?y"), "individual");
-                     *
-                     *        effects.add(new crisp.planningproblem.effect.Universal(vars,
-                     *                new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", false)));
-                     *        break;
-                     *    }
-                     *}
-                     */
+                    // pragmatic effects
+                    /* for( String pragEffect : entry.getPragEffects() ) {
+                        Compound effect = (Compound) TermParser.parse(pragEffect);
+                      
+                         if ( "uniqueref".equals(effect.getLabel())) {
+                            String roleN = n.get(effect.getSubterms().get(0).toString());
+                             TypedVariableList vars = new TypedVariableList();
+                             vars.addItem(new Variable("?y"), "individual");
+                     
+                             effects.add(new crisp.planningproblem.effect.Universal(vars,
+                                     new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", false)));
+                             break;
+                         }
+                     }*/
+                     
                     
                     // effects for the substitution nodes
                     for (String substNode : substNodes) {
@@ -657,6 +658,28 @@ public class FastCRISPConverter  {
                         new Conditional(distractorPrecondition, 
                                     new Literal("distractor(" + roleN + ",?y)", true))));
                          */
+                        /*
+                        for (Term sr : entry .getSemanticRequirements()) {
+                            Term term = distractorSubst.apply(substituteVariablesForRoles(sr, n, I));
+                            distractorPreconditions.add(new Literal((Compound) term, true));
+
+                            Compound distractorPredicate = makeSemanticPredicate(term);
+                            List<String> distractorPredicateTypes = new ArrayList<String>();
+                            for (int j = 0; j < distractorPredicate.getSubterms().size(); j++) {
+                                distractorPredicateTypes.add("individual");
+                            }
+
+                            domain.addPredicate(distractorPredicate.getLabel(), distractorPredicateTypes);
+
+                        }
+                        */
+                        Formula distractorPrecondition = new Conjunction(distractorPreconditions);
+
+                        effects.add(new Universal(distractorQuantifierVars, distractorQuantifierVarTypes,
+                                new Conditional(distractorPrecondition,
+                                new Literal("distractor(" + roleN + ",?y)", true))));
+
+
                     }
                     
                     // internal nodes: allow adjunction

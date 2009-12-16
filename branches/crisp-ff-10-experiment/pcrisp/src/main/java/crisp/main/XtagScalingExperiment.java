@@ -98,7 +98,7 @@ public class XtagScalingExperiment {
 		f.close();
 		
 
-        /*
+        
 		// generate planning problem		
 		Domain domain = new Domain();
 		Problem problem = new Problem();
@@ -111,7 +111,7 @@ public class XtagScalingExperiment {
 		System.err.println("done, " + (end-start) + "ms.");
 
 		new PddlOutputCodec().writeToDisk(domain, problem, "./", "xtag-" + n + "-" + k);
-		*/
+		
 	}
 
 

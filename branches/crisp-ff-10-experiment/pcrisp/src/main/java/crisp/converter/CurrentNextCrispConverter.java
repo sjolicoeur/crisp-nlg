@@ -47,7 +47,6 @@ import de.saar.penguin.tag.grammar.ElementaryTreeType;
 import de.saar.penguin.tag.grammar.Grammar;
 import de.saar.penguin.tag.grammar.LexiconEntry;
 import de.saar.penguin.tag.grammar.NodeType;
-import de.saar.penguin.tag.grammar.filter.GrammarFilterer;
 import de.saar.penguin.tag.grammar.filter.SemanticsPredicateListFilter;
 
 /**
@@ -516,13 +515,11 @@ public class CurrentNextCrispConverter  {
                 Map<String, String> I = new HashMap<String, String>();
                 int roleno = 1;
 
-
+                n.put("self","?u");
+                I.put("?u","?x");
                 for (String role : roles.get(entry.tree)) {
                     //System.out.println(role);
-                    if (role.equals("self")) {
-                        n.put(role, "?u");
-                        I.put("?u","?x");
-                    } else {
+                    if (!role.equals("self")) {
                         n.put(role, "?u" + roleno);
                         I.put(n.get(role), "?x" + (roleno++));
                     }
@@ -816,7 +813,7 @@ public class CurrentNextCrispConverter  {
             SAXParser parser = factory.newSAXParser();
             parser.parse(new InputSource(problemfile), handler);
 
-            //CrispGrammar filteredGrammar = (CrispGrammar) new GrammarFilterer<Term>().filter(grammar, new SemanticsPredicateListFilter(handler.predicatesInWorld) );
+//            CrispGrammar filteredGrammar = (CrispGrammar) new GrammarFilterer<Term>().filter(grammar, new SemanticsPredicateListFilter(handler.predicatesInWorld) );
             computeDomain(domain, problem, grammar);
             computeGoal(domain, problem);
 

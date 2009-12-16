@@ -39,6 +39,26 @@ then on the search techniques.
 
 
 
+%../ff -o xtag-3-2-domain.lisp -f xtag-3-2-problem.lisp -T -H: 0.10
+%../ff -o xtag-3-2-domain.lisp -f xtag-3-2-problem.lisp -T: 1.54
+%../ff -o xtag-3-2-domain.lisp -f xtag-3-2-problem.lisp -H: 0.30
+%../ff -o xtag-3-2-domain.lisp -f xtag-3-2-problem.lisp: 1.80
+
+
+%../ff -o xtag-5-2-domain.lisp -f xtag-5-2-problem.lisp -T -H: 0.29
+%../ff -o xtag-5-2-domain.lisp -f xtag-5-2-problem.lisp -T: seg fault ie too much memory
+%../ff -o xtag-5-2-domain.lisp -f xtag-5-2-problem.lisp -H: 11.08
+%../ff -o xtag-5-2-domain.lisp -f xtag-5-2-problem.lisp: seg fault ie too much memory
+
+
+%../ff -o xtag-3-3-domain.lisp -f xtag-3-3-problem.lisp -T -H: 
+%../ff -o xtag-3-3-domain.lisp -f xtag-3-3-problem.lisp -T: seg fault ie too much memory
+%../ff -o xtag-3-3-domain.lisp -f xtag-3-3-problem.lisp -H: 
+%../ff -o xtag-3-3-domain.lisp -f xtag-3-3-problem.lisp: seg fault ie too much memory
+
+
+
+
 
 
 
@@ -61,9 +81,13 @@ and $\neg \phi$ within a disjunction, then the disjunction is replaced
 by TRUE. Now, we haven't tested thoroughly whether this sub-routine
 has any notable effect on the formulas in other benchmarks. It
 certainly has no such effect in our domain. The effect it {\em does}
-have is take a huge amount of runtime on the long conjunctions that
-characterize {\bf \dots} For example {\bf \dots before/after}.
-
+have is take a huge amount of runtime on the long goal conjunctions
+stating that we do not wish to have any open substitution nodes nor
+any distractors. The simple fix is hence to switch this sub-routine
+off. In smaller examples, this gives advantages like $0.29s$
+vs.\ $11s$ pre-processing time; in a larger example we ran, original
+FF's pre-process doesn't finish within 15 minutes whereas our fix
+yields a pre-processing time of about $3s$.
 
 
 Second, FF's pre-process contains a very small imprudence that
@@ -77,7 +101,11 @@ encompassing an integer for every possible instantiation of all
 predicates. Since this does not take into account reachability, it is
 prohibitively huge in our domain. Now, there actually are no hard
 operators in our domain. But FF builds the data structure anyway, even
-though it is not needed. For example {\bf \dots before/after.}
+though it is not needed. In small examples, this results in a couple
+of seconds runtime overhead. In larger examples, it exhausts memory
+and causes FF to terminate with a segmentation fault.
+
+
 
 
 
@@ -133,6 +161,8 @@ pre-process and then partitioning the goal set into a {\em goal
 planner in isolation, ignoring all other goals. The final plan is the
 concatenation of the plans for all entries.
 
+%EXAMPLE missing
+
 While the goal agenda and related techniques have proved quite useful
 in many domains, in the sentence generation domain they are completely
 off-target. Reasonable orders exist {\bf \dots explain using the
@@ -167,30 +197,35 @@ technique. Switching it off, we {\bf \dots example before/after.}
 
 
 While the goal agenda meltdown may be more amusing than alarming, we
-next report that the relaxed plan heuristic is not far from such a
+next report that relaxed plan heuristics are not far from such a
 meltdown either. They are fatally confused by the weird lifecycle of
-the ``subst'' and ``distractor'' atoms: in valid plans, these start
-off being false, then they get made true at some point, and then they
-are made false again in order to achieve the goal. In other words,
-from the perspective of the relaxed plan heuristic, from one state to
-the next whole classes of goals suddenly appear ``out of the
-blue''. These goals are not accounted for in the preceding state, and
-hence the relaxed plan is completely un-informative.
+facts encoding substitution nodes and distractors. In instances where
+these constructs are important for the construction of a valid
+sentence, these facts are required to be false in the goal, and most
+of them are initially false. However, any valid plan must make many of
+them true at some intermediate time point (e.g.\ distractors arise
+depending on the decisions taken by the planner). Hence, from the
+perspective of the relaxed plan heuristic, from one state to the next
+whole classes of goals suddenly appear ``out of the blue''. These
+goals are not accounted for in the preceding state, and hence the
+relaxed plan is completely un-informative.
 
 
 To give just one concrete example, say we are in the initial state,
-and have not yet committed to a sentence. The relaxed plan has length
-$1$ because the we only need to choose a sentence communicating the
-desired meaning. However, in the state $s$ resulting from this action,
-the mechanisms of the planning task introduce all the sub-goals that
-are required in order to pin-point that meaning (in particular we get
-a new goal for all the distractors that must be removed). Hence the
-relaxed plan is much longer than before -- arbitrarily longer, in
-general. For FF's particular search algorithm, this means that {\em
-  enforced hill-climbing turns into a breadth-first search}: it starts
-at $h$ value $1$ and thereafter needs to solve the whole problem in
-order to find a (goal) state with lower $h$ value.
+and have not yet committed to a sentence. For certain kinds of
+sentences ({\bf more concrete here???}), the relaxed plan has length
+$1$ because the we only need to choose the desired meaning. However,
+in the state $s$ resulting from this action, the mechanisms of the
+planning task introduce all the sub-goals that are required in order
+to pin-point that meaning (in particular we get a new goal for all the
+distractors that must be removed). Hence the relaxed plan is much
+longer than before -- arbitrarily longer, in general. For FF's
+particular search algorithm, enforced hill-climbing (EHC), this means
+that {\em FF performs a blind breadth-first search}: EHC starts at $h$
+value $1$ and thereafter needs to solve the whole problem in order to
+find a (goal) state with lower $h$ value.
 
+%../ff -o modifiers-10-10-domain.lisp -f modifiers-10-10-problem.lisp -T -H
 
 %\item As a consequence, Enforced hillclimbing: Initial state of
 %  example problem has a relaxed graph of length one because
@@ -207,10 +242,10 @@ dead-ends, i.e., dead-end states that have a relaxed plan. An example
 is the initial state of a task that features distractors for which
 there is no means of removal -- ignoring the distractors, the initial
 $h$ value will still be $1$. So our domain is in the most difficult
-class of Hoffmann's \shortcite{hoffmann:jair-05} ``plannin domain
+class of Hoffmann's \shortcite{hoffmann:jair-05} ``planning domain
 taxonomy''. While it shares this property with several other
-challenging domains, the extremity of turning enforced hill-climbing
-into a breadth-first search is unheard of.
+challenging domains, the extremity of turning EHC into a breadth-first
+search is unheard of.
 
 
 
@@ -227,10 +262,19 @@ The only FF technique that appears to work reasonably well is its
 action pruning technique, the ``helpful actions''. While the relaxed
 plan is often much too short, it appears to always contain at least
 one of the actions that actually are useful, and it certainly prunes
-the set of avaibale actions quite effectively. {\bf \dots now
-  something on example and BFS with helpful actions vs. without \dots}
+the set of avaibale actions quite effectively. For example, in one of
+the instances where EHC turns into a breadth-first search, $16875$
+nodes are explored without helpful actions; with helpful actions, this
+reduces to $3078$. For larger examples, the factor between the two
+numbers tends to become larger. {\bf use here larger version of
+  modifiers-10-10???}
 
 
+
+Since EHC is often completely inadequate, and helpful actions are
+quite effective, our FF configuration directly runs best-first search
+with helpful actions (as opposed to original FF which switches to
+best-first with{\em out} helpful actions if EHC fails).
 
 
 %\item The only thing that works well is helpful actions. However,

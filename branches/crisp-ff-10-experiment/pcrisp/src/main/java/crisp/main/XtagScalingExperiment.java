@@ -42,7 +42,7 @@ public class XtagScalingExperiment {
 		allowedWords.add("admire");
 		allowedWords.add("give");
 		allowedWords.add("but");
-		Grammar<Term> filteredGrammar = new GrammarFilterer<Term>().filter(crispGrammar, new WordListFilter(allowedWords));
+		Grammar<Term> filteredGrammar = new GrammarFilterer<Term>().filter(crispGrammar, new WordListFilter(allowedWords, false));
 		
 		for( int k = 1; k <= 3; k++ ) {
 			for( int n = 1; n <= 10; n++ ) {
@@ -68,7 +68,7 @@ public class XtagScalingExperiment {
 
 		// compute problem
 		StringBuffer buf = new StringBuffer();
-		int plansize = n*(2*k+2);
+		int plansize = n*(k+1); //n*(2*k+2);
 		
 		buf.append("<crispproblem name='xtag' grammar='' cat='S' index='e1' plansize='" + plansize + "'>");
 		for( int i = 1; i <= n; i++ ) {

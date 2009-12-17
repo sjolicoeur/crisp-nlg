@@ -409,7 +409,7 @@ public class CurrentNextCrispConverter {
             // store list of roles in each tree in a map by name
             HashSet<String> localRoles = new HashSet<String>();
             for (String node : allNodeIds) {
-                String decoration = tree.getNodeDecoration(node).toString();
+                Term decoration = tree.getNodeDecoration(node);
                 if (decoration != null && (decoration.toString() != null) && tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION) {
                     localRoles.add(tree.getNodeDecoration(node).toString());
                 }

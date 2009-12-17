@@ -1,8 +1,8 @@
 package crisp.planner.external;
 
 
+import crisp.converter.FastCRISPConverter;
 import crisp.planner.external.PlannerInterface;
-import crisp.converter.FancyBackoffProbCRISPConverter;
 import java.io.File;
 import java.io.FileReader;
 
@@ -35,6 +35,7 @@ import de.saar.penguin.tag.derivation.DerivedTree;
 
 import de.saar.chorus.term.Term;
 
+import de.saar.penguin.tag.grammar.Grammar;
 import de.saar.penguin.tag.grammar.LinearInterpolationProbabilisticGrammar;
 import java.io.PrintWriter;
 import java.io.StringReader;
@@ -315,15 +316,14 @@ public class LazyFfInterface implements PlannerInterface {
 
         System.out.println("Reading grammar...");
         PCrispXmlInputCodec codec = new PCrispXmlInputCodec();
-	LinearInterpolationProbabilisticGrammar<Term> grammar = new LinearInterpolationProbabilisticGrammar<Term>(0.9,1,1000);
-	codec.parse(new File(args[0]), grammar);
+	Grammar<Term> grammar = new Grammar<Term>();
+	codec.parse(new FileReader(new File(args[0])), grammar);
 
-        grammar.initBackoff();
 
         File problemfile = new File(args[1]);
 
         System.out.println("Generating planning problem...");
-        new FancyBackoffProbCRISPConverter().convert_backoff(grammar, new FileReader(problemfile), domain, problem);
+        new FastCRISPConverter().convert(grammar, new FileReader(problemfile), domain, problem);
 
         long end = System.currentTimeMillis();
 
@@ -332,25 +332,24 @@ public class LazyFfInterface implements PlannerInterface {
 
         System.out.println("Running planner ... ");
         LazyFfInterface planner = new LazyFfInterface();
-        planner.findAllPlans(domain, problem, 60000, grammar);
-        //List<Term> plan = planner.runPlanner(domain,problem, 600000);
+        List<Term> plan = planner.runPlanner(domain,problem, 600000);
 
-        //System.out.println(planner.getTotalTime());
-        //System.out.println(planner.getPreprocessingTime());
-        //System.out.println(planner.getSearchTime());
-        //if (plan == null) {
-        //    System.err.println("No plan found!");
-        //    System.exit(0);
-        // }
-        //for (Term instance : plan ){
-        //    System.out.println(instance);
-        //}
-        //DerivationTreeBuilder derivationTreeBuilder = new PCrispDerivationTreeBuilder(grammar);
-        //DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
-        //System.out.println(derivTree);
-        //DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
-        //System.out.println(derivedTree);
-        //System.out.println(derivedTree.yield());
+        System.out.println(planner.getTotalTime());
+        System.out.println(planner.getPreprocessingTime());
+        System.out.println(planner.getSearchTime());
+        if (plan == null) {
+            System.err.println("No plan found!");
+            System.exit(0);
+         }
+        for (Term instance : plan ){
+            System.out.println(instance);
+        }
+        DerivationTreeBuilder derivationTreeBuilder = new PCrispDerivationTreeBuilder(grammar);
+        DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
+        System.out.println(derivTree);
+        DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
+        System.out.println(derivedTree);
+        System.out.println(derivedTree.yield());
 
     }
 

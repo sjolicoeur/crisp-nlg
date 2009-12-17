@@ -2,7 +2,6 @@ package crisp.evaluation;
 
 import crisp.planner.external.LazyFfInterface;
 import crisp.converter.BackoffModelProbCRISPConverter;
-import crisp.converter.FancyBackoffProbCRISPConverter;
 import crisp.converter.FastCRISPConverter;
 import crisp.planningproblem.Problem;
 import crisp.planningproblem.Domain;

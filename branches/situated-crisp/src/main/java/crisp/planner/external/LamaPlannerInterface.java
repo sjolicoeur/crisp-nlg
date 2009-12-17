@@ -3,7 +3,6 @@ package crisp.planner.external;
 
 import crisp.planner.external.PlannerInterface;
 import crisp.converter.BackoffModelProbCRISPConverter;
-import crisp.converter.FancyBackoffProbCRISPConverter;
 import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +27,9 @@ import crisp.result.PCrispDerivationTreeBuilder;
 import crisp.result.CrispDerivationTreeBuilder;
 import crisp.result.DerivationTreeBuilder;
 
+import de.saar.penguin.tag.grammar.Grammar;
 import de.saar.penguin.tag.grammar.ProbabilisticGrammar;
+import de.saar.penguin.tag.codec.CrispXmlInputCodec;
 import de.saar.penguin.tag.codec.PCrispXmlInputCodec;
 import de.saar.penguin.tag.derivation.DerivationTree;
 import de.saar.penguin.tag.derivation.DerivedTree;
@@ -270,17 +271,17 @@ public class LamaPlannerInterface implements PlannerInterface {
         
         
         System.out.println("Reading grammar...");
-        PCrispXmlInputCodec codec = new PCrispXmlInputCodec();
-	LinearInterpolationProbabilisticGrammar<Term> grammar = new LinearInterpolationProbabilisticGrammar<Term>(0.9,0,1000);
-	codec.parse(new File(args[0]), grammar);         
+        CrispXmlInputCodec codec = new CrispXmlInputCodec();
+	Grammar<Term> grammar = new Grammar<Term>();
+	codec.parse(new FileReader(new File(args[0])), grammar);         
  
-        grammar.initBackoff();
+        
         //grammar.preSmoothe();
 
         File problemfile = new File(args[1]);
                 
         System.out.println("Generating planning problem...");
-        new FancyBackoffProbCRISPConverter().convert_backoff(grammar, new FileReader(problemfile), domain, problem);
+        new FastCRISPConverter().convert(grammar, new FileReader(problemfile), domain, problem);
 
         long end = System.currentTimeMillis();
 

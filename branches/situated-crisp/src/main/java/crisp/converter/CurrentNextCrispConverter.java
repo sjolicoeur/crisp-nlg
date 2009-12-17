@@ -71,7 +71,8 @@ public class CurrentNextCrispConverter {
     // with a parser.
 
     private String problempath;   // Absolute pathname for the directory that stores problem and grammar
-    private int plansize;         // the maximum plan size as specified in the problem file
+    private int referentnum;  	  // the number of referents for this problem
+    private int syntaxnodenum;    // the number of syntaxnodes for this problem
     private int maximumArity = 0; // the maximum arity of any predicate in the problem file
     private String problemname;   // the name for the problem as specified in the problem file
     private String mainCat;       // main category for the problem in the problem file
@@ -85,6 +86,7 @@ public class CurrentNextCrispConverter {
         private Domain domain;
         private Set<Term> trueAtoms;
         private Map<String, Set<Integer>> predicatesInWorld;
+	private String indexIndividual;
 
         /************************ Methods for the content handler *****************/
         public ProblemfileHandler(Domain aDomain, Problem aProblem) {
@@ -113,12 +115,24 @@ public class CurrentNextCrispConverter {
                 problem.setName(problemname);
                 //problem.setDomain(domain);
 
+//                try {
+//                    plansize = Integer.parseInt(atts.getValue("plansize"));
+//                } catch (NumberFormatException e) {
+//                    throw new SAXParseException("Expecting integer number in plansize attribute.", null);
+//                }
+                
                 try {
-                    plansize = Integer.parseInt(atts.getValue("plansize"));
+                    referentnum = Integer.parseInt(atts.getValue("referents"));        
                 } catch (NumberFormatException e) {
-                    throw new SAXParseException("Expecting integer number in plansize attribute.", null);
+                    throw new SAXParseException("Expecting integer number in referents attribute.",null);
                 }
 
+                try {
+                    syntaxnodenum = Integer.parseInt(atts.getValue("syntaxnodes"));        
+                } catch (NumberFormatException e) {
+                    throw new SAXParseException("Expecting integer number in syntaxnodes attribute.",null);
+                }
+                
                 /* Grammar is not parsed from here any more// Open and parse the grammar file
                  * try {
                  *    grammar = GrammarParser.parseGrammar(convertGrammarPath(atts.getValue("grammar")));
@@ -130,8 +144,10 @@ public class CurrentNextCrispConverter {
                  */
 
                 // add Index TODO: what does this attribute do?
-                domain.addConstant(atts.getValue("index").toLowerCase(), "individual");
-
+                String indexIndividual = atts.getValue("index").toLowerCase();
+                problem.addObject(indexIndividual, "individual");
+                this.indexIndividual = indexIndividual;
+                
                 mainCat = atts.getValue("cat").toLowerCase(); // TODO: do we really need this as a member variable?
 
                 // This was in computeInitialState(Domain domain, Problem problem)
@@ -235,6 +251,10 @@ public class CurrentNextCrispConverter {
             characterBuffer.write(ch, start, length);
 
         }
+
+	public String getIndexIndividual() {
+	    return indexIndividual;
+	}
     }
 
     /*********************** Compute goal and domain  *****************/
@@ -353,7 +373,6 @@ public class CurrentNextCrispConverter {
         domain.addSubtype("stepindex", "object");
         domain.addSubtype("predicate", "object");
         domain.addSubtype("rolename", "object");
-        domain.addSubtype("treename", "object");
 
 
         List<String> substTypeList = new ArrayList<String>();
@@ -402,13 +421,11 @@ public class CurrentNextCrispConverter {
      *
      * @param grammar The grammar from which actions are generated
      */
-    private void computeDomain(Domain domain, Problem problem, CrispGrammar grammar) {
+    private void computeDomain(Domain domain, Problem problem, CrispGrammar grammar, String indexIndividual) {
         Map<String, HashSet<String>> roles = new HashMap<String, HashSet<String>>();
 
         // for each tree in the grammar
         for (String treeName : grammar.getAllTreeNames()) {
-
-            domain.addConstant(normalizeTreename(treeName), "treename");
 
             // Get all nodes in the tree
             ElementaryTree<Term> tree = grammar.getTree(treeName);
@@ -428,7 +445,7 @@ public class CurrentNextCrispConverter {
 
         // Add syntaxnode literals
 
-        String lastSyntaxNode = "n1";
+        String lastSyntaxNode = "n-1";
         problem.addObject(lastSyntaxNode, "syntaxnode");
 
         List<Term> currentSubterms = new ArrayList<Term>();
@@ -436,8 +453,8 @@ public class CurrentNextCrispConverter {
         problem.addToInitialState(new Compound("current", currentSubterms));
 
         String newSyntaxNode;
-        for (int i = 2; i <= plansize; i++) {
-            newSyntaxNode = "n" + i;
+        for (int i = 2; i <= syntaxnodenum; i++) {
+            newSyntaxNode = "n-" + i;
             problem.addObject(newSyntaxNode, "syntaxnode");
 
             if (lastSyntaxNode != null) {
@@ -450,6 +467,24 @@ public class CurrentNextCrispConverter {
 
         }
 
+        String lastReferent = indexIndividual;
+        problem.addObject(lastReferent, "individual");
+                
+        String newReferent;
+        for (int i = 2; i <= referentnum; i++) {
+            newReferent = "e-" + i;
+            problem.addObject(newReferent, "individual");
+
+            if (lastReferent != null) {
+                List<Term> subterms = new ArrayList<Term>();
+                subterms.add(new Constant(lastReferent));
+                subterms.add(new Constant(newReferent));
+                problem.addToInitialState(new Compound("next-referent", subterms));
+            }
+            lastReferent = newReferent;
+
+        }
+        
         // compute actions from lexical entries
         for (String word : grammar.getAllWords()) {
             //System.out.println("\n" + word + ":");
@@ -627,8 +662,39 @@ public class CurrentNextCrispConverter {
 
                 }
 
-
                 Set<String> additionalParams = entry.getAdditionalParams().keySet();
+
+                for (Term impEffTerm : entry.getImperativeEffects()) {
+                    Compound impEffCompound = ((Compound) impEffTerm);
+                    Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(impEffTerm, n, I, nextMap, additionalParams, ConstantType.NORMAL);
+                    
+
+                    hasContent = true;
+
+                    Compound impEffPredicate = makeImperativeEffectPredicate(impEffCompound);
+                    List<String> impEffPredicateTypes = new ArrayList<String>();
+                    for (int j = 0; j < impEffPredicate.getSubterms().size(); j++) {
+                        semPredicateTypes.add("individual");
+                    }
+                    domain.addPredicate(semPredicate.getLabel(), semPredicateTypes);
+                    goals.add(new Literal(termWithVariables, true));
+
+                    contentWithVariables.add(termWithVariables);
+
+                    effects.add(new Literal((Compound) flattenTerm(termWithVariables, "needtoexpress"), false));
+
+
+                    if (semContCompound.getSubterms().size() > maximumArity) {
+                        maximumArity = semContCompound.getSubterms().size();
+                    }
+
+
+                    domain.addConstant(renamePredicate(semContCompound.getLabel()), "predicate");
+
+                }
+
+                
+                
 
                 // Add semantic requirements to preconditions
                 for (Term semReqTerm : entry.getSemanticRequirements()) {
@@ -647,7 +713,6 @@ public class CurrentNextCrispConverter {
                     Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(pragEffectTerm, n, I, nextMap, additionalParams, ConstantType.NORMAL);
                     effects.add(new Literal(termWithVariables, true));
                 }
-
 
                 // TODO
                 // pragmatic requirements must be satisfied
@@ -825,7 +890,7 @@ public class CurrentNextCrispConverter {
             parser.parse(new InputSource(problemfile), handler);
 
 //            CrispGrammar filteredGrammar = (CrispGrammar) new GrammarFilterer<Term>().filter(grammar, new SemanticsPredicateListFilter(handler.predicatesInWorld) );
-            computeDomain(domain, problem, grammar);
+            computeDomain(domain, problem, grammar, handler.getIndexIndividual());
             computeGoal(domain, problem);
 
         } catch (ParserConfigurationException e) {

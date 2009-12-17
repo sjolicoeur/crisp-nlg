@@ -82,7 +82,7 @@ public class SituatedCrispXmlInputCodec implements InputCodec<Term> {
                     currentPragEff = new ArrayList<Term>();
                     currentImpEff = new ArrayList<Term>();
                     additionalParams = new HashMap<String,String>();
-                    currentParamType = "individual"; // default to individual
+                    currentParamType = "userdef"; // default to 'userdef'
                 } else {
                     currentTree = new ElementaryTree<Term>();
                     currentTree.setType(ElementaryTreeType.INITIAL);

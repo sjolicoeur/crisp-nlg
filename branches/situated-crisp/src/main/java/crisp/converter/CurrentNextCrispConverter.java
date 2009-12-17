@@ -58,6 +58,14 @@ import de.saar.penguin.tag.grammar.filter.SemanticsPredicateListFilter;
  * description files.
  */
 public class CurrentNextCrispConverter {
+
+
+    private enum ConstantType {
+        ID,
+        NEXT,
+        NORMAL;
+    }
+
     // Default Handler already does a lot of work like
     // parse error handling and registering the handler
     // with a parser.
@@ -501,6 +509,8 @@ public class CurrentNextCrispConverter {
                 // compute n and I as in the paper
                 Map<String, String> n = new HashMap<String, String>();
                 Map<String, String> I = new HashMap<String, String>();
+                Map<String, String> rolesToSyntaxnodes = new HashMap<String, String>();
+                Map<String, String> nextMap = new HashMap<String, String>();
                 int roleno = 1;
 
                 n.put("self", "?u");
@@ -508,7 +518,9 @@ public class CurrentNextCrispConverter {
                 for (String role : roles.get(entry.tree)) {                    
                     if (!role.equals("self")) {
                         n.put(role, "?u" + roleno);
-                        I.put(n.get(role), "?x" + (roleno++));
+                        String syntaxnode = "?x" +(roleno++);
+                        I.put(n.get(role), syntaxnode);
+                        rolesToSyntaxnodes.put(role, syntaxnode);
                     }
                 }
 
@@ -543,6 +555,7 @@ public class CurrentNextCrispConverter {
                             effects.add(new Literal("current(" + current + ")", false));
                         } else {
                             goals.add(new Literal("next(" + last + ", " + current + ")", true));
+                            nextMap.put(last.toString(), current.toString());
                         }
                         last = current;
                     }
@@ -555,11 +568,19 @@ public class CurrentNextCrispConverter {
                     variableTypes.add("syntaxnode");
                     goals.add(new Literal("next(" + last + "," + current + ")", true));
                     effects.add(new Literal("current(?un)", true));
+                    nextMap.put(last.toString(), current.toString());
+                }
 
+                for (String additionalParam : entry.getAdditionalParams().keySet()) {
+                    variables.add(new Constant("?"+additionalParam));
+                    String type = entry.getAdditionalParams().get(additionalParam);
+                    variableTypes.add(type);
+                    domain.addSubtype(type, "object");
                 }
 
                 Compound pred = new Compound(label, variables);
 
+                // PRECONDITIONS
 
                 // require reference from u to the parameter for role self
                 goals.add(new Literal("referent(?u," + I.get("?u") + ")", true));
@@ -606,21 +627,24 @@ public class CurrentNextCrispConverter {
 
                 }
 
+
+                Set<String> additionalParams = entry.getAdditionalParams().keySet();
+
                 // Add semantic requirements to preconditions
                 for (Term semReqTerm : entry.getSemanticRequirements()) {
-                    Compound termWithVariables = (Compound) substituteVariablesForRoles(semReqTerm, n, I);
+                    Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(semReqTerm, n, I, nextMap, additionalParams, ConstantType.NORMAL);
                     goals.add(new Literal(termWithVariables, true));
                 }
 
                 // Add pragmatic preconditions
-                for (Term pragPrecondTerm : entry.getPragmaticPreconditions()) {
-                    Compound termWithVariables = (Compound) substituteVariablesForRoles(pragPrecondTerm, n, I);
+                for (Term pragPrecondTerm : entry.getPragmaticPreconditions()) {                    
+                    Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(pragPrecondTerm, n, I, nextMap, additionalParams, ConstantType.NORMAL);
                     goals.add(new Literal(termWithVariables, true));
                 }
 
                 // Add pragmatic effects
-                for (Term pragEffectTerm : entry.getPragmaticEffects()) {
-                    Compound termWithVariables = (Compound) substituteVariablesForRoles(pragEffectTerm, n, I);
+                for (Term pragEffectTerm : entry.getPragmaticEffects()) {                    
+                    Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(pragEffectTerm, n, I, nextMap, additionalParams, ConstantType.NORMAL);
                     effects.add(new Literal(termWithVariables, true));
                 }
 
@@ -826,6 +850,7 @@ public class CurrentNextCrispConverter {
      * @param I a mapping of node identities to variables
      * @return
      */
+
     private Term substituteVariablesForRoles(Term term, Map<String, String> n, Map<String, String> I) {
         if (term instanceof Compound) {
             Compound t = (Compound) term;
@@ -936,4 +961,57 @@ public class CurrentNextCrispConverter {
     return new File(problempath,filename);
     }
      */
+
+
+    private Term newSubstituteVariablesForRoles(Term term, Map<String, String> n, Map<String, String> I, Map<String, String> nextMap, Set<String> additionalParams, ConstantType type) {
+        if (term.isCompound()) {
+            Compound t = (Compound) term;
+
+            if (t.getLabel().equals("id")) {
+                return newSubstituteVariablesForRoles(t.getSubterms().get(0), n, I, nextMap, additionalParams, ConstantType.ID);
+            } else if (t.getLabel().equals("next")) {
+                return newSubstituteVariablesForRoles(t.getSubterms().get(0), n, I, nextMap, additionalParams, ConstantType.NEXT);
+            } else {
+                List<Term> newChildren = new ArrayList<Term>();
+
+                for (Term sub : t.getSubterms()) {
+                    newChildren.add(newSubstituteVariablesForRoles(sub, n, I, nextMap, additionalParams, ConstantType.NORMAL));
+                }
+
+                return new Compound(t.getLabel(), newChildren);
+            }
+
+        } else if (term.isConstant()) {
+
+            Constant t = (Constant) term;
+
+            if (n.containsKey(t.getName())) {
+                switch (type) {
+
+                    case ID:
+                        return new Variable(n.get(t.getName()));
+
+
+                    case NEXT:
+                        return new Variable(nextMap.get(n.get(t.getName())));
+
+                    default:
+                        return new Variable(I.get(n.get(t.getName())));
+
+
+                }
+            } else {
+                if (additionalParams.contains(t.getName())) {
+                    return new Constant("?"+t.getName());
+                } else {
+                    return t;
+                }
+            }
+
+        } else {
+            return term;
+        }
+    }
+
+
 }

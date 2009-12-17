@@ -288,12 +288,20 @@ hope thus resides mainly in the $h^m$ family and in abstraction
 heuristics. We ran a few tests with an example like the rabbit one,
 except that there are 10 distractors. The Graphplan estimate for the
 initial state is $4$, i.e., $h^2$ is better than $h^+$ here. Still,
-$4$ is far away from the real goal distance $14$ {\bf here I could use
-  differently scaled versions to see whether the distance estimate is
-  constant across the number of distractors; I would think that
-  yes}. With merge\&shrink \cite{helmert:etal:icaps07}, {\bf \dots
-  (malte agreed to run a test on modifiers-10-10-).. larger versions
-  would also be useful, to see how the search spaces develop}
+$4$ is far away from the real goal distance $14$. %
+%{\bf here I could use
+%  differently scaled versions to see whether the distance estimate is
+%  constant across the number of distractors; I would think that
+%  yes}. 
+With merge\&shrink \cite{helmert:etal:icaps07}, we experimented with
+various settings for the parameters (number of abstractions and size
+limit for each abstraction) but could not find a setting that reduced
+the search nodes to less than $5000$. So, all in all, finding better
+heuristic functions for this kind of problem remains a challenge.
+
+%{\bf \dots
+%  (malte agreed to run a test on modifiers-10-10-).. larger versions
+%  would also be useful, to see how the search spaces develop}
 
 
 
@@ -308,7 +316,7 @@ the set of avaibale actions quite effectively. For example, in the
 10-distractor test instance, $16875$ nodes are explored without
 helpful actions pruning; with pruning, this reduces to $3078$. For
 larger examples, the factor between the two numbers tends to become
-larger. {\bf here, again, having actual scaled examples would help}
+larger. %{\bf here, again, having actual scaled examples would help}
 %{\bf use here larger version of
 %  modifiers-10-10???}
 

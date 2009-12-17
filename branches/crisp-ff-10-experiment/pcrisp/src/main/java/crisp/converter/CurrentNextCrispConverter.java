@@ -469,7 +469,7 @@ public class CurrentNextCrispConverter {
                     if (tree.getNodeType(node) == NodeType.SUBSTITUTION) {
                         substNodes.add(node);
                     } else {
-                        if (tree.getNodeType(node) == NodeType.INTERNAL &&
+                        if ((tree.getNodeType(node) == NodeType.INTERNAL || tree.getNodeType(node) == NodeType.ANCHOR) &&
                                 tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION &&
                                 tree.getNodeDecoration(node) != null &&
                                 tree.getNodeDecoration(node).toString() != null) {

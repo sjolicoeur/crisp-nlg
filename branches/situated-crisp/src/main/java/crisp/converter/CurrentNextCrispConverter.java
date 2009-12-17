@@ -87,6 +87,7 @@ public class CurrentNextCrispConverter {
         private Set<Term> trueAtoms;
         private Map<String, Set<Integer>> predicatesInWorld;
 	private String indexIndividual;
+        private List<String> currentParamTypes;
 
         /************************ Methods for the content handler *****************/
         public ProblemfileHandler(Domain aDomain, Problem aProblem) {
@@ -168,6 +169,14 @@ public class CurrentNextCrispConverter {
 
             if (qName.equals("world")) {
                 characterBuffer = new StringWriter();
+                String params = atts.getValue("types");
+                currentParamTypes = new ArrayList<String>();
+                if (params != null) {
+                    String[] paramTypes = params.split(" ");
+                    for (int i = 0; i < paramTypes.length; i++) {
+                        currentParamTypes.add(paramTypes[i]);
+                    }
+                }
             }
 
             if (qName.equals("commgoal")) {
@@ -193,9 +202,15 @@ public class CurrentNextCrispConverter {
                 Compound compoundTerm = (Compound) term;
                 addPredicateInWorld(compoundTerm);
 
-                List<String> types = new ArrayList<String>();
-                for (int i = 0; i < compoundTerm.getSubterms().size(); i++) {
-                    types.add("individual");
+
+                List<String> types;
+                if (currentParamTypes.isEmpty()) {
+                    types = new ArrayList<String>();
+                    for (int i = 0; i < compoundTerm.getSubterms().size(); i++) {
+                        types.add("individual");
+                    }
+                } else {
+                    types = currentParamTypes;
                 }
                 domain.addPredicate(compoundTerm.getLabel(), types);
                 //addIndividualConstants(term,domain);
@@ -226,6 +241,29 @@ public class CurrentNextCrispConverter {
                 }
 
             }
+
+            if (qName.equals("impgoal")) { // Communicative goal definition ends here
+                Term term = TermParser.parse(characterBuffer.toString());
+
+                // This was in computeInitialState(Domain domain, Problem problem)
+
+                // keep track of maximum arity
+                if (term instanceof Compound) {
+                    Compound c = (Compound) term;
+
+                    int arity = c.getSubterms().size();
+                    if (arity > maximumArity) {
+                        maximumArity = arity;
+                    }
+                    problem.registerComgoalArity(arity);
+
+                    domain.addConstant(renameImperative(c.getLabel()), "predicate");
+
+                    problem.addToInitialState(flattenImpTerm(c, "needtoexpress"));
+                }
+
+            }
+
         }
 
         private void addPredicateInWorld(Compound term) {
@@ -340,6 +378,8 @@ public class CurrentNextCrispConverter {
             }
 
             domain.addPredicate("needtoexpress-" + i, predNTEtypeList);
+            domain.addPredicate("todo-" + i, predNTEtypeList);
+
         }
 
 
@@ -671,25 +711,25 @@ public class CurrentNextCrispConverter {
 
                     hasContent = true;
 
-                    Compound impEffPredicate = makeImperativeEffectPredicate(impEffCompound);
+                    Compound impEffPredicate = makeSemanticPredicate(impEffCompound);
                     List<String> impEffPredicateTypes = new ArrayList<String>();
                     for (int j = 0; j < impEffPredicate.getSubterms().size(); j++) {
-                        semPredicateTypes.add("individual");
+                        impEffPredicateTypes.add("individual");
                     }
-                    domain.addPredicate(semPredicate.getLabel(), semPredicateTypes);
+                    domain.addPredicate(impEffPredicate.getLabel(), impEffPredicateTypes);
                     goals.add(new Literal(termWithVariables, true));
 
                     contentWithVariables.add(termWithVariables);
 
-                    effects.add(new Literal((Compound) flattenTerm(termWithVariables, "needtoexpress"), false));
+                    effects.add(new Literal((Compound) flattenImpTerm(termWithVariables, "needtoexpress"), false));
+                    effects.add(new Literal((Compound) flattenImpTerm(termWithVariables, "todo"), true));
 
 
-                    if (semContCompound.getSubterms().size() > maximumArity) {
-                        maximumArity = semContCompound.getSubterms().size();
+                    if (impEffCompound.getSubterms().size() > maximumArity) {
+                        maximumArity = impEffCompound.getSubterms().size();
                     }
 
-
-                    domain.addConstant(renamePredicate(semContCompound.getLabel()), "predicate");
+                    domain.addConstant(renameImperative(impEffCompound.getLabel()), "predicate");
 
                 }
 
@@ -967,8 +1007,22 @@ public class CurrentNextCrispConverter {
         return new Compound(newLabel + "-" + t.getSubterms().size(), subterms);
     }
 
+    private Term flattenImpTerm(Compound t, String newLabel) {
+        List<Term> subterms = new ArrayList<Term>();
+
+        subterms.add(new Constant(renameImperative(t.getLabel())));
+        subterms.addAll(t.getSubterms());
+
+        return new Compound(newLabel + "-" + t.getSubterms().size(), subterms);
+    }
+
+
     private String renamePredicate(String predicate) {
         return "pred-" + predicate;
+    }
+
+      private String renameImperative(String predicate) {
+        return "imp-" + predicate;
     }
 
     /**
@@ -1021,6 +1075,8 @@ public class CurrentNextCrispConverter {
 
         return new Compound(t.getLabel(), subterms);
     }
+
+
     /*
     public static File convertGrammarPath(String filename){
     return new File(problempath,filename);

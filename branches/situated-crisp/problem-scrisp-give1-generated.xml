@@ -6,7 +6,7 @@
 <commgoal>to-do(push(e-1,b6))</commgoal>
 
 <world>target(b6)</world>
-<world>player-position(pos_5_1)</world>
+<world types="positiontype">player-position(pos_5_1)</world>
 <world>player-orientation(north)</world>
 
 <world>blocked(pos_1_7,pos_1_6)</world>

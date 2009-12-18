@@ -377,7 +377,7 @@ public class CurrentNextCrispConverter {
 
         // since negated needtoexpress-* literals can also occur with other arity we
         // need to add predicates for any arity to the domain.
-        for (int i = 1; i <= maximumArity; i++) {
+        for (int i = 0; i <= maximumArity; i++) {
 
             List<String> predNTEtypeList = new ArrayList<String>();
             predNTEtypeList.add("predicate");
@@ -833,7 +833,7 @@ public class CurrentNextCrispConverter {
                     effects.add(new Literal("referent(" + roleN + ", " + I.get(roleN) + ")", true));
 
                     //distractors
-                    
+                    if (hasContent) {
                         Variable distractorVar = new Variable("?y");
                         Substitution distractorSubst = new Substitution(new Variable(I.get(roleN)), distractorVar);
 
@@ -869,7 +869,7 @@ public class CurrentNextCrispConverter {
                         effects.add(new Universal(distractorQuantifierVars, distractorQuantifierVarTypes,
                                 new Conditional(distractorPrecondition,
                                 new Literal("distractor(" + roleN + ",?y)", true))));
-                    
+                    }
                 }
 
                 // internal nodes: allow adjunction

@@ -238,6 +238,7 @@
     <tree refid='a.An'>
       <pragcond>forall(y,not(and(distractor(id(self),y),left-of(y,self))))</pragcond>
       <prageff>forall(y,when(left-of(self,y),not(distractor(id(self),y))))</prageff>
+      <var>y</var>
     </tree>
   </entry>
 
@@ -245,6 +246,7 @@
     <tree refid='a.An'>
       <pragcond>forall(y,not(and(distractor(id(self),y),left-of(self,y))))</pragcond>
       <prageff>forall(y,when(left-of(y,self),not(distractor(id(self),y))))</prageff>
+      <var>y</var>
     </tree>
   </entry>
 
@@ -252,6 +254,7 @@
     <tree refid='a.An'>
       <pragcond>forall(y,not(and(distractor(id(self),y),above(y,self))))</pragcond>
       <prageff>forall(y,when(above(self,y),not(distractor(id(self),y))))</prageff>
+      <var>y</var>
     </tree>
   </entry>
 
@@ -259,6 +262,7 @@
     <tree refid='a.An'>
       <pragcond>forall(y,not(and(distractor(id(self),y),above(self,y))))</pragcond>
       <prageff>forall(y,when(above(y,self),not(distractor(id(self),y))))</prageff>
+      <var>y</var>
     </tree>
   </entry>
 

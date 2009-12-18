@@ -3,7 +3,7 @@
 <crispproblem name="scrisp-give1" grammar="grammar-scrisp-give1.xml"
   cat="S" index="e-1" syntaxnodes="5" referents="4">
 
-<commgoal>to-do(push(e-1,b6))</commgoal>
+<impgoal>push(e-1,b6)</impgoal>
 
 <world>target(b6)</world>
 <world type="positiontype">player-position(pos_5_1)</world>

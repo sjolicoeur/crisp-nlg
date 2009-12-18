@@ -112,7 +112,7 @@
       <pragcond>object-orientation(obj,o3)</pragcond>
       <pragcond>next-orientation-left(o,o2)</pragcond>
       <pragcond>next-orientation-left(o2,o3)</pragcond>
-      <impeff>push(self,obj)</impeff>
+      <impeff>push(obj)</impeff>
       <param type="positiontype">p</param>
       <param type="orientationtype">o</param>
       <param type="orientationtype">o2</param>

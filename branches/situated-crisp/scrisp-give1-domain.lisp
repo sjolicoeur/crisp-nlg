@@ -38,7 +38,7 @@
          (movetwosteps ?x1 - individual  )
          (door ?x1 - individual  )
          (next-referent ?x1 - individual  ?x2 - individual  )
-         (push ?x1 - individual  ?x2 - individual  )
+         (push ?x1 - individual  )
          (object-position ?x1 - individual  ?x2 - positiontype  )
          (needtoexpress-2 ?x1 - predicate  ?x2 - individual  ?x3 - individual  )
          (needtoexpress-1 ?x1 - predicate  ?x2 - individual  )
@@ -103,7 +103,7 @@
    (:action init-transImperative-push
       :parameters (?x - individual  ?u - syntaxnode  ?x1 - individual  ?u1 - syntaxnode  ?un - syntaxnode  ?o2 - orientationtype  ?o3 - orientationtype  ?p - positiontype  ?o - orientationtype  )
       :precondition (and (current ?u1) (next ?u1 ?un) (referent ?u ?x) (subst s ?u) (button ?x1) (visible ?p ?o ?x1) (target ?x1) (player-position ?p) (player-orientation ?o) (object-orientation ?x1 ?o3) (next-orientation-left ?o ?o2) (next-orientation-left ?o2 ?o3))
-      :effect (and (not (current ?u1)) (current ?un) (not (subst s ?u)) (not (needtoexpress-1 imp-push ?x1)) (todo-0 imp-push) (subst np ?u1) (referent ?u1 ?x1) (forall (?y - individual  ) (when (and (not (= ?y ?x1)) (button ?y) (visible ?p ?o ?y)) (distractor ?u1 ?y))) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
+      :effect (and (not (current ?u1)) (current ?un) (not (subst s ?u)) (not (needtoexpress-0 imp-push)) (todo-0 imp-push) (subst np ?u1) (referent ?u1 ?x1) (forall (?y - individual  ) (when (and (not (= ?y ?x1)) (button ?y) (visible ?p ?o ?y)) (distractor ?u1 ?y))) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
    )
 
 

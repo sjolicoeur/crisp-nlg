@@ -32,7 +32,7 @@
        )
        (:predicates
          (alarmed ?x1 - positiontype  )
-         (visible ?x1 - individual  ?x2 - individual  ?x3 - individual  )
+         (visible ?x1 - positiontype  ?x2 - orientationtype  ?x3 - individual  )
          (left-of ?x1 - individual  ?x2 - individual  )
          (next ?x1 - syntaxnode  ?x2 - syntaxnode  )
          (movetwosteps ?x1 - individual  )
@@ -48,6 +48,7 @@
          (current ?x1 - syntaxnode  )
          (above ?x1 - individual  ?x2 - individual  )
          (blocked ?x1 - positiontype  ?x2 - positiontype  )
+         (conj-node ?x1 - syntaxnode  )
          (flower ?x1 - individual  )
          (player-position ?x1 - positiontype  )
          (safe ?x1 - individual  )
@@ -78,8 +79,8 @@
 
    (:action aux-An-lower
       :parameters (?x - individual  ?u - syntaxnode  )
-      :precondition (and (referent ?u ?x) (canadjoin n ?u) (forall ?y - individual (not (and (distractor ?u ?y) (above ?x ?y)))))
-      :effect (and (not (mustadjoin n ?u)) (forall ?y - individual (when (above ?y ?x) (not (distractor ?u ?y)))) (canadjoin n ?u) (canadjoin a ?u))
+      :precondition (and (referent ?u ?x) (canadjoin n ?u) (forall (?y - individual) (not (and (distractor ?u ?y) (above ?x ?y)))))
+      :effect (and (not (mustadjoin n ?u)) (forall (?y - individual) (when (above ?y ?x) (not (distractor ?u ?y)))) (canadjoin n ?u) (canadjoin a ?u))
    )
 
 
@@ -106,8 +107,8 @@
 
    (:action aux-An-upper
       :parameters (?x - individual  ?u - syntaxnode  )
-      :precondition (and (referent ?u ?x) (canadjoin n ?u) (forall ?y - individual (not (and (distractor ?u ?y) (above ?y ?x)))))
-      :effect (and (not (mustadjoin n ?u)) (forall ?y - individual (when (above ?x ?y) (not (distractor ?u ?y)))) (canadjoin n ?u) (canadjoin a ?u))
+      :precondition (and (referent ?u ?x) (canadjoin n ?u) (forall (?y - individual) (not (and (distractor ?u ?y) (above ?y ?x)))))
+      :effect (and (not (mustadjoin n ?u)) (forall (?y - individual) (when (above ?x ?y) (not (distractor ?u ?y)))) (canadjoin n ?u) (canadjoin a ?u))
    )
 
 
@@ -120,15 +121,15 @@
 
    (:action aux-An-left
       :parameters (?x - individual  ?u - syntaxnode  )
-      :precondition (and (referent ?u ?x) (canadjoin n ?u) (forall ?y - individual (not (and (distractor ?u ?y) (left-of ?y ?x)))))
-      :effect (and (not (mustadjoin n ?u)) (forall ?y - individual (when (left-of ?x ?y) (not (distractor ?u ?y)))) (canadjoin n ?u) (canadjoin a ?u))
+      :precondition (and (referent ?u ?x) (canadjoin n ?u) (forall (?y - individual) (not (and (distractor ?u ?y) (left-of ?y ?x)))))
+      :effect (and (not (mustadjoin n ?u)) (forall (?y - individual) (when (left-of ?x ?y) (not (distractor ?u ?y)))) (canadjoin n ?u) (canadjoin a ?u))
    )
 
 
    (:action aux-An-right
       :parameters (?x - individual  ?u - syntaxnode  )
-      :precondition (and (referent ?u ?x) (canadjoin n ?u) (forall ?y - individual (not (and (distractor ?u ?y) (left-of ?x ?y)))))
-      :effect (and (not (mustadjoin n ?u)) (forall ?y - individual (when (left-of ?y ?x) (not (distractor ?u ?y)))) (canadjoin n ?u) (canadjoin a ?u))
+      :precondition (and (referent ?u ?x) (canadjoin n ?u) (forall (?y - individual) (not (and (distractor ?u ?y) (left-of ?x ?y)))))
+      :effect (and (not (mustadjoin n ?u)) (forall (?y - individual) (when (left-of ?y ?x) (not (distractor ?u ?y)))) (canadjoin n ?u) (canadjoin a ?u))
    )
 
 

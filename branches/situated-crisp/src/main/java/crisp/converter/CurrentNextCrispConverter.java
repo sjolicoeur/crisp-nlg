@@ -213,6 +213,7 @@ public class CurrentNextCrispConverter {
                 } else {
                     types = currentParamTypes;
                 }
+                
                 domain.addPredicate(compoundTerm.getLabel(), types);
                 //addIndividualConstants(term,domain);
                 for (int i=0; i<compoundTerm.getSubterms().size(); i++) {
@@ -677,9 +678,13 @@ public class CurrentNextCrispConverter {
                 List<Term> contentWithVariables = new ArrayList<Term>();
                 boolean hasContent = false;
 
+                Set<String> additionalParams = entry.getAdditionalParams().keySet();
+                Map<String,String> additionalVars = entry.getAdditionalVars();
+
+
                 for (Term semContTerm : entry.semantics) {
                     Compound semContCompound = ((Compound) semContTerm);
-                    Compound termWithVariables = (Compound) substituteVariablesForRoles(semContCompound, n, I);
+                    Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(semContCompound, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL);
 
                     hasContent = true;
 
@@ -689,6 +694,7 @@ public class CurrentNextCrispConverter {
                         semPredicateTypes.add("individual");
                     }
                     domain.addPredicate(semPredicate.getLabel(), semPredicateTypes);
+                    
                     goals.add(new Literal(termWithVariables, true));
 
                     contentWithVariables.add(termWithVariables);
@@ -705,8 +711,6 @@ public class CurrentNextCrispConverter {
 
                 }
 
-                Set<String> additionalParams = entry.getAdditionalParams().keySet();
-                Map<String,String> additionalVars = entry.getAdditionalVars();
 
                 for (Term impEffTerm : entry.getImperativeEffects()) {
                     Compound impEffCompound = ((Compound) impEffTerm);
@@ -847,14 +851,15 @@ public class CurrentNextCrispConverter {
                             Term term = distractorSubst.apply(substituteVariablesForRoles(sr, n, I));
                             distractorPreconditions.add(new Literal((Compound) term, true));
 
-                            Compound distractorPredicate = makeSemanticPredicate(term);
-                            List<String> distractorPredicateTypes = new ArrayList<String>();
+                            //Compound distractorPredicate = makeSemanticPredicate(term);
+                            /*List<String> distractorPredicateTypes = new ArrayList<String>();
                             for (int j = 0; j < distractorPredicate.getSubterms().size(); j++) {
                                 distractorPredicateTypes.add("individual");
                             }
 
+                            )
                             domain.addPredicate(distractorPredicate.getLabel(), distractorPredicateTypes);
-
+                            */
                         }
 
                         Formula distractorPrecondition = new Conjunction(distractorPreconditions);
@@ -1143,8 +1148,7 @@ public class CurrentNextCrispConverter {
                 switch (type) {
                     case QUANT:
                         if (additionalVars.containsKey(t.getName())) {
-                            System.out.println("is additional var :"+t.getName());
-                            return new Constant("?"+t.getName()+" - "+additionalVars.get(t.getName()));
+                            return new Constant("(?"+t.getName()+" - "+additionalVars.get(t.getName())+")");
                         } else {
                             return t;
                         }

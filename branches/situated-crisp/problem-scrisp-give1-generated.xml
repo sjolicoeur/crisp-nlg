@@ -5,7 +5,7 @@
 
 <impgoal>push(e-1,b6)</impgoal>
 
-<world>conj-node(e-1)</world>
+<world type="syntaxnode">conj-node(e-1)</world>
 <world>target(b6)</world>
 <world type="positiontype">player-position(pos_5_1)</world>
 <world type="orientationtype">player-orientation(north)</world>

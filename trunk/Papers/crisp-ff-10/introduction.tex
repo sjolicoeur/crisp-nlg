@@ -25,14 +25,13 @@ diverge from most IPC benchmarks.
 
 In this paper, we revisit this situation, analyze the sources of
 inefficiency in more detail in the context of the FF planner
-\cite{HoffmannNebel01}, and show how to ``wake up the sleeping
-rabbit'': we modify FF to obtain dramatically better performance. We
-achieve this by tweaking the implementation of FF's preprocessor, and
-by acting on some simple but shocking observations regarding the
-behavior of some of FF's search techniques, in particular its goal
-ordering technique and the relaxed plan heuristic. The changes we make
-are all simple, but make FF perform well enough to be useful in
-practical NLG applications.
+\cite{HoffmannNebel01}, and show how to modify FF to obtain
+dramatically better performance. We achieve this by tweaking the
+implementation of FF's preprocessor, and by acting on some simple but
+shocking observations regarding the behavior of some of FF's search
+techniques, in particular its goal ordering technique and the relaxed
+plan heuristic. The changes we make are all simple, but make FF
+perform well enough to be useful in practical NLG applications.
 
 %the enforced hillclimbing and best-first search strategies on the NLG
 %domain.  Neither of these changes degrades FF's performance on other

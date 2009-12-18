@@ -377,7 +377,7 @@ public class CurrentNextCrispConverter {
 
         // since negated needtoexpress-* literals can also occur with other arity we
         // need to add predicates for any arity to the domain.
-        for (int i = 0; i <= maximumArity; i++) {
+        for (int i = 1; i <= maximumArity; i++) {
 
             List<String> predNTEtypeList = new ArrayList<String>();
             predNTEtypeList.add("predicate");
@@ -1024,8 +1024,7 @@ public class CurrentNextCrispConverter {
 
         subterms.add(new Constant(renameImperative(t.getLabel())));
 
-        List<Term> args = t.getSubterms();
-        if (args.size() > 0) args.remove(0);
+        List<Term> args = t.getSubterms();        
         subterms.addAll(args);
 
 

@@ -42,7 +42,6 @@
          (object-position ?x1 - individual  ?x2 - positiontype  )
          (needtoexpress-2 ?x1 - predicate  ?x2 - individual  ?x3 - individual  )
          (needtoexpress-1 ?x1 - predicate  ?x2 - individual  )
-         (needtoexpress-0 ?x1 - predicate  )
          (subst ?x1 - category  ?x2 - syntaxnode  )
          (button ?x1 - individual  )
          (next-orientation-left ?x1 - orientationtype  ?x2 - orientationtype  )
@@ -72,7 +71,6 @@
          (target ?x1 - individual  )
          (player-orientation ?x1 - orientationtype  )
          (turnleft ?x1 - individual  )
-         (todo-0 ?x1 - predicate  )
          (canadjoin ?x1 - category  ?x2 - syntaxnode  )
          (todo-2 ?x1 - predicate  ?x2 - individual  ?x3 - individual  )
          (distractor ?x1 - syntaxnode  ?x2 - individual  )
@@ -89,7 +87,7 @@
    (:action init-intransImperative-movetwosteps
       :parameters (?x - individual  ?u - syntaxnode  ?p3 - positiontype  ?p2 - positiontype  ?p1 - positiontype  ?o - orientationtype  )
       :precondition (and (referent ?u ?x) (subst s ?u) (player-position ?p1) (player-orientation ?o) (adjacent ?p1 ?p2 ?o) (not (blocked ?p1 ?p2)) (not (alarmed ?p2)) (adjacent ?p2 ?p3 ?o) (not (blocked ?p2 ?p3)) (not (alarmed ?p3)))
-      :effect (and (not (subst s ?u)) (not (needtoexpress-0 imp-movetwosteps)) (todo-0 imp-movetwosteps) (not (player-position ?p1)) (player-position ?p3) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
+      :effect (and (not (subst s ?u)) (not (needtoexpress-1 imp-movetwosteps ?x)) (todo-1 imp-movetwosteps ?x) (not (player-position ?p1)) (player-position ?p3) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
    )
 
 
@@ -103,7 +101,7 @@
    (:action init-transImperative-push
       :parameters (?x - individual  ?u - syntaxnode  ?x1 - individual  ?u1 - syntaxnode  ?un - syntaxnode  ?o2 - orientationtype  ?o3 - orientationtype  ?p - positiontype  ?o - orientationtype  )
       :precondition (and (current ?u1) (next ?u1 ?un) (referent ?u ?x) (subst s ?u) (button ?x1) (visible ?p ?o ?x1) (target ?x1) (player-position ?p) (player-orientation ?o) (object-orientation ?x1 ?o3) (next-orientation-left ?o ?o2) (next-orientation-left ?o2 ?o3))
-      :effect (and (not (current ?u1)) (current ?un) (not (subst s ?u)) (not (needtoexpress-0 imp-push)) (todo-0 imp-push) (subst np ?u1) (referent ?u1 ?x1) (forall (?y - individual  ) (when (and (not (= ?y ?x1)) (button ?y) (visible ?p ?o ?y)) (distractor ?u1 ?y))) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
+      :effect (and (not (current ?u1)) (current ?un) (not (subst s ?u)) (not (needtoexpress-1 imp-push ?x1)) (todo-1 imp-push ?x1) (subst np ?u1) (referent ?u1 ?x1) (forall (?y - individual  ) (when (and (not (= ?y ?x1)) (button ?y) (visible ?p ?o ?y)) (distractor ?u1 ?y))) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
    )
 
 
@@ -166,7 +164,7 @@
    (:action init-intransImperative-turnright
       :parameters (?x - individual  ?u - syntaxnode  ?o2 - orientationtype  ?o1 - orientationtype  )
       :precondition (and (referent ?u ?x) (subst s ?u) (player-orientation ?o1) (next-orientation-left ?o2 ?o1))
-      :effect (and (not (subst s ?u)) (not (needtoexpress-0 imp-turnright)) (todo-0 imp-turnright) (not (player-orientation ?o1)) (player-orientation ?o2) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
+      :effect (and (not (subst s ?u)) (not (needtoexpress-1 imp-turnright ?x)) (todo-1 imp-turnright ?x) (not (player-orientation ?o1)) (player-orientation ?o2) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
    )
 
 
@@ -187,7 +185,7 @@
    (:action init-intransImperative-turnaround
       :parameters (?x - individual  ?u - syntaxnode  ?o2 - orientationtype  ?o1 - orientationtype  ?o3 - orientationtype  )
       :precondition (and (referent ?u ?x) (subst s ?u) (player-orientation ?o1) (next-orientation-left ?o1 ?o2) (next-orientation-left ?o2 ?o3))
-      :effect (and (not (subst s ?u)) (not (needtoexpress-0 imp-turnaround)) (todo-0 imp-turnaround) (not (player-orientation ?o1)) (player-orientation ?o3) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
+      :effect (and (not (subst s ?u)) (not (needtoexpress-1 imp-turnaround ?x)) (todo-1 imp-turnaround ?x) (not (player-orientation ?o1)) (player-orientation ?o3) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
    )
 
 
@@ -208,7 +206,7 @@
    (:action init-intransImperative-moveonestep
       :parameters (?x - individual  ?u - syntaxnode  ?p2 - positiontype  ?p1 - positiontype  ?o - orientationtype  )
       :precondition (and (referent ?u ?x) (subst s ?u) (player-position ?p1) (player-orientation ?o) (adjacent ?p1 ?p2 ?o) (not (blocked ?p1 ?p2)) (not (alarmed ?p2)))
-      :effect (and (not (subst s ?u)) (not (needtoexpress-0 imp-moveonestep)) (todo-0 imp-moveonestep) (not (player-position ?p1)) (player-position ?p2) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
+      :effect (and (not (subst s ?u)) (not (needtoexpress-1 imp-moveonestep ?x)) (todo-1 imp-moveonestep ?x) (not (player-position ?p1)) (player-position ?p2) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
    )
 
 
@@ -229,7 +227,7 @@
    (:action init-intransImperative-movethreesteps
       :parameters (?x - individual  ?u - syntaxnode  ?p4 - positiontype  ?p3 - positiontype  ?p2 - positiontype  ?p1 - positiontype  ?o - orientationtype  )
       :precondition (and (referent ?u ?x) (subst s ?u) (player-position ?p1) (player-orientation ?o) (adjacent ?p1 ?p2 ?o) (not (blocked ?p1 ?p2)) (not (alarmed ?p2)) (adjacent ?p2 ?p3 ?o) (not (blocked ?p2 ?p3)) (not (alarmed ?p3)) (adjacent ?p3 ?p4 ?o) (not (blocked ?p3 ?p4)) (not (alarmed ?p4)))
-      :effect (and (not (subst s ?u)) (not (needtoexpress-0 imp-movethreesteps)) (todo-0 imp-movethreesteps) (not (player-position ?p1)) (player-position ?p4) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
+      :effect (and (not (subst s ?u)) (not (needtoexpress-1 imp-movethreesteps ?x)) (todo-1 imp-movethreesteps ?x) (not (player-position ?p1)) (player-position ?p4) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
    )
 
 
@@ -257,7 +255,7 @@
    (:action init-intransImperative-turnleft
       :parameters (?x - individual  ?u - syntaxnode  ?o2 - orientationtype  ?o1 - orientationtype  )
       :precondition (and (referent ?u ?x) (subst s ?u) (player-orientation ?o1) (next-orientation-left ?o1 ?o2))
-      :effect (and (not (subst s ?u)) (not (needtoexpress-0 imp-turnleft)) (todo-0 imp-turnleft) (not (player-orientation ?o1)) (player-orientation ?o2) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
+      :effect (and (not (subst s ?u)) (not (needtoexpress-1 imp-turnleft ?x)) (todo-1 imp-turnleft ?x) (not (player-orientation ?o1)) (player-orientation ?o2) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
    )
 
 )

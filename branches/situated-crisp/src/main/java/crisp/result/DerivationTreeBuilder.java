@@ -71,7 +71,7 @@ public abstract class DerivationTreeBuilder{
     }
     
     protected List<Compound> getAdjPreconditions(Action action) {
-        return this.getPreconditionByLabel(action, "mustadjoin");
+        return this.getPreconditionByLabel(action, "canadjoin");
     }
 
 
@@ -110,14 +110,15 @@ public abstract class DerivationTreeBuilder{
         String label = compound.getLabel();            
         List<Term> arguments = compound.getSubterms();
         Action action = domain.findAction(label);
-        
+
+
         List<Term> variables = action.getPredicate().getSubterms();
         
         // Create a substitution (individuals for variables) for the original action to instantiate it. 
         int i = 0;
         Substitution subst = new Substitution();
-        for (Term v : variables) {
-            subst.setSubstitution((Variable) v,arguments.get(i)); // Ok, because arguments.get(i) is an individual
+        for (Term v : variables) {            
+            subst.setSubstitution((Variable) v, arguments.get(i)); // Ok, because arguments.get(i) is an individual
             i++;
         }
                     

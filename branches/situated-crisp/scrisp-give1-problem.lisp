@@ -9,6 +9,7 @@
         pos_11_7 - positiontype
         pos_11_6 - positiontype
         pos_11_5 - positiontype
+        foo - individual
         pos_11_4 - positiontype
         pos_11_8 - positiontype
         bt1 - individual
@@ -89,17 +90,17 @@
         pos_6_5 - positiontype
         pos_1_4 - positiontype
         pos_7_5 - positiontype
-        pos_1_3 - positiontype
         pos_6_4 - positiontype
+        pos_1_3 - positiontype
         pos_6_7 - positiontype
-        pos_7_4 - positiontype
         pos_1_2 - positiontype
+        pos_7_4 - positiontype
         pos_1_1 - positiontype
         pos_7_3 - positiontype
         pos_6_6 - positiontype
         pos_8_5 - positiontype
-        pos_1_0 - positiontype
         pos_5_6 - positiontype
+        pos_1_0 - positiontype
         pos_8_4 - positiontype
         pos_5_5 - positiontype
         pos_5_8 - positiontype
@@ -156,8 +157,8 @@
    (:init
       (subst s root)
       (referent root e-1)
-      (needtoexpress-2 imp-push e-1 b6)
-      (conj-node root)
+      (needtoexpress-1 imp-push b6)
+      (conj-node foo)
       (target b6)
       (player-position pos_5_1)
       (player-orientation north)
@@ -1639,5 +1640,5 @@
       (next-referent e-3 e-4)
    )
 
-   (:goal (and (forall (?a - category  ?u - syntaxnode  ) (not (mustadjoin ?a ?u))) (forall (?a - category  ?u - syntaxnode  ) (not (subst ?a ?u))) (forall (?u - syntaxnode  ?x - individual  ) (not (distractor ?u ?x))) (forall (?P - predicate  ?x1 - individual  ?x2 - individual  ) (not (needtoexpress-2 ?P ?x1 ?x2)))))
+   (:goal (and (forall (?a - category  ?u - syntaxnode  ) (not (mustadjoin ?a ?u))) (forall (?a - category  ?u - syntaxnode  ) (not (subst ?a ?u))) (forall (?u - syntaxnode  ?x - individual  ) (not (distractor ?u ?x))) (forall (?P - predicate  ?x1 - individual  ) (not (needtoexpress-1 ?P ?x1)))))
 )

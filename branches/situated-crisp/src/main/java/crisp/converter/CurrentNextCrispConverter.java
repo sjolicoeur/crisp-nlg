@@ -654,7 +654,7 @@ public class CurrentNextCrispConverter {
                 }
 
                 for (String additionalParam : entry.getAdditionalParams().keySet()) {
-                    variables.add(new Constant("?"+additionalParam));
+                    variables.add(new Variable("?"+additionalParam));
                     String type = entry.getAdditionalParams().get(additionalParam);
                     variableTypes.add(type);
                     domain.addSubtype(type, "object");
@@ -1163,7 +1163,7 @@ public class CurrentNextCrispConverter {
                         }
                     default:
                 if (additionalParams.contains(t.getName()) || additionalVars.containsKey(t.getName())) {
-                    return new Constant("?"+t.getName());
+                    return new Variable("?"+t.getName());
                 } else {
                     return t;
                 }

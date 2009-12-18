@@ -52,166 +52,159 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
         }                        
     }
     
-    private Map<String, ArrayList<Site>> substitutionSites;
-    private Map<Pair<String,String>, ArrayList<Site>> adjunctionSites;
+    private Map<String, Site> substitutionSites;
+    private Map<String, Site> adjunctionSites;
     
     public CrispDerivationTreeBuilder(Grammar<Term> grammar) {
         super(grammar);
         
    }       
                
-   
-   private void addNewSubstAndAdjSites(ElementaryTree tree, String derivationNode, String selfSem, String step) {
-       
-       // Get lists of nodes that are open for substitution and adjunction
-       ArrayList<String> substNodes = new ArrayList<String>();
-       ArrayList<String> adjNodes = new ArrayList<String>();
 
-       System.out.println(tree);
+    private String findNodeWithCat(String cat, ElementaryTree t) {
+        for (String node : t.getAllNodes()) {
+            if (t.getNodeLabel(node).equals(cat)){
+                return node;
+            }
+        }
+        return null;
 
-       for (String node : tree.getAllNodes()) {
-           if (tree.getNodeType(node) == NodeType.SUBSTITUTION) {
-               substNodes.add(node);
-           } else {
-               if (tree.getNodeType(node) == NodeType.INTERNAL &&
-                   tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION &&
-                   tree.getNodeDecoration(node) != null) {
-                       adjNodes.add(node);            
-               }               
-           }        
+    }
+
+   private void addNewSubstAndAdjSites(Action action, ElementaryTree tree, String derivationNode) {
+
+       //System.out.println("processing action " + action );
+       List<Compound> substEffects = getSubstEffects(action);
+       List<Compound> adjEffects = getAdjEffects(action);
+
+
+
+       for (Compound c : substEffects) {
+           //System.out.println("found subst effect "+c);
+           List<Term> subterms = c.getSubterms();
+           String cat = ((Constant) subterms.get(0)).getName();
+           String syntaxnode = ((Constant) subterms.get(1)).getName();
+           Site substSite = new Site(derivationNode, findNodeWithCat(cat, tree), cat);
+           substitutionSites.put(cat+":"+syntaxnode, substSite);
+
        }
-       
-       for (String substNode : substNodes) {
-           Site substSite = new Site(derivationNode, substNode, tree.getNodeLabel(substNode));
-                                 
-           String semEffect = ((Constant) tree.getNodeDecoration(substNode)).toString();
-           if (semEffect.equals("self")) {
-               semEffect = selfSem;
-           } else {
-               semEffect = semEffect+"-"+step;
-           }
-           
-           ArrayList<Site> effectsSites = substitutionSites.get(semEffect);
-                      
-           if (effectsSites == null) {
-               effectsSites = new ArrayList<Site>();
-               substitutionSites.put(semEffect, effectsSites);
-           }
-           effectsSites.add(substSite);
+    
+       for (Compound c : adjEffects) {
+           List<Term> subterms = c.getSubterms();
+           String cat = ((Constant) subterms.get(0)).getName();
+           String syntaxnode = ((Constant) subterms.get(1)).getName();
+           Site adjSite = new Site(derivationNode, findNodeWithCat(cat, tree), cat);
+           adjunctionSites.put(cat+":"+syntaxnode, adjSite);
        }
-       
-       for (String adjNode : adjNodes) {
-           Site adjSite = new Site(derivationNode, adjNode, tree.getNodeLabel(adjNode));
-           
-           String semEffect = ((Constant) tree.getNodeDecoration(adjNode)).toString();
-           if (semEffect.equals("self")) {
-               semEffect = selfSem;
-           } else {
-               semEffect = semEffect+"-"+step;
-           }
-           
-           Pair<String,String> semCat = new Pair<String, String>(semEffect, tree.getNodeLabel(adjNode));
-           
-           ArrayList<Site> effectsSites = substitutionSites.get(semCat);
-                      
-           if (effectsSites == null) {
-               effectsSites = new ArrayList<Site>();
-               adjunctionSites.put(semCat, effectsSites);
-           }
-           effectsSites.add(adjSite);
-       }                     
-       
+                                              
    }
    
     @Override 
     public void processPlanStep(Action action) {
-           
+
+            
             Compound pred = (Compound) action.getPredicate();
             String predicateName = action.getPredicate().getLabel();
            
             String[] predicateParts = predicateName.split("-");
-            String treename = predicateParts[0];
-            String word = predicateParts[1];            
-            List<Compound> stepTerms = getPreconditionByLabel(action, "step");
+            String type = predicateParts[0];
+            String typelesstreename = predicateParts[1];
 
-            String step = ((Constant) stepTerms.get(0).getSubterms().get(0)).getName().replace("step", "");
+            String treename = null;
+            if (type.equals("aux")) {
+                treename = "a."+typelesstreename;
+            } else {
+                treename = "i."+typelesstreename;
+            }
             
+            String word = predicateParts[2];
+
             ElementaryTree childTree = grammar.getTree(treename);
             LexiconEntry childEntry = grammar.getLexiconEntry(word, treename);
-            
+
+            System.out.println(treename +" : ");
+            System.out.println(childTree);
+
             // Won't be doing subst and adj. Only check for adj if subst not found.
             boolean operationFound = false;
 
-            for (Compound comp : getSubstPreconditions(action)) {
+            for (Compound comp : getSubstPreconditions(action)) {                
                 operationFound = true;
                 Constant catTerm = (Constant) comp.getSubterms().get(0);
-                Constant roleTerm = (Constant) comp.getSubterms().get(1);
-                String sem = roleTerm.getName();
+                Constant syntaxnodeTerm = (Constant) comp.getSubterms().get(1);
+                String syntaxnode = syntaxnodeTerm.getName();
                 String cat = catTerm.getName();
                 
-                List<Site> substSites = substitutionSites.get(sem);
+                Site substSite = substitutionSites.get(cat+":"+syntaxnode);
                 
-                if (substSites==null) {
-                    System.out.println(substitutionSites);
-                    throw new RuntimeException("No suitable substitution site found for role "+sem);                    
+                if (substSite==null) {
+                    throw new RuntimeException("No suitable substitution site found for "+action+".");
                 }                     
-                
-                Site substituted = null;
-                for (Site substSite : substSites) {
-                    if (cat.equals(substSite.cat)){ // Found a suitable substitution site
-                        
+
+               String substituted = null;
+               if (cat.equals(substSite.cat)){ // Found a suitable substitution site                        
                         String newDerivNode = currentDerivation.addNode(substSite.derivationNode, substSite.treeNode, treename, childEntry);                                                
-                        substituted = substSite;
-                        addNewSubstAndAdjSites(childTree, newDerivNode, sem, step);
-                                                
+                        substituted = substSite.cat + ":" + syntaxnode;
+                        addNewSubstAndAdjSites(action, childTree, newDerivNode);
                     }
-                    break;
-                }
+                                 
                 if (substituted!= null) 
-                    substSites.remove(substituted);
+                    substitutionSites.remove(substituted);
                 else 
                     throw new RuntimeException("No substitution was performed for action "+action);
+                break;
             }
             
-            if (!operationFound){ // No Subst operation, do adj instead
-                for (Compound comp : getAdjPreconditions(action)){
-                    Constant catTerm = (Constant) comp.getSubterms().get(0);
-                    Constant roleTerm = (Constant) comp.getSubterms().get(1);
-                    String sem = roleTerm.getName();
-                    String cat = catTerm.getName();
-                    
-                    Pair<String, String> catSem = new Pair<String, String>(sem, cat);
-                    List<Site> adjSites = adjunctionSites.get(catSem);
-                
-                    if (adjSites==null || adjSites.size()==0) {
-                        throw new RuntimeException("Adjunction for "+action+" not possible. catSem was " + catSem);
-                    } else {
-                        Site adjoinTo = adjSites.get(0);
-                        String newDerivNode = currentDerivation.addNode(adjoinTo.derivationNode, adjoinTo.treeNode, treename, childEntry);
-                        addNewSubstAndAdjSites(childTree, newDerivNode, sem, step);
-                    }
+            //if (!operationFound){ // No Subst operation, do adj instead
+
+            for (Compound comp : getAdjPreconditions(action)) {
+                //System.out.println(action + "is an adj action.");
+                operationFound = true;
+                Constant catTerm = (Constant) comp.getSubterms().get(0);
+                Constant syntaxnodeTerm = (Constant) comp.getSubterms().get(1);
+                String syntaxnode = syntaxnodeTerm.getName();
+                String cat = catTerm.getName();
+
+                Site adjSite = adjunctionSites.get(cat+":"+syntaxnode);
+
+                if (adjSite==null) {
+                    //System.out.println(adjunctionSites);
+                    throw new RuntimeException("No suitable adjunction site found for "+action+".");
                 }
+
+               String adjoined = null;
+               if (cat.equals(adjSite.cat)){ // Found a suitable substitution site
+                        String newDerivNode = currentDerivation.addNode(adjSite.derivationNode, adjSite.treeNode, treename, childEntry);
+                        adjoined = adjSite.cat + ":" + syntaxnode;
+                        addNewSubstAndAdjSites(action, childTree, newDerivNode);
+                    }
+
+                if (adjoined!= null)
+                    substitutionSites.remove(adjoined);
+                else
+                    throw new RuntimeException("No substitution was performed for action "+action);
+                break;
             }
+                
+
+
+            //}
     }
      
         
     public DerivationTree buildDerivationTreeFromPlan(List<Term> plan, Domain domain, String root_category){
         currentDerivation = new DerivationTree();                		            
-        substitutionSites = new HashMap<String, ArrayList<Site>>();
-        adjunctionSites = new HashMap<Pair<String,String>, ArrayList<Site>>();
+        substitutionSites = new HashMap<String, Site>();
+        adjunctionSites = new HashMap<String, Site>();
         
         // Create initial substitution site for the root of the derivation
         
-        Site rootSite = new Site(null, null, root_category);
-        ArrayList rootSites = new ArrayList();
-        rootSites.add(rootSite);
-        substitutionSites.put("root",rootSites);
+        Site rootSite = new Site(null, null, root_category);        
+        substitutionSites.put(root_category+":root",rootSite);
         
         for (Term term : plan){
-            if (! (term.toString().startsWith("dummy"))){
                 Action instantiatedAction = computeInstantiatedAction(term, domain);
-                processPlanStep(instantiatedAction);
-            }
+                processPlanStep(instantiatedAction);            
         }
         return currentDerivation;
     }

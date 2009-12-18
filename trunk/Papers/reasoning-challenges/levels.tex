@@ -201,15 +201,32 @@ or exciting they find it -- say, using a one to five star system as on
 Amazon.  This has a number of crucial advantages.  First, an incoming
 user or a competition organizer can take the average score as an
 indication for the problems that are considered important in the
-community.  Next to the difficulty of problems, this can be another
-factor in the selection of problem classes for a competition snapshot.
-Second, a relevance score for problem classes can also serve as a
-guideline for the scheduling of planner runs: Assuming that there is
-not enough computing power to run all incoming planners on all domains
-in real time (e.g., just before a competition deadline), the runs on
-popular domains can be prioritized.
+community; imagine a ``top ten'' list of domains and planners on the
+website's front page.  Next to the difficulty of problems, this can be
+another factor in the selection of problem classes for a competition
+snapshot.  Second, a relevance score for problem classes can also
+serve as a guideline for the scheduling of planner runs: Assuming that
+there is not enough computing power to run all incoming planners on
+all domains in real time (e.g., just before a competition deadline),
+the runs on popular domains can be prioritized.
 
 
+
+
+
+
+\section{Evaluation measures}
+
+The continuous evaluation infrastructure we just presented is
+fundamentally agnostic to the type of concrete evaluation measures
+that it collects.  In particular, traditional measures such as the
+percentage of problems solved per system, average solution quality,
+average runtime and memory use, and search tree sizes can be
+collected -- with the caveat that the virtual machine must be
+configured so as to allow comparable runtime measurements.
+Furthermore, popularity scores from the social networking aspect can
+be incorporated, or different measures could be combined into an
+overall score.
 
 
 
@@ -233,9 +250,50 @@ hard domains.  A single computer should be sufficient for these needs;
 if it turns out not to be, the virtual machines can easily be run on
 machines anywhere.
 
-implementing software
+On the other hand, we expect that implementing the software for
+running the continuous evaluation and presenting the results on a
+website would not be a prohibitive effort either.  Most of the
+components of the system (continuous integration server, virtual
+machines, Wiki) already exist as open-source off-the-shelf
+components.  We estimate that a prototype implementation of a complete
+system could be built in a person-month of work; surely this is the
+amount of work for which funding or volunteers could be found.
 
 
+
+
+
+
+\section{Applicability and limitations}
+
+One advantage of the evaluation infrastructure proposed above is that
+its applicability is not limited to the evaluation of planners.  Many
+reasoning tasks, including constraint solving and theorem proving, are
+being evaluated by running solvers over problem instances and
+reporting performance measures.  At the level of abstraction at which
+our continuous evaluation system could be implemented, there is no
+fundamental difference between the problem type ``propositional
+planning problem in PDDL 1.0'' and the problem type ``\todo{something
+  from CP or similar}'' -- in both cases, the system can collect
+problem classes and instances of this type and run them through
+solvers that declare themselves to accept such inputs.  This means
+that there is a potential for sharing development and maintenance
+costs for the evaluation platform among different communities.
+
+However, there are of course limitations to the type of problem for
+which it makes sense to run a community-driven continuous evaluation.
+For one thing, it must be acceptable in the community that every
+system runs on the same hardware and software configuration, as
+implemented in the virtual machine images.  On the other hand, our
+system makes most sense where the ratio of problem classes to systems
+is relatively high.  Neither of the two is true, for instance, for
+most natural language processing competitions: Different research
+groups tend to use a variety of programming languages and development
+environments to build their systems, and there are typically many more
+systems in any competition than there are problem classes (corpora).
+However, our approach is completely consistent with the requirements
+of a community where solving a single hard problem instance for the
+first time counts as an achievement, such as in theorem proving.
 
 
 

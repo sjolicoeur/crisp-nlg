@@ -680,6 +680,8 @@ public class CurrentNextCrispConverter {
                 // all semantic contents must be satisfied
                 List<Term> contentWithVariables = new ArrayList<Term>();
                 boolean hasContent = false;
+                boolean hasRequirements = false;
+
 
                 Set<String> additionalParams = entry.getAdditionalParams().keySet();
                 Map<String,String> additionalVars = entry.getAdditionalVars();
@@ -750,6 +752,7 @@ public class CurrentNextCrispConverter {
                 for (Term semReqTerm : entry.getSemanticRequirements()) {
                     Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(semReqTerm, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL);
                     goals.add(new Literal(termWithVariables, true));
+                    hasRequirements = true;
                 }
 
                 // Add pragmatic preconditions
@@ -833,7 +836,7 @@ public class CurrentNextCrispConverter {
                     effects.add(new Literal("referent(" + roleN + ", " + I.get(roleN) + ")", true));
 
                     //distractors
-                    if (hasContent) {
+                    if (hasContent || hasRequirements) {
                         Variable distractorVar = new Variable("?y");
                         Substitution distractorSubst = new Substitution(new Variable(I.get(roleN)), distractorVar);
 

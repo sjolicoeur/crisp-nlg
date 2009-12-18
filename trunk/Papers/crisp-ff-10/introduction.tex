@@ -8,8 +8,7 @@ a long-standing connection to automated planning
 been picked up again in the NLG community, both to use planning as an
 approach for modeling language problems
 \cite{Steedman-Petrick:07,benotti08b} and to tackle the search
-problems in existing NLG problems by using techniques from planning
-\cite{KolSto07}.
+problems in NLG by using techniques from planning \cite{KolSto07}.
 
 Existing planners are relatively good at solving modest instances of
 the planning problems that arise in this context. However, Koller and
@@ -18,21 +17,22 @@ recently showed that as the planning problem instances from Koller and
 Stone \shortcite{KolSto07} scale up, off-the-shelf planners become too
 slow to be practically useful. They noted that there are major sources
 of inefficiency both in the search itself and in the commonly used
-preprocesses, which are put under pressure by several features of the
-domain (e.g.\ comparatively large predicate and operator arities) that
+preprocesses, due to several features of the domain
+(e.g.\ comparatively large predicate and operator arities) that
 diverge from most IPC benchmarks.
 %the sheer number of
 %ground instances of facts and actions that come up in this domain.
 
 In this paper, we revisit this situation, analyze the sources of
 inefficiency in more detail in the context of the FF planner
-\cite{HoffmannNebel01}, and show how FF can be modified to perform
-dramatically better. We achieve this by tweaking the implementation of
-the FF preprocessor, and by acting on some simple but shocking
-observations regarding the behavior of some of FF's search techniques,
-in particular its goal ordering technique and the relaxed plan
-heuristic. The changes we make are all simple, but make FF perform
-well enough to be useful in practical NLG applications.
+\cite{HoffmannNebel01}, and show how to ``wake up the rabbit'': we
+modify FF to obtain dramatically better performance. We achieve this
+by tweaking the implementation of FF's preprocessor, and by acting on
+some simple but shocking observations regarding the behavior of some
+of FF's search techniques, in particular its goal ordering technique
+and the relaxed plan heuristic. The changes we make are all simple,
+but make FF perform well enough to be useful in practical NLG
+applications.
 
 %the enforced hillclimbing and best-first search strategies on the NLG
 %domain.  Neither of these changes degrades FF's performance on other
@@ -44,10 +44,10 @@ Our performance gains with simple FF configuration changes certainly
 point out that automatic planner configuration may be quite
 useful. Apart from that, our domain remains an interesting challenge
 for the development of better heuristics. There still are realistic
-instances of the NLG planning domain on which our modified FF becomes
-too slow for practical use. Overcoming this weakness would entail
-overcoming the observed weaknesses of FF's search techniques --
-variants of which are used in many planners today.
+instances of the NLG planning domain on which our modified FF is not
+practical. Overcoming this weakness would entail overcoming the
+observed weaknesses of FF's search techniques -- variants of which are
+used in many planners today.
 
 
 %As FF is still a competitive

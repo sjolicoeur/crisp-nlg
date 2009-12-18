@@ -221,7 +221,7 @@
   <entry word='and' pos='Conj'>
     <tree refid="a.sentConjunction">
       <pragcond>next-referent(self,other)</pragcond>
-      <pragcond>conj-node(other)</pragcond>
+      <pragcond>conj-node(id(other))</pragcond>
       <prageff>not(conj-node(next(other)))</prageff>
     </tree>
   </entry>   
@@ -229,7 +229,7 @@
   <entry word='then' pos='Conj'>
     <tree refid="a.sentConjunction">
       <pragcond>next-referent(self,other)</pragcond>
-      <pragcond>not(conj-node(other))</pragcond>
+      <pragcond>not(conj-node(id(other)))</pragcond>
       <prageff>conj-node(next(other))</prageff>
     </tree>
   </entry> 

@@ -63,6 +63,7 @@ public class CurrentNextCrispConverter {
     private enum ConstantType {
         ID,
         NEXT,
+        QUANT,
         NORMAL;
     }
 
@@ -178,7 +179,7 @@ public class CurrentNextCrispConverter {
                     }
                 }                
             }
-
+            
             if (qName.equals("commgoal")) {
                 characterBuffer = new StringWriter();
             }
@@ -213,14 +214,11 @@ public class CurrentNextCrispConverter {
                     types = currentParamTypes;
                 }
                 domain.addPredicate(compoundTerm.getLabel(), types);
-                addIndividualConstants(term,domain);
+                //addIndividualConstants(term,domain);
                 for (int i=0; i<compoundTerm.getSubterms().size(); i++) {
                     problem.addObject(((Constant) (compoundTerm.getSubterms().get(i))).getName(), types.get(i));
                 }
-                
-                
-                System.out.println(term);
-                System.out.println(currentParamTypes);
+                                
 
 
                 problem.addToInitialState(term);
@@ -342,9 +340,8 @@ public class CurrentNextCrispConverter {
         //   because otherwise the LAMA planner cannot handle universal preconditions
         //   involving this predicate.
         //if (domain.sawMustadjoin()){
-        //    Goal noMustAdj= new crisp.planningproblem.goal.Universal(tlCatNode,
-        //    new crisp.planningproblem.goal.Literal("mustadjoin(?a,?u)", false));
-        //    finalStateGoals.add(noMustAdj);
+            Formula noMustAdj= new Universal(tlCatNode, tlCatNodeTypes, new Literal("mustadjoin(?a,?u)", false));
+            finalStateGoals.add(noMustAdj);
         //}
 
         finalStateGoals.add(noSubst);
@@ -416,10 +413,9 @@ public class CurrentNextCrispConverter {
 
         domain.addSubtype("individual", "object");
         domain.addSubtype("category", "object");
-        domain.addSubtype("syntaxnode", "object");
-        domain.addSubtype("stepindex", "object");
+        domain.addSubtype("syntaxnode", "object");        
         domain.addSubtype("predicate", "object");
-        domain.addSubtype("rolename", "object");
+        domain.addSubtype("imperative", "predicate");
 
 
         List<String> substTypeList = new ArrayList<String>();
@@ -559,7 +555,7 @@ public class CurrentNextCrispConverter {
                     if (tree.getNodeType(node) == NodeType.SUBSTITUTION) {
                         substNodes.add(node);
                     } else {
-                        if (tree.getNodeType(node) == NodeType.INTERNAL &&
+                        if ((tree.getNodeType(node) == NodeType.INTERNAL || tree.getNodeType(node) == NodeType.ANCHOR) &&
                                 tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION &&
                                 tree.getNodeDecoration(node) != null &&
                                 tree.getNodeDecoration(node).toString() != null) {
@@ -710,10 +706,11 @@ public class CurrentNextCrispConverter {
                 }
 
                 Set<String> additionalParams = entry.getAdditionalParams().keySet();
+                Map<String,String> additionalVars = entry.getAdditionalVars();
 
                 for (Term impEffTerm : entry.getImperativeEffects()) {
                     Compound impEffCompound = ((Compound) impEffTerm);
-                    Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(impEffTerm, n, I, nextMap, additionalParams, ConstantType.NORMAL);
+                    Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(impEffTerm, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL);
                     
 
                     hasContent = true;
@@ -736,7 +733,7 @@ public class CurrentNextCrispConverter {
                         maximumArity = impEffCompound.getSubterms().size();
                     }
 
-                    domain.addConstant(renameImperative(impEffCompound.getLabel()), "predicate");
+                    domain.addConstant(renameImperative(impEffCompound.getLabel()), "imperative");
 
                 }
 
@@ -745,19 +742,19 @@ public class CurrentNextCrispConverter {
 
                 // Add semantic requirements to preconditions
                 for (Term semReqTerm : entry.getSemanticRequirements()) {
-                    Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(semReqTerm, n, I, nextMap, additionalParams, ConstantType.NORMAL);
+                    Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(semReqTerm, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL);
                     goals.add(new Literal(termWithVariables, true));
                 }
 
                 // Add pragmatic preconditions
                 for (Term pragPrecondTerm : entry.getPragmaticPreconditions()) {                    
-                    Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(pragPrecondTerm, n, I, nextMap, additionalParams, ConstantType.NORMAL);
+                    Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(pragPrecondTerm, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL);
                     goals.add(new Literal(termWithVariables, true));
                 }
 
                 // Add pragmatic effects
                 for (Term pragEffectTerm : entry.getPragmaticEffects()) {                    
-                    Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(pragEffectTerm, n, I, nextMap, additionalParams, ConstantType.NORMAL);
+                    Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(pragEffectTerm, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL);
                     effects.add(new Literal(termWithVariables, true));
                 }
 
@@ -1091,19 +1088,32 @@ public class CurrentNextCrispConverter {
      */
 
 
-    private Term newSubstituteVariablesForRoles(Term term, Map<String, String> n, Map<String, String> I, Map<String, String> nextMap, Set<String> additionalParams, ConstantType type) {
+    private Term newSubstituteVariablesForRoles(Term term, Map<String, String> n, Map<String, String> I, Map<String, String> nextMap, Set<String> additionalParams, Map<String,String> additionalVars, ConstantType type) {
         if (term.isCompound()) {
             Compound t = (Compound) term;
 
             if (t.getLabel().equals("id")) {
-                return newSubstituteVariablesForRoles(t.getSubterms().get(0), n, I, nextMap, additionalParams, ConstantType.ID);
+                return newSubstituteVariablesForRoles(t.getSubterms().get(0), n, I, nextMap, additionalParams, additionalVars, ConstantType.ID);
             } else if (t.getLabel().equals("next")) {
-                return newSubstituteVariablesForRoles(t.getSubterms().get(0), n, I, nextMap, additionalParams, ConstantType.NEXT);
+                return newSubstituteVariablesForRoles(t.getSubterms().get(0), n, I, nextMap, additionalParams, additionalVars, ConstantType.NEXT);
+            } else if (t.getLabel().equals("forall")) {
+                List<Term> newChildren = new ArrayList<Term>();
+
+                List<Term> subterms = t.getSubterms();
+                newChildren.add(newSubstituteVariablesForRoles(subterms.get(0), n, I, nextMap, additionalParams, additionalVars, ConstantType.QUANT));
+                subterms.remove(0);
+
+                for (Term sub : t.getSubterms()) {
+                    newChildren.add(newSubstituteVariablesForRoles(sub, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL));
+                }
+
+                return new Compound("forall", newChildren);
+
             } else {
                 List<Term> newChildren = new ArrayList<Term>();
 
                 for (Term sub : t.getSubterms()) {
-                    newChildren.add(newSubstituteVariablesForRoles(sub, n, I, nextMap, additionalParams, ConstantType.NORMAL));
+                    newChildren.add(newSubstituteVariablesForRoles(sub, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL));
                 }
 
                 return new Compound(t.getLabel(), newChildren);
@@ -1122,6 +1132,7 @@ public class CurrentNextCrispConverter {
 
                     case NEXT:
                         return new Variable(nextMap.get(n.get(t.getName())));
+                    
 
                     default:
                         return new Variable(I.get(n.get(t.getName())));
@@ -1129,10 +1140,20 @@ public class CurrentNextCrispConverter {
 
                 }
             } else {
-                if (additionalParams.contains(t.getName())) {
+                switch (type) {
+                    case QUANT:
+                        if (additionalVars.containsKey(t.getName())) {
+                            System.out.println("is additional var :"+t.getName());
+                            return new Constant("?"+t.getName()+" - "+additionalVars.get(t.getName()));
+                        } else {
+                            return t;
+                        }
+                    default:
+                if (additionalParams.contains(t.getName()) || additionalVars.containsKey(t.getName())) {
                     return new Constant("?"+t.getName());
                 } else {
                     return t;
+                }
                 }
             }
 

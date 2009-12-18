@@ -18,6 +18,7 @@ public class CrispLexiconEntry extends LexiconEntry {
     private List<Term> pragmaticEffects;
     private List<Term> imperativeEffects;
     private Map<String, String> additionalParams;
+    private Map<String, String> additionalVars;
 
     public CrispLexiconEntry(String word, String tree, Map<String, String> auxLexicalItems, List<Term> semantics) {
 	super(word,tree,auxLexicalItems, semantics);
@@ -26,6 +27,7 @@ public class CrispLexiconEntry extends LexiconEntry {
         pragmaticEffects = new ArrayList<Term>();
         imperativeEffects = new ArrayList<Term>();
         additionalParams = new HashMap<String, String>();
+        additionalVars = new HashMap<String, String>();
         
     }
 
@@ -60,6 +62,15 @@ public class CrispLexiconEntry extends LexiconEntry {
     public Map<String,String> getAdditionalParams(){
         return additionalParams;
     }
+
+    void addAdditionalVars(Map<String, String> params) {
+        additionalVars.putAll(params);
+    }
+
+    public Map<String,String> getAdditionalVars(){
+        return additionalVars;
+    }
+
 
     void addImperativeEffects(List<Term> effects) {
         imperativeEffects.addAll(effects);

@@ -59,6 +59,7 @@ public class SituatedCrispXmlInputCodec implements InputCodec<Term> {
         private List<Term> currentPragEff;
         private List<Term> currentImpEff;
         private Map<String, String> additionalParams;
+        private Map<String, String> additionalVars;
         private String currentParamType;
         private StringWriter characterBuffer = new StringWriter();
 
@@ -82,7 +83,7 @@ public class SituatedCrispXmlInputCodec implements InputCodec<Term> {
                     currentPragEff = new ArrayList<Term>();
                     currentImpEff = new ArrayList<Term>();
                     additionalParams = new HashMap<String,String>();
-                    currentParamType = "userdef"; // default to 'userdef'
+                    additionalVars = new HashMap<String,String>();                    
                 } else {
                     currentTree = new ElementaryTree<Term>();
                     currentTree.setType(ElementaryTreeType.INITIAL);
@@ -109,7 +110,14 @@ public class SituatedCrispXmlInputCodec implements InputCodec<Term> {
                 characterBuffer = new StringWriter();
             } else if (name.equals("param")) {
                 characterBuffer = new StringWriter();
+                currentParamType = attributes.getValue("type") ;
+                if (currentParamType == null)
+                    currentParamType = "individual"; // default to individual
+            } else if (name.equals("var")) {
+                characterBuffer = new StringWriter();
                 currentParamType = attributes.getValue("type");
+                if (currentParamType == null)
+                    currentParamType = "individual"; // default to individual
             }
         }
 
@@ -125,6 +133,7 @@ public class SituatedCrispXmlInputCodec implements InputCodec<Term> {
                     newEntry.addPragmaticEffects(currentPragEff);
                     newEntry.addImperativeEffects(currentImpEff);
                     newEntry.addAdditionalParams(additionalParams);
+                    newEntry.addAdditionalVars(additionalVars);
                     grammar.addLexiconEntry(newEntry);
                 }
             } else if (name.equals("entry")) {
@@ -141,6 +150,8 @@ public class SituatedCrispXmlInputCodec implements InputCodec<Term> {
                 currentImpEff.add(TermParser.parse(characterBuffer.toString()));
             } else if (name.equals("param")) {
                 additionalParams.put(characterBuffer.toString(), currentParamType);
+            } else if (name.equals("var")) {
+                additionalVars.put(characterBuffer.toString(), currentParamType);
             }
         }
 

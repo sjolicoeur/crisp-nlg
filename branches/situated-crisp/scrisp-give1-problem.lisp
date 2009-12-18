@@ -156,7 +156,7 @@
    (:init
       (subst s root)
       (referent root e-1)
-      (needtoexpress-1 pred-to-do (push e-1 b6))
+      (needtoexpress-2 imp-push e-1 b6)
       (target b6)
       (player-position pos_5_1)
       (player-orientation north)
@@ -1638,5 +1638,5 @@
       (next-referent e-3 e-4)
    )
 
-   (:goal (and (forall (?a - category  ?u - syntaxnode  ) (not (subst ?a ?u))) (forall (?u - syntaxnode  ?x - individual  ) (not (distractor ?u ?x))) (forall (?P - predicate  ?x1 - individual  ) (not (needtoexpress-1 ?P ?x1)))))
+   (:goal (and (forall (?a - category  ?u - syntaxnode  ) (not (mustadjoin ?a ?u))) (forall (?a - category  ?u - syntaxnode  ) (not (subst ?a ?u))) (forall (?u - syntaxnode  ?x - individual  ) (not (distractor ?u ?x))) (forall (?P - predicate  ?x1 - individual  ?x2 - individual  ) (not (needtoexpress-2 ?P ?x1 ?x2)))))
 )

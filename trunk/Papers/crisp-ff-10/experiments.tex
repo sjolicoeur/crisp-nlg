@@ -1,3 +1,18 @@
+
+\begin{figure*}[t]
+  \centering
+\begin{tabular}{cc}
+  \includegraphics[width=0.9\columnwidth]{pics/xtag-k2-dist0} & 
+\includegraphics[width=0.9\columnwidth]{pics/xtag-k2-dist2}\\[-0.2cm]
+(a) & (b)
+\end{tabular}
+\vspace{-0.3cm}
+\caption{Runtimes for $d=0$ (a) and $d=2$ (b).}
+  \label{fig:runtimes}
+\vspace{-0.5cm}
+\end{figure*}
+
+
 \section{Experiments} 
 \label{sec:experiments}
 
@@ -12,61 +27,66 @@ and Y are unique referring expressions to individuals, such as ``the
 rich businessman''. For each experiment, we have a parameter $d$ that
 specifies how many adjectives are needed to distinguish the individual
 uniquely -- in particular, $d=0$ means we can say ``the businessman'',
-and $d=2$ means we must say ``the rich sad businessman''. We translate
-these generation problems into planning problems with the new encoding
-as shown in Fig.~\ref{fig:white-rabbit-as-planning}.
+and $d=2$ means we must say ``the rich sad businessman''. 
+% JOERG: ``new encoding'' gibt's ja gar nicht mehr als unterscheidung
+%
+%We translate
+%these generation problems into planning problems with the new encoding
+%as shown in Fig.~\ref{fig:white-rabbit-as-planning}.
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{pics/xtag-k2-dist0}
-  \caption{Runtimes for $d=0$.}
-  \label{fig:runtimes-k2-dist0}
-\end{figure}
+%\begin{figure}[t]
+%  \centering
+%  \includegraphics[width=\columnwidth]{pics/xtag-k2-dist2}
+%  \caption{Runtimes for $d=2$.}
+%  \label{fig:runtimes-k2-dist2}
+%\end{figure}
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{pics/xtag-k2-dist2}
-  \caption{Runtimes for $d=2$.}
-  \label{fig:runtimes-k2-dist2}
-\end{figure}
 
-Consider first the results for $d=0$, which are shown in
-Fig.~\ref{fig:runtimes-k2-dist0}; the lines end where the planner
-exceeded its five-minute timeout.  The top line in the figure
-represents the off-the-shelf version of FF. The other two lines
-represent FF with the improved preprocessor, using the standard
-enforced hillclimbing strategy and the best-first search with helpful
-actions (``New FF'') respectively.  By improving the preprocessor, we
-have improved its runtime on small instances by three orders of
-magnitude; this factor only increases for larger inputs.  After the
-preprocessor has been improved, both search strategies can solve these
-problem instances in practically useful time -- for instance, the
-24-word sentence at $n=4$ is generated in under two seconds.
+Consider first the results for $d=0$, shown in Fig.~\ref{fig:runtimes}
+(a); the lines end where the planner exceeded its five-minute timeout.
+``Old FF'' in the figure is original FF, ``New preprocessor'' applies
+only our fixes to FF's preprocess, ``New FF'' applies all fixes.
+% The other two lines represent FF with the improved preprocessor,
+%using the standard enforced hillclimbing strategy and the best-first
+%search with helpful actions (``New FF'') respectively.  
+Just the preprocessor fixes lead to a speed-up of at least $3$ orders
+of magnitude, leading to practically useful runtime -- for instance,
+the 24-word sentence at $n=4$ is generated in under two seconds. Note
+that, by contrast, the search configuration does not make much of a
+difference here. This changes in our next experiment.
 
-To get a clearer view of the relative efficiency of the two search
-strategies, we also ran the experiment with $d=2$; the results are
-shown in Fig.~\ref{fig:runtimes-k2-dist2}.  Here the old FF
-preprocessor crashed with a segmentation fault even at
+Results for $d=2$ are shown in Fig.~\ref{fig:runtimes} (b).  Here the
+old FF preprocessor crashed with a segmentation fault even at
 $n=1$. Best-first search with helpful actions is clearly the
 best-performing search strategy here.  It takes about 14 seconds for
 $n=3$, but this sentence is already quite long at 29 words, and EHC
 takes 3.5 minutes on the same input.  Best-first search without
-helpful actions timed out at $n=3$, which illustrates the advantage we
-gain from using the helpful actions heuristic.
+helpful actions timed out at $n=3$, illustrating the importance of
+that heuristic.
 
-While this brings the overall planner runtimes into a range where FF
-can now be useful in practical NLG applications, it is important to
-note that it still has serious limitations.  The best-first search
-timed out for any $n>4$ in either experiment.  While many NLG
-applications can get by with shorter sentences, improving the search
-on our domain is still an open question for the future.  Even within
-our domain, the relative quality of EHC and BFS+H depended on the
-exact generation problem instance: While BFS+H outperformed EHC at
-$d=2$, EHC was actually slightly faster at $d=0$ because the absence
-of distractors meant there was not much room for the characteristic
-underestimation of the relaxed plan evaluation discussed above.  This
-means that sentence generation remains as a varied and challenging
-domain for planning.
+We remark that the relative behavior of the different search methods
+is not uniform in our domain, which exhibits a huge amount of
+structural variance due to the many different forms that the input
+grammer may take. We are far from an exhaustive exploration of all the
+possible parameter settings. Suffice it to say that, in particular
+encoding variants and with particular grammars (e.g.\ grammars not
+featuring any distractors), in stark contrast to
+Fig.~\ref{fig:runtimes} (b) EHC is much more effective than best-first
+search.
+
+%While this brings the overall planner runtimes into a range where FF
+%can now be useful in practical NLG applications, it is important to
+%note that it still has serious limitations.  The best-first search
+%timed out for any $n>4$ in either experiment.  While many NLG
+%applications can get by with shorter sentences, improving the search
+%on our domain is still an open question for the future.  Even within
+%our domain, the relative quality of EHC and BFS+H depended on the
+%exact generation problem instance: While BFS+H outperformed EHC at
+%$d=2$, EHC was actually slightly faster at $d=0$ because the absence
+%of distractors meant there was not much room for the characteristic
+%underestimation of the relaxed plan evaluation discussed above.  This
+%means that sentence generation remains as a varied and challenging
+%domain for planning.
 
 
 

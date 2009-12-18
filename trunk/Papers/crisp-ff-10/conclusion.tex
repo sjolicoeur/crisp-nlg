@@ -1,4 +1,37 @@
+
 \section{Conclusion} \label{sec:conclusion}
+
+
+Generation of natural language sentences is interesting, as a planning
+problem, both in its application value and in the challenges it
+poses. Our observations herein have above all the message that, as of
+now, FF is a practical option for this application. It is baffling
+with which ease this milestone came about, and certainly this suggests
+to look more closely at automatic planner configuration techniques.
+
+The domain is also far from ``solved'' in all its aspects. As we
+pointed out, several features of the domain are very hard to capture
+with existing search heuristics. In Fig.~\ref{fig:runtimes}, this
+shows in the fact that no planner version scales beyond $n>4$ -- even
+in case (a) where no adjectives at all are required. It remains an
+interesting challenge to address this.
+
+
+
+%While this brings the overall planner runtimes into a range where FF
+%can now be useful in practical NLG applications, it is important to
+%note that it still has serious limitations.  The best-first search
+%timed out for any $n>4$ in either experiment.  While many NLG
+%applications can get by with shorter sentences, improving the search
+%on our domain is still an open question for the future.  Even within
+%our domain, the relative quality of EHC and BFS+H depended on the
+%exact generation problem instance: While BFS+H outperformed EHC at
+%$d=2$, EHC was actually slightly faster at $d=0$ because the absence
+%of distractors meant there was not much room for the characteristic
+%underestimation of the relaxed plan evaluation discussed above.  This
+%means that sentence generation remains as a varied and challenging
+%domain for planning.
+
 
 
 %%% Local Variables: 

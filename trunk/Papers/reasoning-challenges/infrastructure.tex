@@ -1,11 +1,20 @@
-\section{Infrastructure}
-\label{sec:infrastructure}
+\section{Rationale}
+\label{sec:rationale}
 
-\textbf{[RP: Talk a little bit about the current planning competition and (online)
-competitions from other research areas (GIVE, CP?, others?)... Outline the
-infrastructure we're proposing. We need some references here...]}
+Let us introduce the proposed platform by comparing it to how competitions are organised currently, and pointing out the benefits of the new approach.
 
-There are three groups of people involved in a competition: the organisers, the participants, and the audience (which usually includes organisers and participants). In the following, we outline an infrastructure that makes competitions easier to run and more valuable for each of these groups.
+We want to stress that what we propose is not limited to the domain of planning problems. Therefore, we will talk about \emph{systems}, \emph{problem classes} and \emph{instances} in the following, instead of planners, planning domains and problems.
+
+Any competition has four main tasks: collecting systems, collecting problem specifications, running the systems, and reporting the results.
+
+\begin{description}
+  \item[Collecting systems.] Currently, systems are uploaded manually by the participants, and possibly even manually compiled, installed, and tested by the competition organiser. New approach: participants submit their systems without any organiser interaction.
+  \item[Collecting problems.] This is currently done by a special committee, possibly with manual submission from outside users. New approach: a community-built library of problems, where competitions can be run by picking from the library. This approach has been proposed before \cite{ToughNuts}, and it would avoid problems like the ones discussed by \cite{pg2008002}.
+  \item[Running the systems.] There is usually some degree of automation, distributing work over a cluster of computers, but the competitions are started manually for a particular event. New approach: continually run the competition as soon as new systems or new problems are submitted.
+  \item[Reporting the results.] Currently, the organisers choose the metrics for comparing systems as well as the type of presentation. New approach: reports are generated dynamically from the gathered statistics, users can retrieve data they find interesting.
+\end{description}
+
+This new approach has advantages for each of the three groups of people involved in a competition, the organisers, the participants, and the audience (which usually includes organisers and participants).
 
 \begin{itemize}
   \item Organisers benefit from a mostly automated platform that is maintained by the community, which should greatly reduce the effort needed to run a competition.
@@ -13,49 +22,94 @@ There are three groups of people involved in a competition: the organisers, the 
   \item The audience, i.e., the scientific community, benefits from the improved discussion and report facilities. The scientific value of competitions is to find out \emph{why} a system shows a certain performance, not only \emph{that} it does.
 \end{itemize}
 
-We want to stress that the proposed platform is not limited to the domain of planning problems. Therefore, we will talk about \emph{problem classes} and \emph{instances} in the following, instead of planning domains and problems.
+\section{Infrastructure}
+\label{sec:infrastructure}
 
-\subsection{Submitting Systems}
+The previous section identified the four main tasks in a competition: collecting systems, collecting problems, running the systems, and reporting the results. In this section, we propose an infrastructure consisting of four modules, one for each task, that together yield a complete platform for community-organised competitions.
 
-A system is uploaded as an archive containing
+\subsection{Collecting Systems}
+
+The proposed platform allows users to upload new systems or new versions of their systems at any time through a web interface. A system is uploaded as an archive containing
 \begin{itemize}
   \item A specification of the input format type
   \item An executable file
-  \item Optional format conversion rules
-  \item Optional other files necessary for running the system
+  \item Optionally other files necessary for running the system
 \end{itemize}
 
 The environment in which the system will be run is available as a virtual machine image, such that participants can compile and test their systems before uploading them.
 
-To upload a system, the participants have to register with the maintainer. We hope that this sets the bar high enough to avoid the submission of malicious systems.
+Letting users upload arbitrary code that is run automatically obviously presents security risks. We believe that two simple measures are sufficient to prevent abuse: personal registration of participants, and a sandboxed execution environment.
 
-\subsection{Submitting Instances}
+\subsection{Collecting Problems}
 
-There are three levels at which instances are submitted: the problem class, the instance, and the \emph{data}. The problem class groups similar instances (for example those from the same planning domain), and possibly data describing the class (such as a PDDL planning domain). The instance itself may contain a human-readable description and several sets of data. Each set of data has a \emph{type}, which determines what systems the data is suitable for (e.g.\ different subsets of PDDL, or EUROPA). All sets of data for one instance should of course model the same problem.
+There are three levels at which problems are submitted: the \emph{problem class}, the \emph{problem instance}, and the \emph{data}. The problem class groups similar instances (for example those from the same planning domain), and possibly data describing the class (such as a PDDL planning domain). The instance itself may contain a human-readable description and several sets of data. Each set of data has a \emph{type}, which determines what systems the data is suitable for (e.g.\ different subsets of PDDL, or EUROPA). All sets of data for one instance should of course model the same problem.
 
 Problem classes, instances, and data can be submitted by any registered user. In order to avoid abuse, the number of instances should be limited (e.g.\ per hour), and a simple validity check should be possible (such as running a parser if the format is PDDL).
 
 \subsection{Running Systems}
 
-Let us now come to the backend of the platform. Its main task is to prepare the data for the different systems, to distribute the work of running the systems among a number of (identical) machines, and to collect the results in a central database.
-
-Systems will be run in a sandbox environment with well-defined resource limits such as number of processors, available memory and processor time, and limited disk space and network connectivity.
+We now come to the backend of the platform. Its main task is to prepare the data for the different systems, to distribute the work of running the systems among a number of (identical) machines, and to collect the results in a central database.
 
 The platform provides automatic conversion between different formats. When new instance data is submitted, it is automatically converted into all formats for which conversions are available. Then it is scheduled to be run on all suitable systems.
 
+Systems will be run in a sandbox environment with well-defined resource limits such as number of processors, available memory and processor time, and limited disk space and network connectivity.
+
 When a system is updated or a new system is submitted, all suitable instances are scheduled to be run on the system.
 
-A number of statistics is gathered during execution. The obvious statistics would be runtime, memory consumption, and whether the system could solve the problem. More detailed statistics will require system-specific support.
+A number of statistics is gathered during execution. The obvious statistics would be runtime, memory consumption, and whether the system could solve the problem. We discuss more detailed statistics later.
 
-\subsection{Reports and Discussion}
+\subsection{Reporting Results}
 
-The public interface of the competition platform serves two main purposes: \emph{interactivity}, which lets users describe and discuss systems and problems, and \emph{reporting}, which presents the results of running the systems.
+The public interface of competition is currently mostly static: a web page or document that contains the various results. In a community-organised competition, the interface must be dynamic and created by the community.
 
-We propose to achieve interactivity by making use of three standard technologies:
+The most successful example of community-generated content is a \emph{wiki}. We therefore propose to build the user interface of the competition platform around a wiki engine.
+
+Users can add and edit pages that describe systems as well as problems. The platform provides a reporting engine that connects to the central result database, and reports can be embedded into wiki pages. Any user can therefore present competition results by creating a wiki page with a set of reports.
+
+A competition, in the classic sense, can be run on the new platform as follows:
 \begin{itemize}
-  \item a \emph{wiki} for all the descriptive content,
-  \item a \emph{discussion board} for each wiki page (similar to the discussion feature in Wikipedia), and
-  \item a \emph{tagging} system, which allows arbitrary grouping of systems and problems.
+  \item Users submit systems and problems.
+  \item A committee picks a set of problems (and possibly submits new problems that the participants have not seen before).
+  \item The platform automatically runs the systems, producing results in a database.
+  \item The organisers decide on a set of metrics, categories etc., and set up a web page with the results, using the reporting features of the platform.
 \end{itemize}
 
-The reporting engine connects to the central database that is populated by the backend. Reports can be embedded into wiki pages and customised using tags. For example, a user can create a page with the report comparing the runtimes of three systems, \emph{A}, \emph{B}, and \emph{C}, on all instances labeled \emph{mediumHard}.
+\section{Additional Features}
+\label{sec:additional_features}
+
+This section discusses additional features that can be added to the basic system.
+
+\subsection{Community Features}
+
+The user interface module from the previous section can be augmented with \emph{social networking} features. This section presents features and how they may prove useful for a community-organised competition.
+
+\begin{description}
+  \item[Discussion.]
+  \item[Voting.]
+  \item[Tagging.]
+\end{description}
+
+The community features enable a new form of community-organised ``rolling competition''. For instance, one can generate a dynamic top-ten list of systems on the problems with the highest votes, or a list of the hardest problems with the highest votes. These features can help the community to focus on the problems that most people find interesting.
+
+\subsection{Statistics}
+
+Additional statistics yield more interesting competition results, a deeper understanding of system behaviour, or greater comparability between different systems. Possibly interesting numbers include
+\begin{itemize}
+  \item Search tree size in search-based systems
+  \item Percentage of problems solved per system and category
+  \item Solution quality
+  \item Overall system quality
+\end{itemize}
+
+The exact metrics (in particular for features like system quality) are beyond the scope of this paper. The important point is that the platform we propose is extensible enough to support these features.
+
+\section{Applicability and Limits}
+\label{sec:limits}
+
+The competition platform as outlined in this paper certainly has its limits. It is mostly applicable to competitions with the following characteristics:
+\begin{itemize}
+  \item Highly dependent on running all systems on the exact same hardware
+  \item High ratio of instances to systems
+  \item ...?
+\end{itemize}
+

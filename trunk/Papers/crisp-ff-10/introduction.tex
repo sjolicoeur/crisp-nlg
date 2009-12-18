@@ -1,5 +1,43 @@
 \section{Introduction} \label{sec:introduction}
 
+Natural language generation (NLG) -- the problem of computing a
+sentence or text that communicates a given piece of information -- has
+a long-standing connection to automated planning
+\cite{perrault80,appelt:planning}. In the past few years, the idea has
+been picked up again in the NLG community, both to use planning as an
+approach for modeling language problems
+\cite{Steedman-Petrick:07,benotti08b} and to tackle the search
+problems in existing NLG problems by using techniques from planning
+\cite{KolSto07}.
+
+Existing planners are relatively good at solving modest instances of
+the planning problems that arise in this context. However, Koller and
+Petrick \shortcite{koller10:_exper_with_plann_for_natur_languag_gener}
+recently showed that as the planning problem instances from Koller and
+Stone \shortcite{KolSto07} scale up, off-the-shelf planners become too
+slow to be practically useful. They noted that there are major sources
+of inefficiency both in the search itself and in the preprocessor,
+which is put under pressure by the sheer number of ground instances of
+facts and actions that come up in this domain.
+
+In this paper, we revisit this situation, analyze the sources of
+inefficiency in more detail in the context of the FF planner
+\cite{HoffmannNebel01}, and show how FF can be optimized to perform
+dramatically better -- and in fact, well enough to be useful in
+practical NLG applications.  We achieve this by tweaking the
+implementation of the FF preprocessor and analyzing the behavior of
+the enforced hillclimbing and best-first search strategies on the NLG
+domain.  Neither of these changes degrades FF's performance on other
+domains.
+
+Nevertheless, we can still generate realistic instances of the NLG
+planning domain on which our modified FF becomes too slow for
+practical use.  As FF is still a competitive planner, this suggests
+that NLG might be interesting as a future challenge domain.  In
+particular, we show that by modifying the linguistic grammar from
+which we generate, we can vary the planning problems quite widely and
+emphasize different aspects that make our domain hard.
+
 
 
 %%% Local Variables: 

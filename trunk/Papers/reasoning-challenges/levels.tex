@@ -1,0 +1,246 @@
+\section{Levels of community involvement} \label{sec:levels}
+
+We present our proposal for a new planning competition infrastructure
+in terms of an ascending scale of levels, each of which makes it
+easier or more rewarding for the community to participate in the
+competition process.  As we will discuss below, we believe that the
+competition format we propose is applicable in fields beyond planning
+as well.  Therefore we will talk about \emph{systems}, \emph{problem
+  classes}, and \emph{problem instances} instead of planners, planning
+domains, and problems.
+
+
+\subsection{Level 0: The current IPC}
+
+As background and starting point of our proposal, consider the process
+that underlies the current IPC competition.  Every two years, the IPC
+committee appoints one or two organizers for each track of that year's
+IPC competition.  These organizers assemble a number of problem
+classes and instances, by developing them themselves or soliciting
+them from the IPC committee or the community at large; sometimes this
+requires extending the Planning Domain Description Language (PDDL,
+\cite{PDDL}) to more advanced classes of problems.  After the
+participants have developed their planners, they submit the source
+code to the organizers, who then compile and run the planners on the
+test machines.  Finally, the organizers prepare and present a report,
+and the best-performing systems win awards.
+
+\todo{Ron, can you fix this so it becomes true? - ak}
+
+
+\subsection{Level 1: Collecting problems}
+
+While this format for the IPC has been highly successful in the past
+ten years, there is also a number of ways in which it can be improved
+and streamlined.  One such direction concerns the way in which the
+problem classes on which an IPC runs are collected.  There is no doubt
+that the selection of IPC domains is a fundamental driving force for
+the development of new planning algorithms.  Unfortunately, the
+current process makes it difficult for users of planning technology,
+who may come from a different community, to get a new
+application-motivated domain accepted as an IPC benchmark.  This is
+unsurprising, given that an IPC organizer must be able to justify
+their selection of domains, and picking untested domains from other
+communities is not the best way to do this.  However, this leads to a
+selection process that is less dynamic and open to suggestions from
+users than it could be.  A converse movement is that to keep the
+number of domains that must be tested in each round of the competition
+manageable, older domains are sometimes ``retired'', i.e.\ removed
+from subsequent competitions.  This comes with a risk of a false sense
+of progress, in which retired domains are remembered as ``solved''
+although they were removed for completely independent reasons.
+Finally, it has been argued \cite{ToughNuts} that some IPC organizers
+tend to favor the development of new types of planning problems and
+new dialects of PDDL over trying to find challenging benchmark
+problems for existing versions of PDDL.
+
+We propose that one way in which these problems can be alleviated is a
+web repository in which any user can upload problem classes.  This
+takes up Hoffmann's \shortcite{ToughNuts} idea to create a
+community-driven repository for ``tough nuts'' -- i.e., instances that
+were shown to be hard to solve in the past --, and takes it one step
+further: In our proposal, \emph{all} IPC problem classes are suggested
+by the community, much in line with the proposal by Roberts and Howe
+\shortcite{roberts07:_call_for_partic}. This approach offers a
+principled, publicly documented and accessible avenue for proposing
+new problem classes, which benefits both application-oriented users of
+planning technology and planning researchers who come up with tough
+challenges for existing PDDL dialects. It also makes it easy to record
+retired problem classes alongside more current ones, and makes it easy
+to keep them accessible.
+
+Submitting a problem class should involve three pieces of data. First,
+the user must submit a collection of instances of the problem class or
+a generator for such instances.  Second, the user must specify some
+metadata including the class name and a human-readable description,
+maybe with links to the application literature, complexity results,
+and so on.  Third, the user must specify the \emph{type} of the
+problem class, which determines what systems the data is suitable for
+-- i.e., the language in which the problem is specified (such as a
+particular dialect of PDDL or EUROPA \todo{cite}) and the type of
+planning problem this is (propositional, temporal, uncertainty,
+etc.).  If it is possible to convert between one specification
+language and another automatically, this conversion could be performed
+each time a problem is submitted.
+
+Problem classes and instances can be submitted by any registered
+user. In order to avoid abuse, the number of instances should be
+limited (e.g.\ per hour), and a simple validity check should be
+possible (such as running a parser if the format is PDDL).
+
+
+
+\subsection{Level 2: Continuous evaluation}
+
+But given that all the domains are available on a server, why stop
+there?  We propose to make it possible to upload the \emph{planners}
+to the same server as well, and then continuously and automatically
+run the planners on the domains.  While the ability to upload domains
+in Level 1 represents a conservative extension of the existing IPC
+infrastructure, it is here that we depart more radically from the
+existing format: Instead of a regular competition with organizers who
+run the planner evaluation every other year, we propose a rolling
+evaluation scheme, in which the current evaluation results would be
+available online at any given time.
+
+Of course, several issues need to be addressed to make this possible.
+The first is how we can allow users to upload their systems and still
+expect to run and maybe compile them automatically, without requiring
+the manual intervention of an organizer if things break.  This problem
+can be solved by imposing strict requirements on the execution
+environment of the planner.  One way in which we could envision this
+is by defining a single image for a virtual machine, such as
+VirtualBox.\footnote{\url{http://www.virtualbox.org/}} When a planner
+is evaluated, this happens in a fresh instance of this virtual
+machine.  We can offer the virtual machine image for download; a
+participant can then run the image on their own machine and ensure
+that their planner works, in the exact environment in which it will be
+evaluated.  This would even make it technically possible for
+participants to submit not the source code, but a binary executable of
+the planner (perhaps along with support files).  However, even if we
+require the submission of source code, the move to a clean virtual
+machine environment that contains only standard versions of tools and
+libraries enforces at least a certain degree of portability from which
+users will benefit when they download the planners.  Even when the
+virtual machine image changes to reflect updates in the standard
+development environments (new version of the C compiler, etc.), old
+images could remain available, and so old planners would continue
+running until the virtual machine emulator itself becomes unavailable
+or incompatible.
+
+We propose that every newly submitted planner is run automatically on
+all available problem instances, and every newly submitted problem
+instance is sent to all available planners.  The scheduling of this
+process can be under the control of an automated system for continuous
+integration, such as Hudson.\footnote{\url{http://hudson-ci.org/}}
+Each run of a planner on a problem instance or problem class can take
+place in a fresh instance of the virtual machine image.  The
+evaluation infrastructure then inserts the problem data and the
+planner into the virtual machine, runs the planner, measures
+performance statistics (including which problems they could solve and
+how much time this took them; see below), and stores the results in a
+database.  Users will be able to view the results in dynamically
+generated reports on the main website; there may also be functionality
+to customize these reports to focus on certain types of problems.
+Because all planners are run on all problem instances, problems in
+which only a small and somewhat arbitrary selection of instances of a
+certain problem are actually used in the evaluation \cite{pg2008002}
+can be avoided.
+
+In order to minimize security risks -- which arise when user-submitted
+programs are being run automatically --, the individual virtual
+machines need to be sandboxed quite tightly.  There is no need for an
+individual virtual machine to be connected to any network, beyond
+being able to enter performance measurements into a database.  By
+further imposing resource limits on the number of available
+processors, memory and processor time, and disk space, we believe the
+potential for abuse is limited.  It can be limited further by only
+allowing planner uploads to registered users.
+
+While we see our proposed system's ability to generate up-to-date
+reports automatically as a major strength, there may still be a
+benefit in maintaining the current style of regular competitions at
+discrete timepoints, e.g.\ to encourage the development of faster
+planners through awards.  Such a competition could easily be based on
+our system, by announcing a deadline and a specified subset of problem
+classes. The selection of this subset could be informed, among other
+things, by the report on problems that many planners can't
+solve. Participants could then upload their planners at their leisure;
+``running'' the competition amounts to taking a snapshot of the
+performance reports on the selected problems when the deadline comes
+and announcing the results.  By recording timestamps whenever a
+performance measurements is made, this snapshot could remain available
+on the website simply as one special report for a certain point in
+time.  In such a case, the authors of planners should have the option
+of marking them as ``non-competing'' to exclude them from the
+competition snapshot, and maybe also from the up-to-date performance
+reports.
+
+
+
+\subsection{Level 3: Social networking}
+
+As a final step, we justify the ``2.0'' in the title of our paper by
+proposing the addition of mechanisms for social networking to the
+continuous evaluation website.
+
+The simplest such mechanism is to add Wiki pages to the evaluation
+website.  This would allow the users who upload problem classes to
+document these problems and link to existing literature; it would
+allow the developers of planners to document these planners; and it
+would make it easy for the organizers of regular competitions to add
+more information to the snapshot reports.  The exchange of ideas and
+opinions can be further facilitated by providing a discussion board
+which links into these Wiki pages.
+
+A second social networking tool which we believe would be useful in
+the context of a planning evaluation website is to let users tag
+problem classes and vote on them.  Any registered user can be allowed
+to comment on any problem class and vote for how relevant, important,
+or exciting they find it -- say, using a one to five star system as on
+Amazon.  This has a number of crucial advantages.  First, an incoming
+user or a competition organizer can take the average score as an
+indication for the problems that are considered important in the
+community.  Next to the difficulty of problems, this can be another
+factor in the selection of problem classes for a competition snapshot.
+Second, a relevance score for problem classes can also serve as a
+guideline for the scheduling of planner runs: Assuming that there is
+not enough computing power to run all incoming planners on all domains
+in real time (e.g., just before a competition deadline), the runs on
+popular domains can be prioritized.
+
+
+
+
+
+\section{Implementation}
+
+The obvious criticism that can be brought up against this proposal is
+that of cost -- both in terms of implementing the necessary software
+and in terms of running the hardware on which the continuous
+evaluation is performed.
+
+We believe that the actual hardware cost will be bearable.  While the
+idea of running all planners on all domains sounds intimidating at
+first, we don't anticipate that there will ever be more than a couple
+dozen current versions of planners entered in the system.  This means
+that any new domain that is entered will not be attempted to be solved
+too many times.  Conversely, while there may (hopefully!) be a
+significant number of domains in the system, and every new planner
+must try to solve all domains whose types it claims to be able to
+process, this cost can also be controlled by prioritizing popular or
+hard domains.  A single computer should be sufficient for these needs;
+if it turns out not to be, the virtual machines can easily be run on
+machines anywhere.
+
+implementing software
+
+
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End: 

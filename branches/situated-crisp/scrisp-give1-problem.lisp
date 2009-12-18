@@ -157,7 +157,7 @@
       (subst s root)
       (referent root e-1)
       (needtoexpress-2 imp-push e-1 b6)
-      (conj-node e-1)
+      (conj-node root)
       (target b6)
       (player-position pos_5_1)
       (player-orientation north)

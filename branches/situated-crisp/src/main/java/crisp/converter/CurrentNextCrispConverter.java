@@ -848,7 +848,7 @@ public class CurrentNextCrispConverter {
                         distractorPreconditions.add(new Literal("**equals**(?y," + I.get(roleN) + ")", false));
 
                         for (Term sr : entry.getSemanticRequirements()) {
-                            Term term = distractorSubst.apply(substituteVariablesForRoles(sr, n, I));
+                            Term term = distractorSubst.apply(newSubstituteVariablesForRoles(sr, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL));
                             distractorPreconditions.add(new Literal((Compound) term, true));
 
                             //Compound distractorPredicate = makeSemanticPredicate(term);

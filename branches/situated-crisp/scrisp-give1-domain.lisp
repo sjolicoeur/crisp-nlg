@@ -101,7 +101,7 @@
    (:action init-transImperative-push
       :parameters (?x - individual  ?u - syntaxnode  ?x1 - individual  ?u1 - syntaxnode  ?un - syntaxnode  ?o2 - orientationtype  ?o3 - orientationtype  ?p - positiontype  ?o - orientationtype  )
       :precondition (and (current ?u1) (next ?u1 ?un) (referent ?u ?x) (subst s ?u) (push ?x ?x1) (button ?x1) (visible ?p ?o ?x1) (target ?x1) (player-position ?p) (player-orientation ?o) (object-orientation ?x1 ?o3) (next-orientation-left ?o ?o2) (next-orientation-left ?o2 ?o3))
-      :effect (and (not (current ?u1)) (current ?un) (not (subst s ?u)) (not (needtoexpress-2 imp-push ?x ?x1)) (todo-2 imp-push ?x ?x1) (forall (?y - individual  ) (when (not (and (push ?y ?x1))) (not (distractor ?u ?y)))) (subst np ?u1) (referent ?u1 ?x1) (forall (?y - individual  ) (when (and (not (= ?y ?x1)) (button ?y) (visible p o ?y)) (distractor ?u1 ?y))) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
+      :effect (and (not (current ?u1)) (current ?un) (not (subst s ?u)) (not (needtoexpress-2 imp-push ?x ?x1)) (todo-2 imp-push ?x ?x1) (forall (?y - individual  ) (when (not (and (push ?y ?x1))) (not (distractor ?u ?y)))) (subst np ?u1) (referent ?u1 ?x1) (forall (?y - individual  ) (when (and (not (= ?y ?x1)) (button ?y) (visible ?p ?o ?y)) (distractor ?u1 ?y))) (canadjoin s ?u) (canadjoin v ?u) (canadjoin vp ?u))
    )
 
 

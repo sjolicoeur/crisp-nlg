@@ -78,6 +78,9 @@ public class CurrentNextCrispConverter {
     private String problemname;   // the name for the problem as specified in the problem file
     private String mainCat;       // main category for the problem in the problem file
 
+    private Domain domain;
+    private boolean useOldDomain;
+
     private class ProblemfileHandler extends DefaultHandler {
         // Member variables for instances of the Content Handler
 
@@ -374,7 +377,7 @@ public class CurrentNextCrispConverter {
 
         // since negated needtoexpress-* literals can also occur with other arity we
         // need to add predicates for any arity to the domain.
-        for (int i = 1; i <= maximumArity; i++) {
+        for (int i = 0; i <= maximumArity; i++) {
 
             List<String> predNTEtypeList = new ArrayList<String>();
             predNTEtypeList.add("predicate");
@@ -717,7 +720,7 @@ public class CurrentNextCrispConverter {
                     Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(impEffTerm, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL);
                     
 
-                    hasContent = true;
+                    //hasContent = true;
 
                     Compound impEffPredicate = makeSemanticPredicate(impEffCompound);
                     List<String> impEffPredicateTypes = new ArrayList<String>();
@@ -725,7 +728,7 @@ public class CurrentNextCrispConverter {
                         impEffPredicateTypes.add("individual");
                     }
                     domain.addPredicate(impEffPredicate.getLabel(), impEffPredicateTypes);
-                    goals.add(new Literal(termWithVariables, true));
+                    //goals.add(new Literal(termWithVariables, true));
 
                     contentWithVariables.add(termWithVariables);
 
@@ -733,8 +736,8 @@ public class CurrentNextCrispConverter {
                     effects.add(new Literal((Compound) flattenImpTerm(termWithVariables, "todo"), true));
 
 
-                    if (impEffCompound.getSubterms().size() > maximumArity) {
-                        maximumArity = impEffCompound.getSubterms().size();
+                    if (impEffCompound.getSubterms().size()-1 > maximumArity) {
+                        maximumArity = impEffCompound.getSubterms().size()-1;
                     }
 
                     domain.addConstant(renameImperative(impEffCompound.getLabel()), "imperative");
@@ -743,7 +746,6 @@ public class CurrentNextCrispConverter {
 
                 
                 
-
                 // Add semantic requirements to preconditions
                 for (Term semReqTerm : entry.getSemanticRequirements()) {
                     Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(semReqTerm, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL);
@@ -831,7 +833,7 @@ public class CurrentNextCrispConverter {
                     effects.add(new Literal("referent(" + roleN + ", " + I.get(roleN) + ")", true));
 
                     //distractors
-                    if (hasContent) {
+                    
                         Variable distractorVar = new Variable("?y");
                         Substitution distractorSubst = new Substitution(new Variable(I.get(roleN)), distractorVar);
 
@@ -867,7 +869,7 @@ public class CurrentNextCrispConverter {
                         effects.add(new Universal(distractorQuantifierVars, distractorQuantifierVarTypes,
                                 new Conditional(distractorPrecondition,
                                 new Literal("distractor(" + roleN + ",?y)", true))));
-                    }
+                    
                 }
 
                 // internal nodes: allow adjunction
@@ -1019,8 +1021,13 @@ public class CurrentNextCrispConverter {
     private Term flattenImpTerm(Compound t, String newLabel) {
         List<Term> subterms = new ArrayList<Term>();
 
+
         subterms.add(new Constant(renameImperative(t.getLabel())));
-        subterms.addAll(t.getSubterms());
+
+        List<Term> args = t.getSubterms();
+        if (args.size() > 0) args.remove(0);
+        subterms.addAll(args);
+
 
         return new Compound(newLabel + "-" + t.getSubterms().size(), subterms);
     }

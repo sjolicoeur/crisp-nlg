@@ -156,7 +156,7 @@
    (:init
       (subst s root)
       (referent root e-1)
-      (needtoexpress-2 imp-push e-1 b6)
+      (needtoexpress-1 imp-push b6)
       (conj-node root)
       (target b6)
       (player-position pos_5_1)

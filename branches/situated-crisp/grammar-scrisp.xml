@@ -129,7 +129,7 @@
       <pragcond>not(alarmed(p2))</pragcond>
       <prageff>not(player-position(p1))</prageff>
       <prageff>player-position(p2)</prageff>
-      <impeff>moveonestep(self)</impeff>
+      <impeff>moveonestep()</impeff>
       <param type="positiontype">p1</param>
       <param type="positiontype">p2</param>
       <param type="orientationtype">o</param>
@@ -148,7 +148,7 @@
       <pragcond>not(alarmed(p3))</pragcond>
       <prageff>not(player-position(p1))</prageff>
       <prageff>player-position(p3)</prageff>
-      <impeff>movetwosteps(self)</impeff>
+      <impeff>movetwosteps()</impeff>
       <param type="positiontype">p1</param>
       <param type="positiontype">p2</param>
       <param type="positiontype">p3</param>
@@ -171,7 +171,7 @@
       <pragcond>not(alarmed(p4))</pragcond>
       <prageff>not(player-position(p1))</prageff>
       <prageff>player-position(p4)</prageff>
-      <impeff>movethreesteps(self)</impeff>
+      <impeff>movethreesteps()</impeff>
       <param type="positiontype">p1</param>
       <param type="positiontype">p2</param>
       <param type="positiontype">p3</param>
@@ -186,7 +186,7 @@
       <pragcond>next-orientation-left(o1,o2)</pragcond>
       <prageff>not(player-orientation(o1))</prageff>
       <prageff>player-orientation(o2)</prageff>
-      <impeff>turnleft(self)</impeff>
+      <impeff>turnleft()</impeff>
       <param type="orientationtype">o1</param>
       <param type="orientationtype">o2</param>
     </tree>
@@ -198,7 +198,7 @@
       <pragcond>next-orientation-left(o2,o1)</pragcond>
       <prageff>not(player-orientation(o1))</prageff>
       <prageff>player-orientation(o2)</prageff>
-      <impeff>turnright(self)</impeff>
+      <impeff>turnright()</impeff>
       <param type="orientationtype">o1</param>
       <param type="orientationtype">o2</param>
     </tree>
@@ -211,7 +211,7 @@
       <pragcond>next-orientation-left(o2,o3)</pragcond>
       <prageff>not(player-orientation(o1))</prageff>
       <prageff>player-orientation(o3)</prageff>
-      <impeff>turnaround(self)</impeff>
+      <impeff>turnaround()</impeff>
       <param type="orientationtype">o1</param>
       <param type="orientationtype">o2</param>
       <param type="orientationtype">o3</param>
@@ -221,16 +221,16 @@
   <entry word='and' pos='Conj'>
     <tree refid="a.sentConjunction">
       <pragcond>next-referent(self,other)</pragcond>
-      <pragcond>conj-node(id(other))</pragcond>
-      <prageff>not(conj-node(next(other)))</prageff>
+      <pragcond>conj-node(foo)</pragcond>
+      <prageff>not(conj-node(foo))</prageff>
     </tree>
   </entry>   
 
   <entry word='then' pos='Conj'>
     <tree refid="a.sentConjunction">
       <pragcond>next-referent(self,other)</pragcond>
-      <pragcond>not(conj-node(id(other)))</pragcond>
-      <prageff>conj-node(next(other))</prageff>
+      <pragcond>not(conj-node(foo))</pragcond>
+      <prageff>conj-node(foo)</prageff>
     </tree>
   </entry> 
 

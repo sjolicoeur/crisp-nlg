@@ -6,71 +6,67 @@ on practical inputs, we ran a series of experiments using the XTAG
 Grammar \cite{xtag01:_tr}, a large-scale tree-adjoining grammar of
 English, from which we selected all lexicon entries for seven words we
 used in the experiments. We set up inputs to generate sentences of the
-form
+form ``$S_1$ and $S_2$ and \ldots and $S_n$'', i.e.\ a conjunction of
+$n$ sentences. Each sentence $S_i$ is of the form ``X admires Y''. X
+and Y are unique referring expressions to individuals, such as ``the
+rich businessman''. For each experiment, we have a parameter $d$ that
+specifies how many adjectives are needed to distinguish the individual
+uniquely -- in particular, $d=0$ means we can say ``the businessman'',
+and $d=2$ means we must say ``the rich sad businessman''. We translate
+these generation problems into planning problems with the new encoding
+as shown in Fig.~\ref{fig:white-rabbit-as-planning}.
 
-$$S_1 \;\mathrm{and}\; S_2 \;\mathrm{and}\; \ldots \;\mathrm{and}\;
-S_n,$$
-
-i.e.\ a conjunction of $n$ sentences. Each sentence $S_i$ is of the
-form ``the X admires the Y'' or ``the X gives the Y the Z''; that is,
-we vary the arity $k$ of the verb to be 2 or 3. For X, Y, and Z are
-all of a form like ``the rich businessman'', i.e.\ like the rabbit in
-Fig.~\ref{fig:white-rabbit-as-planning}, the individual must be
-described with one noun and one adjective to distinguish it from all
-other individuals. We translate these generation problems into
-planning problems with the new encoding as shown in
-Fig.~\ref{fig:white-rabbit-as-planning}.
-
-\begin{figure}
+\begin{figure}[t]
   \centering
-  la la la
-  \caption{Runtimes for $k=2$.}
-  \label{fig:runtimes-k2}
+  \includegraphics[width=\columnwidth]{pics/xtag-k2-dist0}
+  \caption{Runtimes for $d=0$.}
+  \label{fig:runtimes-k2-dist0}
 \end{figure}
 
-The results for $k=2$ are shown in Fig.~\ref{fig:runtimes-k2}; the
-curves end where the planner exceeded its five-minute timeout.  As the
-graph shows, the improved preprocessor has a huge impact on the
-runtimes: \todo{refer to data}.  We can also see that best-first
-search with the helpful actions heuristic is the best-performing
-search algorithm.  While the EHC search is still faster than
-best-first search without helpful actions, this says less about the
-quality of the search algorithm itself than it does about the
-usefulness of the helpful actions heuristic.
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{pics/xtag-k2-dist2}
+  \caption{Runtimes for $d=2$.}
+  \label{fig:runtimes-k2-dist2}
+\end{figure}
 
-The improvements we have made in this paper bring the overall planner
-runtimes into a range where they can be useful in practical natural
-language generation applications.  For instance, the 24-word sentence
-for $k=2$ and $n=3$ is generated in under four seconds; before our
-changes, FF was not able to generate this sentence in less than
-\todo{XXX time}.  Nevertheless, our experiment also shows that the
-current technology does not yet scale to larger instances.  It should
-be noted that although we used all lexicon entries from XTAG for the
-words in our sentences, our experiment grammar still only contained
-lexicon entries for seven different words.  It would not be
-unreasonable to assume a grammar with a larger vocabulary, which would
-then be difficult for the current planner to handle.
+Consider first the results for $d=0$, which are shown in
+Fig.~\ref{fig:runtimes-k2-dist0}; the lines end where the planner
+exceeded its five-minute timeout.  The top line in the figure
+represents the off-the-shelf version of FF. The other two lines
+represent FF with the improved preprocessor, using the standard
+enforced hillclimbing strategy and the best-first search with helpful
+actions (``New FF'') respectively.  By improving the preprocessor, we
+have improved its runtime on small instances by three orders of
+magnitude; this factor only increases for larger inputs.  After the
+preprocessor has been improved, both search strategies can solve these
+problem instances in practically useful time -- for instance, the
+24-word sentence at $n=4$ is generated in under two seconds.
 
-One final aspect of our experiments concerns the difference between
-the new encoding of generation problems into planning problems
-proposed above and the old encoding mentioned in Section \todo{XXX}.
-We ran a variant of the above experiment where X, Y, and Z could be
-realized with a single noun (``the businessman'') and did not require
-an adjective to be uniquely identifiable. On this data, search on the
-new encoding tended to be mildly faster for small to medium-sized
-instances than on the old encoding (1.6 sec vs.\ 2.7 sec for EHC
-search on $k=2,n=4$), whereas preprocessing was considerably faster
-for the new encoding even after our improvements (0.7 sec vs.\ 2.7 sec
-on $k=2,n=4$).  However, for larger instances the new encoding
-exceeded the five-minute timeout earlier than the old encoding did.
-Overall, the picture for the old and new encoding was roughly
-comparable, with one notable exception: Under the old encoding, EHC
-search was slightly faster than best-first search with helpful
-actions (7.2 sec vs.\ 10.9 sec at $k=2,n=5$).  This is an artefact of
-the fact that because the input specified the sentence word for word,
-the relaxed plan heuristic did not underestimate the plan length as
-grossly as in other cases.  As we have seen, adding even a single
-distractor for every noun phrase already negates this advantage.
+To get a clearer view of the relative efficiency of the two search
+strategies, we also ran the experiment with $d=2$; the results are
+shown in Fig.~\ref{fig:runtimes-k2-dist2}.  Here the old FF
+preprocessor crashed with a segmentation fault even at
+$n=1$. Best-first search with helpful actions is clearly the
+best-performing search strategy here.  It takes about 14 seconds for
+$n=3$, but this sentence is already quite long at 29 words, and EHC
+takes 3.5 minutes on the same input.  Best-first search without
+helpful actions timed out at $n=3$, which illustrates the advantage we
+gain from using the helpful actions heuristic.
+
+While this brings the overall planner runtimes into a range where FF
+can now be useful in practical NLG applications, it is important to
+note that it still has serious limitations.  The best-first search
+timed out for any $n>4$ in either experiment.  While many NLG
+applications can get by with shorter sentences, improving the search
+on our domain is still an open question for the future.  Even within
+our domain, the relative quality of EHC and BFS+H depended on the
+exact generation problem instance: While BFS+H outperformed EHC at
+$d=2$, EHC was actually slightly faster at $d=0$ because the absence
+of distractors meant there was not much room for the characteristic
+underestimation of the relaxed plan evaluation discussed above.  This
+means that sentence generation remains as a varied and challenging
+domain for planning.
 
 
 

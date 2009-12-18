@@ -188,7 +188,7 @@ $\mathsf{subst}(S,\mathsf{root})$ is alone in the first goal agenda
 entry, i.e., there is no goal stating the actual meaning the sentence
 is supposed to have. Consequently, the planner decides to generate
 {\em any} sentence. If it happens to be the wrong sentence, the
-planner is stuck in a dead-end. 
+planner is stuck in a dead-end. %
 %While that dead end is recognized by
 %the relaxed plan heuristic -- i.e., it is easy to see that the actions
 %needed for achieving the goal cannot be applied anymore -- certainly
@@ -196,17 +196,21 @@ planner is stuck in a dead-end.
 %technique.
 % Switching it off, we {\bf \dots
 %example before/after.}
-
-
 It is not clear to us, at this point, how goal ordering techniques
-could be modified so that they return sensible results in the sentence
-generation domain. The issue explained above regarding $\neg
-\mathsf{subst}(S,\mathsf{root})$ and $\mathsf{sleep}(e,r_1)$ could be
-addressed by recognizing that, once the latter is achieved, the former
-is already true anyway. More generally however, the life-cycle of
-substitution nodes and distractors is weird -- as we outline below, it
-follows a false-true-false pattern -- and seems difficult to detect
-based on domain analysis.
+could be modified so that they return more sensible results.
+
+%The issue regarding $\neg
+%\mathsf{subst}(S,\mathsf{root})$ and $\mathsf{sleep}(e,r_1)$ could
+%potentially be addressed by recognizing that, once the latter is
+%achieved, the former is already true anyway. Whether such techniques
+%suffice to obtain useful goal orderings overall remains to be seen.
+
+%More generally however,
+%as outlined below the life-cycle of substitution nodes and distractors
+%is weird; %
+% -- as we
+%outline below, it follows a false-true-false pattern --
+%it seems difficult to detect this based on domain analysis.
 
 
 

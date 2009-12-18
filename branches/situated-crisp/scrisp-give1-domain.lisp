@@ -2,36 +2,178 @@
         (:requirements :strips :equality :typing :conditional-effects :quantified-preconditions)
         (:types  category - object  rolename - object  individual - object  orientationtype - object  predicate - object  stepindex - object  syntaxnode - object  positiontype - object)
        (:constants
+         b1_dist1 - individual
+         chair1 - individual
+         np - category
+         b1_dist2 - individual
+         p1 - individual
+         b1_dist3 - individual
+         pos_11_7 - individual
+         pos_11_6 - individual
+         pos_11_5 - individual
+         pos_11_4 - individual
+         pos_11_8 - individual
+         bt1 - individual
+         imp-push - predicate
+         b5_dist1 - individual
+         pred-button - predicate
+         pos_2_0 - individual
+         pos_2_1 - individual
+         pos_2_2 - individual
+         pos_2_3 - individual
+         pos_2_4 - individual
+         pos_0_1 - individual
+         imp-movetwosteps - predicate
+         pos_2_5 - individual
+         pos_0_0 - individual
+         pos_2_6 - individual
+         b3_dist1 - individual
+         pos_2_7 - individual
+         pos_0_5 - individual
+         bt2 - individual
+         pos_0_4 - individual
+         bt3 - individual
+         pos_0_3 - individual
+         b4_dist2 - individual
+         pos_0_2 - individual
+         b4_dist1 - individual
+         pos_0_8 - individual
+         pos_0_7 - individual
+         pos_0_6 - individual
+         pred-alarm - predicate
+         pos_11_0 - individual
+         pos_11_1 - individual
+         pos_11_2 - individual
+         pos_11_3 - individual
+         imp-turnaround - predicate
          pred-safe - predicate
          imp-movethreesteps - predicate
-         np - category
          conj - category
          imp-turnleft - predicate
-         pred-trophy - predicate
-         pred-flower - predicate
-         pred-door - predicate
+         pos_8_1 - individual
+         pos_8_0 - individual
          vp - category
-         imp-turnright - predicate
-         imp-push - predicate
-         pred-blue - predicate
-         pred-button - predicate
-         pred-lamp - predicate
-         d - category
+         pos_4_0 - individual
+         a1 - individual
+         pos_4_1 - individual
+         pos_4_4 - individual
+         pos_4_5 - individual
+         pos_4_2 - individual
+         pos_4_3 - individual
          pred-picture - predicate
-         imp-moveonestep - predicate
-         imp-movetwosteps - predicate
-         pred-red - predicate
-         pred-green - predicate
+         d - category
          a - category
          n - category
-         pred-chair - predicate
+         pos_6_1 - individual
          v - category
-         pred-alarm - predicate
+         pos_6_0 - individual
+         pos_6_3 - individual
+         pos_6_2 - individual
          s - category
-         imp-turnaround - predicate
+         south - individual
+         pred-to-do - predicate
+         pred-flower - predicate
+         pred-door - predicate
+         imp-turnright - predicate
+         pos_10_5 - individual
+         b6_dist1 - individual
+         pos_10_6 - individual
+         b6_dist2 - individual
+         pos_10_7 - individual
+         pos_10_8 - individual
+         pos_10_4 - individual
+         pos_3_7 - individual
+         pos_3_8 - individual
+         pos_10_3 - individual
+         pos_10_2 - individual
+         pos_10_1 - individual
+         pos_10_0 - individual
+         pred-red - predicate
+         pos_9_7 - individual
+         pos_9_8 - individual
+         pos_9_5 - individual
+         pos_9_6 - individual
+         pos_9_3 - individual
+         pos_4_6 - individual
+         pred-chair - predicate
+         pos_9_4 - individual
+         pos_4_7 - individual
+         pos_4_8 - individual
+         pos_9_1 - individual
+         pos_9_2 - individual
+         pos_1_8 - individual
+         pos_6_8 - individual
+         pos_1_7 - individual
+         pos_7_8 - individual
+         pos_1_6 - individual
+         pos_7_7 - individual
+         pos_1_5 - individual
+         pos_7_6 - individual
+         pos_6_5 - individual
+         pos_1_4 - individual
+         pos_7_5 - individual
+         pos_1_3 - individual
+         pos_6_4 - individual
+         pos_6_7 - individual
+         pos_7_4 - individual
+         pos_1_2 - individual
+         pos_7_3 - individual
+         pos_1_1 - individual
+         pos_6_6 - individual
+         pos_8_5 - individual
+         pos_1_0 - individual
+         pos_5_6 - individual
+         pos_8_4 - individual
+         pos_5_5 - individual
+         pos_5_8 - individual
+         pos_8_3 - individual
+         pos_8_2 - individual
+         pos_5_7 - individual
+         pos_8_8 - individual
+         pos_8_7 - individual
+         west - individual
+         pos_8_6 - individual
+         pos_5_3 - individual
+         b2_dist1 - individual
+         pos_5_4 - individual
+         b2_dist2 - individual
+         pos_5_1 - individual
+         t1 - individual
+         pos_5_2 - individual
+         pos_2_8 - individual
+         pos_5_0 - individual
+         b3 - individual
+         b2 - individual
+         pred-trophy - predicate
+         b5 - individual
+         north - individual
+         b4 - individual
+         b6 - individual
+         pos_7_0 - individual
+         pos_7_1 - individual
+         pos_7_2 - individual
+         pred-blue - predicate
+         pos_9_0 - individual
+         flower1 - individual
+         b1 - individual
+         pos_3_6 - individual
+         pos_3_5 - individual
+         pos_3_4 - individual
+         pos_3_3 - individual
+         east - individual
+         pos_3_2 - individual
+         pos_3_1 - individual
+         pos_3_0 - individual
+         lamp1 - individual
+         pred-lamp - predicate
+         s1 - individual
+         imp-moveonestep - predicate
+         pred-green - predicate
+         dt1 - individual
+         pt1 - individual
        )
        (:predicates
-         (alarmed ?x1 - individual  )
+         (alarmed ?x1 - positiontype  )
          (visible ?x1 - individual  ?x2 - individual  ?x3 - individual  )
          (left-of ?x1 - individual  ?x2 - individual  )
          (next ?x1 - syntaxnode  ?x2 - syntaxnode  )
@@ -39,24 +181,24 @@
          (door ?x1 - individual  )
          (next-referent ?x1 - individual  ?x2 - individual  )
          (push ?x1 - individual  ?x2 - individual  )
-         (object-position ?x1 - individual  ?x2 - individual  )
+         (object-position ?x1 - individual  ?x2 - positiontype  )
          (needtoexpress-2 ?x1 - predicate  ?x2 - individual  ?x3 - individual  )
          (needtoexpress-1 ?x1 - predicate  ?x2 - individual  )
          (subst ?x1 - category  ?x2 - syntaxnode  )
          (button ?x1 - individual  )
-         (next-orientation-left ?x1 - individual  ?x2 - individual  )
+         (next-orientation-left ?x1 - orientationtype  ?x2 - orientationtype  )
          (current ?x1 - syntaxnode  )
          (above ?x1 - individual  ?x2 - individual  )
-         (blocked ?x1 - individual  ?x2 - individual  )
+         (blocked ?x1 - positiontype  ?x2 - positiontype  )
          (flower ?x1 - individual  )
-         (player-position ?x1 - individual  )
+         (player-position ?x1 - positiontype  )
          (safe ?x1 - individual  )
          (trophy ?x1 - individual  )
          (referent ?x1 - syntaxnode  ?x2 - individual  )
-         (object-orientation ?x1 - individual  ?x2 - individual  )
+         (object-orientation ?x1 - individual  ?x2 - orientationtype  )
          (green ?x1 - individual  )
          (turnright ?x1 - individual  )
-         (adjacent ?x1 - individual  ?x2 - individual  ?x3 - individual  )
+         (adjacent ?x1 - positiontype  ?x2 - positiontype  ?x3 - orientationtype  )
          (turnaround ?x1 - individual  )
          (picture ?x1 - individual  )
          (chair ?x1 - individual  )
@@ -68,7 +210,7 @@
          (blue ?x1 - individual  )
          (lamp ?x1 - individual  )
          (target ?x1 - individual  )
-         (player-orientation ?x1 - individual  )
+         (player-orientation ?x1 - orientationtype  )
          (turnleft ?x1 - individual  )
          (canadjoin ?x1 - category  ?x2 - syntaxnode  )
          (todo-2 ?x1 - predicate  ?x2 - individual  ?x3 - individual  )
@@ -176,7 +318,7 @@
 
    (:action aux-sentConjunction-and
       :parameters (?x - individual  ?u - syntaxnode  ?x1 - individual  ?u1 - syntaxnode  ?un - syntaxnode  )
-      :precondition (and (current ?u1) (next ?u1 ?un) (referent ?u ?x) (canadjoin s ?u) (next-referent ?x ?x1) (conj-node ?x1))
+      :precondition (and (current ?u1) (next ?u1 ?un) (referent ?u ?x) (canadjoin s ?u) (next-referent ?x ?x1) (conj-node ?u1))
       :effect (and (not (current ?u1)) (current ?un) (not (mustadjoin s ?u)) (not (conj-node ?un)) (subst s ?u1) (referent ?u1 ?x1) (canadjoin s ?u))
    )
 
@@ -239,7 +381,7 @@
 
    (:action aux-sentConjunction-then
       :parameters (?x - individual  ?u - syntaxnode  ?x1 - individual  ?u1 - syntaxnode  ?un - syntaxnode  )
-      :precondition (and (current ?u1) (next ?u1 ?un) (referent ?u ?x) (canadjoin s ?u) (next-referent ?x ?x1) (not (conj-node ?x1)))
+      :precondition (and (current ?u1) (next ?u1 ?un) (referent ?u ?x) (canadjoin s ?u) (next-referent ?x ?x1) (not (conj-node ?u1)))
       :effect (and (not (current ?u1)) (current ?un) (not (mustadjoin s ?u)) (conj-node ?un) (subst s ?u1) (referent ?u1 ?x1) (canadjoin s ?u))
    )
 

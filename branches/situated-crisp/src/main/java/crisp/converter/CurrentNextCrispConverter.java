@@ -169,14 +169,14 @@ public class CurrentNextCrispConverter {
 
             if (qName.equals("world")) {
                 characterBuffer = new StringWriter();
-                String params = atts.getValue("types");
+                String params = atts.getValue("type");
                 currentParamTypes = new ArrayList<String>();
                 if (params != null) {
                     String[] paramTypes = params.split(" ");
                     for (int i = 0; i < paramTypes.length; i++) {
                         currentParamTypes.add(paramTypes[i]);
                     }
-                }
+                }                
             }
 
             if (qName.equals("commgoal")) {
@@ -213,8 +213,15 @@ public class CurrentNextCrispConverter {
                     types = currentParamTypes;
                 }
                 domain.addPredicate(compoundTerm.getLabel(), types);
-                //addIndividualConstants(term,domain);
-                addObjectsToProblem(term, problem);
+                addIndividualConstants(term,domain);
+                for (int i=0; i<compoundTerm.getSubterms().size(); i++) {
+                    problem.addObject(((Constant) (compoundTerm.getSubterms().get(i))).getName(), types.get(i));
+                }
+                
+                
+                System.out.println(term);
+                System.out.println(currentParamTypes);
+
 
                 problem.addToInitialState(term);
                 trueAtoms.add(term);

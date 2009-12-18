@@ -6,142 +6,142 @@
         b1_dist2 - individual
         p1 - individual
         b1_dist3 - individual
-        pos_11_7 - individual
-        pos_11_6 - individual
-        pos_11_5 - individual
-        pos_11_4 - individual
-        pos_11_8 - individual
+        pos_11_7 - positiontype
+        pos_11_6 - positiontype
+        pos_11_5 - positiontype
+        pos_11_4 - positiontype
+        pos_11_8 - positiontype
         bt1 - individual
         b5_dist1 - individual
-        pos_2_0 - individual
-        pos_2_1 - individual
-        pos_2_2 - individual
-        pos_2_3 - individual
-        pos_2_4 - individual
-        pos_0_1 - individual
-        pos_2_5 - individual
-        pos_0_0 - individual
-        pos_2_6 - individual
+        pos_2_0 - positiontype
+        pos_2_1 - positiontype
+        pos_2_2 - positiontype
+        pos_2_3 - positiontype
+        pos_2_4 - positiontype
+        pos_0_1 - positiontype
+        pos_2_5 - positiontype
+        pos_0_0 - positiontype
+        pos_2_6 - positiontype
         b3_dist1 - individual
-        pos_2_7 - individual
-        pos_0_5 - individual
+        pos_2_7 - positiontype
+        pos_0_5 - positiontype
         bt2 - individual
-        pos_0_4 - individual
+        pos_0_4 - positiontype
         bt3 - individual
-        pos_0_3 - individual
+        pos_0_3 - positiontype
         b4_dist2 - individual
-        pos_0_2 - individual
+        pos_0_2 - positiontype
         b4_dist1 - individual
-        pos_0_8 - individual
-        pos_0_7 - individual
-        pos_0_6 - individual
-        pos_11_0 - individual
-        pos_11_1 - individual
-        pos_11_2 - individual
-        pos_11_3 - individual
-        pos_8_1 - individual
-        pos_8_0 - individual
-        pos_4_0 - individual
+        pos_0_8 - positiontype
+        pos_0_7 - positiontype
+        pos_0_6 - positiontype
+        pos_11_0 - positiontype
+        pos_11_1 - positiontype
+        pos_11_2 - positiontype
+        pos_11_3 - positiontype
+        pos_8_1 - positiontype
+        pos_8_0 - positiontype
+        pos_4_0 - positiontype
         a1 - individual
-        pos_4_1 - individual
-        pos_4_4 - individual
-        pos_4_5 - individual
-        pos_4_2 - individual
-        pos_4_3 - individual
-        pos_6_1 - individual
-        pos_6_0 - individual
-        pos_6_3 - individual
-        pos_6_2 - individual
-        south - individual
+        pos_4_1 - positiontype
+        pos_4_4 - positiontype
+        pos_4_5 - positiontype
+        pos_4_2 - positiontype
+        pos_4_3 - positiontype
+        pos_6_1 - positiontype
+        pos_6_0 - positiontype
+        pos_6_3 - positiontype
+        pos_6_2 - positiontype
+        south - orientationtype
         root - syntaxnode
-        pos_10_5 - individual
+        pos_10_5 - positiontype
         b6_dist1 - individual
-        pos_10_6 - individual
+        pos_10_6 - positiontype
         b6_dist2 - individual
-        pos_10_7 - individual
-        pos_10_8 - individual
-        pos_10_4 - individual
-        pos_3_7 - individual
-        pos_3_8 - individual
-        pos_10_3 - individual
-        pos_10_2 - individual
-        pos_10_1 - individual
-        pos_10_0 - individual
-        pos_9_7 - individual
-        pos_9_8 - individual
-        pos_9_5 - individual
-        pos_9_6 - individual
-        pos_9_3 - individual
-        pos_4_6 - individual
-        pos_9_4 - individual
-        pos_4_7 - individual
-        pos_4_8 - individual
-        pos_9_1 - individual
-        pos_9_2 - individual
-        pos_1_8 - individual
-        pos_6_8 - individual
-        pos_1_7 - individual
-        pos_7_8 - individual
-        pos_1_6 - individual
-        pos_7_7 - individual
-        pos_1_5 - individual
-        pos_7_6 - individual
-        pos_6_5 - individual
-        pos_1_4 - individual
-        pos_7_5 - individual
-        pos_1_3 - individual
-        pos_6_4 - individual
-        pos_6_7 - individual
-        pos_7_4 - individual
-        pos_1_2 - individual
-        pos_1_1 - individual
-        pos_7_3 - individual
-        pos_6_6 - individual
-        pos_8_5 - individual
-        pos_1_0 - individual
-        pos_5_6 - individual
-        pos_8_4 - individual
-        pos_5_5 - individual
-        pos_5_8 - individual
-        pos_8_3 - individual
-        pos_8_2 - individual
-        pos_5_7 - individual
-        pos_8_8 - individual
-        pos_8_7 - individual
-        west - individual
-        pos_8_6 - individual
-        pos_5_3 - individual
+        pos_10_7 - positiontype
+        pos_10_8 - positiontype
+        pos_10_4 - positiontype
+        pos_3_7 - positiontype
+        pos_3_8 - positiontype
+        pos_10_3 - positiontype
+        pos_10_2 - positiontype
+        pos_10_1 - positiontype
+        pos_10_0 - positiontype
+        pos_9_7 - positiontype
+        pos_9_8 - positiontype
+        pos_9_5 - positiontype
+        pos_9_6 - positiontype
+        pos_9_3 - positiontype
+        pos_4_6 - positiontype
+        pos_9_4 - positiontype
+        pos_4_7 - positiontype
+        pos_4_8 - positiontype
+        pos_9_1 - positiontype
+        pos_9_2 - positiontype
+        pos_1_8 - positiontype
+        pos_6_8 - positiontype
+        pos_1_7 - positiontype
+        pos_7_8 - positiontype
+        pos_1_6 - positiontype
+        pos_7_7 - positiontype
+        pos_1_5 - positiontype
+        pos_7_6 - positiontype
+        pos_6_5 - positiontype
+        pos_1_4 - positiontype
+        pos_7_5 - positiontype
+        pos_1_3 - positiontype
+        pos_6_4 - positiontype
+        pos_6_7 - positiontype
+        pos_7_4 - positiontype
+        pos_1_2 - positiontype
+        pos_1_1 - positiontype
+        pos_7_3 - positiontype
+        pos_6_6 - positiontype
+        pos_8_5 - positiontype
+        pos_1_0 - positiontype
+        pos_5_6 - positiontype
+        pos_8_4 - positiontype
+        pos_5_5 - positiontype
+        pos_5_8 - positiontype
+        pos_8_3 - positiontype
+        pos_8_2 - positiontype
+        pos_5_7 - positiontype
+        pos_8_8 - positiontype
+        pos_8_7 - positiontype
+        west - orientationtype
+        pos_8_6 - positiontype
+        pos_5_3 - positiontype
         b2_dist1 - individual
-        pos_5_4 - individual
+        pos_5_4 - positiontype
         b2_dist2 - individual
-        pos_5_1 - individual
+        pos_5_1 - positiontype
         t1 - individual
-        pos_5_2 - individual
-        pos_2_8 - individual
-        pos_5_0 - individual
+        pos_5_2 - positiontype
+        pos_2_8 - positiontype
+        pos_5_0 - positiontype
         b3 - individual
         b2 - individual
         b5 - individual
-        north - individual
+        north - orientationtype
         b4 - individual
         b6 - individual
-        pos_7_0 - individual
-        pos_7_1 - individual
-        pos_7_2 - individual
-        pos_9_0 - individual
+        pos_7_0 - positiontype
+        pos_7_1 - positiontype
+        pos_7_2 - positiontype
+        pos_9_0 - positiontype
         flower1 - individual
         b1 - individual
         e-4 - individual
-        pos_3_6 - individual
-        pos_3_5 - individual
-        pos_3_4 - individual
-        pos_3_3 - individual
-        east - individual
-        pos_3_2 - individual
+        pos_3_6 - positiontype
+        pos_3_5 - positiontype
+        pos_3_4 - positiontype
+        pos_3_3 - positiontype
+        east - orientationtype
+        pos_3_2 - positiontype
         e-1 - individual
-        pos_3_1 - individual
+        pos_3_1 - positiontype
         e-2 - individual
-        pos_3_0 - individual
+        pos_3_0 - positiontype
         e-3 - individual
         lamp1 - individual
         n-5 - syntaxnode
@@ -156,7 +156,7 @@
    (:init
       (subst s root)
       (referent root e-1)
-      (needtoexpress-2 imp-push e-1 b6)
+      (needtoexpress-1 pred-to-do (push e-1 b6))
       (target b6)
       (player-position pos_5_1)
       (player-orientation north)
@@ -1638,5 +1638,5 @@
       (next-referent e-3 e-4)
    )
 
-   (:goal (and (forall (?a - category  ?u - syntaxnode  ) (not (subst ?a ?u))) (forall (?u - syntaxnode  ?x - individual  ) (not (distractor ?u ?x))) (forall (?P - predicate  ?x1 - individual  ?x2 - individual  ) (not (needtoexpress-2 ?P ?x1 ?x2)))))
+   (:goal (and (forall (?a - category  ?u - syntaxnode  ) (not (subst ?a ?u))) (forall (?u - syntaxnode  ?x - individual  ) (not (distractor ?u ?x))) (forall (?P - predicate  ?x1 - individual  ) (not (needtoexpress-1 ?P ?x1)))))
 )

@@ -1,12 +1,18 @@
 
 \begin{figure*}[t]
   \centering
-\begin{tabular}{cc}
-  \includegraphics[width=0.9\columnwidth]{pics/xtag-k2-dist0} & 
-\includegraphics[width=0.9\columnwidth]{pics/xtag-k2-dist2}\\[-0.2cm]
-(a) & (b)
-\end{tabular}
-\vspace{-0.3cm}
+(a)
+\vtop{
+\vskip-2ex
+\hbox{\includegraphics[width=0.8\columnwidth]{pics/xtag-k2-dist0}}
+}
+$\qquad\qquad$
+(b)
+\vtop{
+\vskip-2ex
+\hbox{\includegraphics[width=0.8\columnwidth]{pics/xtag-k2-dist2}}
+}
+\vspace{-0.5cm}
 \caption{Runtimes for $d=0$ (a) and $d=2$ (b).}
   \label{fig:runtimes}
 \vspace{-0.5cm}
@@ -23,11 +29,11 @@ English, from which we selected all lexicon entries for seven words we
 used in the experiments. We set up inputs to generate sentences of the
 form ``$S_1$ and $S_2$ and \ldots and $S_n$'', i.e.\ a conjunction of
 $n$ sentences. Each sentence $S_i$ is of the form ``X admires Y''. X
-and Y are unique referring expressions to individuals, such as ``the
-rich businessman''. For each experiment, we have a parameter $d$ that
-specifies how many adjectives are needed to distinguish the individual
+and Y are unique referring expressions, such as ``the rich
+businessman''. For each experiment, we have a parameter $d$ that
+specifies how many adjectives are needed to distinguish the referent
 uniquely -- in particular, $d=0$ means we can say ``the businessman'',
-and $d=2$ means we must say ``the rich sad businessman''. 
+and $d=2$ means we must say ``the rich sad businessman''.
 % JOERG: ``new encoding'' gibt's ja gar nicht mehr als unterscheidung
 %
 %We translate
@@ -64,15 +70,17 @@ takes 3.5 minutes on the same input.  Best-first search without
 helpful actions timed out at $n=3$, illustrating the importance of
 that heuristic.
 
-We remark that the relative behavior of the different search methods
-is not uniform in our domain, which exhibits a huge amount of
-structural variance due to the many different forms that the input
-grammer may take. We are far from an exhaustive exploration of all the
-possible parameter settings. Suffice it to say that, in particular
-encoding variants and with particular grammars (e.g.\ grammars not
-featuring any distractors), in stark contrast to
-Fig.~\ref{fig:runtimes} (b) EHC is much more effective than best-first
-search.
+The relative behavior of the different search methods is not uniform
+in our domain, which exhibits a huge amount of structural variance due
+to the many different forms that the input grammar may take. We are
+far from an exhaustive exploration of all the possible parameter
+settings. For instance, with particular inputs (no distractors), EHC
+can be more effective than best-first search.
+
+%Suffice it to say that, in particular encoding variants and
+%with particular grammars (e.g.\ grammars not featuring any
+%distractors), in stark contrast to Fig.~\ref{fig:runtimes} (b) EHC is
+%much more effective than best-first search.
 
 %While this brings the overall planner runtimes into a range where FF
 %can now be useful in practical NLG applications, it is important to

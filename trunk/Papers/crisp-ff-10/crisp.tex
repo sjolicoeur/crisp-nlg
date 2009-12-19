@@ -2,82 +2,59 @@
 \label{sec:crisp}
 
 
-\subsection{Sentence generation with tree-adjoining grammars}
-
 We consider a planning domain that comes up in the generation of
-natural language sentences. This is a standard problem in
-computational linguistics and can be construed as follows.
+natural language sentences based on tree-adjoining grammar (TAG;
+\cite{joshi;etal1997}).  This is a standard problem in computational
+linguistics, which we sketch by example; see
+\cite{Stone2003a,KolSto07} for details.
 
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.75\columnwidth]{pic-grammar}
+%   \caption{An example grammar in the sentence generation domain.}
+%   \label{fig:white-rabbit-sleeps-grammar}
+% \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.75\columnwidth]{pic-grammar}
-  \caption{An example grammar in the sentence generation domain.}
-  \label{fig:white-rabbit-sleeps-grammar}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.75\columnwidth]{pic-derivation}
+  \includegraphics[width=1\columnwidth]{pic-derivation}
   \caption{Derivation of ``The white rabbit sleeps.''}
   \label{fig:white-rabbit-sleeps-deriv}
 \end{figure}
 
-We assume a tree-adjoining grammar (TAG; \cite{joshi;etal1997}), which
-consists of a finite set of \emph{elementary trees} as shown in
-Fig.~\ref{fig:white-rabbit-sleeps-grammar}. Elementary trees can be
-combined using the operations of \emph{substitution} and
-\emph{adjunction}, which are illustrated in
-Fig.~\ref{fig:white-rabbit-sleeps-deriv}. Substitution replaces a
-substitution node (marked with a downarrow) by a subtree whose root
-has the same label, whereas adjunction splits a node in two and
-replaces it with a subtree whose root and foot node (marked with an
-asterisk) have the same label. A TAG derivation starts with a single
-substitution node labeled with a start symbol (in the example, S) and
-terminates when all leaves of the tree are labeled with words. In this
-way, a TAG grammar defines a language of trees, from which we can read
-off a language of strings.
+A TAG grammar consists of a finite set of \emph{elementary trees},
+each of which contains one or more words; the left of
+Fig.~\ref{fig:white-rabbit-sleeps-deriv} shows three trees for ``the
+rabbit'', ``sleeps'', and ``white''.  Trees can be combined using the
+operations of \emph{substitution} (purple dashed arrow in the figure)
+and \emph{adjunction} (blue dotted arrows) to form larger trees.
+The end result of a grammatically correct derivation is a tree all of
+whose leaves are labeled with words, as on the right of
+Fig.~\ref{fig:white-rabbit-sleeps-deriv}. We can read off a sentence
+from such a tree from left to right.
 
-To model the sentence generation problem, we equip every elementary
-tree with a set of atoms that specify the \emph{semantic
-  representation} of the tree \cite{Stone2003a}.  These terms in these
-atoms may be \emph{semantic roles}, such as $\mathsf{subj}$ and
-$\mathsf{obj}$ indicating the subject and object positions of a verb;
-all substitution nodes of an elementary tree must and the other nodes
-may be annotated with semantic roles as well.  In an \emph{instance}
-of an elementary tree, all semantic roles have been substituted with
-constants from the knowledge base.  Now we can assume a TAG grammar
-and two finite sets of ground atoms for the knowledge base and the
-semantic representation we want to express in a sentence.  The
-sentence generation problem is then to compute a correct TAG
-derivation using elementary tree instances such that the input
-semantic representation is covered by the semantic representations of
-the tree instances; that is, the derivation expresses the intended
-meaning.  Furthermore, the assignment of constants to the semantic
-roles of the elementary trees must be \emph{unique}: If we replace
-each semantic role of every elementary tree in the derivation by a
-different variable, there must be exactly one variable assignment that
-makes the combined semantic representations of the elementary trees a
-subset of the knowledge base.  This ensures that the hearer can
-uniquely understand each referring expression.
+To use TAG grammars for generation \cite{Stone2003a}, we assume a set
+of ground atoms expressing the information we want the sentence to
+convey, such as $\{\mathsf{sleep}(e,r_1)\}$, and a knowledge base that
+contains all ground atoms we know to be true; say,
+$\{\mathsf{sleep}(e,r_1), \mathsf{rabbit}(r_1), \mathsf{rabbit}(r_2),
+\mathsf{white}(r_1), \mathsf{brown}(r_2)\}$.  We then add variables
+ranging over constants from the knowledge base to the nodes of each
+elementary tree, and equip every elementary tree with a set of atoms
+over these variables to encode the meaning this tree expresses.
+Fig.~\ref{fig:white-rabbit-sleeps-deriv} already shows specific
+instances of the elementary trees from the grammar, in which constants
+have been substituted for these variables.  The derivation in the
+figure conveys the intended meaning -- in particular, that $r_1$
+sleeps.  Crucially, it also describes uniquely who does the sleeping:
+The sentence ``the rabbit sleeps'' would not have done this, as ``the
+rabbit'' could be understood either as $r_1$ or $r_2$.  We say that
+$r_2$ is a \emph{distractor} for the subject of the sentence, which is
+removed by adjoining the tree for ``white''.  The sentence generation
+problem consists in computing a grammatically correct TAG derivation
+from instances of the elementary trees in the grammar that conveys the
+intended meaning and describes all referents uniquely.
 
-For example, assume the grammar in
-Fig.~\ref{fig:white-rabbit-sleeps-grammar} and a knowledge base that
-contains the atoms $\{\mathsf{sleep}(e,r_1), \mathsf{rabbit}(r_1),
-\mathsf{rabbit}(r_2), \mathsf{white}(r_1), \mathsf{rabbit}(r_2)\}$,
-and let's say we want to express the semantic representation
-$\{\mathsf{sleep}(e,r_1)\}$.  Then the derivation in
-Fig.~\ref{fig:white-rabbit-sleeps-deriv} would be a correct output of
-a sentence generator.  Notice that a derivation for the sentence ``the
-rabbit sleeps'' would not be a correct result because the expression
-``the rabbit'' is not a unique description of $r_1$: the set
-$\{\mathsf{sleep}(x,y), \mathsf{rabbit}(y)\}$ can also be mapped into
-the knowledge base by substituting $r_2$ for $y$, so the hearer might
-misunderstand the subject as $r_2$. We call $r_2$ a \emph{distractor}
-of the referring expression.  Note also that the input semantic
-representation did not specify that we should refer to $r_1$ as
-``white'' or ``rabbit''; this decision was made by the generation
-algorithm.
 
 
 
@@ -89,91 +66,85 @@ the addition of an elementary tree to the derivation; the syntactic
 and semantic requirements and effects of doing this are captured in
 the operator's precondition and effect.
 
+
+\newcommand{\action}[4]{\textbf{#1$(#2)$:}\\
+\strut\quad   Precond:$\;$ \parbox[t]{12cm}{\ensuremath{#3}}\\
+\strut\quad   Effect:$\;$ \parbox[t]{12cm}{\ensuremath{#4}}}
+\newcommand{\f}[1]{\mathsf{#1}}
+
 \begin{figure}
-\centering
-\begin{minipage}{0.8\textwidth}
+%\centering
+%\begin{minipage}{0.8\textwidth}
 {\small%
-\begin{verbatim}
-(:action sleeps
-   :parameters (?u - node  ?subjnode - node  ?nextnode - node
-                ?xself - individual  ?xsubj - individual)
-   :precondition
-       (and (subst S ?u)  (referent ?u ?xself)  (sleep ?xself ?xsubj)
-            (current ?subjnode) (next ?subjnode ?nextnode)
-   :effect 
-       (and (not (subst S ?u))  (expressed sleep ?xself ?xsubj)
-            (subst NP ?subjnode)  (referent ?subjnode ?xsubj)
-            (not (next ?subjnode)) (next ?nextnode)
-            (forall (?y - individual)
-                (when (not (= ?y ?xself)) (distractor ?subjnode ?y)))))
+\action{sleeps}{u, u_1, u_n, x_0, x_1}{
+  \f{subst}(\f{S},u) \wedge \f{ref}(u,x_0) \wedge
+  \f{sleep}(x_0,x_1) \\ \wedge \f{current}(u_1) \wedge
+  \f{next}(u_1,u_n)
+}{
+  \neg \f{subst}(\f{S},u) \wedge \f{expressed}(\f{sleep}, x_0, x_1) \\
+  \wedge \f{subst}(\f{NP},u) \wedge \f{ref}(u_1,x_1) \\ \wedge
+  \neg \f{current}(u_1) \wedge \f{current}(u_n) \\ \wedge
+  \forall y. y \neq x_1 \rightarrow \f{distractor}(u_1,y)
+}\\
 
-(:action rabbit
-   :parameters (?u - node  ?xself - individual)
-   :precondition 
-       (and (subst NP ?u)  (referent ?u ?xself)  (rabbit ?xself))
-   :effect 
-       (and (not (subst NP ?u))  (canadjoin N ?u)
-            (forall (?y - individual)
-                (when (not (rabbit ?y)) (not (distractor ?u ?y))))))
+\action{rabbit}{u, x_0}{
+  \f{subst}(\f{NP},u) \wedge \f{ref}(u,x_0) \wedge \f{rabbit}(x_0)
+}{
+  \neg \f{subst}(\f{NP},u) \wedge \f{canadjoin}(\f{N},u) \\
+  \wedge \forall y. \neg \f{rabbit}(y) \rightarrow \neg \f{distractor}(u,y)
+}\\
 
-(:action white
-   :parameters (?u - node  ?xself - individual)
-   :precondition 
-       (and (canadjoin N ?u)  (referent ?u ?xself)  (rabbit ?xself))
-   :effect 
-       (forall (?y - individual)
-           (when (not (white ?y)) (not (distractor ?u ?y)))))
-\end{verbatim}}%
-\end{minipage}
-\caption{PDDL actions for generating the sentence ``The white rabbit
+\action{white}{u,x_0}{
+  \f{canadjoin}(\f{N},u) \wedge \f{ref}(u,x_0) \wedge \f{rabbit}(x_0)
+}{
+  \forall y. \neg \f{white}(y) \rightarrow \neg \f{distractor}(u,y)
+}
+}\strut\\[-5ex]
+%\end{minipage}
+\caption{Actions for generating ``The white rabbit
 sleeps.''}
 \label{fig:white-rabbit-as-planning}
 \end{figure}
 
-More precisely, each operator has a parameter \verb|?u| representing
-the syntax node into which the elementary tree is substituted or
-adjoined and a parameter \verb|?xR| for each semantic role \verb|R| of
-the elementary tree which will be instantiated with the constants with
-which the role gets instantiated in the derivation. Furthermore, if
-the tree has substitution nodes, there are parameters \verb|?Rnode|
-for each role representing these nodes, and an extra parameter
-\verb|?nextnode|. The state encodes a list of possible node names;
-$\mathsf{current}(n_i)$ expresses that $n_i$ is the next node name
-that should be picked when a new substitution node is created, and
-$\mathsf{next}(n_i,n_{i+1})$ says that the next node after $n_i$ is
-$n_{i+1}$. The atom $\mathsf{subst}(A,u)$ expresses that we need to
-still substitute something into the substitution node $u$ with label
-$A$; the initial state contains an atom
-$\mathsf{subst}(A,\mathsf{root})$ where $\mathsf{root}$ is an
-arbitrary name for the root of the derivation.  The values of the
-semantic roles are maintained using the $\mathsf{referent}$ atoms.
-Finally, we keep track of the uniqueness of referring expressions in
-the $\mathsf{distractor}$ atoms: $\mathsf{distractor}(u,a)$ expresses
-that the expression at syntax node $u$ could still be misunderstood as
-$a$.
+More precisely, each operator has a parameter $u$ representing the
+syntax node into which the elementary tree is substituted or adjoined,
+and a parameter $u_i$ for each substitution node.  There are also
+parameters $x_0,\ldots,x_k$ for the variables in the semantic
+representation of the elementary tree; $x_0$ is the variable that
+occurs at the root of the tree.  The planning state encodes a list of
+possible node names; $\f{current}(u)$ expresses that $u$ is the next
+node name that should be picked when a new substitution node is
+created, and $\f{next}(u,v)$ says that the next node after $u$ is
+$v$. These atoms are used to select names for the substitution nodes
+that are introduced by adding an elementary tree; the parameter $u_n$
+represents the node that will be current after the addition.
+
+The atom $\f{subst}(A,u)$ expresses that we need to still substitute
+something into the substitution node $u$ with label $A$; the initial
+state contains an atom $\f{subst}(\f{S},\f{root})$ where $\f{S}$
+stands for ``sentence'' and $\f{root}$ is an arbitrary name for the
+root of the derivation.  The mapping from nodes to semantic constants
+is maintained using the $\f{ref}$ atoms; the initial state for
+generating a sentence about the event $e$ contains an atom
+$\f{ref}(\f{root},e)$.  Finally, we keep track of the uniqueness of
+referring expressions in the $\f{distractor}$ atoms:
+$\f{distractor}(u,a)$ expresses that the expression at syntax node $u$
+could still be misunderstood as $a$.
 
 The example generation problem above translates into a planning
 problem whose domain is shown, in PDDL format, in
 Fig.~\ref{fig:white-rabbit-as-planning}. The initial state of the
 problem encodes the generation problem's knowledge base; it contains
-atoms $\mathsf{rabbit}(r_1)$, $\mathsf{sleep}(e,r_1)$, etc.
-Furthermore, the initial state expresses the beginning of the
-derivation in atoms $\mathsf{subst}(S,\mathsf{root})$ and
-$\mathsf{referent}(\mathsf{root},e)$.  The goal requires syntactic
-completeness as $\forall u \forall A \neg \mathsf{subst}(A,u)$ and
-unique reference as $\forall u \forall x \neg
-\mathsf{distractor}(u,x)$; it also specifies the semantic
-representation we want to express in an atom
-$\mathsf{expressed}(\mathsf{sleep},e,r_1)$.  A minimal plan for this
-problem looks as follows:
+atoms $\f{rabbit}(r_1)$, $\f{sleep}(e,r_1)$, etc.  The goal requires
+syntactic completeness as $\forall u \forall A \neg \f{subst}(A,u)$
+and unique reference as $\forall u \forall x \neg
+\f{distractor}(u,x)$; it also specifies the semantic representation we
+want to express in an atom $\f{expressed}(\mathsf{sleep},e,r_1)$.
 
-\begin{enumerate}
-\item $\mathsf{sleeps}(\mathsf{root}, n_1, n_2, e, r_1)$
-\item $\mathsf{rabbit}(n_1, r_1)$
-\item $\mathsf{white}(n_1, r_1)$
-\end{enumerate}
-
-This plan can be automatically decoded into the derivation shown in
+A minimal plan for the example problem is
+$\mathsf{sleeps}(\mathsf{root}, n_1, n_2, e, r_1)$;
+$\mathsf{rabbit}(n_1, r_1)$; $\mathsf{white}(n_1, r_1)$. This plan can
+be automatically decoded into the derivation shown in
 Fig.~\ref{fig:white-rabbit-sleeps-deriv}.  The analogous plan with
 $r_2$ instead of $r_1$ is not correct because the $\mathsf{sleep}$
 precondition of the $\mathsf{sleeps}$ operator is not satisfied.  The

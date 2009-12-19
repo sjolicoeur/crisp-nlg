@@ -3,102 +3,98 @@
 We present our proposal for a new planning competition infrastructure
 in terms of an ascending scale of levels, each of which makes it
 easier or more rewarding for the community to participate in the
-competition process.  As we will discuss below, we believe that the
-competition format we propose is applicable in fields beyond planning
-as well.  Therefore we will talk about \emph{systems}, \emph{problem
-  classes}, and \emph{problem instances} instead of planners, planning
-domains, and problems.
+competition process. As we will discuss below, we believe that the
+competition format we propose is applicable to fields beyond planning.  We
+will therefore refer to \emph{systems}, \emph{problem classes}, and
+\emph{problem instances}, instead of planners, planning domains, and
+planning problems.
 
 
 \subsection{Level 0: The current IPC}
 
-As background and starting point of our proposal, consider the process
-that underlies the current IPC competition.  Every two years, the IPC
-committee appoints one or two organizers for each track of that year's
-IPC competition.  These organizers assemble a number of problem
-classes and instances, by developing them themselves or soliciting
-them from the IPC committee or the community at large; sometimes this
-requires extending the Planning Domain Description Language (PDDL,
-\cite{PDDL}) to more advanced classes of problems.  After the
-participants have developed their planners, they submit the source
-code to the organizers, who then compile and run the planners on the
-test machines.  Finally, the organizers prepare and present a report,
-and the best-performing systems win awards.
+As background, and a starting point for our proposal, consider the process
+that underlies the current IPC. Every two years, the IPC committee looks
+for volunteers to organize and run the various tracks of that year's
+competition. These organizers are responsible for assembling a number of
+problem classes and instances, by developing them themselves or soliciting
+them from the wider community. Sometimes this process results in, or
+coincides with, a new dialect of the Planning Domain Description Language
+(PDDL, \cite{PDDL}), which describes for participants the supported
+language for that year's competition. After the participants have developed
+their systems, they submit the source code to the organizers, who then
+compile and run the planners on the test machines.  Performance data is
+collected and analysed.  Finally, the organizers prepare and present a
+report, and the best-performing systems win awards.
 
-\todo{Ron, can you fix this so it becomes true? - ak}
 
-
-\subsection{Level 1: Collecting problems}
+\subsection{Level 1: Problem collection}
 
 While this format for the IPC has been highly successful in the past
-ten years, there is also a number of ways in which it can be improved
-and streamlined.  One such direction concerns the way in which the
-problem classes on which an IPC runs are collected.  There is no doubt
-that the selection of IPC domains is a fundamental driving force for
-the development of new planning algorithms.  Unfortunately, the
-current process makes it difficult for users of planning technology,
-who may come from a different community, to get a new
-application-motivated domain accepted as an IPC benchmark.  This is
-unsurprising, given that an IPC organizer must be able to justify
-their selection of domains, and picking untested domains from other
+ten years, there is also a number of ways in which it can be improved and
+streamlined.  One such direction concerns the way in which problem classes
+are collected.  There is no doubt that the existing collection of IPC
+domains is a fundamental driving force for the development of new planning
+algorithms.  Unfortunately, the current selection process makes it
+difficult for users of these systems, who may come from different
+communities, to get a new application-motivated domain accepted as an IPC
+benchmark.  This is unsurprising, given that IPC organizers must be able to
+justify their selection of domains, and picking untested domains from other
 communities is not the best way to do this.  However, this leads to a
-selection process that is less dynamic and open to suggestions from
-users than it could be.  A converse movement is that to keep the
-number of domains that must be tested in each round of the competition
-manageable, older domains are sometimes ``retired'', i.e.\ removed
-from subsequent competitions.  This comes with a risk of a false sense
-of progress, in which retired domains are remembered as ``solved''
-although they were removed for completely independent reasons.
-Finally, it has been argued \cite{ToughNuts} that some IPC organizers
-tend to favor the development of new types of planning problems and
-new dialects of PDDL over trying to find challenging benchmark
-problems for existing versions of PDDL.
+selection process that is less dynamic than it could be, and more
+restrictive for users wanting to contribute suggestions.  Conversely, to
+keep the number of domains that must be tested in each round of the
+competition manageable, older domains are sometimes ``retired'', i.e.\
+removed from subsequent competitions.  This comes with a risk of a false
+sense of progress, in which retired domains are remembered as ``solved''
+although they were removed for completely independent reasons.  Finally, it
+has been argued \cite{ToughNuts} that some IPC organizers tend to favor the
+development of new types of planning problems and new dialects of PDDL over
+trying to find challenging benchmark problems for existing versions of
+PDDL. Such approaches run the risk of ``reinventing'' past problem classes
+(albeit in different guises), or redirecting investigation away from
+current challenges.
 
-We propose that one way in which these problems can be alleviated is a
-web repository in which any user can upload problem classes.  This
-takes up Hoffmann's \shortcite{ToughNuts} idea to create a
-community-driven repository for ``tough nuts'' -- i.e., instances that
-were shown to be hard to solve in the past --, and takes it one step
-further: In our proposal, \emph{all} IPC problem classes are suggested
-by the community, much in line with the proposal by Roberts and Howe
-\shortcite{roberts07:_call_for_partic}. This approach offers a
-principled, publicly documented and accessible avenue for proposing
-new problem classes, which benefits both application-oriented users of
-planning technology and planning researchers who come up with tough
-challenges for existing PDDL dialects. It also makes it easy to record
-retired problem classes alongside more current ones, and makes it easy
-to keep them accessible.
+One way to alleviate these problems is by introducing a web repository
+where users can upload problem classes. This revisits Hoffmann's
+\shortcite{ToughNuts} idea to create a community-driven repository for
+``tough nuts'' -- i.e., instances that were shown to be hard to solve in
+the past -- and takes it one step further: in our proposal, \emph{all} IPC
+problem classes are provided by the community, much in line with the
+proposal by Roberts and Howe \shortcite{roberts07:_call_for_partic}. Such a
+repository offers a principled, publicly documented and accessible avenue
+for proposing new problem classes, which benefits both application-oriented
+users of planning technology and researchers who invent tough challenges
+for existing PDDL dialects. It also makes it easy to record retired problem
+classes alongside active ones, and keep them all accessible.
 
+Problem classes and instances can be submitted by any registered user. 
 Submitting a problem class should involve three pieces of data. First,
-the user must submit a collection of instances of the problem class or
-a generator for such instances.  Second, the user must specify some
+the user should submit a collection of instances of the problem class or
+a generator for such instances.  Second, the user should specify some
 metadata including the class name and a human-readable description,
-maybe with links to the application literature, complexity results,
-and so on.  Third, the user must specify the \emph{type} of the
-problem class, which determines what systems the data is suitable for
--- i.e., the language in which the problem is specified (such as a
-particular dialect of PDDL or EUROPA \todo{cite}) and the type of
-planning problem this is (propositional, temporal, uncertainty,
-etc.).  If it is possible to convert between one specification
-language and another automatically, this conversion could be performed
-each time a problem is submitted.
-
-Problem classes and instances can be submitted by any registered
-user. In order to avoid abuse, the number of instances should be
-limited (e.g.\ per hour), and a simple validity check should be
-possible (such as running a parser if the format is PDDL).
+possibly with links to the applicable literature, complexity results, and
+so on.  Third, the user should specify the \emph{type} of problem class,
+which determines what systems the data is suitable for, i.e., the language
+in which the problem is specified (such as a particular dialect of PDDL or
+EUROPA \todo{cite}) and the type of planning problem (e.g., propositional,
+temporal, uncertainty, etc.).  If it is possible to convert between one
+specification language and another automatically, this conversion could be
+performed each time a problem is submitted.
+In order to avoid abuse, the number of instances should be limited (e.g.,
+per hour), and a simple validity check should be possible (e.g., running a
+parser to verify that the format is PDDL).
 
 
 
 \subsection{Level 2: Continuous evaluation}
 
-But given that all the domains are available on a server, why stop
+Given that all the domains are available on a server, why stop
 there?  We propose to make it possible to upload the \emph{planners}
 to the same server as well, and then continuously and automatically
 run the planners on the domains.  While the ability to upload domains
 in Level 1 represents a conservative extension of the existing IPC
 infrastructure, it is here that we depart more radically from the
-existing format: Instead of a regular competition with organizers who
+existing format: instead of a regular competition with organizers who
 run the planner evaluation every other year, we propose a rolling
 evaluation scheme, in which the current evaluation results would be
 available online at any given time.
@@ -140,15 +136,15 @@ planner into the virtual machine, runs the planner, measures
 performance statistics (including which problems they could solve and
 how much time this took them; see below), and stores the results in a
 database.  Users will be able to view the results in dynamically
-generated reports on the main website; there may also be functionality
-to customize these reports to focus on certain types of problems.
-Because all planners are run on all problem instances, problems in
-which only a small and somewhat arbitrary selection of instances of a
-certain problem are actually used in the evaluation \cite{pg2008002}
-can be avoided.
+generated reports on the main website; there may also be functionality to
+customize these reports to focus on certain types of problems.  Because all
+planners are run on all problem instances, and users can ensure that
+challenging problem instances are included in the competition, the chance
+of systems being evaluated on only a small and somewhat arbitrary selection
+of certain problems \cite{pg2008002} can be avoided.
 
-In order to minimize security risks -- which arise when user-submitted
-programs are being run automatically --, the individual virtual
+In order to minimize security risks, which can arise when user-submitted
+programs are being run automatically, the individual virtual
 machines need to be sandboxed quite tightly.  There is no need for an
 individual virtual machine to be connected to any network, beyond
 being able to enter performance measurements into a database.  By
@@ -160,7 +156,7 @@ allowing planner uploads to registered users.
 While we see our proposed system's ability to generate up-to-date
 reports automatically as a major strength, there may still be a
 benefit in maintaining the current style of regular competitions at
-discrete timepoints, e.g.\ to encourage the development of faster
+discrete timepoints, e.g., to encourage the development of faster
 planners through awards.  Such a competition could easily be based on
 our system, by announcing a deadline and a specified subset of problem
 classes. The selection of this subset could be informed, among other
@@ -232,7 +228,7 @@ overall score.
 
 \section{Implementation}
 
-The obvious criticism that can be brought up against this proposal is
+The obvious criticism that can be brought against this proposal is
 that of cost -- both in terms of implementing the necessary software
 and in terms of running the hardware on which the continuous
 evaluation is performed.
@@ -267,17 +263,17 @@ amount of work for which funding or volunteers could be found.
 \section{Applicability and limitations}
 
 One advantage of the evaluation infrastructure proposed above is that
-its applicability is not limited to the evaluation of planners.  Many
-reasoning tasks, including constraint solving and theorem proving, are
-being evaluated by running solvers over problem instances and
-reporting performance measures.  At the level of abstraction at which
-our continuous evaluation system could be implemented, there is no
-fundamental difference between the problem type ``propositional
-planning problem in PDDL 1.0'' and the problem type ``\todo{something
-  from CP or similar}'' -- in both cases, the system can collect
-problem classes and instances of this type and run them through
-solvers that declare themselves to accept such inputs.  This means
-that there is a potential for sharing development and maintenance
+its applicability is not limited to the evaluation of planners.
+%RP: I don't see why this needs to be restricted to "reasoning" tasks
+Many reasoning tasks, including constraint solving and theorem proving, are
+being evaluated by running solvers over problem instances and reporting
+performance measures.  At the level of abstraction at which our continuous
+evaluation system could be implemented, there is no fundamental difference
+between the problem type ``deterministic planning problem in PDDL 1.0'' and
+the problem type ``\todo{something from CP or similar}'' -- in both cases,
+the system can collect problem classes and instances of this type and run
+them through solvers that declare themselves to accept such inputs.  This
+means that there is a potential for sharing development and maintenance
 costs for the evaluation platform among different communities.
 
 However, there are of course limitations to the type of problem for
@@ -287,7 +283,7 @@ system runs on the same hardware and software configuration, as
 implemented in the virtual machine images.  On the other hand, our
 system makes most sense where the ratio of problem classes to systems
 is relatively high.  Neither of the two is true, for instance, for
-most natural language processing competitions: Different research
+most natural language processing competitions: different research
 groups tend to use a variety of programming languages and development
 environments to build their systems, and there are typically many more
 systems in any competition than there are problem classes (corpora).

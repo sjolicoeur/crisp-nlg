@@ -41,7 +41,8 @@ $\{\mathsf{sleep}(e,r_1), \mathsf{rabbit}(r_1), \mathsf{rabbit}(r_2),
 \mathsf{white}(r_1), \mathsf{brown}(r_2)\}$.  We then add variables
 ranging over constants from the knowledge base to the nodes of each
 elementary tree, and equip every elementary tree with a set of atoms
-over these variables to encode the meaning this tree expresses.
+over these variables to encode the meaning this tree expresses
+(printed in italics in the figure).
 Fig.~\ref{fig:white-rabbit-sleeps-deriv} already shows specific
 instances of the elementary trees from the grammar, in which constants
 have been substituted for these variables.  The derivation in the
@@ -50,10 +51,10 @@ sleeps.  Crucially, it also describes uniquely who does the sleeping:
 The sentence ``the rabbit sleeps'' would not have done this, as ``the
 rabbit'' could be understood either as $r_1$ or $r_2$.  We say that
 $r_2$ is a \emph{distractor} for the subject of the sentence, which is
-removed by adjoining the tree for ``white''.  The sentence generation
-problem consists in computing a grammatically correct TAG derivation
-from instances of the elementary trees in the grammar that conveys the
-intended meaning and describes all referents uniquely.
+removed by adjoining the tree for ``white''.  In short, the sentence
+generation problem consists in computing a grammatically correct TAG
+derivation from instances of the elementary trees in the grammar that
+conveys the intended meaning and describes all referents uniquely.
 
 
 
@@ -112,7 +113,7 @@ and a parameter $u_i$ for each substitution node.  There are also
 parameters $x_0,\ldots,x_k$ for the variables in the semantic
 representation of the elementary tree; $x_0$ is the variable that
 occurs at the root of the tree.  The planning state encodes a list of
-possible node names; $\f{current}(u)$ expresses that $u$ is the next
+possible node names: $\f{current}(u)$ expresses that $u$ is the next
 node name that should be picked when a new substitution node is
 created, and $\f{next}(u,v)$ says that the next node after $u$ is
 $v$. These atoms are used to select names for the substitution nodes
@@ -132,7 +133,7 @@ $\f{distractor}(u,a)$ expresses that the expression at syntax node $u$
 could still be misunderstood as $a$.
 
 The example generation problem above translates into a planning
-problem whose domain is shown, in PDDL format, in
+problem whose domain is shown in
 Fig.~\ref{fig:white-rabbit-as-planning}. The initial state of the
 problem encodes the generation problem's knowledge base; it contains
 atoms $\f{rabbit}(r_1)$, $\f{sleep}(e,r_1)$, etc.  The goal requires
@@ -145,12 +146,10 @@ A minimal plan for the example problem is
 $\mathsf{sleeps}(\mathsf{root}, n_1, n_2, e, r_1)$;
 $\mathsf{rabbit}(n_1, r_1)$; $\mathsf{white}(n_1, r_1)$. This plan can
 be automatically decoded into the derivation shown in
-Fig.~\ref{fig:white-rabbit-sleeps-deriv}.  The analogous plan with
-$r_2$ instead of $r_1$ is not correct because the $\mathsf{sleep}$
-precondition of the $\mathsf{sleeps}$ operator is not satisfied.  The
-first two steps of the plan alone would not be a correct plan because
-they leave an atom $\mathsf{distractor}(n_1, r_2)$ in the state, which
-contradicts the goal that all distractors have been eliminated.
+Fig.~\ref{fig:white-rabbit-sleeps-deriv}.  The first two steps of the
+plan alone would not be a correct plan because they leave an atom
+$\mathsf{distractor}(n_1, r_2)$ in the state, which contradicts the
+goal that all distractors have been eliminated.
 
 
 

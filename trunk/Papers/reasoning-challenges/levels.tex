@@ -30,7 +30,7 @@ report, and the best-performing systems win awards.
 \subsection{Level 1: Problem collection}
 
 While this format for the IPC has been highly successful in the past
-ten years, there is also a number of ways in which it can be improved
+ten years, there are also a number of ways in which it can be improved
 and streamlined.  One such direction concerns the way in which problem
 classes are collected.  There is no doubt that the existing collection
 of IPC domains is a fundamental driving force for the development of
@@ -44,7 +44,7 @@ do this.  However, this leads to a selection process that is less
 dynamic than it could be, and more restrictive for users wanting to
 contribute suggestions.  Conversely, to keep the number of domains
 that must be tested in each round of the competition manageable, older
-domains are sometimes ``retired'', i.e.\ removed from subsequent
+domains are sometimes ``retired'', i.e., removed from subsequent
 competitions.  This comes with a risk of a false sense of progress, in
 which retired domains are remembered as ``solved'' although they were
 removed for completely independent reasons.  Finally, it has been
@@ -76,9 +76,9 @@ metadata including the class name and a human-readable description,
 possibly with links to the applicable literature, complexity results, and
 so on.  Third, the user should specify the \emph{type} of problem class,
 which determines what systems the data is suitable for, i.e., the language
-in which the problem is specified (such as a particular dialect of PDDL or
-EUROPA \todo{cite}) and the type of planning problem (e.g., propositional,
-temporal, uncertainty, etc.).  If it is possible to convert between one
+in which the problem is specified (such as a particular dialect of PDDL)
+and the type of planning problem (e.g., propositional,
+temporal, uncertainty).  If it is possible to convert between one
 specification language and another automatically, this conversion could be
 performed each time a problem is submitted.
 In order to avoid abuse, the number of instances should be limited (e.g.,
@@ -111,7 +111,7 @@ systems will be evaluated, and making it available for download as a
 virtual machine image.  Developers can then run this image on their
 own machine, using a virtual machine such as
 VirtualBox,\footnote{\url{http://www.virtualbox.org/}} and ensure
-that their system works, in the exact environment in which it will be
+that their system works in the exact environment in which it will be
 evaluated.  This would even make it technically possible for
 participants to submit not the source code, but a binary executable
 (perhaps along with support files).  However, even if we require the
@@ -120,20 +120,20 @@ that contains only standard versions of tools and libraries and on
 which the code must compile without human intervention enforces at
 least a certain degree of portability from which users will benefit
 when they download the systems.  Even when the environment changes to
-reflect updates in the standard development environments (new version
-of the C compiler, etc.), old images could remain available, and so
+reflect updates in the standard development environments (e.g., a new version
+of the C compiler), old images could remain available, and so
 old systems would continue running until the virtual machine emulator
 itself becomes unavailable or incompatible.
 
-We propose that every newly submitted system is run automatically on
+We propose that every newly submitted system be run automatically on
 all available problem instances, and every newly submitted problem
-instance is sent to all available systems.  The scheduling of this
+instance be sent to all available systems.  The scheduling of this
 process can be under the control of an automated system for continuous
 integration, such as Hudson.\footnote{\url{http://hudson-ci.org/}} The
-evaluation infrastructure sends the problem data and the system to the
-test machine, runs the system, measures performance statistics
+evaluation infrastructure would send the problem data and the system to the
+test machine, run the system, measure performance statistics
 (including which problems they could solve and how much time this took
-them; see below), and stores the results in a database. Users will be
+them; see below), and store the results in a database. Users would be
 able to view the results in dynamically generated reports on the main
 website; there may also be functionality to customize these reports to
 focus on certain types of problems.  Because all systems are run on
@@ -143,15 +143,15 @@ evaluated on only a small and somewhat arbitrary selection of problem
 instances \cite{pg2008002} can be avoided.
 
 In order to minimize security risks, which can arise when
-user-submitted programs are being run automatically, the test machines
+user-submitted programs are run automatically, the test machines
 need to be sandboxed quite tightly.  In particular, the machines do
 not need to be able to initiate any network connections, beyond being
 able to enter performance measurements into a database, and can work
-on virtual file systems that are deleted after each system.  By
+on virtual file systems that are deleted after each execution.  By
 further imposing resource limits on the number of available
 processors, memory and processor time, and disk space, we believe the
 potential for abuse is limited.  It can be limited further by only
-allowing systems uploads to registered users.
+allowing system uploads to registered users.
 
 While we see our proposed system's ability to generate up-to-date
 reports automatically as a major strength, there may still be a
@@ -160,12 +160,12 @@ discrete timepoints, e.g., to encourage the development of faster
 systems through awards.  Such a competition could easily be based on
 our system, by announcing a deadline and a specified subset of problem
 classes. The selection of this subset could be informed, among other
-things, by the report on problems that many systems can't
-solve. Participants could then upload their systems at their leisure;
-``running'' the competition amounts to taking a snapshot of the
+things, by the report on problems that many systems had difficulty
+solving. Participants could then upload their systems at their leisure;
+``running'' the competition would amount to taking a snapshot of the
 performance reports on the selected problems when the deadline comes
 and announcing the results.  By recording timestamps whenever a
-performance measurements is made, this snapshot could remain available
+performance measurement is made, this snapshot could remain available
 on the website simply as one special report for a certain point in
 time.  In such a case, the authors of systems should have the option
 of marking them as ``non-competing'' to exclude them from the
@@ -213,7 +213,7 @@ competition deadline), the runs on popular domains can be prioritized.
 
 \section{Evaluation measures}
 
-The continuous evaluation infrastructure we just presented is
+The continuous evaluation infrastructure we have presented is
 fundamentally agnostic to the type of concrete evaluation measures
 that it collects.  In particular, traditional measures such as the
 percentage of problems solved per system, average solution quality,
@@ -267,7 +267,7 @@ One advantage of the evaluation infrastructure proposed above is that
 its applicability is not limited to the evaluation of planners.
 %RP: I don't see why this needs to be restricted to "reasoning" tasks
 Many reasoning tasks, including constraint solving and theorem
-proving, are being evaluated by running solvers over problem instances
+proving, are evaluated by running solvers over problem instances
 and reporting performance measures.  At the level of abstraction at
 which our continuous evaluation system could be implemented, there is
 no fundamental difference between the problem type ``deterministic

@@ -105,7 +105,7 @@ public abstract class DerivationTreeBuilder{
     }    
     
     
-    protected Action computeInstantiatedAction(Term term, Domain domain){        
+    public Action computeInstantiatedAction(Term term, Domain domain){        
         Compound compound = (Compound) term;
         String label = compound.getLabel();            
         List<Term> arguments = compound.getSubterms();

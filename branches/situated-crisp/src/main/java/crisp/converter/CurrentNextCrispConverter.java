@@ -54,7 +54,7 @@ import de.saar.penguin.tag.grammar.filter.SemanticsPredicateListFilter;
  * planning domains and problems. This class only processes non-probabilistic grammar descriptions.
  * The parser is implemented as a plain SAX parser, thereby improving
  * processing speed and decreasing memory requirements over the old xpath based
- * parser in {@link CRISPConverter}, which is particularly important for parsing large grammar
+ * parser in CRISPConverter, which is particularly important for parsing large grammar
  * description files.
  */
 public class CurrentNextCrispConverter {
@@ -72,7 +72,7 @@ public class CurrentNextCrispConverter {
     // with a parser.
 
     private String problempath;   // Absolute pathname for the directory that stores problem and grammar
-    private int referentnum;  	  // the number of referents for this problem
+    private int referentnum;        // the number of referents for this problem
     private int syntaxnodenum;    // the number of syntaxnodes for this problem
     private int maximumArity = 0; // the maximum arity of any predicate in the problem file
     private String problemname;   // the name for the problem as specified in the problem file
@@ -90,10 +90,12 @@ public class CurrentNextCrispConverter {
         private Domain domain;
         private Set<Term> trueAtoms;
         private Map<String, Set<Integer>> predicatesInWorld;
-	private String indexIndividual;
+        private String indexIndividual;
         private List<String> currentParamTypes;
 
-        /************************ Methods for the content handler *****************/
+        /**
+         * ********************* Methods for the content handler ****************
+         */
         public ProblemfileHandler(Domain aDomain, Problem aProblem) {
             problem = aProblem;
             domain = aDomain;
@@ -101,6 +103,7 @@ public class CurrentNextCrispConverter {
         }
 
         // All of these methods are specified in the ContentHandler interface.
+
         @Override
         public void startDocument() throws SAXException {
             characterBuffer = new StringWriter();
@@ -125,34 +128,34 @@ public class CurrentNextCrispConverter {
 //                } catch (NumberFormatException e) {
 //                    throw new SAXParseException("Expecting integer number in plansize attribute.", null);
 //                }
-                
+
                 try {
-                    referentnum = Integer.parseInt(atts.getValue("referents"));        
+                    referentnum = Integer.parseInt(atts.getValue("referents"));
                 } catch (NumberFormatException e) {
-                    throw new SAXParseException("Expecting integer number in referents attribute.",null);
+                    throw new SAXParseException("Expecting integer number in referents attribute.", null);
                 }
 
                 try {
-                    syntaxnodenum = Integer.parseInt(atts.getValue("syntaxnodes"));        
+                    syntaxnodenum = Integer.parseInt(atts.getValue("syntaxnodes"));
                 } catch (NumberFormatException e) {
-                    throw new SAXParseException("Expecting integer number in syntaxnodes attribute.",null);
+                    throw new SAXParseException("Expecting integer number in syntaxnodes attribute.", null);
                 }
-                
+
                 /* Grammar is not parsed from here any more// Open and parse the grammar file
-                 * try {
-                 *    grammar = GrammarParser.parseGrammar(convertGrammarPath(atts.getValue("grammar")));
-                 *} catch (ParserConfigurationException e) {
-                 *    throw new SAXParseException("Couldn't initialize grammar parse.",null);
-                 *} catch (IOException e) {
-                 *    throw new SAXParseException("Couldn't open grammar file.",null);
-                 *}
-                 */
+                * try {
+                *    grammar = GrammarParser.parseGrammar(convertGrammarPath(atts.getValue("grammar")));
+                *} catch (ParserConfigurationException e) {
+                *    throw new SAXParseException("Couldn't initialize grammar parse.",null);
+                *} catch (IOException e) {
+                *    throw new SAXParseException("Couldn't open grammar file.",null);
+                *}
+                */
 
                 // add Index TODO: what does this attribute do?
                 String indexIndividual = atts.getValue("index").toLowerCase();
                 problem.addObject(indexIndividual, "individual");
                 this.indexIndividual = indexIndividual;
-                
+
                 mainCat = atts.getValue("cat").toLowerCase(); // TODO: do we really need this as a member variable?
 
                 // This was in computeInitialState(Domain domain, Problem problem)
@@ -180,9 +183,9 @@ public class CurrentNextCrispConverter {
                     for (int i = 0; i < paramTypes.length; i++) {
                         currentParamTypes.add(paramTypes[i]);
                     }
-                }                
+                }
             }
-            
+
             if (qName.equals("commgoal")) {
                 characterBuffer = new StringWriter();
             }
@@ -216,13 +219,12 @@ public class CurrentNextCrispConverter {
                 } else {
                     types = currentParamTypes;
                 }
-                
+
                 domain.addPredicate(compoundTerm.getLabel(), types);
                 //addIndividualConstants(term,domain);
-                for (int i=0; i<compoundTerm.getSubterms().size(); i++) {
+                for (int i = 0; i < compoundTerm.getSubterms().size(); i++) {
                     problem.addObject(((Constant) (compoundTerm.getSubterms().get(i))).getName(), types.get(i));
                 }
-                                
 
 
                 problem.addToInitialState(term);
@@ -299,9 +301,9 @@ public class CurrentNextCrispConverter {
 
         }
 
-	public String getIndexIndividual() {
-	    return indexIndividual;
-	}
+        public String getIndexIndividual() {
+            return indexIndividual;
+        }
     }
 
     /*********************** Compute goal and domain  *****************/
@@ -344,8 +346,8 @@ public class CurrentNextCrispConverter {
         //   because otherwise the LAMA planner cannot handle universal preconditions
         //   involving this predicate.
         //if (domain.sawMustadjoin()){
-            Formula noMustAdj= new Universal(tlCatNode, tlCatNodeTypes, new Literal("mustadjoin(?a,?u)", false));
-            finalStateGoals.add(noMustAdj);
+        Formula noMustAdj = new Universal(tlCatNode, tlCatNodeTypes, new Literal("mustadjoin(?a,?u)", false));
+        finalStateGoals.add(noMustAdj);
         //}
 
         finalStateGoals.add(noSubst);
@@ -417,7 +419,7 @@ public class CurrentNextCrispConverter {
 
         domain.addSubtype("individual", "object");
         domain.addSubtype("category", "object");
-        domain.addSubtype("syntaxnode", "object");        
+        domain.addSubtype("syntaxnode", "object");
         domain.addSubtype("predicate", "object");
         domain.addSubtype("imperative", "predicate");
 
@@ -516,7 +518,7 @@ public class CurrentNextCrispConverter {
 
         String lastReferent = indexIndividual;
         problem.addObject(lastReferent, "individual");
-                
+
         String newReferent;
         for (int i = 2; i <= referentnum; i++) {
             newReferent = "e-" + i;
@@ -531,7 +533,7 @@ public class CurrentNextCrispConverter {
             lastReferent = newReferent;
 
         }
-        
+
         // compute actions from lexical entries
         for (String word : grammar.getAllWords()) {
             //System.out.println("\n" + word + ":");
@@ -565,8 +567,8 @@ public class CurrentNextCrispConverter {
                                 tree.getNodeDecoration(node).toString() != null) {
                             adjNodes.add(node);
                         }
-                   }
-                
+                    }
+
                 }
 
                 StringWriter actionNameBuf = new StringWriter();
@@ -596,11 +598,11 @@ public class CurrentNextCrispConverter {
                 int roleno = 1;
 
                 n.put("self", "?u");
-                I.put("?u", "?x");                
-                for (String role : roles.get(entry.tree)) {                    
+                I.put("?u", "?x");
+                for (String role : roles.get(entry.tree)) {
                     if (!role.equals("self")) {
                         n.put(role, "?u" + roleno);
-                        String syntaxnode = "?x" +(roleno++);
+                        String syntaxnode = "?x" + (roleno++);
                         I.put(n.get(role), syntaxnode);
                         rolesToSyntaxnodes.put(role, syntaxnode);
                     }
@@ -654,7 +656,7 @@ public class CurrentNextCrispConverter {
                 }
 
                 for (String additionalParam : entry.getAdditionalParams().keySet()) {
-                    variables.add(new Variable("?"+additionalParam));
+                    variables.add(new Variable("?" + additionalParam));
                     String type = entry.getAdditionalParams().get(additionalParam);
                     variableTypes.add(type);
                     domain.addSubtype(type, "object");
@@ -684,7 +686,7 @@ public class CurrentNextCrispConverter {
 
 
                 Set<String> additionalParams = entry.getAdditionalParams().keySet();
-                Map<String,String> additionalVars = entry.getAdditionalVars();
+                Map<String, String> additionalVars = entry.getAdditionalVars();
 
 
                 for (Term semContTerm : entry.semantics) {
@@ -699,7 +701,7 @@ public class CurrentNextCrispConverter {
                         semPredicateTypes.add("individual");
                     }
                     domain.addPredicate(semPredicate.getLabel(), semPredicateTypes);
-                    
+
                     goals.add(new Literal(termWithVariables, true));
 
                     contentWithVariables.add(termWithVariables);
@@ -720,7 +722,7 @@ public class CurrentNextCrispConverter {
                 for (Term impEffTerm : entry.getImperativeEffects()) {
                     Compound impEffCompound = ((Compound) impEffTerm);
                     Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(impEffTerm, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL);
-                    
+
 
                     //hasContent = true;
 
@@ -738,16 +740,15 @@ public class CurrentNextCrispConverter {
                     effects.add(new Literal((Compound) flattenImpTerm(termWithVariables, "todo"), true));
 
 
-                    if (impEffCompound.getSubterms().size()-1 > maximumArity) {
-                        maximumArity = impEffCompound.getSubterms().size()-1;
+                    if (impEffCompound.getSubterms().size() - 1 > maximumArity) {
+                        maximumArity = impEffCompound.getSubterms().size() - 1;
                     }
 
                     domain.addConstant(renameImperative(impEffCompound.getLabel()), "imperative");
 
                 }
 
-                
-                
+
                 // Add semantic requirements to preconditions
                 for (Term semReqTerm : entry.getSemanticRequirements()) {
                     Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(semReqTerm, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL);
@@ -756,13 +757,13 @@ public class CurrentNextCrispConverter {
                 }
 
                 // Add pragmatic preconditions
-                for (Term pragPrecondTerm : entry.getPragmaticPreconditions()) {                    
+                for (Term pragPrecondTerm : entry.getPragmaticPreconditions()) {
                     Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(pragPrecondTerm, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL);
                     goals.add(new Literal(termWithVariables, true));
                 }
 
                 // Add pragmatic effects
-                for (Term pragEffectTerm : entry.getPragmaticEffects()) {                    
+                for (Term pragEffectTerm : entry.getPragmaticEffects()) {
                     Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(pragEffectTerm, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL);
                     effects.add(new Literal(termWithVariables, true));
                 }
@@ -801,21 +802,21 @@ public class CurrentNextCrispConverter {
                 }
 
                 // TODO
-                    /* pragmatic effects
-                 *for( String pragEffect : entry.getPragEffects() ) {
-                 *   Compound effect = (Compound) TermParser.parse(pragEffect);
-                 *
-                 *    if ( "uniqueref".equals(effect.getLabel())) {
-                 *       String roleN = n.get(effect.getSubterms().get(0).toString());
-                 *        TypedVariableList vars = new TypedVariableList();
-                 *        vars.addItem(new Variable("?y"), "individual");
-                 *
-                 *        effects.add(new crisp.planningproblem.effect.Universal(vars,
-                 *                new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", false)));
-                 *        break;
-                 *    }
-                 *}
-                 */
+                /* pragmatic effects
+                *for( String pragEffect : entry.getPragEffects() ) {
+                *   Compound effect = (Compound) TermParser.parse(pragEffect);
+                *
+                *    if ( "uniqueref".equals(effect.getLabel())) {
+                *       String roleN = n.get(effect.getSubterms().get(0).toString());
+                *        TypedVariableList vars = new TypedVariableList();
+                *        vars.addItem(new Variable("?y"), "individual");
+                *
+                *        effects.add(new crisp.planningproblem.effect.Universal(vars,
+                *                new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", false)));
+                *        break;
+                *    }
+                *}
+                */
 
                 // effects for the substitution nodes
                 for (String substNode : substNodes) {
@@ -871,7 +872,7 @@ public class CurrentNextCrispConverter {
 
                         effects.add(new Universal(distractorQuantifierVars, distractorQuantifierVarTypes,
                                 new Conditional(distractorPrecondition,
-                                new Literal("distractor(" + roleN + ",?y)", true))));
+                                        new Literal("distractor(" + roleN + ",?y)", true))));
                     }
                 }
 
@@ -893,17 +894,16 @@ public class CurrentNextCrispConverter {
                     if (tree.getNodeConstraint(adjNode) == Constraint.OBLIGATORY_ADJUNCTION) {
                         effects.add(new Literal("mustadjoin(" + cat + ", " + roleN + ")", true));
                         //domain.registerMustadjoin(); // set mustadjoin flag
-                        }
+                    }
 
                     // don't need to add constant to the domain because we ASSUME that every role
                     // except for "self" decorates some substitution node (and hence is added there)
-                    }
+                }
 
 
                 // Finally create action and add it to the domain
                 Action a = new Action(pred, variableTypes, new Conjunction(goals), new Conjunction(effects));
                 domain.addAction(a);
-
 
 
             }
@@ -918,15 +918,13 @@ public class CurrentNextCrispConverter {
      * Parses the XML document given in problemfilename, as well as the grammar file
      * referenced from that document.
      *
-     * @param problemfilename
+     * @param grammar         the tree adjoining grammar to create the planning operators
+     * @param problemfile     abstract filename of the problemfile to parse
+     * @param domain          reference to an empty planning domain, will be completed by convert.
+     * @param problem         reference to an empty planning problem, will be completed by convert
      * @throws ParserConfigurationException
      * @throws SAXException
      * @throws IOException
-     *
-     * @param grammar the tree adjoining grammar to create the planning operators
-     * @param problemfile abstract filename of the problemfile to parse
-     * @param domain reference to an empty planning domain, will be completed by convert.
-     * @param problem reference to an empty planning problem, will be completed by convert
      */
     public void convert(CrispGrammar grammar, Reader problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException {
 
@@ -965,8 +963,8 @@ public class CurrentNextCrispConverter {
      * r is replaced by I(n(r)) as defined in the paper.
      *
      * @param term
-     * @param n a mapping of role names to node identities
-     * @param I a mapping of node identities to variables
+     * @param n    a mapping of role names to node identities
+     * @param I    a mapping of node identities to variables
      * @return
      */
 
@@ -997,7 +995,6 @@ public class CurrentNextCrispConverter {
      *
      * @param treename
      * @return
-     *
      */
     private String normalizeTreename(String treename) {
         return treename.replace("i.", "init-").replace("a.", "aux-");
@@ -1027,7 +1024,7 @@ public class CurrentNextCrispConverter {
 
         subterms.add(new Constant(renameImperative(t.getLabel())));
 
-        List<Term> args = t.getSubterms();        
+        List<Term> args = t.getSubterms();
         subterms.addAll(args);
 
 
@@ -1039,7 +1036,7 @@ public class CurrentNextCrispConverter {
         return "pred-" + predicate;
     }
 
-      private String renameImperative(String predicate) {
+    private String renameImperative(String predicate) {
         return "imp-" + predicate;
     }
 
@@ -1102,7 +1099,7 @@ public class CurrentNextCrispConverter {
      */
 
 
-    private Term newSubstituteVariablesForRoles(Term term, Map<String, String> n, Map<String, String> I, Map<String, String> nextMap, Set<String> additionalParams, Map<String,String> additionalVars, ConstantType type) {
+    private Term newSubstituteVariablesForRoles(Term term, Map<String, String> n, Map<String, String> I, Map<String, String> nextMap, Set<String> additionalParams, Map<String, String> additionalVars, ConstantType type) {
         if (term.isCompound()) {
             Compound t = (Compound) term;
 
@@ -1146,7 +1143,7 @@ public class CurrentNextCrispConverter {
 
                     case NEXT:
                         return new Variable(nextMap.get(n.get(t.getName())));
-                    
+
 
                     default:
                         return new Variable(I.get(n.get(t.getName())));
@@ -1157,16 +1154,16 @@ public class CurrentNextCrispConverter {
                 switch (type) {
                     case QUANT:
                         if (additionalVars.containsKey(t.getName())) {
-                            return new Constant("(?"+t.getName()+" - "+additionalVars.get(t.getName())+")");
+                            return new Constant("(?" + t.getName() + " - " + additionalVars.get(t.getName()) + ")");
                         } else {
                             return t;
                         }
                     default:
-                if (additionalParams.contains(t.getName()) || additionalVars.containsKey(t.getName())) {
-                    return new Variable("?"+t.getName());
-                } else {
-                    return t;
-                }
+                        if (additionalParams.contains(t.getName()) || additionalVars.containsKey(t.getName())) {
+                            return new Variable("?" + t.getName());
+                        } else {
+                            return t;
+                        }
                 }
             }
 

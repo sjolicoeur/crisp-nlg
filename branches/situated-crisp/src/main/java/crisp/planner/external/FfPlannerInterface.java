@@ -48,12 +48,15 @@ public class FfPlannerInterface implements PlannerInterface {
     public static final String TEMPDOMAIN_FILE = "/tmp/tmpdomain.lisp";
     public static final String TEMPPROBLEM_FILE = "/tmp/tmpproblem.lisp";
     public static final String TEMPRESULT_FILE = "/tmp/tmpresult";
+
+    private String ffFlags;
     
     private long preprocessingTime;
     private long searchTime;
     private String binaryLocation;
     
-    public FfPlannerInterface() {
+    public FfPlannerInterface(String ffFlags) {
+        this.ffFlags = ffFlags;
         preprocessingTime = 0;
         searchTime = 0;
 
@@ -67,6 +70,10 @@ public class FfPlannerInterface implements PlannerInterface {
         }
 
     }
+
+    public FfPlannerInterface() {
+        this("");
+    }
     
     public List<Term> runPlanner(Domain domain, Problem problem) throws Exception {        
         
@@ -78,7 +85,7 @@ public class FfPlannerInterface implements PlannerInterface {
                                                                    
           
         // Run the FfPlanner
-        Process ffplanner = Runtime.getRuntime().exec(binaryLocation+" -o "+TEMPDOMAIN_FILE+" -f "+TEMPPROBLEM_FILE );
+        Process ffplanner = Runtime.getRuntime().exec(binaryLocation+ " " + ffFlags + " -o "+TEMPDOMAIN_FILE+" -f "+TEMPPROBLEM_FILE );
         ffplanner.waitFor();
         Reader resultReader = new BufferedReader(new InputStreamReader(ffplanner.getInputStream()));
         

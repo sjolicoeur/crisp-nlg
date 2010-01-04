@@ -17,6 +17,7 @@ import de.saar.penguin.tag.derivation.DerivedTree;
 import de.saar.penguin.tag.grammar.CrispGrammar;
 import de.saar.penguin.tag.grammar.Grammar;
 import de.saar.penguin.tag.grammar.SituatedCrispXmlInputCodec;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -24,15 +25,16 @@ import java.io.Reader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
+
 /**
  * A simple implementation of the @{CRISPGeneratorInterface} using the current state
  * of the standard CRISP generation system (with "steps" andwithout pragmatics or
  * context or probabilistic grammars). It also creates a new PDDL domain for every
- * problem instance and thus does not benefit from Konstantinas optimizations. 
- * 
+ * problem instance and thus does not benefit from Konstantinas optimizations.
+ * <p/>
  * Use this class only through the @{CRISPGeneratorInterface} as it is likely to be modified
  * very soon.
- * 
+ *
  * @author dbauer
  */
 public class BasicCrispGenerator implements CrispGeneratorInterface {
@@ -48,6 +50,7 @@ public class BasicCrispGenerator implements CrispGeneratorInterface {
     }
 
     // *** Methods to load the grammar ***
+
     public void setGrammar(Grammar<Term> grammar) {
         this.grammar = (CrispGrammar) grammar;
         planDecoder = new CrispDerivationTreeBuilder(grammar);
@@ -60,8 +63,8 @@ public class BasicCrispGenerator implements CrispGeneratorInterface {
 
     public void setGrammar(Reader xmlGrammarReader) throws IOException, ParserException {
         SituatedCrispXmlInputCodec codec = new SituatedCrispXmlInputCodec();
-	CrispGrammar newGrammar = new CrispGrammar();
-	codec.parse(xmlGrammarReader, newGrammar);
+        CrispGrammar newGrammar = new CrispGrammar();
+        codec.parse(xmlGrammarReader, newGrammar);
         setGrammar(newGrammar);
     }
 
@@ -91,32 +94,41 @@ public class BasicCrispGenerator implements CrispGeneratorInterface {
 
     public List<String> generateWordSequence(String xmlProblem) throws CrispGeneratorException {
         throw new UnsupportedOperationException("Not supported yet.");
-        
+
     }
 
-    public DerivationTree generate(Reader xmlProblemReader) throws CrispGeneratorException {
-        // Check if grammar is loaded
+    public List<Term> getCrispPlan(Reader xmlProblemReader, Domain domain, Problem problem) throws CrispGeneratorException {
+            // Check if grammar is loaded
         if (grammar == null) {
             throw new CrispGeneratorException("No grammar set.");
-        }       
+        }
 
         // Convert CRISP Problem to PDDL
-        Domain domain = new Domain();
-        Problem problem = new Problem();
+        domain.clear();
+        problem.clear();
         try {
-            converter.convert(grammar, xmlProblemReader, domain, problem);            
+            converter.convert(grammar, xmlProblemReader, domain, problem);
         } catch (Exception e) {
-            throw new CrispGeneratorException("Error parsing problem XML specification: "+e);
+            throw new CrispGeneratorException("Error parsing problem XML specification: " + e);
         }
-        
+
         // Run the planner
         List<Term> plan = null;
         try {
-           plan = planner.runPlanner(domain, problem);
+            plan = planner.runPlanner(domain, problem);
         } catch (Exception e) {
             e.printStackTrace();
             throw new CrispGeneratorException("Error running the planner.");
         }
+
+        return plan;
+    }
+
+    public DerivationTree generate(Reader xmlProblemReader) throws CrispGeneratorException {
+        Domain domain = new Domain();
+        Problem problem = new Problem();
+
+        List<Term> plan = getCrispPlan(xmlProblemReader, domain, problem);
 
         //System.out.println(plan);
         // Decode the plan 
@@ -130,12 +142,11 @@ public class BasicCrispGenerator implements CrispGeneratorInterface {
     }
 
 
-
-    public static void usage(){
+    public static void usage() {
         System.out.println("java crisp.main.BasicCrispGenerator [CRISP grammar file] [CRISP problem file]");
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         if (args.length != 2) {
             System.err.println("Wrong number of command linearguments.");
@@ -147,7 +158,7 @@ public class BasicCrispGenerator implements CrispGeneratorInterface {
         try {
             generator.setGrammar(new FileReader(new File(args[0])));
         } catch (Exception e) {
-            System.err.println("Could not open or read grammar XML file "+args[0]);
+            System.err.println("Could not open or read grammar XML file " + args[0]);
             e.printStackTrace();
             System.exit(1);
         }
@@ -159,7 +170,7 @@ public class BasicCrispGenerator implements CrispGeneratorInterface {
             e.printStackTrace();
             System.exit(1);
         } catch (FileNotFoundException e) {
-            System.err.println("Could not open problem XML file "+args[2]);
+            System.err.println("Could not open problem XML file " + args[2]);
             e.printStackTrace();
             System.exit(1);
         }

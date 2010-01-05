@@ -4,32 +4,20 @@ import de.saar.penguin.tag.derivation.DerivationTree;
 import de.saar.penguin.tag.grammar.Grammar;
 import de.saar.penguin.tag.grammar.LexiconEntry;
 import de.saar.penguin.tag.grammar.ElementaryTree;
-import de.saar.penguin.tag.grammar.NodeType;
-import de.saar.penguin.tag.grammar.Constraint;
 
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Action;
-import crisp.planningproblem.Predicate;
-import crisp.planningproblem.TypedVariableList;
-import crisp.planningproblem.formula.Formula;
-import crisp.planningproblem.formula.Literal;
-import crisp.planningproblem.formula.Conjunction;
 
 
-import crisp.converter.TagActionType;
 
 import de.saar.chorus.term.Term;
 import de.saar.chorus.term.Constant;
 import de.saar.chorus.term.Compound;
-import de.saar.chorus.term.Variable;
-import de.saar.chorus.term.Substitution;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-import crisp.tools.Pair;
 
 public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
 

@@ -2,12 +2,9 @@ package crisp.result;
 
 import de.saar.penguin.tag.derivation.DerivationTree;
 import de.saar.penguin.tag.grammar.Grammar;
-import de.saar.penguin.tag.grammar.LexiconEntry;
 
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Action;
-import crisp.planningproblem.Predicate;
-import crisp.planningproblem.TypedVariableList;
 import crisp.planningproblem.formula.Formula;
 import crisp.planningproblem.formula.Literal;
 import crisp.planningproblem.formula.Conjunction;
@@ -23,7 +20,6 @@ import de.saar.chorus.term.Substitution;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.HashMap;
 
 
 /**

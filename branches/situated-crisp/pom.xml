@@ -6,7 +6,7 @@
   <groupId>de.saar.penguin</groupId>
   <artifactId>crisp-nlg-situated</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.1.1</version>
   <name>crisp-nlg-situated</name>
   <url>http://maven.apache.org</url>
 
@@ -155,6 +155,6 @@
   </repositories>
 
   <scm>
-    <developerConnection>scm:svn:https://crisp-nlg.googlecode.com/svn/branches/situated-crisp</developerConnection>
+    <developerConnection>scm:svn:https://crisp-nlg.googlecode.com/svn/tags/crisp-nlg-situated-1.1.1</developerConnection>
   </scm>
 </project>

@@ -121,7 +121,7 @@ public class CurrentNextCrispConverter {
                 problemname = atts.getValue("name").toLowerCase();
                 domain.setName(problemname);
                 problem.setName(problemname);
-                //problem.setDomain(domain);
+                problem.setDomain(domain);
 
 //                try {
 //                    plansize = Integer.parseInt(atts.getValue("plansize"));

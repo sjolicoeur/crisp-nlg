@@ -48,7 +48,8 @@ public class CRISPtoPDDL {
 
         File problemfile = new File(args[1]);
 
-        new CurrentNextCrispConverter().convert(grammar, problemfile, domain, problem);
+        CurrentNextCrispConverter converter = new CurrentNextCrispConverter();
+        converter.convert(grammar, problemfile, domain, problem);
         long end = System.currentTimeMillis();
 
         System.out.println("Total runtime: " + (end - start) + "ms");
@@ -57,5 +58,6 @@ public class CRISPtoPDDL {
         System.out.println("Problem: " + problem);
 
         new PddlOutputCodec().writeToDisk(domain, problem, "");
+        
     }
 }

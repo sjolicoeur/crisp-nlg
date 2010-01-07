@@ -24,6 +24,7 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +44,7 @@ public class BasicCrispGenerator implements CrispGeneratorInterface {
     CurrentNextCrispConverter converter;
     PlannerInterface planner;
     DerivationTreeBuilder planDecoder = null;
+    private List<Term> plan = new ArrayList<Term>();
 
     public BasicCrispGenerator() {
         converter = new CurrentNextCrispConverter();
@@ -80,8 +82,10 @@ public class BasicCrispGenerator implements CrispGeneratorInterface {
     public String generateSentence(Reader xmlProblemReader) throws CrispGeneratorException {
         DerivationTree derivationTree = generate(xmlProblemReader);
         DerivedTree derivedTree = derivationTree.computeDerivedTree(grammar);
-        System.out.println(derivedTree);
-        return derivationTree.toString();
+        System.out.println("\nDerived tree:\n" + derivedTree);
+        System.out.println("\nPlan:\n" + plan);
+        
+        return plan.toString();
     }
 
     public String generateSentence(String xmlProblem) throws CrispGeneratorException {
@@ -128,12 +132,12 @@ public class BasicCrispGenerator implements CrispGeneratorInterface {
         Domain domain = new Domain();
         Problem problem = new Problem();
 
-        List<Term> plan = getCrispPlan(xmlProblemReader, domain, problem);
+        plan = getCrispPlan(xmlProblemReader, domain, problem);
 
         //System.out.println(plan);
         // Decode the plan 
         DerivationTree result = planDecoder.buildDerivationTreeFromPlan(plan, domain);
-        System.out.println(result);
+        System.out.println("\nDerivation tree:\n" + result);
         return result;
     }
 

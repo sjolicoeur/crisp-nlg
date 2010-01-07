@@ -404,9 +404,8 @@ public class CurrentNextCrispConverter {
      * @param domain
      * @param problem
      */
-    private void setupDomain(Domain domain, Problem problem) {
+    private void setupDomain(Domain domain) {
         domain.clear();
-        problem.clear();
 
         domain.addRequirement(":strips");
         domain.addRequirement(":equality");
@@ -460,9 +459,14 @@ public class CurrentNextCrispConverter {
         adjoinTypeList.add("syntaxnode");
         domain.addPredicate("canadjoin", adjoinTypeList);
         domain.addPredicate("mustadjoin", adjoinTypeList);
-
-        problem.addObject("root", "syntaxnode");
     }
+    
+    private void setupProblem(Problem problem) {
+        problem.clear();
+        problem.addObject("root", "syntaxnode");	
+    }
+    
+    
 
     /**
      * Computes the domain of the PDDL planning problem.  In particular, this method
@@ -688,7 +692,6 @@ public class CurrentNextCrispConverter {
                 Set<String> additionalParams = entry.getAdditionalParams().keySet();
                 Map<String, String> additionalVars = entry.getAdditionalVars();
 
-
                 for (Term semContTerm : entry.semantics) {
                     Compound semContCompound = ((Compound) semContTerm);
                     Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(semContCompound, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL);
@@ -760,7 +763,7 @@ public class CurrentNextCrispConverter {
                 for (Term pragPrecondTerm : entry.getPragmaticPreconditions()) {
                     Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(pragPrecondTerm, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL);
                     goals.add(new Literal(termWithVariables, true));
-                }
+                }                
 
                 // Add pragmatic effects
                 for (Term pragEffectTerm : entry.getPragmaticEffects()) {
@@ -928,8 +931,9 @@ public class CurrentNextCrispConverter {
      */
     public void convert(CrispGrammar grammar, Reader problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException {
 
-        //initialize domain
-        setupDomain(domain, problem);
+        //initialize domain and problem
+        setupDomain(domain);
+        setupProblem(problem);
 
         // get the pathname where problem and grammar files are stored
         //problempath = problemfile.getAbsoluteFile().getParent();
@@ -1117,8 +1121,12 @@ public class CurrentNextCrispConverter {
                 for (Term sub : t.getSubterms()) {
                     newChildren.add(newSubstituteVariablesForRoles(sub, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL));
                 }
-
-                return new Compound("forall", newChildren);
+                
+                Compound forallCompound = new Compound("forall", newChildren);
+                System.out.println("Forall compound: " + forallCompound.toLispString());
+                return forallCompound;
+                
+                //return new Compound("forall", newChildren);
 
             } else {
                 List<Term> newChildren = new ArrayList<Term>();

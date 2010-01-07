@@ -48,7 +48,11 @@ public class CRISPConverterTest {
 	for (Action action : domain.getActions()) {
 	    for (Action action2 : domain2.getActions()) {
 		if (action.getPredicate().equals(action2.getPredicate())) {
+		    
+		    // this assertion might be generally questionable, since literals may be ordered differently, 
+		    // however it works for our problem
 		    assertEquals(action.getPrecondition(), action2.getPrecondition());
+		    assertEquals(action.getEffect(), action2.getEffect());
 		}
 	    }
 	}

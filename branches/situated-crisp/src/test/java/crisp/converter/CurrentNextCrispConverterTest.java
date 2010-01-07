@@ -20,7 +20,7 @@ import de.saar.penguin.tag.codec.ParserException;
 import de.saar.penguin.tag.grammar.CrispGrammar;
 import de.saar.penguin.tag.grammar.SituatedCrispXmlInputCodec;
 
-public class CRISPConverterTest {
+public class CurrentNextCrispConverterTest {
     CurrentNextCrispConverter converter;
     Domain domain;
     Problem problem;
@@ -44,7 +44,7 @@ public class CRISPConverterTest {
     }
     
     @Test
-    public void testConverter() {
+    public void testConvert() {
 	for (Action action : domain.getActions()) {
 	    for (Action action2 : domain2.getActions()) {
 		if (action.getPredicate().equals(action2.getPredicate())) {

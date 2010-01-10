@@ -3,9 +3,16 @@ package crisp.converter;
 import static org.junit.Assert.*;
 
 import java.io.*;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import crisp.planner.external.FfPlannerInterface;
+import crisp.planner.external.PlannerInterface;
+import crisp.result.CrispDerivationTreeBuilder;
+import crisp.result.DerivationTreeBuilder;
+import de.saar.chorus.term.Term;
+import de.saar.penguin.tag.derivation.DerivationTree;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -20,6 +27,8 @@ import de.saar.penguin.tag.grammar.SituatedCrispXmlInputCodec;
 public class CurrentNextCrispConverterTest {
     private Domain domain;
     private Problem problem;
+
+    private DerivationTreeBuilder planDecoder;
 
     private CrispGrammar grammar;
 
@@ -37,6 +46,8 @@ public class CurrentNextCrispConverterTest {
 
         converter = new CurrentNextCrispConverter();
         converter.convert(grammar, problemfile, domain, problem);
+
+        planDecoder = new CrispDerivationTreeBuilder(grammar);
     }
 
     @Test
@@ -93,6 +104,16 @@ public class CurrentNextCrispConverterTest {
                 }
             }
         }
+    }
+
+    @Test
+    public void testCorrectSentence() throws Exception {
+        PlannerInterface planner = new FfPlannerInterface();
+        List<Term> plan = planner.runPlanner(domain, problem);
+
+        //System.out.println(plan);
+        // Decode the plan
+        DerivationTree result = planDecoder.buildDerivationTreeFromPlan(plan, domain);
     }
 
 }

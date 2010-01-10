@@ -45,7 +45,7 @@ import java.util.regex.Pattern;
 
 public class FfPlannerInterface implements PlannerInterface {
     
-    public static final String FF_BIN = "/proj/penguin/planners/FF-v2.3/new-ff-mac";
+    public final String FF_BIN = "/proj/penguin/planners/FF-v2.3/new-ff-mac";
        
     public static final String TEMPDOMAIN_FILE = "/tmp/tmpdomain.lisp";
     public static final String TEMPPROBLEM_FILE = "/tmp/tmpproblem.lisp";

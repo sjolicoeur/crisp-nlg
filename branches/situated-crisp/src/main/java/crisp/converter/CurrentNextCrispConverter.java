@@ -402,7 +402,6 @@ public class CurrentNextCrispConverter {
      * domain information cannot be set here (e.g. maximum plan length etc.)
      *
      * @param domain
-     * @param problem
      */
     private void setupDomain(Domain domain) {
         domain.clear();
@@ -972,6 +971,7 @@ public class CurrentNextCrispConverter {
      * @return
      */
 
+    /*
     private Term substituteVariablesForRoles(Term term, Map<String, String> n, Map<String, String> I) {
         if (term instanceof Compound) {
             Compound t = (Compound) term;
@@ -993,6 +993,7 @@ public class CurrentNextCrispConverter {
             return term;
         }
     }
+    */
 
     /**
      * Translates XTAG style tree names into tree names that PDDL will accept.
@@ -1113,8 +1114,7 @@ public class CurrentNextCrispConverter {
                 return newSubstituteVariablesForRoles(t.getSubterms().get(0), n, I, nextMap, additionalParams, additionalVars, ConstantType.NEXT);
             } else if (t.getLabel().equals("forall")) {
                 List<Term> newChildren = new ArrayList<Term>();
-
-                List<Term> subterms = t.getSubterms();
+                List<Term> subterms = new ArrayList<Term>(t.getSubterms());
                 newChildren.add(newSubstituteVariablesForRoles(subterms.get(0), n, I, nextMap, additionalParams, additionalVars, ConstantType.QUANT));
                 subterms.remove(0);
 

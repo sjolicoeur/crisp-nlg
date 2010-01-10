@@ -13,6 +13,7 @@ import crisp.result.CrispDerivationTreeBuilder;
 import crisp.result.DerivationTreeBuilder;
 import de.saar.chorus.term.Term;
 import de.saar.penguin.tag.derivation.DerivationTree;
+import de.saar.penguin.tag.derivation.DerivedTree;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -107,13 +108,30 @@ public class CurrentNextCrispConverterTest {
     }
 
     @Test
+    public void testDerivationTree() throws Exception {
+        PlannerInterface planner = new FfPlannerInterface();
+        List<Term> plan = planner.runPlanner(domain, problem);
+        DerivationTree result = planDecoder.buildDerivationTreeFromPlan(plan, domain);
+
+        assert result != null;
+
+        assert "u3".equals(result.getChildren("u2").get("n4"));
+        assert "u5".equals(result.getChildren("u4").get("n4"));
+    }
+
+    @Test
     public void testCorrectSentence() throws Exception {
         PlannerInterface planner = new FfPlannerInterface();
         List<Term> plan = planner.runPlanner(domain, problem);
+        DerivationTree derivationTree = planDecoder.buildDerivationTreeFromPlan(plan, domain);
+        DerivedTree derivedTree = derivationTree.computeDerivedTree(grammar);
 
-        //System.out.println(plan);
-        // Decode the plan
-        DerivationTree result = planDecoder.buildDerivationTreeFromPlan(plan, domain);
+//        System.err.println("\n\nderivation:\n" + derivationTree);
+//        System.err.println("\n\nderived:\n" + derivedTree);
+
+        String sent = derivedTree.yield();
+
+        assertEquals("movetwosteps and turnleft then push the green button", sent); 
     }
 
 }

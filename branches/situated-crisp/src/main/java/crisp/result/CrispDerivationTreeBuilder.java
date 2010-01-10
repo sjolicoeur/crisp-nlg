@@ -49,6 +49,7 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
    }       
                
 
+    // TODO - this looks like a terrible hack. What if there are two substitution nodes with the same category?? - ak, jan 10
     private String findNodeWithCat(String cat, ElementaryTree t) {
         for (String node : t.getAllNodes()) {
             if (t.getNodeLabel(node).equals(cat)){
@@ -58,6 +59,17 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
         return null;
 
     }
+
+        private String findLeafWithCat(String cat, ElementaryTree t) {
+        for (String node : t.getAllNodes()) {
+            if (t.getNodeLabel(node).equals(cat) && t.getChildren(node).isEmpty() ) {
+                return node;
+            }
+        }
+        return null;
+
+    }
+
 
    private void addNewSubstAndAdjSites(Action action, ElementaryTree tree, String derivationNode) {
 
@@ -72,7 +84,7 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
            List<Term> subterms = c.getSubterms();
            String cat = ((Constant) subterms.get(0)).getName();
            String syntaxnode = ((Constant) subterms.get(1)).getName();
-           Site substSite = new Site(derivationNode, findNodeWithCat(cat, tree), cat);
+           Site substSite = new Site(derivationNode, findLeafWithCat(cat, tree), cat);
            substitutionSites.put(cat+":"+syntaxnode, substSite);
 
        }

@@ -1118,12 +1118,11 @@ public class CurrentNextCrispConverter {
                 newChildren.add(newSubstituteVariablesForRoles(subterms.get(0), n, I, nextMap, additionalParams, additionalVars, ConstantType.QUANT));
                 subterms.remove(0);
 
-                for (Term sub : t.getSubterms()) {
+                for (Term sub : subterms) {
                     newChildren.add(newSubstituteVariablesForRoles(sub, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL));
                 }
                 
                 Compound forallCompound = new Compound("forall", newChildren);
-                System.out.println("Forall compound: " + forallCompound.toLispString());
                 return forallCompound;
                 
                 //return new Compound("forall", newChildren);

@@ -6,7 +6,7 @@
   <groupId>de.saar.penguin</groupId>
   <artifactId>crisp-nlg-situated</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.2</version>
+  <version>1.1.3-SNAPSHOT</version>
   <name>crisp-nlg-situated</name>
   <url>http://maven.apache.org</url>
 

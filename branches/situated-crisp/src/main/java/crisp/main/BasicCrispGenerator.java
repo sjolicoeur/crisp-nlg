@@ -45,10 +45,16 @@ public class BasicCrispGenerator implements CrispGeneratorInterface {
     PlannerInterface planner;
     DerivationTreeBuilder planDecoder = null;
     private List<Term> plan = new ArrayList<Term>();
+    private Domain domain;
+    private Problem problem;
+
+    public BasicCrispGenerator(String ffFlags) {
+        converter = new CurrentNextCrispConverter();
+        planner = new FfPlannerInterface(ffFlags);
+    }
 
     public BasicCrispGenerator() {
-        converter = new CurrentNextCrispConverter();
-        planner = new FfPlannerInterface();
+	this("");
     }
 
     // *** Methods to load the grammar ***
@@ -81,11 +87,8 @@ public class BasicCrispGenerator implements CrispGeneratorInterface {
 
     public String generateSentence(Reader xmlProblemReader) throws CrispGeneratorException {
         DerivationTree derivationTree = generate(xmlProblemReader);
-        DerivedTree derivedTree = derivationTree.computeDerivedTree(grammar);
-        System.out.println("\nDerived tree:\n" + derivedTree);
-        System.out.println("\nPlan:\n" + plan);
-        
-        return plan.toString();
+        DerivedTree derivedTree = derivationTree.computeDerivedTree(grammar);        
+        return derivedTree.yield();
     }
 
     public String generateSentence(String xmlProblem) throws CrispGeneratorException {
@@ -101,40 +104,69 @@ public class BasicCrispGenerator implements CrispGeneratorInterface {
 
     }
 
-    public List<Term> getCrispPlan(Reader xmlProblemReader, Domain domain, Problem problem) throws CrispGeneratorException {
-            // Check if grammar is loaded
-        if (grammar == null) {
-            throw new CrispGeneratorException("No grammar set.");
-        }
+    public List<Term> getCrispPlan(Reader xmlProblemReader) throws CrispGeneratorException {
 
-        // Convert CRISP Problem to PDDL
-        domain.clear();
-        problem.clear();
-        try {
-            converter.convert(grammar, xmlProblemReader, domain, problem);
-        } catch (Exception e) {
-            throw new CrispGeneratorException("Error parsing problem XML specification: " + e);
-        }
+	if (plan.size() == 0) {
+	    domain = new Domain();
+	    problem = new Problem();
 
-        // Run the planner
-        List<Term> plan = null;
-        try {
-            plan = planner.runPlanner(domain, problem);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new CrispGeneratorException("Error running the planner.");
-        }
+	    // Check if grammar is loaded
+	    if (grammar == null) {
+		throw new CrispGeneratorException("No grammar set.");
+	    }
 
-        return plan;
+	    // Convert CRISP Problem to PDDL
+	    try {
+		converter.convert(grammar, xmlProblemReader, domain, problem);
+	    } catch (Exception e) {
+		throw new CrispGeneratorException("Error parsing problem XML specification: " + e);
+	    }
+
+	    // run the planner
+	    try {
+		plan = planner.runPlanner(domain, problem);
+	    } catch (Exception e) {
+		e.printStackTrace();
+		throw new CrispGeneratorException("Error running the planner.");
+	    }
+	}
+	return plan;
+    }
+
+    public List<Term> getCrispPlan(String xmlProblem) throws CrispGeneratorException {
+	
+	Reader xmlProblemReader = new StringReader(xmlProblem);
+
+	if (plan.size() == 0) {
+	    domain = new Domain();
+	    problem = new Problem();
+
+	    // Check if grammar is loaded
+	    if (grammar == null) {
+		throw new CrispGeneratorException("No grammar set.");
+	    }
+
+	    // Convert CRISP Problem to PDDL
+	    try {
+		converter.convert(grammar, xmlProblemReader, domain, problem);
+	    } catch (Exception e) {
+		throw new CrispGeneratorException("Error parsing problem XML specification: " + e);
+	    }
+
+	    // run the planner
+	    try {
+		plan = planner.runPlanner(domain, problem);
+	    } catch (Exception e) {
+		e.printStackTrace();
+		throw new CrispGeneratorException("Error running the planner.");
+	    }
+	}
+	return plan;
     }
 
     public DerivationTree generate(Reader xmlProblemReader) throws CrispGeneratorException {
-        Domain domain = new Domain();
-        Problem problem = new Problem();
+        plan = getCrispPlan(xmlProblemReader);
 
-        plan = getCrispPlan(xmlProblemReader, domain, problem);
-
-        //System.out.println(plan);
         // Decode the plan 
         DerivationTree result = planDecoder.buildDerivationTreeFromPlan(plan, domain);
         System.out.println("\nDerivation tree:\n" + result);
@@ -142,7 +174,12 @@ public class BasicCrispGenerator implements CrispGeneratorInterface {
     }
 
     public DerivationTree generate(String xmlProblem) throws CrispGeneratorException {
-        return generate(new StringReader(xmlProblem));
+        plan = getCrispPlan(xmlProblem);
+
+        // Decode the plan 
+        DerivationTree result = planDecoder.buildDerivationTreeFromPlan(plan, domain);
+        System.out.println("\nDerivation tree:\n" + result);
+        return result;
     }
 
 

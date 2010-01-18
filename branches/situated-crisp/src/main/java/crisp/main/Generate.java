@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
 
 public class Generate {
 
-    public static final String PROPERTIES_FILE = "crisp.properties.example";
+    public static final String PROPERTIES_FILE = "crisp.properties";
 
     public static List<Term> computePlan(String grammarFile, String problemFile) {
         Domain domain = new Domain();

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<crisp-grammar>
+
+  <!-- grammar -->
+
+  <tree id="initpropername">
+    <node cat="np" index="r" sem="self">
+      <leaf cat="pn" type="anchor" sem="self"/>
+    </node>
+  </tree>
+
+  <tree id="initnx0vnx1">
+    <node cat="s" index="r" sem="self">
+      <leaf cat="np" type="substitution" index="0" sem="subj" />
+      <node cat="vp" sem="self">
+	<leaf cat="v" type="anchor" sem="self"/>
+	<leaf cat="np" type="substitution" index="0" sem="obj" />
+      </node>
+    </node>
+  </tree>
+
+  <tree id="initn">
+    <leaf cat="n" type="anchor" sem="self" />
+  </tree>
+
+  <tree id="auxan">
+    <node cat="n" index="r" sem="self">
+      <leaf cat="a" type="anchor" sem="self"/>
+      <leaf cat="n" type="foot" index="f" sem="self" />
+    </node>
+  </tree>
+
+
+  <tree id="initnx0vnx1pnx2">
+    <node cat="s" index="r" sem="self">
+      <leaf cat="np" type="substitution" index="0" sem="subj"/>
+      <node cat="vp" sem="self">
+        <leaf cat="v" type="anchor" sem="self"/>
+        <leaf cat="np" type="substitution" index="1" sem="obj"/>
+        <node cat="vp" index="e" sem="self">
+          <node cat="v" index="e" sem="self">
+            <leaf cat="" type="terminal" index="v" sem="self"/>
+          </node>
+          <node cat="pp" sem="ppobj">
+            <leaf cat="p" type="lex" sem="ppobj"/>
+            <leaf cat="np" type="substitution" index="2" sem="ppobj"/>
+          </node>
+        </node>
+      </node>
+    </node>
+  </tree>
+
+
+  <tree id="inittransimperative">
+    <node cat="s" index="r" sem="self">
+      <node cat="vp" sem="self">
+        <leaf cat="v" type="anchor" sem="self"/>
+        <leaf cat="np" type="substitution" index="1" sem="obj"/>
+        <node cat="vp" index="e" sem="self">
+          <node cat="v" index="e" sem="self">
+            <leaf cat="" type="terminal" index="v" sem="self"/>
+          </node>
+          <node cat="pp" sem="ppobj">
+            <leaf cat="p" type="lex" sem="ppobj"/>
+            <leaf cat="np" type="substitution" index="2" sem="ppobj"/>
+          </node>
+        </node>
+      </node>
+    </node>
+  </tree>
+
+
+ <!-- non-xtag -->
+  <!--
+  <tree id="initdn">  
+    <node cat="np" index="r" sem="self">
+      <leaf cat="d" type="anchor" sem="self" />
+      <node type="substitution" cat="n" index="0" sem="self" />
+    </node>
+  </tree>
+-->
+
+  <tree id="auxdn">
+    <node cat="np" index="r" sem="self">
+      <leaf cat="det" type="anchor" sem="self"/>
+      <leaf cat="np" type="foot" index="f" sem="self" />
+    </node>
+  </tree>
+
+  
+  <tree id="initnp">
+    <node cat="np" sem="self" constraint="oa">
+      <node cat="n" sem="self">
+	<leaf cat="n" type="anchor" sem="self" />
+      </node>
+    </node>
+  </tree>
+
+
+  <!-- lexicon -->
+
+  <entry word='mary' pos='pn'>
+    <tree refid='initpropername'>
+      <semcontent>name(self,mary)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='peter' pos='pn'>
+    <tree refid='initpropername'>
+      <semcontent>name(self,peter)</semcontent>
+    </tree>
+  </entry>
+
+
+  <entry word='likes' pos='v'>
+    <tree refid="initnx0vnx1">
+      <semcontent>like(self,subj,obj)</semcontent>
+      <semreq>animate(subj)</semreq>
+    </tree>
+  </entry>
+
+<!--
+  <entry word='takes' pos='v'>
+    <tree refid="initnx0vnx1pnx2">
+      <lex pos="p" word="from" />
+      <semcontent>takefrom(self,subj,obj,ppobj)</semcontent>
+      <semreq>animate(subj)</semreq>
+      <semreq>in(obj,ppobj)</semreq>
+    </tree>
+  </entry>
+-->
+
+  <entry word='take' pos='v'>
+    <tree refid="inittransimperative">
+      <lex pos="p" word="from" />
+      <semcontent>takefrom(self,obj,ppobj)</semcontent>
+      <semreq>in(obj,ppobj)</semreq>
+    </tree>
+  </entry>
+
+
+  <entry word='rabbit' pos='n'>
+    <tree refid="initnp">
+      <semcontent>rabbit(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='hat' pos='n'>
+    <tree refid="initnp">
+      <semcontent>hat(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='flower' pos='n'>
+    <tree refid="initnp">
+      <semcontent>flower(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='bowl' pos='n'>
+    <tree refid="initnp">
+      <semcontent>bowl(self)</semcontent>
+    </tree>
+  </entry>
+
+
+  <entry word='the' pos='d'>
+    <tree refid="auxdn">
+    </tree>
+  </entry>
+
+
+  <entry word='white' pos='a'>
+    <tree refid='auxan'>
+      <semcontent>white(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='foo1' pos='a'>
+    <tree refid='auxan'>
+      <semcontent>foo1(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='foo2' pos='a'>
+    <tree refid='auxan'>
+      <semcontent>foo2(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='foo3' pos='a'>
+    <tree refid='auxan'>
+      <semcontent>foo3(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='foo4' pos='a'>
+    <tree refid='auxan'>
+      <semcontent>foo4(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='foo5' pos='a'>
+    <tree refid='auxan'>
+      <semcontent>foo5(self)</semcontent>
+    </tree>
+  </entry>
+</crisp-grammar>

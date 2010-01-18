@@ -117,14 +117,14 @@
     <repository>
       <id>ecl-repository</id>
       <name>Coli ECL Maven repository</name>
-      <url>scp://httpd/web/www.coli.uni-saarland.de/html/projects/ecl/maven2/releases</url>
+      <url>scp://httpd.coli.uni-saarland.de/web/www.coli.uni-saarland.de/html/projects/ecl/maven2/releases</url>
     </repository>
 
     <snapshotRepository>
       <uniqueVersion>true</uniqueVersion>
       <id>ecl-snapshots</id>
       <name>ECL release snapshots</name>
-      <url>scp://httpd/web/www.coli.uni-saarland.de/html/projects/ecl/maven2/snapshots</url>
+      <url>scp://httpd.coli.uni-saarland.de/web/www.coli.uni-saarland.de/html/projects/ecl/maven2/snapshots</url>
     </snapshotRepository>
   </distributionManagement>
 

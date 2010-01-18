@@ -274,17 +274,6 @@
         <root url="jar://$MAVEN_REPOSITORY$/bouncycastle/bcprov-jdk14/138/bcprov-jdk14-138-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: de.saar.penguin:tag:1.0.2">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/de/saar/penguin/tag/1.0.2/tag-1.0.2.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/de/saar/penguin/tag/1.0.2/tag-1.0.2-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/de/saar/penguin/tag/1.0.2/tag-1.0.2-sources.jar!/" />
-      </SOURCES>
-    </library>
     <library name="Maven: de.saar.penguin:lazyff:1.1.1">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/de/saar/penguin/lazyff/1.1.1/lazyff-1.1.1.jar!/" />
@@ -327,6 +316,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.6/mysql-connector-java-5.1.6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: de.saar.penguin:tag:1.0.5">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/de/saar/penguin/tag/1.0.5/tag-1.0.5.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/de/saar/penguin/tag/1.0.5/tag-1.0.5-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/de/saar/penguin/tag/1.0.5/tag-1.0.5-sources.jar!/" />
       </SOURCES>
     </library>
   </component>

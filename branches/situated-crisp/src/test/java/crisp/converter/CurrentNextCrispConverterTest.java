@@ -3,6 +3,7 @@ package crisp.converter;
 import static org.junit.Assert.*;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -115,8 +116,14 @@ public class CurrentNextCrispConverterTest {
 
         assert result != null;
 
-        assert "u3".equals(result.getChildren("u2").get("n4"));
-        assert "u5".equals(result.getChildren("u4").get("n4"));
+        List<String> results = new ArrayList<String>();
+
+        results.add("u3");
+        assertEquals(results, result.getChildren("u2").get("n4"));
+
+        results.clear();
+        results.add("u5");
+        assertEquals(results, result.getChildren("u4").get("n4"));
     }
 
     @Test

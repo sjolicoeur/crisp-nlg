@@ -28,7 +28,7 @@ import de.saar.penguin.tag.codec.PCrispXmlInputCodec;
 import de.saar.penguin.tag.derivation.DerivationTree;
 import de.saar.penguin.tag.derivation.DerivedTree;
 
-import de.saar.chorus.term.Term; 
+import de.saar.chorus.term.Term;
 
 import java.io.FileReader;
 import java.io.PrintWriter;
@@ -44,19 +44,19 @@ import java.util.regex.Pattern;
 
 
 public class FfPlannerInterface implements PlannerInterface {
-    
+
     public final String FF_BIN = "/proj/penguin/planners/FF-v2.3/new-ff-mac";
-       
+
     public static final String TEMPDOMAIN_FILE = "/tmp/tmpdomain.lisp";
     public static final String TEMPPROBLEM_FILE = "/tmp/tmpproblem.lisp";
     public static final String TEMPRESULT_FILE = "/tmp/tmpresult";
 
     private String ffFlags;
-    
+
     private long preprocessingTime;
     private long searchTime;
     private String binaryLocation;
-    
+
     public FfPlannerInterface(String ffFlags) {
         this.ffFlags = ffFlags;
         preprocessingTime = 0;
@@ -75,33 +75,34 @@ public class FfPlannerInterface implements PlannerInterface {
     public FfPlannerInterface() {
         this("");
     }
-    
-    public List<Term> runPlanner(Domain domain, Problem problem) throws Exception {        
-        
+
+    public List<Term> runPlanner(Domain domain, Problem problem) throws Exception {
+
         long start;
         long end;
-        
+
         new PddlOutputCodec().writeToDisk(domain, problem, new PrintWriter(new FileWriter(new File(TEMPDOMAIN_FILE))),
-                                                           new PrintWriter(new FileWriter(new File(TEMPPROBLEM_FILE))));
-                                                                   
-          
+                new PrintWriter(new FileWriter(new File(TEMPPROBLEM_FILE))));
+
+
         // Run the FfPlanner
-        Process ffplanner = Runtime.getRuntime().exec(binaryLocation+ " " + ffFlags + " -o "+TEMPDOMAIN_FILE+" -f "+TEMPPROBLEM_FILE );
+        Process ffplanner = Runtime.getRuntime().exec(binaryLocation + " " + ffFlags + " -o " + TEMPDOMAIN_FILE + " -f " + TEMPPROBLEM_FILE);
         ffplanner.waitFor();
         Reader resultReader = new BufferedReader(new InputStreamReader(ffplanner.getInputStream()));
-                
-        if (ffplanner.exitValue() != 0) {
-            throw new RuntimeException("FF in "+binaryLocation+" terminated inappropriately. Exit Value was "+ffplanner.exitValue()+".");
-        }
 
         StringWriter str = new StringWriter();
         char[] buffer = new char[100];
-        while (resultReader.read(buffer)!=-1)
+        while (resultReader.read(buffer) != -1) {
             str.write(buffer);
-        
-            List<Term> plan = parsePlan(str.toString());
-            return plan;
-    
+        }
+
+        if (ffplanner.exitValue() != 0) {
+            throw new RuntimeException("FF in " + binaryLocation + " terminated inappropriately. Exit Value was " + ffplanner.exitValue() + ".\n" + str.toString());
+        }
+
+        List<Term> plan = parsePlan(str.toString());
+        return plan;
+
     }
 
 
@@ -109,7 +110,7 @@ public class FfPlannerInterface implements PlannerInterface {
         Pattern p = Pattern.compile(".*found legal plan as follows(.*)time spent.*", Pattern.DOTALL);
         Matcher m = p.matcher(string);
 
-        if( !m.matches() ) {
+        if (!m.matches()) {
             return null;
         } else {
             try {
@@ -124,7 +125,7 @@ public class FfPlannerInterface implements PlannerInterface {
 
     }
 
-     
+
     public List<Term> runPlanner(Domain domain, Problem problem, long timeout) throws Exception {
         //TODO: implement timeout for SGPlan
         return runPlanner(domain, problem);
@@ -133,62 +134,62 @@ public class FfPlannerInterface implements PlannerInterface {
     public long getPreprocessingTime() {
         return preprocessingTime;
     }
-    
+
     public long getSearchTime() {
         return searchTime;
     }
-    
+
     public long getTotalTime() {
-        return preprocessingTime + searchTime; 
+        return preprocessingTime + searchTime;
     }
-    
-    
-    public static void usage(){
+
+
+    public static void usage() {
         System.out.println("Usage: java crisp.evaluation.LamaPlannerInterface [CRISP grammar] [CIRISP problem]");
     }
-    
-    public static void main(String[] args) throws Exception{
-        
-         
-        if (args.length<1) {
+
+    public static void main(String[] args) throws Exception {
+
+
+        if (args.length < 1) {
             System.err.println("No crisp problem specified");
             usage();
             System.exit(1);
         }
-        
-        // TODO some exception handling
-        
-		Domain domain = new Domain();
-		Problem problem = new Problem();
 
-		long start = System.currentTimeMillis();
-        
-        
+        // TODO some exception handling
+
+        Domain domain = new Domain();
+        Problem problem = new Problem();
+
+        long start = System.currentTimeMillis();
+
+
         System.out.println("Reading grammar...");
         PCrispXmlInputCodec codec = new PCrispXmlInputCodec();
-		ProbabilisticGrammar<Term> grammar = new ProbabilisticGrammar<Term>();	
-		codec.parse(new File(args[0]), grammar);         
- 
+        ProbabilisticGrammar<Term> grammar = new ProbabilisticGrammar<Term>();
+        codec.parse(new File(args[0]), grammar);
+
         File problemfile = new File(args[1]);
-                
+
         System.out.println("Generating planning problem...");
-		//new FastCRISPConverter().convert(grammar, problemfile, domain, problem);
+        //new FastCRISPConverter().convert(grammar, problemfile, domain, problem);
         new ProbCRISPConverter().convert(grammar, problemfile, domain, problem);
 
-		long end = System.currentTimeMillis();
+        long end = System.currentTimeMillis();
 
-		System.out.println("Total runtime for problem generation: " + (end-start) + "ms");
+        System.out.println("Total runtime for problem generation: " + (end - start) + "ms");
 
         //System.out.println("Domain: " + domain );
-		//System.out.println("Problem: " + problem);
-            
+        //System.out.println("Problem: " + problem);
+
         System.out.println("Running planner ... ");
         PlannerInterface planner = new FfPlannerInterface();
-        List<Term> plan = planner.runPlanner(domain,problem);
+        List<Term> plan = planner.runPlanner(domain, problem);
         System.out.println(plan);
         DerivationTreeBuilder derivationTreeBuilder = new CrispDerivationTreeBuilder(grammar);
         DerivationTree derivTree = derivationTreeBuilder.buildDerivationTreeFromPlan(plan, domain);
-        System.out.println(derivTree);        
+        System.out.println(derivTree);
         DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
         System.out.println(derivedTree);
         System.out.println(derivedTree.yield());
@@ -201,7 +202,7 @@ public class FfPlannerInterface implements PlannerInterface {
         derivTree.addNode(node, "n1", "t26", grammar.getLexiconEntry("d_dot_","t26"));
         DerivedTree derivedTree = derivTree.computeDerivedTree(grammar);
         */
-  
+
         /*
         JFrame f = new JFrame("TAG viewer:");
         JGraph g = new JGraph();        
@@ -210,11 +211,11 @@ public class FfPlannerInterface implements PlannerInterface {
                
         f.add(g);
         f.pack();
-	    f.setVisible(true);	               
-	    v.computeLayout(g);       
-	    f.pack();           
+        f.setVisible(true);
+        v.computeLayout(g);
+        f.pack();
         */
     }
-    
-    
+
+
 }

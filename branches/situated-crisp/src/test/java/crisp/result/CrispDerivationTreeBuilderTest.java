@@ -58,4 +58,33 @@ public class CrispDerivationTreeBuilderTest {
 
         assertEquals("the left blue button sleeps", sent);
     }
+
+    @Test
+    public void testModifierOrder2() throws Exception, ParserException, SAXException, ParserConfigurationException {
+        CurrentNextCrispConverter converter;
+        Domain domain = new Domain();
+        Problem problem = new Problem();
+
+        SituatedCrispXmlInputCodec codec = new SituatedCrispXmlInputCodec();
+        CrispGrammar grammar = new CrispGrammar();
+        codec.parse(new InputStreamReader(getClass().getResourceAsStream("/modifiers-grammar.xml")), grammar);
+
+        Reader problemfile = new InputStreamReader(getClass().getResourceAsStream("/modifiers-problem2.xml"));
+
+        converter = new CurrentNextCrispConverter();
+        converter.convert(grammar, problemfile, domain, problem);
+
+        CrispDerivationTreeBuilder planDecoder = new CrispDerivationTreeBuilder(grammar);
+        PlannerInterface planner = new FfPlannerInterface();
+        List<Term> plan = planner.runPlanner(domain, problem);
+        DerivationTree derivationTree = planDecoder.buildDerivationTreeFromPlan(plan, domain, "s");
+        DerivedTree derivedTree = derivationTree.computeDerivedTree(grammar);
+
+//        System.err.println("\n\nderivation:\n" + derivationTree);
+//        System.err.println("\n\nderived:\n" + derivedTree);
+
+        String sent = derivedTree.yield();
+
+        assertEquals("the blue left button sleeps", sent);
+    }
 }

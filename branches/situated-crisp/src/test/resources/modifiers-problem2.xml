@@ -13,6 +13,6 @@
     <world>blue(b2)</world>
     <world>green(b3)</world>
 
-    <world>left-of(b3,b1)</world>
+    <world>left-of(b3,b2)</world>
     <world>left-of(b1,b2)</world>
 </crispproblem>

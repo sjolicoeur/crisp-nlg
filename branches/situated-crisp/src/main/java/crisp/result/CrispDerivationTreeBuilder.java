@@ -206,16 +206,8 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
             processPlanStep(instantiatedAction);
         }
 
-        // Reverse multiple adjunctions in each node so innermost adjunctions correspond to first-mentioned modifier
-        // actions in the plan. This yields the correct word order for adjectives, but might not be correct for
-        // post-modifiers. AK, Jan 10
-        for( String node : currentDerivation.getAllNodes() ) {
-            Map<String,List<String>> childrenPerNode = currentDerivation.getChildren(node);
-
-            for( List<String> childList : childrenPerNode.values() ) {
-                Collections.reverse(childList);
-            }
-        }
+        // at this point, the contents of currentDerivation.getChildren(*) could be manipulated to rearrange
+        // the order of auxiliary trees that are adjoined to the same node
 
         return currentDerivation;
     }

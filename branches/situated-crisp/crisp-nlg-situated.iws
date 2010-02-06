@@ -2,14 +2,13 @@
 <project version="4">
   <component name="ChangeListManager" verified="true">
     <list default="true" readonly="true" id="cf65ede4-0283-4508-9f14-acaa40265bfa" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/resources/modifiers-problem2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/crisp/result/CrispDerivationTreeBuilder.java" afterPath="$PROJECT_DIR$/src/main/java/crisp/result/CrispDerivationTreeBuilder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/crisp/result/CrispDerivationTreeBuilderTest.java" afterPath="$PROJECT_DIR$/src/test/java/crisp/result/CrispDerivationTreeBuilderTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/resources/modifiers-problem.xml" afterPath="$PROJECT_DIR$/src/test/resources/modifiers-problem.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/crisp/main/CrispGeneratorException.java" afterPath="$PROJECT_DIR$/src/main/java/crisp/main/CrispGeneratorException.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/crisp/main/BasicCrispGenerator.java" afterPath="$PROJECT_DIR$/src/main/java/crisp/main/BasicCrispGenerator.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/crisp-nlg-situated.iws" afterPath="$PROJECT_DIR$/crisp-nlg-situated.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/crisp/evaluation/ffplanparser/FfPlanParser.java" afterPath="$PROJECT_DIR$/src/main/java/crisp/evaluation/ffplanparser/FfPlanParser.java" />
     </list>
-    <ignored path="crisp-nlg-situated.iws" />
     <ignored path=".idea/workspace.xml" />
+    <ignored path="crisp-nlg-situated.iws" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,24 +65,11 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="CrispDerivationTreeBuilder.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/crisp/result/CrispDerivationTreeBuilder.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="209" column="49" selection-start="7567" selection-end="7567" vertical-scroll-proportion="-21.346153">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CrispDerivationTreeBuilderTest.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="CrispDerivationTreeBuilderTest.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/crisp/result/CrispDerivationTreeBuilderTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="87" column="36" selection-start="3703" selection-end="3703" vertical-scroll-proportion="0.8644918">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="62" column="29" selection-start="2414" selection-end="2414" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -119,9 +105,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/crisp/result/DerivationTreeBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="92" column="53" selection-start="3245" selection-end="3245" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -138,7 +122,18 @@
       <file leaf-file-name="FfPlannerInterface.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/crisp/planner/external/FfPlannerInterface.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="66" column="78" selection-start="1957" selection-end="1957" vertical-scroll-proportion="0.0">
+            <state line="185" column="24" selection-start="5631" selection-end="5636" vertical-scroll-proportion="-60.346153">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BasicCrispGenerator.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/crisp/main/BasicCrispGenerator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="121" column="38" selection-start="4442" selection-end="4442" vertical-scroll-proportion="0.6425025">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -167,7 +162,6 @@
       <list>
         <option value="$PROJECT_DIR$/src/main/java/crisp/converter/CurrentNextCrispConverter.java" />
         <option value="$PROJECT_DIR$/src/test/resources/grammar-scrisp.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/crisp/planner/external/FfPlannerInterface.java" />
         <option value="$PROJECT_DIR$/src/test/resources/modifiers-grammar.xml" />
         <option value="$PROJECT_DIR$/src/test/java/crisp/converter/CurrentNextCrispConverterTest.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
@@ -176,6 +170,10 @@
         <option value="$PROJECT_DIR$/src/main/java/crisp/result/CrispDerivationTreeBuilder.java" />
         <option value="$PROJECT_DIR$/src/test/resources/modifiers-problem2.xml" />
         <option value="$PROJECT_DIR$/src/test/java/crisp/result/CrispDerivationTreeBuilderTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/crisp/planner/external/FfPlannerInterface.java" />
+        <option value="$PROJECT_DIR$/src/main/java/crisp/evaluation/ffplanparser/FfPlanParser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/crisp/main/CrispGeneratorException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/crisp/main/BasicCrispGenerator.java" />
       </list>
     </option>
   </component>
@@ -221,11 +219,10 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Favorites" />
       <pane id="PackagesPane">
         <subPane />
       </pane>
-      <pane id="Favorites" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -257,70 +254,6 @@
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="crisp-nlg-situated" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="situated-crisp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="crisp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="crisp-nlg-situated" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="situated-crisp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="crisp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="converter" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -396,7 +329,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="result" />
+              <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -426,23 +359,58 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="external" />
+              <option name="myItemId" value="evaluation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="crisp-nlg-situated" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="situated-crisp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="crisp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="evaluation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ffplanparser" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
-    <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
+    <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="dynamic.classpath" value="false" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
   </component>
   <component name="RunManager" selected="JUnit.situated-crisp junit">
     <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
@@ -692,24 +660,24 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1920" height="1174" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922202" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24959914" sideWeight="0.34155598" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977018" sideWeight="0.800759" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24959914" sideWeight="0.544592" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24959914" sideWeight="0.45256168" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977018" sideWeight="0.800759" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19259962" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24959914" sideWeight="0.4487666" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19259962" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922202" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -748,120 +716,102 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/test/resources/problem-scrisp-give1-generated.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1504" column="15" selection-start="129089" selection-end="129089" vertical-scroll-proportion="14.584906">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/resources/grammar-scrisp.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="120" column="24" selection-start="2797" selection-end="3477" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/de/saar/penguin/tag/1.0.4/tag-1.0.4-sources.jar!/de/saar/penguin/tag/grammar/Grammar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="13" selection-start="300" selection-end="300" vertical-scroll-proportion="0.07350689">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/de/saar/penguin/tag/1.0.4/tag-1.0.4-sources.jar!/de/saar/penguin/tag/derivation/DerivationTree.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="37" selection-start="1600" selection-end="1600" vertical-scroll-proportion="-0.5322581">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/crisp/result/DerivationTreeBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="92" column="53" selection-start="3245" selection-end="3245" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/crisp/converter/CurrentNextCrispConverterTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="125" column="65" selection-start="4857" selection-end="4857" vertical-scroll-proportion="0.62358844">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/crisp/planner/external/PlannerInterface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="17" selection-start="232" selection-end="232" vertical-scroll-proportion="0.105395235">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/de/saar/penguin/tag/grammar/SituatedCrispXmlInputCodec.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="4" selection-start="1486" selection-end="1489" vertical-scroll-proportion="0.37094682">
-          <folding />
-        </state>
+        <state line="47" column="4" selection-start="1486" selection-end="1489" vertical-scroll-proportion="0.37094682" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/crisp/result/CrispDerivationTreeBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="0" selection-start="457" selection-end="457" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/crisp/planner/external/FfPlannerInterface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="78" selection-start="1957" selection-end="1957" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/crisp/main/Generate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="46" selection-start="2251" selection-end="2251" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/resources/modifiers-problem.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="15" selection-start="501" selection-end="501" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/resources/modifiers-grammar.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="40" selection-start="390" selection-end="390" vertical-scroll-proportion="0.0">
+        <state line="209" column="49" selection-start="7567" selection-end="7567" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/resources/modifiers-problem2.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="24" selection-start="442" selection-end="442" vertical-scroll-proportion="0.0">
+        <state line="15" column="24" selection-start="442" selection-end="442" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/resources/modifiers-grammar.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="40" selection-start="390" selection-end="390" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/resources/modifiers-problem.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="15" selection-start="501" selection-end="501" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/crisp/result/DerivationTreeBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="92" column="53" selection-start="3245" selection-end="3245" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="0" selection-start="457" selection-end="457" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/crisp/main/Generate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="56" column="46" selection-start="2251" selection-end="2251" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/crisp/result/CrispDerivationTreeBuilderTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="62" column="29" selection-start="2414" selection-end="2414" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/crisp/result/CrispDerivationTreeBuilder.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/crisp/planner/external/InterruptScheduler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="209" column="49" selection-start="7567" selection-end="7567" vertical-scroll-proportion="-21.346153">
+        <state line="4" column="6" selection-start="68" selection-end="68" vertical-scroll-proportion="0.047666337">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/crisp/converter/CurrentNextCrispConverter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="548" column="68" selection-start="21929" selection-end="21929" vertical-scroll-proportion="0.42028984">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/crisp/planner/external/PlannerInterface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="22" selection-start="290" selection-end="290" vertical-scroll-proportion="0.10724925">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/crisp/evaluation/ffplanparser/FfPlanParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="61" selection-start="1380" selection-end="1385" vertical-scroll-proportion="0.33333334">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/crisp/planner/external/FfPlannerInterface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="185" column="24" selection-start="5631" selection-end="5636" vertical-scroll-proportion="-60.346153">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/crisp/result/CrispDerivationTreeBuilderTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/crisp/main/CrispGeneratorException.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="87" column="36" selection-start="3703" selection-end="3703" vertical-scroll-proportion="0.8644918">
+        <state line="12" column="69" selection-start="329" selection-end="329" vertical-scroll-proportion="0.14299901">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/crisp/main/BasicCrispGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="121" column="38" selection-start="4442" selection-end="4442" vertical-scroll-proportion="0.6425025">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

@@ -10,4 +10,7 @@ public class CrispGeneratorException extends Exception{
         super(string);
     }
 
+    public CrispGeneratorException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

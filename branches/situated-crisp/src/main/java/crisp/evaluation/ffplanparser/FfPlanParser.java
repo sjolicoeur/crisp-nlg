@@ -48,7 +48,8 @@ import java.util.Map;
       }
       jj_consume_token(STEPNO);
       atom = planstep();
-                                           System.out.println(atom); ret.add(atom);
+//                                           System.out.println(atom);
+        ret.add(atom);
     }
                 {if (true) return ret;}
     throw new Error("Missing return statement in function");

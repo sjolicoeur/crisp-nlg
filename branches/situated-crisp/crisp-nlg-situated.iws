@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager" verified="true">
     <list default="true" readonly="true" id="cf65ede4-0283-4508-9f14-acaa40265bfa" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/crisp/main/CrispGeneratorException.java" afterPath="$PROJECT_DIR$/src/main/java/crisp/main/CrispGeneratorException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/crisp/main/BasicCrispGenerator.java" afterPath="$PROJECT_DIR$/src/main/java/crisp/main/BasicCrispGenerator.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/crisp-nlg-situated.iws" afterPath="$PROJECT_DIR$/crisp-nlg-situated.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/crisp/evaluation/ffplanparser/FfPlanParser.java" afterPath="$PROJECT_DIR$/src/main/java/crisp/evaluation/ffplanparser/FfPlanParser.java" />
     </list>
     <ignored path=".idea/workspace.xml" />
     <ignored path="crisp-nlg-situated.iws" />
@@ -133,7 +130,7 @@
       <file leaf-file-name="BasicCrispGenerator.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/crisp/main/BasicCrispGenerator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="121" column="38" selection-start="4442" selection-end="4442" vertical-scroll-proportion="0.6425025">
+            <state line="117" column="17" selection-start="4268" selection-end="4268" vertical-scroll-proportion="0.5948362">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -659,7 +656,7 @@
     </option>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1920" height="1174" extended-state="0" />
+    <frame x="0" y="22" width="1920" height="1174" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -811,7 +808,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/crisp/main/BasicCrispGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="121" column="38" selection-start="4442" selection-end="4442" vertical-scroll-proportion="0.6425025">
+        <state line="117" column="17" selection-start="4268" selection-end="4268" vertical-scroll-proportion="0.5948362">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

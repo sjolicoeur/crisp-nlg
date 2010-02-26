@@ -1,11 +1,12 @@
 \section{FF Pitfalls and Fixes}
 \label{sec:crisp-ff}
 
-FF exhibits a number of problems in this domain that were previously
-unknown.  The basic observation of FF's inefficiency on these inputs
-was made before
-\cite{koller10:_exper_with_plann_for_natur_languag_gener}; here we
-examine its causes in detail. For some of the observed pitfalls, we
+%FF exhibits a number of problems in this domain that were previously
+%unknown.  
+
+The basic observation of FF's inefficiency in the NLG domain was made
+before \cite{koller10:_exper_with_plann_for_natur_languag_gener}; here
+we examine its causes in detail. For some of the observed pitfalls, we
 are able to provide simple fixes. Others pose serious challenges to
 planning research.
 
@@ -39,9 +40,9 @@ planning research.
 
 
 
-FF's preprocessor contains two details that, before this paper, were
-so detrimental that we were not able to seriously propose FF as a
-practical solution.
+%FF's preprocessor contains two details that, before this paper, were
+%so detrimental that we were not able to seriously propose FF as a
+%practical solution.
 %Simple fixes
 %to these details are so effective that FF is now a practical (if not
 %perfect) possibility.
@@ -78,8 +79,8 @@ distinguishes operators into ``easy'' (DNF precondition) and ``hard''
 procedures. The procedure for hard operators uses a data structure
 encompassing an integer for every possible instantiation of all
 predicates. Since this does not take into account reachability, it is
-prohibitively huge in our domain. Now, we actually have no hard
-operators. But FF builds the data structure anyway, which exhausts
+prohibitively huge in our domain. Now, {\em we actually have no hard
+  operators}. But FF builds the data structure anyway, which exhausts
 memory and causes a segmentation fault on serious instances.
 
 
@@ -108,11 +109,11 @@ memory and causes a segmentation fault on serious instances.
 
 
 
-FF's preprocessing pitfalls -- and the fact that they didn't occur to
-anyone before -- are certainly baffling, although easily fixed. We now
-turn our attention to some of FF's search techniques, variations of
-which are used in many planners and which are very much not easily
-fixed.
+FF's preprocessing pitfalls are certainly baffling, but easily
+fixed. We now turn our attention to some of FF's search techniques,
+variations of which are used in many planners, and which are very much
+not easily fixed. Our solution for the moment are simple configuration
+changes. %; these give much better performance but do .
 
 
 %\item Goal agenda: For some reason that I don't understand in detail,
@@ -131,10 +132,10 @@ First, we consider Koehler and Hoffmann's
 \shortcite{koehler:hoffmann:jair-00} ``reasonable goal orderings'',
 variants and extensions of which are in prominent use today, e.g.\ in
 LAMA \cite{richter:etal:aaai-08}. FF as used in the 2000 competition
-approximates reasonable orders as a pre-process and then partitions
-the goal set into a {\em goal agenda}, a sequence of goal
-subsets. Each subset is posed to the planner in isolation. The final
-plan is the concatenation of the plans for all entries.
+approximates reasonable orders as a preprocess and then partitions the
+goal set into a {\em goal agenda}, a sequence of goal subsets. Each
+subset is posed to the planner in isolation. The final plan is the
+concatenation of the plans for all entries.
 
 %EXAMPLE missing
 
@@ -194,13 +195,13 @@ could be modified so that they return more sensible results.
 
 
 In our improved FF, the goal agenda is simply switched off. Having
-disposed of goal orderings in that way, let us turn our attention to
-the relaxed plan heuristic. %
+thus disposed of goal orderings, let us turn our attention to the
+relaxed plan heuristic. %
 %While the goal agenda meltdown may be more amusing than alarming, we
 %next report that relaxed plan heuristics are not far from such a
 %meltdown either. They are fatally 
-This meets its Waterloo as well, due to the unusual lifecycle of facts
-encoding substitution nodes and distractors. 
+This meets its Waterloo in the unusual life-cycle of facts encoding
+substitution nodes and distractors.
 %In instances where these
 %constructs are important for the construction of a valid sentence,
 These facts are required to be false in the goal, and most of them are
@@ -252,12 +253,12 @@ More generally, from this example we immediately see that, in the
 terms of Hoffmann \shortcite{hoffmann:jair-05}, the exit distance from
 local minima under $h^+$ is unbounded. Also, we have unrecognized
 dead-ends, i.e., dead-end states that have a relaxed plan. An example
-is the initial state of a generation problem that it unsolvable
-because not all distractors can be removed; its $h$ value will still
-be $1$. So our domain is in the most difficult class of Hoffmann's
-\shortcite{hoffmann:jair-05} ``planning domain taxonomy''. While it
-shares this property with several other challenging domains, the
-extremity of turning EHC into a breadth-first search is unheard of.
+is the initial state of a task that it unsolvable because not all
+distractors can be removed; its $h$ value will still be $1$. So the
+domain is in the most difficult class of Hoffmann's
+\shortcite{hoffmann:jair-05} planning domain taxonomy. While it shares
+this property with several other challenging domains, turning EHC into
+a breadth-first search is unheard of.
 
 
 %Can we design heuristics that are better at dealing with the lifecycle
@@ -289,12 +290,12 @@ extremity of turning EHC into a breadth-first search is unheard of.
 %of problem remains a challenge.
 
 
-Can we design heuristics that are better at dealing with the lifecycle
+Can we design heuristics that are better at dealing with the life-cycle
 of substitution nodes and distractors? It is easy to see that the
 problem of not noticing them in the initial state is present for most
 known heuristics
 \cite{helmert:icaps-04,richter:etal:aaai-08,karpas:domshlak-ijcai-09,helmert:domshlak:icaps-09,cai:etal:icaps-09}. The
-two notable eceptions are the $h^m$ family, and abstraction
+two notable exceptions are the $h^m$ family, and abstraction
 heuristics. We ran a few tests with a variant of the example problem
 involving 10 rabbits.  The Graphplan estimate for the initial state is
 $4$, i.e., $h^2$ is better than $h^+$ here (although still far from
@@ -320,9 +321,9 @@ grammar. Certainly, interesting challenges remain.
 %NEUES-MODIFIER-SET$ ../ff -o modifiers-15-15-domain.lisp  -f modifiers-15-15-problem.lisp -T -H -N: ?? sehr lange
 
 The only FF technique that appears to be clearly useful here is its
-action pruning technique, the ``helpful actions''. While the relaxed
-plan is often much too short, it appears to always contain at least
-one of the actions that actually are useful. 
+action pruning technique. While the relaxed plan is often much too
+short, it appears to always contain at least one of the actions that
+actually are useful.
 %
 %As our experiments data
 %will show, it certainly prunes the set of available actions quite

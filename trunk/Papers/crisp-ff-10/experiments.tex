@@ -49,26 +49,30 @@ and $d=2$ means we must say ``the rich sad businessman''.
 
 
 Consider first the results for $d=0$, shown in Fig.~\ref{fig:runtimes}
-(a); the lines end where the planner exceeded its five-minute timeout.
-``Old FF'' in the figure is original FF, ``New preprocessor'' applies
+(a); the lines end where the planner exceeded its five-minute
+timeout. Notice that the vertical axis is logarithmic. Clearly, ``Old
+FF'' (the original FF) is much too slow for practical use. The same is
+true -- although to a less dramatic extent -- for LAMA, which already
+takes three seconds to generate the relatively short sentence at $n=3$
+and times out for larger instances. ``New preprocessor'' is FF with
 only our fixes to FF's preprocess, ``New FF'' applies all fixes.
 % The other two lines represent FF with the improved preprocessor,
 %using the standard enforced hillclimbing strategy and the best-first
 %search with helpful actions (``New FF'') respectively.  
-Just the preprocessor fixes lead to a speed-up of at least $3$ orders
-of magnitude, leading to practically useful runtime -- for instance,
-the 24-word sentence at $n=4$ is generated in under two seconds. Note
-that, by contrast, the search configuration does not make much of a
-difference here. This changes in our next experiment.
+Even the preprocessor fixes alone lead to a speed-up of at least $3$
+orders of magnitude, leading to practically useful runtime -- for
+instance, the 24-word sentence at $n=4$ is generated in under two
+seconds. Note that, by contrast, the search configuration does not
+make much of a difference here. This changes in our next experiment.
 
 Results for $d=2$ are shown in Fig.~\ref{fig:runtimes} (b).  Here the
 old FF preprocessor crashed with a segmentation fault even at
-$n=1$. Best-first search with helpful actions is clearly the
-best-performing search strategy here.  It takes about 14 seconds for
-$n=3$, but this sentence is already quite long at 29 words, and EHC
-takes 3.5 minutes on the same input.  Best-first search without
-helpful actions timed out at $n=3$, illustrating the importance of
-that heuristic.
+$n=1$. LAMA performs better, but times out beyond $n>2$.  Best-first
+search with helpful actions is clearly the best-performing search
+strategy here.  It takes about 14 seconds for $n=3$, but this sentence
+is already quite long at 29 words, and EHC takes 3.5 minutes on the
+same input.  Best-first search without helpful actions timed out at
+$n=3$, illustrating the importance of that heuristic.
 
 The relative behavior of the different search methods is not uniform
 in our domain, which exhibits a huge amount of structural variance due

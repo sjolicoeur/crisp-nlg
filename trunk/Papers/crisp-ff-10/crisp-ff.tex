@@ -79,9 +79,11 @@ distinguishes operators into ``easy'' (DNF precondition) and ``hard''
 procedures. The procedure for hard operators uses a data structure
 encompassing an integer for every possible instantiation of all
 predicates. Since this does not take into account reachability, it is
-prohibitively huge in our domain. Now, {\em we actually have no hard
-  operators}. But FF builds the data structure anyway, which exhausts
-memory and causes a segmentation fault on serious instances.
+prohibitively huge in our domain. Now, we actually have no hard
+operators. But FF builds the data structure anyway, which exhausts
+memory and causes a segmentation fault on serious instances. We fix
+this problem by only computing the data structure for problem
+instances that actually contain hard operators.
 
 
 

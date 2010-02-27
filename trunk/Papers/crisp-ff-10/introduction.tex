@@ -14,9 +14,9 @@ the planning problems that arise in this context. However, Koller and
 Petrick \shortcite{koller10:_exper_with_plann_for_natur_languag_gener}
 recently showed that as the planning problem instances from Koller and
 Stone \shortcite{KolSto07} scale up, off-the-shelf planners become
-slow -- indeed, {\em too slow to be practically useful in NLG
-  applications.} They showed this for SGplan and several variants of
-FF \cite{HoffmannNebel01}; we show it herein also for LAMA
+slow -- indeed, too slow to be practically useful in NLG
+applications. They showed this for SGPlan and several variants of FF
+\cite{HoffmannNebel01}; we show it herein also for LAMA
 \cite{richter:etal:aaai-08}. Koller and Petrick noted that there are
 major sources of inefficiency both in the search itself and in the
 commonly used preprocesses; they identified several features of the
@@ -27,18 +27,20 @@ diverge from most IPC benchmarks.
 
 In this paper, we revisit this situation, and analyze the sources of
 inefficiency in detail for FF. Based on the analysis, we modify FF and
-obtain {\em dramatically better performance that, for the first time,
-  makes automated planners a realistic possibility for NLG
-  applications.} To achieve this quantum leap, all that is needed are
-a few minor implementation fixes and basic reconfiguration of search
+obtain dramatically better performance that, for the first time, makes
+automated planners a realistic possibility for NLG applications. To
+achieve this quantum leap, all that is needed are a few minor
+implementation fixes and basic reconfiguration of search
 options. While these fixes certainly are no contribution to planning
-in their own right, we believe it a valuable -- and slightly
+in their own right, we consider it a valuable -- and slightly
 unsettling -- lesson learned that such banalities can make the
 difference between success and failure. They can hold up progress in
-planning applications for years (until a planning expert comes by and
-does some code profiling). We interpret this as a strong call for
-automated configuration techniques, e.g.\ along the lines of Hutter et
-al.\ \shortcite{HutHooStu07}.
+planning applications for years, unless users of a planner have direct
+access to its developer. We interpret this as illustrative of the
+importance of implementation details such as the preprocessor for the
+overall runtime, and as a strong call for automated configuration
+techniques, e.g.\ along the lines of Hutter et al.\
+\shortcite{HutHooStu07}.
 
 
 Apart from these insights, our domain remains an interesting challenge

@@ -50,20 +50,20 @@ and $d=2$ means we must say ``the rich sad businessman''.
 
 Consider first the results for $d=0$, shown in Fig.~\ref{fig:runtimes}
 (a); the lines end where the planner exceeded its five-minute
-timeout. Notice that the vertical axis is logarithmic. Clearly, ``Old
+timeout. Note that the vertical axis is logarithmic. Clearly, ``Old
 FF'' (the original FF) is much too slow for practical use. The same is
 true -- although to a less dramatic extent -- for LAMA, which already
-takes three seconds to generate the relatively short sentence at $n=3$
-and times out for larger instances. ``New preprocessor'' is FF with
-only our fixes to FF's preprocess, ``New FF'' applies all fixes.
+takes $3$ seconds to generate the relatively short sentence at $n=3$ and
+times out for larger instances. ``New preprocessor'' is FF with only
+our fixes to FF's preprocess, ``New FF'' applies all fixes.
 % The other two lines represent FF with the improved preprocessor,
 %using the standard enforced hillclimbing strategy and the best-first
 %search with helpful actions (``New FF'') respectively.  
-Even the preprocessor fixes alone lead to a speed-up of at least $3$
-orders of magnitude, leading to practically useful runtime -- for
-instance, the 24-word sentence at $n=4$ is generated in under two
-seconds. Note that, by contrast, the search configuration does not
-make much of a difference here. This changes in our next experiment.
+The preprocessor fixes alone lead to a speed-up of at least $3$ orders
+of magnitude, leading to practically useful runtime -- e.g., the
+24-word sentence at $n=4$ is generated in under two seconds. By
+contrast, the search configuration does not make much of a
+difference. This changes in our next experiment.
 
 Results for $d=2$ are shown in Fig.~\ref{fig:runtimes} (b).  Here the
 old FF preprocessor crashed with a segmentation fault even at

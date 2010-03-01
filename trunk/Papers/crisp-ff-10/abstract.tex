@@ -1,16 +1,31 @@
 \begin{abstract}
 We present a planning domain that encodes the problem of generating
 natural language sentences. This domain has a number of features that
-provoke fairly unusual behavior in existing planners. In particular,
-we show how several techniques used in the FF planner, which has been
-highly successful on IPC problems, are led astray. We discuss possible
-fixes to FF's shortcomings, some of which we have already implemented,
-but some of which pose interesting challenges to the AI Planning
-community. The performance of our modified FF is up to several orders
-of magnitude better than that of the original FF. While this makes FF
-much more practical for this application, we show that it is still
-quite limited with respect to the complexity of the underlying
-grammar.
+provoke fairly unusual behavior in planners. In particular, hitherto
+no existing automated planner was sufficiently effective to be of
+practical value in this application. We analyze in detail the reasons
+for ineffectiveness in FF, resulting in a few minor implementation
+fixes in FF's preprocessor, and in a basic reconfiguration of its
+search options. The performance of the modified FF is up to several
+orders of magnitude better than that of the original FF, and for the
+first time makes automated planners a practical possibility for this
+application. Beside thus highlighting the importance of preprocessing
+and automated configuration techniques, we show that the domain still
+poses several interesting challenges to the development of search
+heuristics.
+%In particular, we show how several techniques used in the FF planner,
+%which has been highly successful on IPC problems, are led astray. We
+%discuss possible fixes to FF's shortcomings, some of which we have
+%already implemented, but some of which pose interesting challenges to
+%the AI Planning community. The performance of our modified FF is up to
+%several orders of magnitude better than that of the original FF, and
+%for the first time makes automated planners a pratical possibility for
+%this application.
+%
+%. While this makes FF
+%much more practical for this application, we show that it is still
+%quite limited with respect to the complexity of the underlying
+%grammar.
 %We outline how other planning domains might share the
 %features that make the generation domain difficult. {\bf do we? how?}
 \end{abstract}

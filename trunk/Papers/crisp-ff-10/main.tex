@@ -11,10 +11,18 @@
 \newcommand{\todo}[1]{\textbf{(#1)}}
 \usepackage{url}
 
-\pdfinfo{
-/Title (Using Planning to Generate Natural-Language Sentences)
-/Subject (Proceedings of ICAPS, hopefully)
-/Author (Anonymous authors)}
+\special{! /pdfmark where
+{pop} {userdict /pdfmark /cleartomark load put} ifelse
+[ /Author (Alexander Koller, Joerg Hoffmann)
+/Title (Waking up a sleeping rabbit: On Natural-Language Sentence Generation with FF)
+/Keywords (AAAI, artificial intelligence)
+/DOCINFO pdfmark}
+
+
+%\pdfinfo{
+%/Title (Waking up a sleeping rabbit:\\ On Natural-Language Sentence Generation with FF)
+%/Subject (Proceedings of ICAPS, hopefully)
+%/Author (Anonymous authors)}
 
 \setcounter{secnumdepth}{0}
 

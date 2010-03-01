@@ -1,6 +1,6 @@
 %Filename: aaai.sty
 %
-\typeout{Conference Style for AAAI for LaTeX 2e -- version of 3 November 2009}
+\typeout{Conference Style for AAAI for LaTeX 2e -- version of 29 January 2010}
 % NOTICE: DO NOT MODIFY THIS FILE WITHOUT CHANGING ITS NAME. This style
 % file is called aaai.sty. Modifications to this file are permitted,
 % provided that your modified version does not include the acronym "aaai"
@@ -9,8 +9,9 @@
 % file was originally prepared by Peter F. Patel-Schneider, liberally
 % using the ideas of other style hackers, including Barbara Beeton. It was
 % modified in April 1999 by J. Scott Penberthy and George Ferguson. It was
-%  modified in 2007 by AAAI. It was modified in February 2009 by AAAI and in
-% November 2009 by Hans W. Guesgen. The original preparation of this file was supported by 
+%  modified in 2007 by AAAI. It was modified in February 2009 by AAAI, in
+% November 2009 by Hans W. Guesgen and in January 2010 by Andrew McNabb. 
+% The original preparation of this file was supported by 
 % Schlumberger Palo Alto Research, AT\&T Bell Laboratories, AAAI, and 
 % Morgan Kaufmann Publishers.
 % 
@@ -141,7 +142,7 @@ All rights reserved.}
  \hbox to 0pt\bgroup\hss \begin{tabular}[t]{c}\Large\bf}%
 \def\AND{\end{tabular}\hss\egroup \hfil\hfil\egroup
 \vskip 0.25in plus 1fil minus 0.125in
-% hg: Changed Large to normalsize on next line
+%----Changed Large to normalsize on next line
  \hbox to \linewidth\bgroup\normalsize \hfil\hfil
 \hbox to 0pt\bgroup\hss \begin{tabular}[t]{c}\Large\bf}
 \hbox to \linewidth\bgroup\normalsize \hfil\hfil
@@ -168,9 +169,9 @@ Abstract}\vspace{0.5ex}\begin{quote}\small}{\par\end{quote}\vskip 1ex}
 \setcounter{secnumdepth}{0}
 % add period to section (but not subsection) numbers, reduce space after
 \renewcommand{\thesection}
-   {\arabic{section}.\hskip-0.6em}
+   {\arabic{section}.}
 \renewcommand{\thesubsection}
-   {\arabic{section}.\arabic{subsection}\hskip-0.6em}
+   {\arabic{section}.\arabic{subsection}}
 % FOOTNOTES
 \footnotesep 6.65pt %
 \skip\footins 9pt plus 4pt minus 2pt

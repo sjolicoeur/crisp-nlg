@@ -72,14 +72,14 @@ search with helpful actions is clearly the best-performing search
 strategy here.  It takes about 14 seconds for $n=3$, but this sentence
 is already quite long at 29 words, and EHC takes 3.5 minutes on the
 same input.  Best-first search without helpful actions timed out at
-$n=3$, illustrating the importance of that heuristic.
+$n=3$, illustrating the importance of that pruning technique.
 
-The relative behavior of the different search methods is not uniform
-in our domain, which exhibits a huge amount of structural variance due
-to the many different forms that the input grammar may take. We are
-far from an exhaustive exploration of all the possible parameter
-settings. For instance, with particular inputs (no distractors), EHC
-can be more effective than best-first search.
+We remark that the relative behavior of the different search methods
+is not uniform in our domain, which exhibits a huge amount of
+structural variance due to the many different forms that the input
+grammar may take. We are far from an exhaustive exploration of all the
+possible parameter settings. For instance, with particular inputs (no
+distractors), EHC can be more effective than best-first search.
 
 %Suffice it to say that, in particular encoding variants and
 %with particular grammars (e.g.\ grammars not featuring any

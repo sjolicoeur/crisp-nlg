@@ -30,17 +30,23 @@ inefficiency in detail for FF. Based on the analysis, we modify FF and
 obtain dramatically better performance that, for the first time, makes
 automated planners a realistic possibility for NLG applications. To
 achieve this quantum leap, all that is needed are a few minor
-implementation fixes and basic reconfiguration of search
-options. While these fixes certainly are no contribution to planning
-in their own right, we consider it a valuable -- and slightly
-unsettling -- lesson learned that such banalities can make the
-difference between success and failure. They can hold up progress in
-planning applications for years, unless users of a planner have direct
-access to its developer. We interpret this as illustrative of the
-importance of implementation details such as the preprocessor for the
-overall runtime, and as a strong call for automated configuration
-techniques, e.g.\ along the lines of Hutter et al.\
-\shortcite{HutHooStu07}.
+implementation fixes in FF's preprocessor, and basic reconfiguration
+of its search options. While these changes certainly are no
+contribution to planning in their own right, we consider it a valuable
+-- and slightly unsettling -- lesson learned that such banalities can
+make the difference between success and failure. They can hold up
+progress in planning applications for years, unless users of a planner
+have direct access to its developer. We interpret this as a strong
+call for more research on automated configuration techniques,
+e.g.\ along the lines of Hutter et al.\ \shortcite{HutHooStu07}. The
+detrimental effect of preprocessing details also sheds a light on the
+importance of this often neglected part of the planning process.
+
+%illustrative of the
+%importance of implementation details such as the preprocessor for the
+%overall runtime, and as a strong call for automated configuration
+%techniques, e.g.\ along the lines of Hutter et
+%al.\ \shortcite{HutHooStu07}.
 
 
 Apart from these insights, our domain remains an interesting challenge

@@ -5,7 +5,7 @@ Following {\sc spud} \cite{stonedoran1997}, {\sc crisp} is based on a declarativ
 \begin{figure*}[th]
 \begin{center}
 \includegraphics[width=.8\textwidth]{figures/grammar.pdf}
-\caption{\label{fig:grammar}(a) An example grammar with semantic content. (b) A derivation for ``the cat eats raw tuna''. }
+\caption{\label{fig:grammar}(a) An example grammar with semantic content. (b) A derivation for ``the cat eats the raw fish''. }
 \end{center}
 \end{figure*}
 
@@ -13,7 +13,7 @@ Following {\sc spud} \cite{stonedoran1997}, {\sc crisp} is based on a declarativ
 Like {\sc spud}, {\sc crisp} uses an {\sc ltag} in which elementary trees are assigned semantic content. Each node in a {\sc crisp} elementary tree node is associated with a semantic role. Semantic content is expressed as a set of literals, encoding relations between these roles. All nodes that dominate the lexical anchor are assigned the role `self', which intuitively corresponds to the event or individual described by this tree. Figure \ref{fig:grammar}(a) shows an example grammar of this type. 
 
 In a derivation we may only include elementary trees whose semantic content has an instantiation in the knowledge base. For each substitution and adjunction, the semantic role associated with the role of the target node is unified with the `self' role of the child tree. For example, given the knowledge base 
-{\it \{cat($i_2$), tuna($i_3$), raw($i_3$), eats($i_1$,$i_2$,$i_3$)\}} and the grammar in \ref{fig:grammar}(a), {\sc crisp} could produce the derivation in \ref{fig:grammar}(b).
+{\it \{cat($i_2$), fish($i_3$), raw($i_3$), eats($i_1$,$i_2$,$i_3$)\}} and the grammar in \ref{fig:grammar}(a), {\sc crisp} could produce the derivation in \ref{fig:grammar}(b).
 
 
 \subsection{CRISP Planning Domains} 
@@ -44,7 +44,7 @@ $\lnot$ step(step4), step(step5)}\\\smallskip
 
 
 Figure \ref{fig:crisp-operators} shows planning operators for part of the grammar in figure \ref{fig:grammar}(a).
-The preconditions of the operators require that a suitable open substitution node (i.e. of the correct category) or internal node for adjunction exists in the partial derivation. In the operator effect, open substitution nodes are closed and new identifiers are created for each substitution node and internal node in the new tree. Given the knowlede base from above, a plan corresponding to the derivation in figure \ref{fig:grammar} would be $\langle${\it S-eats-1(root, i1, i2, i3), NP-cat-2(subj-1, i2), NP-tuna-3(obj-1, i3), N-raw-4(obj-1, i3)}$\rangle$
+The preconditions of the operators require that a suitable open substitution node (i.e. of the correct category) or internal node for adjunction exists in the partial derivation. In the operator effect, open substitution nodes are closed and new identifiers are created for each substitution node and internal node in the new tree. Given the knowlede base from above, a plan corresponding to the derivation in figure \ref{fig:grammar} would be $\langle${\it S-eats-1(root, i1, i2, i3), NP-cat-2(subj-1, i2), NP-fish-3(obj-1, i3), N-raw-4(obj-1, i3)}$\rangle$
 
 \subsection{CRISP and Large Grammars}
 Trees in large, possibly treebank induced grammars are often applicable in a number of different syntactic contexts, leading to overgeneration. Such trees contain many internal nodes that are open for adjunction but will not necessarily be filled in a derivation for a given input communicative goal. Attaching to the wrong node can produce invalid or disprefered word order. 

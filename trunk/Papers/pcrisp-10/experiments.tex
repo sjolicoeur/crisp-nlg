@@ -1,11 +1,13 @@
 \section{Experiments}
 \label{sec:experiments}
-In this section we perform experiments with the statistical generation system described in the previous section.  We are interested in the output quality and runtime behavior of different combinations of planning systems and probability models. We can assume that the sentence planning abilities are inherited from {\sc crisp} and only evaluate the realization abilities of our system by comparing generated sentences against a gold standard testset. The next section describes our evaluation data and section \ref{ssec:eval-measures} describes the evaluation measures used. 
+In this section we perform experiments with the statistical generation system described in the previous section.  We are interested in the output quality and runtime behavior of different combinations of planning systems and probability models. Like {\sc crisp}, {\sc pcrisp} is a sentence generation system and can for instance generate refering expressions. Unfortunately, since we do not have an evaluation dataset for full sentence generation, we only evaluate the realization abilities of our system by comparing generated sentences against a gold standard testset. The next section describes our evaluation data and section \ref{ssec:eval-measures} describes the evaluation measures used. 
 
 \subsection{Evaluation Data}
 
-For our experiments we use a grammar and treebank, that was automatically extracted from the Wall Street Journal portion of the Penn Treebank (41576 sentences)
-using the algorithm described by \newcite{chenschanker2004}.  We preprocess this grammar by linearizing multiple adjunctions and by re-attaching prepositions to trees they appear with. 
+For our experiments we use a grammar and treebank that was automatically extracted from the Wall Street Journal using the algorithm described by \newcite{chenschanker2004}.   
+
+This algorithm outputs a grammar that allows multiple adjunctions at the same node. For such a grammar {\sc ptag} is not a suitable probability model. Models that can deal with multiple adjunction are discussed by \newcite{nasrrambow2006}, but employing them would require non-trivial modifications to our encoding as a metric planning problem. We therefore preprocess the treebank by `linearizing' multiple adjunctions. Furthermore, we attach prepositions to the trees they substitute in, to increase the expressiveness of the bilexical probability distribution. For details on these preprocessing steps see \cite{bauer2009}.
+
 
 %{\bf Adding semantics to elementary trees:}
 We then automatically create semantic content for all lexicalized elementary trees by assigning a single semantic predicate to each tree in the treebank, using the lexical anchor as a name and setting the arity to the number of substitution nodes in the tree plus one for the `self' role.  We calculate the role associated with each node in each tree by assigning role-names to each substitution node (`self' is assigned to the lexical anchor) and then percolating the roles up the tree, giving preference to the self role.  

@@ -1,0 +1,10 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+We describe an approach to sentence generation based on probabilistic tree adjoining
+grammar and AI planning. Following previous work by \newcite{stonedoran1997,kollerstone2007}, we treat sentence 
+generation as an integrated task comprising sentence planning and surface realization using declarative descriptions of the syntactic
+and semantic contribution of each word and contextual constraints on its use. Our system uses AI planning technology to find the best {\sc tag} 
+derivation that fulfills a given communicative goal, while satisfying these constraints. 
+Our experiments show that our generation system based on {\sc pltag} and planning makes it possible to use an integrated approach to sentence generation with treebank induced grammars for the first time. The results also highlight the trade-off between output quality, efficiency and robustness. Future work work should optimize the smoothing model to boost output quality. Improved and/or tailored heuristics could help to improve runtime behavior. Finally it would be interesting to evaluate the system in an extrinsic way that also addresses sentence planning. 
+

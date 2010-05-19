@@ -1,0 +1,12 @@
+\section{Introduction}
+Traditional sentence generation systems adopt a pipeline architecture that includes sentence planning and surface realization as two independent modules \cite{reiterdale2000}.  A different view is advocated by \newcite{stonedoran1997}. Their sentence generation system {\sc spud} allows a combined treatment of sentence planning and surface realization.
+{\sc spud} exploits {\sc ltag}'s localization of argument structure and uses a top-down construction algorithm to incrementally builds both syntactic and flat semantic structure that satisfies the communicative goal and is consistent with semantic and pragmatic constraints. 
+This unified approach to sentence generation is attractive because it tackles different phenomena in generation in an elegant way using a unified, linguistically well motivated framework.
+
+While {\sc spud} uses an incomplete heuristic greedy search, to solve the {\sc NP-}complete problem of finding such a derivation \cite{kollerstriegnitz2002}, \newcite{kollerstone2007} present an encoding of this problem into an AI planning problem.
+
+We expect that using larger grammars with this approach leads to problems in both performance and output quality, due to over-generation. 
+Our work approaches this problem by combining integrated sentence generation as planning (following \newcite{kollerstone2007}), numeric AI planning and a probability model ({\sc pltag}, \newcite{resnik1992}).
+
+{\bf Structure of the paper:}
+In section \ref{sec:related} we discuss related work. Section \ref{sec:crisp} reviews the original generation as planning approach ({\sc crisp}) suggested by \newcite{kollerstone2007}. We describe our statistical extension of this approach ({\sc pcrisp}) in section \ref{sec:pcrisp} and evaluate our new system in section \ref{sec:experiments}. Finally we conclude this paper in section \ref{sec:conclusion}.  

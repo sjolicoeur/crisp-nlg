@@ -1,0 +1,78 @@
+%
+% File naaclhlt2010.tex
+%
+% Contact: nasmith@cs.cmu.edu
+
+\documentclass[11pt,letterpaper]{article}
+\usepackage{naaclhlt2010}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\setlength\titlebox{6.5cm}    % Expanding the titlebox
+
+\newlength{\rhwidth}
+\newcommand{\planaction}[3]{
+\begin{minipage}{.5\textwidth}
+\footnotesize
+\setlength{\rhwidth}{.5\textwidth}
+\addtolength{\rhwidth}{2.0cm}
+{#1:}
+
+\noindent \hspace{.2cm} \begin{minipage}{1.5cm}{Precond:}\end{minipage}\begin{minipage}[t]{\rhwidth} #2 \end{minipage}
+
+\noindent \hspace{.2cm} \begin{minipage}{1.5cm}{Effect:}\end{minipage} \begin{minipage}[t]{\rhwidth}\ #3 \end{minipage}
+\end{minipage}
+}
+
+\newcommand{\cplanaction}[4]{
+\begin{minipage}{.5\textwidth}
+\setlength{\rhwidth}{.5\textwidth}
+\addtolength{\rhwidth}{2.0cm}
+{#1:}
+
+\noindent \hspace{.2cm} \begin{minipage}{1.5cm}{Precond:}\end{minipage}\begin{minipage}[t]{\rhwidth} #2 \end{minipage}
+
+\noindent \hspace{.2cm} \begin{minipage}{1.5cm}{Effect:}\end{minipage} \begin{minipage}[t]{\rhwidth} #3 \end{minipage}
+
+\noindent \hspace{.2cm} \begin{minipage}{1.5cm}{Cost:}\end{minipage} \begin{minipage}[t]{\rhwidth} \ensuremath{#4} \end{minipage}
+\end{minipage}
+}
+
+
+
+\title{Sentence Generation as Planning with Probabilistic LTAG\\
+%\Thanks{}
+}
+
+\author{Daniel Bauer\\
+  Columbia University\\
+  New York, NY, USA\\
+  {\tt bauer@cs.columbia.edu} 
+  \And
+  Alexander Koller\\
+  Saarland University\\
+  Saarbr\"{u}cken, Germany\\ 
+  {\tt koller@mmci.uni-saarland.de}}
+
+\date{}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Our work merges combined sentence planning and surface realization using 
+{\sc ltag} and statistical generation. This makes it possible to address
+integrated sentence generation with large, treebank induced grammars for
+the first time.
+\end{abstract}
+
+\input{introduction}
+\input{related} % Related work
+\input{crisp} % Sentence Generation as Planning
+\input{pcrisp} % Statistical Generation as Planning
+\input{experiments} % Experiments
+\input{conclusion}
+
+\bibliographystyle{naaclhlt2010}
+\bibliography{literature}
+
+\end{document}

@@ -1,0 +1,76 @@
+\section{Experiments}
+\label{sec:experiments}
+In this section we perform experiments with the statistical generation system described in the previous section.  We are interested in the output quality and runtime behavior of different combinations of planning systems and probability models. We can assume that the sentence planning abilities are inherited from {\sc crisp} and only evaluate the realization abilities of our system by comparing generated sentences against a gold standard testset. The next section describes our evaluation data and section \ref{ssec:eval-measures} describes the evaluation measures used. 
+
+\subsection{Evaluation Data}
+
+For our experiments we use a grammar and treebank, that was automatically extracted from the Wall Street Journal portion of the Penn Treebank (41576 sentences)
+using the algorithm described by \newcite{chenschanker2004}.  We preprocess this grammar by linearizing multiple adjunctions and by re-attaching prepositions to trees they appear with. 
+
+%{\bf Adding semantics to elementary trees:}
+We then automatically create semantic content for all lexicalized elementary trees by assigning a single semantic predicate to each tree in the treebank, using the lexical anchor as a name and setting the arity to the number of substitution nodes in the tree plus one for the `self' role.  We calculate the role associated with each node in each tree by assigning role-names to each substitution node (`self' is assigned to the lexical anchor) and then percolating the roles up the tree, giving preference to the self role.  
+
+We estimate our probability models on a training portion of the dataset (96\%) using maximum likelihood estimation.
+For the testing set we selected from the remaining 4\% all sentences that were shorter than 16 words (416 sentences). For longer sentences the search time often exceeded 5 minutes. 
+
+%{\bf Creating realization problems:} 
+For this testing set we compute semantic representation for each sentence, by traversing its derivation tree top-down and collects a conjunction of terms, by instantiating the automatically created semantic representations. Our algorithm introduces a new individual for each substitution node marked with role $r$ and equates it to the `self' role of any tree that adjoins or substitutes into a node marked with $r$. 
+
+\subsection{Evaluation Measures}
+\label{ssec:eval-measures}
+To evaluate the ouput quality of our statistical generation system we compare the system output against the reference sentences in the treebank, from which the input representations were generated. We adopt the {\bf generation tree accuracy} measure discussed by \cite{bangalorerambowwhittaker2001}.
+This measure is computed by first creating a list of all 'treelets' from the reference derivation tree. A 'treelet' is a subtree, consisting only of a node and its direct children. For each treelet we calculate edit distance, sum the distances over all treelets and then divide by the total length of the reference string.
+$$1 - \frac{\sum\limits_{d \in treelets(D)} editDist(O|_d, R|_d)}{\textit{length}(R)},$$
+where $D$ is the reference derivation tree and $S|_d$ are the tokens associated with the nodes of treelet $d$ in the order they appear in $S$ (if at all). 
+Edit distance is modified to treat insertion-deletion pairs as single movement errors. 
+This metric account for the observation that errors that change word order on a local level (i.e. within a treelet) are less severe than errors that swap words between different treelets. Intuitively errors of the latter type violate the continuity of sub-phrases. Because of this property we prefer generation tree accuracy over {\sc blue}, which is overly sensitive to movement errors on an individual sentence level.
+
+%\newcite{belzreiter2006} empirically investigate the usefulness of {\sc bleu} and {\sc nist} for evaluating NLG systems. They find that both metrics correlate with human judgements of output quality on a corpus level, but require a large number of different references sentences to be reliable. Multiple references are necessary because {\sc blue} favors sentences with the same word order as the reference. In NLG, more than in Machine Translation, word order of output sentences can vary.
+
+%{\it String Accuracy} is defined as 
+%$$1 - \frac{\textit{editDist(O,R)}}{\textit{length}(R)},$$ where $O$ is the surface system output, $R$ is the reference sentence and $editDist(A,B)$ is the minimal edit distance between the token strings $A$ and $B$ defined as the minimal number of substitutions, insertions and deletions needed to transform $A$ into $B$.
+
+%Like {\sc bleu}, string accuracy often underestimates generation performance if the system output differs from the reference only in word order. 
+%For example if a word occurs in the beginning of the string instead of the end, blocked by a number of correct words, edit distance will count two errors, one for removing the word in the beginning and one for adding it in the end. In this case it would be more reasonable to count a single movement error.
+%The revised {\it generation string accuracy} does this in a post-processing step: Each insertion-deletion pair sharing the same token, but in different places is counted as a single movement error. 
+%\newcite{bangalorerambowwhittaker2001}  refine these string based measures by referring to structural information from the reference derivation tree. 
+
+%Tree accuracy measure only the quality of the surface string. To compare the syntactic structure of the output with the reference we propose {\it derivation tree accuracy}, the ratio of derivation-treelets (nodes with their direct children in their specific order) that occurs in both the system output derivation and the reference derivation. 
+%$$ \frac{|treelets(D_O) \cap treelets(D_R)|}{\textit{length}(D_R)}$$
+% Notice that measures used in statistical parsing, e.g. bracketing and labelling accuracy, cannot be used to evaluate generation output because they can only measure similarity between two different syntactic structures for the same surface string.
+
+
+\subsection{Results}
+Table \ref{results} presents our results.
+The planning systems we used was a reimplementation of {\sc FF} \cite{hoffmannnebel2001}, a heuristic search planner. We extended this planner to take action costs into account when it calculates heuristic values for successor states. We also experimented with the greedy search heuristic used by {\sc spud} \cite{stonedoran1997}. 
+
+The first two columns confirm our hypothesis that {\sc crisp} does not scale up to the automatically induced treebank. The greedy {\sc spud} heuristic does not generate a single correct sentence, as the combinatorics of the planning domain becomes too large with the treebank induced grammar. 
+With the standard {\sc pltag} definition our system manages to generate only very few sentences due to data sparseness. However these sentences are almost identical to the ones found in the test set. Both generalized models ease the data sparseness problem, but output quality drops rapidly. For the unlexicalized model the search problem becomes very hard due to the large planning domain, so that 22\% of the generation problems require more than 5 minutes runtime. As expected the smoothed model offers a compromise between efficiency, output quality and coverage 
+\footnote{In our experiments we set the weight between level 1 and 2 to 0.9 and did not consider level 3, after empirically testing different settings. We set a probability threshold to include operators into the planning domain to $10^{-4}$}.
+
+\begin{table}
+    \caption{\label{results} Evaluation results.}
+    \begin{center}
+    \begin{tabular}{|l|l|r|r|r|}
+    \multicolumn{5}{c}{\sc crisp}\\ 
+    \hline
+     {\bf Planner }  & {\bf acc}& {\bf success} & {\bf fail} & {\bf timeout} \\ \hline 
+     greedy         & ??? & 0\% & 100\% & 0\%  \\ \hline 
+     FF         &  0.66 & 88\% & 0\% & 12\% \\ \hline 
+    \multicolumn{5}{c}{\bf planning with {\sc pltag}}\\\hline
+    {\bf Planner }  & {\bf acc}& {\bf success} & {\bf fail} & {\bf timeout} \\ \hline 
+     FF + costs &  0.99 &  97\% & 0\% & 3\% \\ \hline
+     FF         &  0.99 & 71\% & 0\% &  29\% \\ \hline
+    \multicolumn{5}{c}{\bf planning with {\sc pltag} (unlexicalized)}\\\hline
+    {\bf Planner }  & {\bf acc}& {\bf success} & {\bf fail} & {\bf timeout} \\ \hline 
+     FF + costs & 0.74 & 62\% & 16\% & 22\%\\ \hline
+     FF & 0.76 & 62\% & 16\% &  22\%\\ \hline
+    \multicolumn{5}{c}{\bf planning with {\sc pltag} (smoothed)}\\\hline
+    {\bf Planner }  & {\bf acc}& {\bf success} & {\bf fail} & {\bf timeout} \\ \hline 
+     FF + costs & 0.78 & 19\% & 74\% & 7\% \\ \hline
+     FF & 0.77 & 19\% & 74\% & 7\% \\ \hline
+    \end{tabular}
+    \end{center}
+\end{table}
+
+

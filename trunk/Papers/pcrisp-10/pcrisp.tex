@@ -30,8 +30,8 @@ $$\sum\limits_{\alpha \in I}\sum\limits_{w \in W_\alpha} P_{subst}(\subst(\tau,v
 
 Similarly for each internal node there is a distribution that describes the probability to adjoin each auxiliary tree $\beta$ lexicalized with $w$. In addition some probability mass is reserved for the event of not adjoining anything to such a node at all.
 
-$$ P_{adj}(\adj(\tau, lex_\tau, \textit{None},n)) +$$
-$$ \sum\limits_{\beta \in A}\sum\limits_{w_\beta} P_{adj}(\adj(\tau, w, \tau, v, n)) = 1.$$
+$$ P_{adj}(\adj(\tau, v, \textit{None}, n)) +$$
+$$ \sum\limits_{\beta \in A}\sum\limits_{w_\beta} P_{adj}(\adj(\tau, v, \beta, w, n)) = 1.$$
 
 {\sc Ptag} assumes that all events occur independent of each other. Therefore it defines the total probability for a derivation as the product of the probability of its individual events. 
 

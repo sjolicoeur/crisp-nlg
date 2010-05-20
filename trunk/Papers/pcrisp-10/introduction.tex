@@ -1,12 +1,55 @@
 \section{Introduction}
-Traditional sentence generation systems adopt a pipeline architecture that includes sentence planning and surface realization as two independent modules \cite{reiterdale2000}.  A different view is advocated by \newcite{stonedoran1997}. Their sentence generation system {\sc spud} allows a combined treatment of sentence planning and surface realization.
-{\sc spud} exploits {\sc ltag}'s localization of argument structure and uses a top-down construction algorithm to incrementally builds both syntactic and flat semantic structure that satisfies the communicative goal and is consistent with semantic and pragmatic constraints. 
-This unified approach to sentence generation is attractive because it tackles different phenomena in generation in an elegant way using a unified, linguistically well motivated framework.
 
-While {\sc spud} uses an incomplete heuristic greedy search, to solve the {\sc NP-}complete problem of finding such a derivation \cite{kollerstriegnitz2002}, \newcite{kollerstone2007} present an encoding of this problem into an AI planning problem.
+Sentence generation systems are typically organized in a pipeline
+architecture, in which the semantic input representation is first
+enriched by such things as referring expressions by a \emph{sentence
+  planner} and only then transformed into natural language strings by
+a \emph{surface realizer} \cite{reiterdale2000}.  An alternative
+approach is \emph{integrated} sentence generation, in which both steps
+are performed by the same algorithm, as in the SPUD system
+\cite{Stone2003a}.  An integrated algorithm can sometimes generate
+better and more succinct sentences \cite{stone98textual}.  SPUD itself
+gives up some of this advantage by using a greedy search heuristic
+for efficiency reasons.  The CRISP system, a recent reimplementation
+of SPUD using search techniques from AI planning, achieves high
+efficiency without sacrificing complete search
+\cite{kollerstone2007,KolHof10}.
 
-We expect that using larger grammars with this approach leads to problems in both performance and output quality, due to over-generation. 
-Our work approaches this problem by combining integrated sentence generation as planning (following \newcite{kollerstone2007}), numeric AI planning and a probability model ({\sc pltag}, \newcite{resnik1992}).
+While CRISP is efficient enough to perform well on large-scale
+grammars \cite{kollerpetrick2009}, such grammars tend to offer many
+different ways to express them same semantic representation.  This
+makes it necessary for the generation system to be able to compute not
+just grammatical sentences, but to identify which of these sentences
+are the \emph{best}. This problem is exacerbated when using
+treebank-derived grammars, which tend to underspecify the actual
+constraints on grammaticality and instead rely on statistical
+information learned from the treebank.  Indeed, there have been a
+number of systems for statistical generation, which can exploit such
+information to rank sentences appropriately
+\cite{langkildeknight1998,whitebaldridge2003,belz2008}.  However,
+these systems are restricted to performing surface realization.
 
-{\bf Structure of the paper:}
-In section \ref{sec:related} we discuss related work. Section \ref{sec:crisp} reviews the original generation as planning approach ({\sc crisp}) suggested by \newcite{kollerstone2007}. We describe our statistical extension of this approach ({\sc pcrisp}) in section \ref{sec:pcrisp} and evaluate our new system in section \ref{sec:experiments}. Finally we conclude this paper in section \ref{sec:conclusion}.  
+In this paper, we bring these two strands of research together for the
+first time.  We present the PCRISP system, which redefines the SPUD
+generation problem in terms of probabilistic TAG grammars (PTAG,
+\cite{resnik1992}) and then extends CRISP to solving the probabilistic
+SPUD generation problem using metric planning \cite{hoffmann2003}.  We
+evaluate PCRISP on a PTAG treebank extracted from the Wall Street
+Journal Corpus \cite{chenschanker2004}.  While the evaluation results
+are not competitive in terms of efficiency and suffer from data
+sparseness problems, we still believe our system is a first step
+towards probabilistic integrated generation.
+
+\paragraph{Plan of the paper.} We start by putting our research in the
+context of related work in Section~\ref{sec:related} and reviewing
+CRISP in Section~\ref{sec:crisp}.  We then describe PCRISP, our
+probabilistic extension of CRISP, in Section~\ref{sec:pcrisp} and
+evaluate it in Section~\ref{sec:experiments}. We conclude in
+Section~\ref{sec:conclusion}. 
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "pcrisp-10"
+%%% End: 

@@ -1,11 +1,11 @@
 \section{Statistical Generation as Planning}
 \label{sec:pcrisp}
 
-We now extend {\sc crisp} to statistical generation ({\sc pcrisp}). The basic idea is to add a statistical grammar model while leaving the sentence generation mechanism untouched. This way we can select the highest scoring derivation, that satisfies all constraints (grammaticality, expresses the communicative goal, use unambiguous refering expressions etc.). 
+We now extend {\sc crisp} to statistical generation ({\sc pcrisp}). The basic idea is to add a statistical grammar model while leaving the sentence generation mechanism untouched. This way we can select the highest scoring derivation, that satisfies all constraints (grammaticality, expresses the communicative goal, use unambiguous referring expressions etc.). 
 
  As a straightforward probability model over {\sc ltag} derivations we choose probabilistic {\sc tag} ({\sc ptag}) \cite{resnik1992}.
 Our choice of {\sc ptag} for sentence generation is motivated by a number of attractive properties.
- {\sc Ptag} is lexicalized and therefore does not only assign probabilities to operations in the grammar (as for example plain {\sc pcfg}), but also accounts for binary dependencies between words.  Unlike n-gram models however, these co-occurences are structured according to local syntactic context as a result of {\sc tag}'s extended domain of locality. The probability model describes how the syntactic arguments of a word are typically filled. 
+ {\sc Ptag} is lexicalized and therefore does not only assign probabilities to operations in the grammar (as for example plain {\sc pcfg}), but also accounts for binary dependencies between words.  Unlike n-gram models however, these co-occurrences are structured according to local syntactic context as a result of {\sc tag}'s extended domain of locality. The probability model describes how the syntactic arguments of a word are typically filled. 
 Furthermore, as {\sc tag} factors recursion from the domain of dependencies, the probability for core constructions remains the same independent of additional adjunctions. 
 %Second, {\sc ptag} is a generative model. This is crucial because it allows us to assign probabilities to partial derivations. In addition we use the probability of partial derivations as a cost function, to help guide search through the space of possible PLTAG derivations. In contrast, other statistical generation systems use discriminative models that select the best possible generation output from a set of candidate sentences.
 %Finally, the independence assumption makes it easy to estimate {\sc ptag}s from a treebank.
@@ -43,14 +43,14 @@ Figure \ref{example-action} shows an example planning operator for each type.
 \begin{figure}[t]
 \begin{center}
 \cplanaction{\bf subst-t3-cat-t28-eats-n1(u,~x1)}{referent(u,~x1),\\ subst(t28-eats,~n1,~u), cat(x1)}{
-$\lnot$needtoexpress(pred-cat,~x1),\\ $\lnot$subst(t-28-eats, n1,~u),\\
+$\lnot$needtoexpr(pred-cat,~x1),\\ $\lnot$subst(t-28-eats, n1,~u),\\
 adj(t3-cat, n2 u)}{4.3012}\\\smallskip
 
 \cplanaction{\bf adj-t5-raw-t3-fish-n2(u,~x1)}{referent(u,~x1),\\ adj(t28-eats,n2,~u), raw(x1)}{
-$\lnot$needtoexpress(pred-raw,~x1),\\ $\lnot$adj(t-28-eats, n2,~u)}{6.9076}\\\smallskip
+$\lnot$needtoexpr(pred-raw,~x1),\\ $\lnot$adj(t-28-eats, n2,~u)}{6.9076}\\\smallskip
 
 \cplanaction{\bf init-t28-eats(u,~x1,~x2,~x3)}{referent(u,~x1),\\ eats(x1,~x2,~x3)}{
-$\lnot$needtoexpress(pred-eats,~x1,~x2,~x3), \\
+$\lnot$needtoexpr(pred-eats,~x1,~x2,~x3), \\
  subst(t-28-eats,~n1,subj), subst(t28-eats,~n4,obj),\\
 adj(t-28-eats, n2, u), adj(t-28-eats, n3, u)}{8.5172}\\\smallskip
 
@@ -70,8 +70,8 @@ $$ -\log( P(\subst(t_3,\textit{`cat'},t_{28},\textit{`eats"},n_2)) ). $$ This wa
 %To alleviate data sparseness, caused by the specific event definition of {\sc ptag}, we propose two alternative probability models. The first model is an unlexicalized version of {\sc ptag}, the second model uses a simple smoothing approach.\\ 
 The probability event definition of {\sc ptag} is very fine grained. Substitution and adjunction events depend on specific parent and child trees with specific lexicalizations and on a node in the parent tree, as illustrated in figure \ref{fig:modelillustration}, B.1. When we estimate a probability model from training data, we cannot expect to observe evidence for all combinations of trees. Derivations that include such unseen events, have zero probability and are therefore impossible. As we show in section \ref{sec:experiments}, this gives rise to a massive data sparseness problem.
 
-  A straightforward way to deal with data sparseness is to drop all lexicalization from event definitions, as illustrated in figure \ref{fig:modelillustration}, A. Unfortunately this model does no longer account for bilexical dependencies between words. Since our system has to add a lexicalized tree in each step, lexicalization for this child tree should always be taken into account by the probability model, if available. Despite these drawbacks, we perform experiments with the unlexicalized model as a baseline. This allows us to investigate if purely syntactic information is sufficient to achieve high quality generation output. \\  
-An alternative model computes linear interpolation between three back-off levels. The first level is just standard {\sc ptag} (figure \ref{fig:modelillustration}, B.1), for the second level the lexicalization of the parent tree is dropped (figure \ref{fig:modelillustration}, B.2), for the third level the model describes only the distribution of lexicalized child trees over each category (figure \ref{fig:modelillustration}, B.3).  
+  A straightforward way to deal with data sparseness is to drop all lexicalizations from event definitions, as illustrated in figure \ref{fig:modelillustration}, A. Unfortunately this model does no longer account for bilexical dependencies between words. Since our system has to add a lexicalized tree in each step, lexicalizations for this child tree should always be taken into account by the probability model, if available. Despite these drawbacks, we perform experiments with the unlexicalized model as a baseline. This allows us to investigate if purely syntactic information is sufficient to achieve high quality generation output. \\  
+An alternative model computes linear interpolation between three back-off levels. The first level is just standard {\sc ptag} (figure \ref{fig:modelillustration}, B.1), for the second level the lexicalizations of the parent tree is dropped (figure \ref{fig:modelillustration}, B.2), for the third level the model describes only the distribution of lexicalized child trees over each category (figure \ref{fig:modelillustration}, B.3).  
 Notice also, that the third level is similar in spirit to a probabilistic version of original {\sc crisp} operators (compare figure \ref{fig:modelillustration}, B.3 and figure \ref{fig:crisp-operators}. 
 \begin{figure}[t]
 \begin{center}

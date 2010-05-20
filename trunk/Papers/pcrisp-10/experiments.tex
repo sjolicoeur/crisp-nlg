@@ -3,11 +3,9 @@
 In this section we perform experiments with the statistical generation system described in the previous section.  We are interested in the output quality and runtime behavior of different combinations of planning systems and probability models. Like {\sc crisp}, {\sc pcrisp} is a sentence generation system and can for instance generate refering expressions. Unfortunately, since we do not have an evaluation dataset for full sentence generation, we only evaluate the realization abilities of our system by comparing generated sentences against a gold standard testset. The next section describes our evaluation data and section \ref{ssec:eval-measures} describes the evaluation measures used. 
 
 \subsection{Evaluation Data}
-
 For our experiments we use a grammar and treebank that was automatically extracted from the Wall Street Journal using the algorithm described by \newcite{chenschanker2004}.   
 
 This algorithm outputs a grammar that allows multiple adjunctions at the same node. For such a grammar {\sc ptag} is not a suitable probability model. Models that can deal with multiple adjunction are discussed by \newcite{nasrrambow2006}, but employing them would require non-trivial modifications to our encoding as a metric planning problem. We therefore preprocess the treebank by `linearizing' multiple adjunctions. Furthermore, we attach prepositions to the trees they substitute in, to increase the expressiveness of the bilexical probability distribution. For details on these preprocessing steps see \cite{bauer2009}.
-
 
 %{\bf Adding semantics to elementary trees:}
 We then automatically create semantic content for all lexicalized elementary trees by assigning a single semantic predicate to each tree in the treebank, using the lexical anchor as a name and setting the arity to the number of substitution nodes in the tree plus one for the `self' role.  We calculate the role associated with each node in each tree by assigning role-names to each substitution node (`self' is assigned to the lexical anchor) and then percolating the roles up the tree, giving preference to the self role.  
@@ -20,8 +18,8 @@ For this testing set we compute semantic representation for each sentence, by tr
 
 \subsection{Evaluation Measures}
 \label{ssec:eval-measures}
-To evaluate the ouput quality of our statistical generation system we compare the system output against the reference sentences in the treebank, from which the input representations were generated. We adopt the {\bf generation tree accuracy} measure discussed by \cite{bangalorerambowwhittaker2001}.
-This measure is computed by first creating a list of all 'treelets' from the reference derivation tree. A 'treelet' is a subtree, consisting only of a node and its direct children. For each treelet we calculate edit distance, sum the distances over all treelets and then divide by the total length of the reference string.
+To evaluate the ouput quality of our statistical generation system we compare the system output $O$ against the reference sentence $R$in the treebank, from which the input representation was generated. We adopt the {\bf generation tree accuracy} measure discussed by \cite{bangalorerambowwhittaker2001}.
+This measure is computed by first creating a list of all 'treelets' from the reference derivation tree $D$. A 'treelet' is a subtree, consisting only of a node and its direct children. For each treelet we calculate edit distance, sum the distances over all treelets and then divide by the total length of the reference string.
 $$1 - \frac{\sum\limits_{d \in treelets(D)} editDist(O|_d, R|_d)}{\textit{length}(R)},$$
 where $D$ is the reference derivation tree and $S|_d$ are the tokens associated with the nodes of treelet $d$ in the order they appear in $S$ (if at all). 
 Edit distance is modified to treat insertion-deletion pairs as single movement errors. 
@@ -41,10 +39,11 @@ This metric account for the observation that errors that change word order on a 
 %$$ \frac{|treelets(D_O) \cap treelets(D_R)|}{\textit{length}(D_R)}$$
 % Notice that measures used in statistical parsing, e.g. bracketing and labelling accuracy, cannot be used to evaluate generation output because they can only measure similarity between two different syntactic structures for the same surface string.
 
+\subsection{Planning Systems}
+The planning system we used was a reimplementation of {\sc FF} \cite{hoffmannnebel2001}, a heuristic search planner. We extended this planner to take action costs into account when it calculates heuristic values for successor states. We also experimented with the greedy search heuristic used by {\sc spud} \cite{stonedoran1997}. 
 
 \subsection{Results}
 Table \ref{results} presents our results.
-The planning systems we used was a reimplementation of {\sc FF} \cite{hoffmannnebel2001}, a heuristic search planner. We extended this planner to take action costs into account when it calculates heuristic values for successor states. We also experimented with the greedy search heuristic used by {\sc spud} \cite{stonedoran1997}. 
 
 The first two columns confirm our hypothesis that {\sc crisp} does not scale up to the automatically induced treebank. The greedy {\sc spud} heuristic does not generate a single correct sentence, as the combinatorics of the planning domain becomes too large with the treebank induced grammar. 
 With the standard {\sc pltag} definition our system manages to generate only very few sentences due to data sparseness. However these sentences are almost identical to the ones found in the test set. Both generalized models ease the data sparseness problem, but output quality drops rapidly. For the unlexicalized model the search problem becomes very hard due to the large planning domain, so that 22\% of the generation problems require more than 5 minutes runtime. As expected the smoothed model offers a compromise between efficiency, output quality and coverage 

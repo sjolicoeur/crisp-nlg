@@ -28,16 +28,16 @@ In {\sc crisp} planning states correspond to partial {\sc tag} derivations and r
 \begin{center}
 \planaction{\bf subst-t28-eats-S(u,~x1,~x2,~x3)}{referent(u,~x1),\\ subst(S,~u), eats(x1,~x2,~x3)}{
 $\lnot$needtoexpr(pred-eats,~x1,~x2,~x3),\\ $\lnot$subst(S,~u),\\
-subst(NP,~subj-1), subst(NP,~obj-1),\\ referent(subj-1,~x2), referent(obj-1,~x3)\\
-canadj(VP, u), canadj(V, u), canadj(S, u)}\\\smallskip
+subst(NP,~subj), subst(NP,~obj),\\ referent(subj,~x2), referent(obj,~x3)\\
+adj(VP, u), adj(V, u), adj(S, u)}\\\smallskip
 
 \planaction{\bf subst-t3-cat-NP(u,~x1)}{referent(u,~x1),\\ subst(NP,~u), cat(x1)}{
 $\lnot$needtoexpr(pred-cat,~x1),\\ $\lnot$subst(NP,~u),\\
-canadj(N, u), canadj(NP, u)}\\ \smallskip
+adj(N, u), adj(NP, u)}\\ \smallskip
 
 
-\planaction{\bf subst-t5-raw-N(u,~x1)}{referent(u,~x1),\\ canadj(N,~u), raw(x1)}{
-$\lnot$needtoexpr(pred-raw,~x1),\\ $\lnot$canadj(N,~u)}\\\smallskip
+\planaction{\bf subst-t5-raw-N(u,~x1)}{referent(u,~x1),\\ adj(N,~u), raw(x1)}{
+$\lnot$needtoexpr(pred-raw,~x1),\\ $\lnot$adj(N,~u)}\\\smallskip
 \end{center}
 \caption{\label{fig:crisp-operators} {\sc crisp} operators for some of the elementary trees in figure \ref{fig:grammar}.}
 \end{figure}

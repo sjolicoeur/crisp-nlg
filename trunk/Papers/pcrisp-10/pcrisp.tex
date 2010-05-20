@@ -16,34 +16,51 @@ In metric planning \cite{fox2002}, instead of changing only boolean state variab
 
 \subsection{Probabilistic TAG}
 \label{ssec:probmodels}
-{\sc ptag} \cite{resnik1992} views {\sc tag} derivations as sequences of probability events, each corresponding to a substitution or adjunction. In addition, it assigns a probability to the event of starting a derivation with a specific initial tree and to the event of not adjoining anything to an open adjunction node at all. Assuming that the probabilities of these events within a derivation are independent of each other, the probability of a derivation is then simply defined as the product of all elementary event probabilities. 
-Formally,
+{\sc ptag} \cite{resnik1992} views {\sc tag} derivations as sequences of probability events of three types, initial events, substitution events and adjunction events.
 
 \newcommand{\adj}[0]{\textit{ adj}}
 \newcommand{\init}[0]{\textit{ init}}
 \newcommand{\subst}[0]{\textit{ subst}}
-$$ \sum\limits_{\alpha \in I}\sum\limits_{lex \textit{ of } \alpha} P_{init}(\init(\alpha, lex)) = 1 $$
+The probability distribution for initial events describes how likely it is to start any derivation with a given initial tree. 
+It is defined over all initial trees $\alpha$ with their possible lexicalizations $w \in W_\alpha$: 
+$$ \sum\limits_{\alpha \in I}\sum\limits_{w \in W_\alpha} P_{init}(\init(\alpha, w)) = 1 $$
 
-$$\sum\limits_{\alpha \in I}\sum\limits_{lex \textit{ of }\alpha} P_{subst}(\subst(\tau,lex_\tau, \alpha, lex_\alpha, n)) = 1,$$
-for each $\tau \in I \cup A$, each lexicalization $lex_\tau$  of $\tau$ and for each substitution node $n$ in $\tau$.
+For substitution events, there is a probability distribution for each substitution node $n$ of each initial tree $\tau$ lexicalized with $v$, which describes how likely it is to substitute it with an initial tree $\alpha$ lexicalized with $w$. 
+$$\sum\limits_{\alpha \in I}\sum\limits_{w \in W_\alpha} P_{subst}(\subst(\tau,v , \alpha, w, n)) = 1$$
+
+Similarly for each internal node there is a distribution that describes the probability to adjoin each auxiliary tree $\beta$ lexicalized with $w$. In addition some probability mass is reserved for the event of not adjoining anything to such a node at all.
 
 $$ P_{adj}(\adj(\tau, lex_\tau, \textit{None},n)) +$$
-$$ \sum\limits_{\beta \in A}\sum\limits_{lex \textit{ of }\beta} P_{adj}(\adj(\tau,lex_\tau, \alpha, lex_\alpha, n)) = 1,$$ for each $\tau \in I \cup A$, each lexicalization $lex_\tau$  of $\tau$ and for each node $n$ that is open for adjunction in $\tau$.
+$$ \sum\limits_{\beta \in A}\sum\limits_{w_\beta} P_{adj}(\adj(\tau, w, \tau, v, n)) = 1.$$
+
+{\sc Ptag} assumes that all events occur independent of each other. Therefore it defines the total probability for a derivation as the product of the probability of its individual events. 
 
 \subsection{PCRISP Planning Domains}
 \label{ssec:pcrisp-domains}
-Here, we reformulate the {\sc crisp} planning operators described in section \ref{ssec:crispdomain}.
-The independence assumption in {\sc ptag} allows us to maintain that planning operator add a single tree, but are now assigned a probability score. However, while {\sc crisp} planning operators can add an elementary tree to any site of the right category, {\sc ptag} events are binary events between lexicalized trees at a specific node. We therefore adapt the literals that record open substitution and adjunction sites in partial derivations accordingly and create one operator for each node in each possible combination of lexicalized trees.
-Figure \ref{example-action} shows an example planning operator. We adopt this scheme for all planning operators regardless of the probability model.
+Using the definition of {\sc ptag}, we now reformulate the {\sc crisp} planning operators described in section \ref{ssec:crispdomain}.
+The independence assumption in {\sc ptag} allows us to maintain that planning operator add a single tree, but are now assigned a probability score. However, while {\sc crisp} planning operators can add an elementary tree to any site of the right category, {\sc ptag} substitution and adjunction events are binary events between lexicalized trees at a specific node. We therefore adapt the literals that record open substitution and adjunction sites in partial derivations accordingly and create one operator for each node in each possible combination of lexicalized trees.
+Figure \ref{example-action} shows an example planning operator for each type.
 \begin{figure}[t]
 \begin{center}
-\cplanaction{\bf subst-t3-cat-t28-eats-n2(u,~x1)}{referent(u,~x1),\\ subst(t28-eats,n2,~u), cat(x1)}{
-$\lnot$needtoexpress(pred-cat,~x1),\\ $\lnot$subst(t-28-eats, n2,~u),\\
-adj(t3-cat, n0, u), adj(t3-cat, n1 u)}{4.3012}\\\smallskip
+\cplanaction{\bf subst-t3-cat-t28-eats-n1(u,~x1)}{referent(u,~x1),\\ subst(t28-eats,~n1,~u), cat(x1)}{
+$\lnot$needtoexpress(pred-cat,~x1),\\ $\lnot$subst(t-28-eats, n1,~u),\\
+adj(t3-cat, n2 u)}{4.3012}\\\smallskip
+
+\cplanaction{\bf adj-t5-raw-t3-fish-n2(u,~x1)}{referent(u,~x1),\\ adj(t28-eats,n2,~u), raw(x1)}{
+$\lnot$needtoexpress(pred-raw,~x1),\\ $\lnot$adj(t-28-eats, n2,~u)}{6.9076}\\\smallskip
+
+\cplanaction{\bf init-t28-eats(u,~x1,~x2,~x3)}{referent(u,~x1),\\ eats(x1,~x2,~x3)}{
+$\lnot$needtoexpress(pred-eats,~x1,~x2,~x3), \\
+ subst(t-28-eats,~n1,subj), subst(t28-eats,~n4,obj),\\
+adj(t-28-eats, n2, u), adj(t-28-eats, n3, u)}{8.5172}\\\smallskip
+
+\cplanaction{\bf noadj-t28-eats-n3(u)}{
+ adj(t-28-eats,~n3,u)}
+{$\lnot$ adj(t-28-eats, n3, u)}{0.1054}\\\smallskip
+
 \caption{\label{example-action} {\sc pcrisp} Operator to substitute $t3$ lexicalized with 'cat' for node 2 of $t28$ lexicalized with `eats'.}
 \end{center}
 \end{figure}
-
 
 Finally, we set the cost of an operator to be its negative log probability. For example for the operator in figure \ref{example-action} $$Cost( \subst(t_3,\textit{`cat'},t_{28},\textit{`eats"},n_2) ) =$$
 $$ -\log( P(\subst(t_3,\textit{`cat'},t_{28},\textit{`eats"},n_2)) ). $$ This way the plan with the smallest cost sum corresponds to the {\sc tag} derivation with the highest probability. 

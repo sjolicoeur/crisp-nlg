@@ -12,7 +12,7 @@ Furthermore, as {\sc tag} factors recursion from the domain of dependencies, the
  We review {\sc ptag} in section \ref{ssec:probmodels}.
 
 While we leave the basic sentence generation mechanism intact, we need to modify the concrete formulation of \crisp\ planning operators to accommodate bilexical dependencies. Likewise, we need to take the step from classical planning to \emph{metric} planning systems which can use the probabilities.
-In metric planning \cite{fox2002}, planning actions can modify the value of numeric variables in addition to adding and deleting logical literals to the state. The goal state specifies constraints on this variable. In the simplest case the variable can only be increased by a static cost value in each action, and the goal state contains the objective to minimize the total cost. While systems such as Metric-{\sc FF} \cite{hoffmann2003} do not guarantee optimality, they do generally offer good results. We address our encoding of sentence generation with {\sc ptag} as metric planning in section \ref{ssec:pcrisp-domains}. 
+In metric planning \cite{fox2002}, planning actions can modify the value of numeric variables in addition to adding and deleting logical literals from the state. The goal state specifies constraints on this variable. In the simplest case the variable can only be increased by a static cost value in each action, and the goal state contains the objective to minimize the total cost. While systems such as Metric-{\sc FF} \cite{hoffmann2003} do not guarantee optimality, they do generally offer good results. We address our encoding of sentence generation with {\sc ptag} as metric planning in section \ref{ssec:pcrisp-domains}. 
 
 \subsection{Probabilistic TAG}
 \label{ssec:probmodels}

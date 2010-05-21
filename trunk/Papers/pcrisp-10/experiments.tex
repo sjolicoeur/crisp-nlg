@@ -10,9 +10,9 @@ This algorithm outputs a grammar that allows multiple adjunctions at the same no
 
 We then automatically create semantic content for all lexicalized elementary trees by assigning a single semantic literal to each tree in the treebank, using the lexical anchor as the predicate symbol and variables for each substitution node and the `self' role as arguments.  We calculate the role associated with each node in each tree by assigning role names to each substitution node (`self' is assigned to the lexical anchor) and then percolating the roles up the tree, giving preference to the `self' role.  
 
-We estimate our probability models on section 1 to 23 of the converted WSJ using maximum likelihood estimation. We use section 0 as a testing set. However, since the number of \pcrisp\ operators grows quadratically with the grammar size, generating long sentences requires too much time to run batch experiments.  We therefore restricted our evaluation to the 416 sentences in Section 0 that are shorter than 16 words.
+We estimate our probability models on section 1 to 23 of the converted WSJ using maximum likelihood estimation. We use section 0 as a testing set. However, since the number of \pcrisp\ operators grows quadratically with the grammar size, generating long sentences requires too much time to run batch experiments.  We therefore restrict our evaluation to the 416 sentences in Section 0 that are shorter than 16 words.
 
-For this testing set we automatically create semantic representation for each sentence, by instantiating the semantic content of each elementary used in its derivation. We use these representations as input for our system and compare the system output against the original sentence.
+For this testing set we automatically create semantic representation for each sentence, by instantiating the semantic content of each elementary tree used in its derivation. We use these representations as input for our system and compare the system output against the original sentence.
 
 
 \subsection{Generation tree accuracy}
@@ -25,7 +25,7 @@ where $D$ is the reference derivation tree and $S|_d$ are the tokens associated 
 
 \subsection{Results}
 
-Table \ref{results} presents the results of the experiment for five different generation systems.  We compare three variants of \pcrisp: the fully lexicalized PTAG model (``PTAG''), the fully unlexicalized model (``unlexicalized''), and a linear interpolation model in which we (manually) set the weight of level 2 to 0.9 \todo{stimmt das?} and the weight of level 3 to 0 (``interpolation'').  We also list results for the non-statistical \crisp\ system of  \newcite{kollerstone2007} (``\crisp'') and the greedy search heuristic used by \spud.  All these systems are based on a reimplementation of the FF planner \cite{hoffmannnebel2001}, to which we added a search heuristic that takes action costs into account for the \pcrisp\ systems.
+Table \ref{results} presents the results of the experiment for five different generation systems.  We compare three variants of \pcrisp: the fully lexicalized PTAG model (``PTAG''), the fully unlexicalized model (``unlexicalized''), and a linear interpolation model (``interpolation'') in which we (manually) set the weight of level 2 to 0.9 and the weight of level 3 to 0.  We also list results for the non-statistical \crisp\ system of  \newcite{kollerstone2007} (``\crisp'') and the greedy search heuristic used by \spud.  All these systems are based on a reimplementation of the FF planner \cite{hoffmannnebel2001}, to which we added a search heuristic that takes action costs into account for the \pcrisp\ systems.
 
 For each system, we determine the proportion of sentences in the test set for which the system produced an output (``success''), did not find a plan (``fail''), and exceeded the five-minute timeout (``timeout'').  The column ``gta'' records the mean generation tree accuracy for those sentences where the system produced an output.
 

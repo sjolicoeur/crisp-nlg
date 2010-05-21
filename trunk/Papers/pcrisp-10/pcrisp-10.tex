@@ -8,10 +8,30 @@
 \usepackage{times}
 \usepackage{latexsym}
 \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{color}
+
 \usepackage{url}
+
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
 
 \newlength{\rhwidth}
+
+\newcommand{\f}[1]{\mbox{#1}}
+\newcommand{\adj}[0]{\textit{adj}}
+\newcommand{\noadj}[0]{\textit{noadj}}
+\newcommand{\init}[0]{\textit{init}}
+\newcommand{\subst}[0]{\textit{subst}}
+
+\newcommand{\pcrisp}{PCRISP}
+\newcommand{\crisp}{CRISP}
+\newcommand{\ltag}{LTAG}
+\newcommand{\spud}{SPUD}
+
+\newcommand{\todo}[1]{\textcolor{red}{(#1)}}
+
+
+
 \newcommand{\planaction}[3]{
 \begin{minipage}{.5\textwidth}
 \footnotesize

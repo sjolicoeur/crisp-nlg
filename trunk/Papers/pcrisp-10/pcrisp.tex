@@ -62,8 +62,14 @@ adj(t-28-eats, n2, u), adj(t-28-eats, n3, u)}{8.5172}\\\smallskip
 \end{center}
 \end{figure}
 
-Finally, we set the cost of an operator to be its negative log probability. For example for the operator in figure \ref{example-action} $$Cost( \subst(t_3,\textit{`cat'},t_{28},\textit{`eats"},n_2) ) =$$
-$$ -\log( P(\subst(t_3,\textit{`cat'},t_{28},\textit{`eats"},n_2)) ). $$ This way the plan with the smallest cost sum corresponds to the {\sc tag} derivation with the highest probability. 
+Finally, we set the cost of an operator to be its negative log probability. For example 
+\[
+Cost( \subst(t_3,\textit{`cat'},t_{28},\textit{`eats"},n_2) ) =
+\]
+\[ 
+ -\log( P(\subst(t_3,\textit{`cat'},t_{28},\textit{`eats"},n_2)) ). 
+\] 
+This way the plan with the smallest cost sum corresponds to the {\sc tag} derivation with the highest probability. 
 
 \subsection{Dealing with Data Sparseness}
 \label{ssec:sparseness}

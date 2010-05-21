@@ -1,16 +1,16 @@
 \section{Evaluation}
 \label{sec:experiments}
 
-We now report on some experiments with \pcrisp. We are interested in the output quality and runtime behavior of different combinations of planning systems and probability models. Like \crisp, \pcrisp\ is an integrated sentence generation system capable of generating referring expressions during surface realization.  However, for lack of an appropriate evaluation dataset for full sentence generation, we only evaluate \pcrisp\ on a realization task here.  Further experiments and more details can be found in \newcite{bauer2009}.
+We now report on some experiments with PCRISP. We are interested in the output quality and runtime behavior of different combinations of planning systems and probability models. Like CRISP, PCRISP is an integrated sentence generation system capable of generating referring expressions during surface realization.  However, for lack of an appropriate evaluation dataset for full sentence generation, we only evaluate PCRISP on a realization task here.  Further experiments and more details can be found in \newcite{bauer2009}.
 
 \subsection{Evaluation Data}
-For our experiments we use an \ltag\ grammar and treebank that was automatically extracted from the Wall Street Journal using the algorithm described by \newcite{chenschanker2004}.   
+For our experiments we use an LTAG grammar and treebank that was automatically extracted from the Wall Street Journal using the algorithm described by \newcite{chenschanker2004}.   
 
-This algorithm outputs a grammar that allows multiple adjunctions at the same node. For such a grammar {\sc ptag} is not a suitable probability model. Models that can deal with multiple adjunction are discussed by \newcite{nasrrambow2006}, but employing them would require non-trivial modifications to our encoding as a metric planning problem. We therefore preprocess the treebank by linearizing multiple adjunctions. Furthermore, we reattach prepositions to the trees they substitute in, to increase the expressiveness of the bilexical probability distribution.
+This algorithm outputs a grammar that allows multiple adjunctions at the same node. For such a grammar PTAG is not a suitable probability model. Models that can deal with multiple adjunction are discussed by \newcite{nasrrambow2006}, but employing them would require non-trivial modifications to our encoding as a metric planning problem. We therefore preprocess the treebank by linearizing multiple adjunctions. Furthermore, we reattach prepositions to the trees they substitute in, to increase the expressiveness of the bilexical probability distribution.
 
 We then automatically create semantic content for all lexicalized elementary trees by assigning a single semantic literal to each tree in the treebank, using the lexical anchor as the predicate symbol and variables for each substitution node and the `self' role as arguments.  We calculate the role associated with each node in each tree by assigning role names to each substitution node (`self' is assigned to the lexical anchor) and then percolating the roles up the tree, giving preference to the `self' role.  
 
-We estimate our probability models on section 1 to 23 of the converted WSJ using maximum likelihood estimation. We use section 0 as a testing set. However, since the number of \pcrisp\ operators grows quadratically with the grammar size, generating long sentences requires too much time to run batch experiments.  We therefore restrict our evaluation to the 416 sentences in Section 0 that are shorter than 16 words.
+We estimate our probability models on section 1 to 23 of the converted WSJ using maximum likelihood estimation. We use section 0 as a testing set. However, since the number of PCRISP operators grows quadratically with the grammar size, generating long sentences requires too much time to run batch experiments.  We therefore restrict our evaluation to the 416 sentences in Section 0 that are shorter than 16 words.
 
 For this testing set we automatically create semantic representation for each sentence, by instantiating the semantic content of each elementary tree used in its derivation. We use these representations as input for our system and compare the system output against the original sentence.
 
@@ -20,26 +20,26 @@ For this testing set we automatically create semantic representation for each se
 To evaluate the output quality of our statistical generation system we compare the system output $O$ against the reference sentence $R$ in the treebank from which the input representation was generated. We adopt the {\bf generation tree accuracy} (GTA) measure discussed by \cite{bangalorerambowwhittaker2001}.
 This measure is computed by first creating a list of all 'treelets' from the reference derivation tree $D$. A `treelet' is a subtree consisting only of a node and its direct children. For each treelet we calculate the edit distance, sum the distances over all treelets and then divide by the total length of the reference string:
 $$1 - \frac{\sum\limits_{d \in treelets(D)} editDist(O|_d, R|_d)}{\textit{length}(R)},$$
-where $D$ is the reference derivation tree and $S|_d$ are the tokens associated with the nodes of treelet $d$ in the order they appear in $S$ (if at all).  Edit distance is modified to treat insertion-deletion pairs as single movement errors.  Compared to a purely string-based metric like {\sc bleu}, GTA penalizes swapped words less harshly if they can be explained by local tree movements.
+where $D$ is the reference derivation tree and $S|_d$ are the tokens associated with the nodes of treelet $d$ in the order they appear in $S$ (if at all).  Edit distance is modified to treat insertion-deletion pairs as single movement errors.  Compared to a purely string-based metric like BLEU, GTA penalizes swapped words less harshly if they can be explained by local tree movements.
 
 
 \subsection{Results}
 
-Table \ref{results} presents the results of the experiment for five different generation systems.  We compare three variants of \pcrisp: the fully lexicalized PTAG model (``PTAG''), the fully unlexicalized model (``unlexicalized''), and a linear interpolation model (``interpolation'') in which we (manually) set the weight of level 2 to 0.9 and the weight of level 3 to 0.  We also list results for the non-statistical \crisp\ system of  \newcite{kollerstone2007} (``\crisp'') and the greedy search heuristic used by \spud.  All these systems are based on a reimplementation of the FF planner \cite{hoffmannnebel2001}, to which we added a search heuristic that takes action costs into account for the \pcrisp\ systems.
+Table \ref{results} presents the results of the experiment for five different generation systems.  We compare three variants of PCRISP: the fully lexicalized PTAG model (``PTAG''), the fully unlexicalized model (``unlexicalized''), and a linear interpolation model (``interpolation'') in which we (manually) set the weight of level 2 to 0.9 and the weight of level 3 to 0.  We also list results for the non-statistical CRISP system of  \newcite{kollerstone2007} (``CRISP'') and the greedy search heuristic used by SPUD.  All these systems are based on a reimplementation of the FF planner \cite{hoffmannnebel2001}, to which we added a search heuristic that takes action costs into account for the PCRISP systems.
 
 For each system, we determine the proportion of sentences in the test set for which the system produced an output (``success''), did not find a plan (``fail''), and exceeded the five-minute timeout (``timeout'').  The column ``gta'' records the mean generation tree accuracy for those sentences where the system produced an output.
 
-The table confirms that the non-statistical \crisp\ system has considerable trouble reconstructing the original sentences from the treebank, with a mean GTA of 0.66.  This is still better than our reimplementation of \spud, which fails to recover from early mistakes of its greedy search heuristic for every single sentence in the test set.
+The table confirms that the non-statistical CRISP system has considerable trouble reconstructing the original sentences from the treebank, with a mean GTA of 0.66.  This is still better than our reimplementation of SPUD, which fails to recover from early mistakes of its greedy search heuristic for every single sentence in the test set.
 
-By contrast, the fully lexicalized \pcrisp\ model achieves a much better mean GTA.  However, this comes at the cost of a very low success rate of only 10\%, reflecting a serious data sparseness problem on unseen inputs.  The data sparseness problem is reduced in the unlexicalized version of \pcrisp, but this comes at the cost of decreased accuracy and much increased runtimes.  The linear interpolation model strikes a balance between these two, by improving the success rate over the lexicalized model while sacrificing only a small amount of accuracy.  This suggests that smoothing is a promising approach to balancing coverage, efficiency, and accuracy, but clearly further experimentation is needed to substantiate this.
+By contrast, the fully lexicalized PCRISP model achieves a much better mean GTA.  However, this comes at the cost of a very low success rate of only 10\%, reflecting a serious data sparseness problem on unseen inputs.  The data sparseness problem is reduced in the unlexicalized version of PCRISP but this comes at the cost of decreased accuracy and much increased runtimes.  The linear interpolation model strikes a balance between these two, by improving the success rate over the lexicalized model while sacrificing only a small amount of accuracy.  This suggests that smoothing is a promising approach to balancing coverage, efficiency, and accuracy, but clearly further experimentation is needed to substantiate this.
 
 \begin{table}
     \begin{center}
     \begin{tabular}{|l||l||r|r|r|}
     \hline
      {\bf System }  & {\bf gta}& {\bf success} & {\bf fail} & {\bf timeout} \\ \hline 
-     \spud         & n/a & 0\% & 100\% & 0\%  \\ \hline 
-     \crisp         &  0.66 & 45\% & 42\% & 13\% \\ \hline
+     SPUD         & n/a & 0\% & 100\% & 0\%  \\ \hline 
+     CRISP         &  0.66 & 45\% & 42\% & 13\% \\ \hline
      PTAG &  0.90 &  10\% &88\% & 2\% \\ \hline
      unlexicalized & 0.74 & 62\% & 16\% & 22\%\\ \hline
      interpolation & 0.88 & 19\% & 74\% & 7\% \\ \hline

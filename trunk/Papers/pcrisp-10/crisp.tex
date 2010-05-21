@@ -1,7 +1,7 @@
 \section{Sentence Generation as Planning}
 \label{sec:crisp}
-In this section we review the original non-statistical {\sc crisp} system \cite{kollerstone2007}. 
-Following {\sc spud} \cite{Stone2003a}, {\sc crisp} is based on a declarative description of the sentence generation problem using {\sc tag}. Given a knowledge base, a communicative goal and a grammar, we require to find a grammatical {\sc tag} derivation that is consistent with this knowledge base and satisfies a communicative goal. A number of semantic and pragmatic constraints that must be satisfied by the solution can be added, for instance to enforce generation of unambiguous referring expressions. \newcite{kollerstone2007} describe how to encode this problem into an AI planning problem which can be solved efficiently by off-the-shelf planners. We describe the general mechanism in the following section and then review the encoding into planning in section \ref{ssec:crispdomain}. 
+In this section we review the original non-statistical CRISP system \cite{kollerstone2007}. 
+Following SPUD \cite{Stone2003a}, CRISP is based on a declarative description of the sentence generation problem using TAG. Given a knowledge base, a communicative goal and a grammar, we require to find a grammatical TAG derivation that is consistent with this knowledge base and satisfies a communicative goal. A number of semantic and pragmatic constraints that must be satisfied by the solution can be added, for instance to enforce generation of unambiguous referring expressions. \newcite{kollerstone2007} describe how to encode this problem into an AI planning problem which can be solved efficiently by off-the-shelf planners. We describe the general mechanism in the following section and then review the encoding into planning in section \ref{ssec:crispdomain}. 
 \begin{figure*}[th]
 \begin{center}
 \includegraphics[width=.8\textwidth]{figures/grammar.pdf}
@@ -10,16 +10,16 @@ Following {\sc spud} \cite{Stone2003a}, {\sc crisp} is based on a declarative de
 \end{figure*}
 
 \subsection{Sentence Generation in CRISP}
-Like {\sc spud}, {\sc crisp} uses an {\sc ltag} in which elementary trees are assigned semantic content. Each node in a {\sc crisp} elementary tree is associated with a semantic role. Semantic content is expressed as a set of literals, encoding relations between these roles. All nodes that dominate the lexical anchor are assigned the role `self', which intuitively corresponds to the event or individual described by this tree. Fig.~\ref{fig:grammar}(a) shows an example grammar of this type. 
+Like SPUD, CRISP uses an LTAG in which elementary trees are assigned semantic content. Each node in a CRISP elementary tree is associated with a semantic role. Semantic content is expressed as a set of literals, encoding relations between these roles. All nodes that dominate the lexical anchor are assigned the role `self', which intuitively corresponds to the event or individual described by this tree. Fig.~\ref{fig:grammar}(a) shows an example grammar of this type. 
 
-In a derivation we may only include elementary trees whose semantic content has an instantiation in the knowledge base. For each substitution and adjunction, the semantic role associated with the role of the target node is unified with the `self' role of the child tree. For example, given the knowledge base $\{\f{cat}(c), \f{fish}(f_1), \f{raw}(f_1), \f{fish}(f_2), \f{eats}(e,c,f_1)\}$ and the grammar in \ref{fig:grammar}(a), {\sc crisp} could produce the derivation in \ref{fig:grammar}(b). Notice that {\sc crisp} can generate the unambiguous referring expression `the raw fish' for $f_1$, to distinguish it from $f_2$. 
+In a derivation we may only include elementary trees whose semantic content has an instantiation in the knowledge base. For each substitution and adjunction, the semantic role associated with the role of the target node is unified with the `self' role of the child tree. For example, given the knowledge base $\{\f{cat}(c), \f{fish}(f_1), \f{raw}(f_1), \f{fish}(f_2), \f{eats}(e,c,f_1)\}$ and the grammar in \ref{fig:grammar}(a), CRISP could produce the derivation in \ref{fig:grammar}(b). Notice that CRISP can generate the unambiguous referring expression `the raw fish' for $f_1$, to distinguish it from $f_2$. 
 
 
 \subsection{CRISP Planning Domains} 
 \label{ssec:crispdomain}
-Before we describe {\sc crisp}'s encoding of sentence generation as planning, we briefly review AI planning in general.  A planning state is a conjunction of first order literals describing relations between some individuals. A planning problem consist of an initial state, a set of goal states and a set of planning operators that describe possible state transitions.  A \emph{plan} is any sequence of actions (instantiated operators) that leads from the initial state to one of the goal states. Planning problems can be solved efficiently by general purpose planning systems such as {\sc ff} \cite{hoffmannnebel2001}.
+Before we describe CRISP's encoding of sentence generation as planning, we briefly review AI planning in general.  A planning state is a conjunction of first order literals describing relations between some individuals. A planning problem consist of an initial state, a set of goal states and a set of planning operators that describe possible state transitions.  A \emph{plan} is any sequence of actions (instantiated operators) that leads from the initial state to one of the goal states. Planning problems can be solved efficiently by general purpose planning systems such as {\sc ff} \cite{hoffmannnebel2001}.
      
-In {\sc crisp}, planning states correspond to partial {\sc tag} derivations and record open substitution and adjunction sites, semantic individuals associated with them, and parts of the communicative goal that have not yet been expressed.  The initial state also encodes the knowledge base and the communicative goal. Each planning operator contributes a new elementary tree to the derivation and at the same time can satisfy part of the communicative goal, as described in the previous section. In a goal state there are no open substitution sites left and all literals in the communicative goal have been expressed. 
+In CRISP, planning states correspond to partial TAG derivations and record open substitution and adjunction sites, semantic individuals associated with them, and parts of the communicative goal that have not yet been expressed.  The initial state also encodes the knowledge base and the communicative goal. Each planning operator contributes a new elementary tree to the derivation and at the same time can satisfy part of the communicative goal, as described in the previous section. In a goal state there are no open substitution sites left and all literals in the communicative goal have been expressed. 
 \begin{figure}[t]
 \begin{center}
 \planaction{\bf subst-t28-eats-S(u,~x1,~x2,~x3)}{referent(u,~x1),\\ subst(S,~u), eats(x1,~x2,~x3)}{
@@ -35,7 +35,7 @@ adj(N, u), adj(NP, u)}\\ \smallskip
 \planaction{\bf adj-t5-raw-N(u,~x1)}{referent(u,~x1),\\ adj(N,~u), raw(x1)}{
 $\lnot$needtoexpr(pred-raw,~x1),\\ $\lnot$adj(N,~u)}\\\smallskip
 \end{center}
-\caption{\label{fig:crisp-operators} {\sc crisp} operators for some of the elementary trees in Fig.~\ref{fig:grammar}.}
+\caption{\label{fig:crisp-operators} CRISP operators for some of the elementary trees in Fig.~\ref{fig:grammar}.}
 \end{figure}
 
 
@@ -43,7 +43,7 @@ Fig.~\ref{fig:crisp-operators} shows planning operators for part of the grammar 
 
 \subsection{CRISP and Large Grammars}
 
-\newcite{KolHof10} report on experiments that show CRISP can generate sentences with the large-scale XTAG grammar \cite{xtag2001} quite efficiently.  However, because CRISP has no notion of how ``good'' a generated sentence is compared to other grammatical alternatives, it will sometimes compute dispreferred sentences with large grammars.  This is especially true for treebank-induced grammars, which tend to overgenerate and rely on statistical methods to rank good sentences highly.  Fig.~\ref{fig:overgen} illustrates this problem.  Assuming a (treebank) grammar that includes trees for both right adjoining (t13) and left adjoining PPs (t252), both derivations (a) and (b) are {\it grammatical} derivations that satisfy the same communicative goal. However, most readers disprefer the reading in (b).  Clearly, to use {\sc crisp} with such a grammar we need a method of distinguishing good derivations from bad ones. 
+\newcite{KolHof10} report on experiments that show CRISP can generate sentences with the large-scale XTAG grammar \cite{xtag2001} quite efficiently.  However, because CRISP has no notion of how ``good'' a generated sentence is compared to other grammatical alternatives, it will sometimes compute dispreferred sentences with large grammars.  This is especially true for treebank-induced grammars, which tend to overgenerate and rely on statistical methods to rank good sentences highly.  Fig.~\ref{fig:overgen} illustrates this problem.  Assuming a (treebank) grammar that includes trees for both right adjoining (t13) and left adjoining PPs (t252), both derivations (a) and (b) are {\it grammatical} derivations that satisfy the same communicative goal. However, most readers disprefer the reading in (b).  Clearly, to use CRISP with such a grammar we need a method of distinguishing good derivations from bad ones. 
 
 
 \begin{figure}

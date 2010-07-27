@@ -3,9 +3,11 @@
  * and open the template in the editor.
  */
 
-package de.saar.penguin.tag.grammar;
+package crisp.grammar;
 
 import de.saar.chorus.term.Term;
+import de.saar.penguin.tag.grammar.Grammar;
+import de.saar.penguin.tag.grammar.LexiconEntry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;

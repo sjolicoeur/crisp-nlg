@@ -40,14 +40,11 @@ import de.saar.chorus.term.Term;
 import de.saar.chorus.term.Variable;
 import de.saar.chorus.term.parser.TermParser;
 import de.saar.penguin.tag.grammar.Constraint;
-import de.saar.penguin.tag.grammar.CrispGrammar;
-import de.saar.penguin.tag.grammar.CrispLexiconEntry;
+import crisp.grammar.CrispGrammar;
+import crisp.grammar.CrispLexiconEntry;
 import de.saar.penguin.tag.grammar.ElementaryTree;
 import de.saar.penguin.tag.grammar.ElementaryTreeType;
-import de.saar.penguin.tag.grammar.Grammar;
-import de.saar.penguin.tag.grammar.LexiconEntry;
 import de.saar.penguin.tag.grammar.NodeType;
-import de.saar.penguin.tag.grammar.filter.SemanticsPredicateListFilter;
 
 /**
  * This class provides a fast converter from XML CRISP problem descriptions to
@@ -71,7 +68,6 @@ public class CurrentNextCrispConverter {
     // parse error handling and registering the handler
     // with a parser.
 
-    private String problempath;   // Absolute pathname for the directory that stores problem and grammar
     private int referentnum;        // the number of referents for this problem
     private int syntaxnodenum;    // the number of syntaxnodes for this problem
     private int maximumArity = 0; // the maximum arity of any predicate in the problem file
@@ -79,7 +75,12 @@ public class CurrentNextCrispConverter {
     private String mainCat;       // main category for the problem in the problem file
 
     private Domain domain;
-    private boolean useOldDomain;
+
+    public CurrentNextCrispConverter(CrispGrammar grammar) {
+        domain = new Domain();
+        setupDomain(domain);
+        computeDomain(domain, grammar);
+    }
 
     private class ProblemfileHandler extends DefaultHandler {
         // Member variables for instances of the Content Handler
@@ -473,7 +474,7 @@ public class CurrentNextCrispConverter {
      *
      * @param grammar The grammar from which actions are generated
      */
-    private void computeDomain(Domain domain, Problem problem, CrispGrammar grammar, String indexIndividual) {
+    private void computeDomain(Domain domain, CrispGrammar grammar) {
         Map<String, HashSet<String>> roles = new HashMap<String, HashSet<String>>();
 
         // for each tree in the grammar
@@ -495,47 +496,6 @@ public class CurrentNextCrispConverter {
 
         }
 
-        // Add syntaxnode literals
-
-        String lastSyntaxNode = "n-1";
-        problem.addObject(lastSyntaxNode, "syntaxnode");
-
-        List<Term> currentSubterms = new ArrayList<Term>();
-        currentSubterms.add(new Constant(lastSyntaxNode));
-        problem.addToInitialState(new Compound("current", currentSubterms));
-
-        String newSyntaxNode;
-        for (int i = 2; i <= syntaxnodenum; i++) {
-            newSyntaxNode = "n-" + i;
-            problem.addObject(newSyntaxNode, "syntaxnode");
-
-            if (lastSyntaxNode != null) {
-                List<Term> subterms = new ArrayList<Term>();
-                subterms.add(new Constant(lastSyntaxNode));
-                subterms.add(new Constant(newSyntaxNode));
-                problem.addToInitialState(new Compound("next", subterms));
-            }
-            lastSyntaxNode = newSyntaxNode;
-
-        }
-
-        String lastReferent = indexIndividual;
-        problem.addObject(lastReferent, "individual");
-
-        String newReferent;
-        for (int i = 2; i <= referentnum; i++) {
-            newReferent = "e-" + i;
-            problem.addObject(newReferent, "individual");
-
-            if (lastReferent != null) {
-                List<Term> subterms = new ArrayList<Term>();
-                subterms.add(new Constant(lastReferent));
-                subterms.add(new Constant(newReferent));
-                problem.addToInitialState(new Compound("next-referent", subterms));
-            }
-            lastReferent = newReferent;
-
-        }
 
         // compute actions from lexical entries
         for (String word : grammar.getAllWords()) {
@@ -928,10 +888,8 @@ public class CurrentNextCrispConverter {
      * @throws SAXException
      * @throws IOException
      */
-    public void convert(CrispGrammar grammar, Reader problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException {
-
-        //initialize domain and problem
-        setupDomain(domain);
+    public void convert(Reader problemfile, Problem problem) throws ParserConfigurationException, SAXException, IOException {
+        // initialize problem
         setupProblem(problem);
 
         // get the pathname where problem and grammar files are stored
@@ -945,7 +903,7 @@ public class CurrentNextCrispConverter {
             parser.parse(new InputSource(problemfile), handler);
 
 //            CrispGrammar filteredGrammar = (CrispGrammar) new GrammarFilterer<Term>().filter(grammar, new SemanticsPredicateListFilter(handler.predicatesInWorld) );
-            computeDomain(domain, problem, grammar, handler.getIndexIndividual());
+            computeProblem(problem, handler.getIndexIndividual());
             computeGoal(domain, problem);
 
         } catch (ParserConfigurationException e) {
@@ -954,10 +912,61 @@ public class CurrentNextCrispConverter {
 
     }
 
+    public Domain getDomain() {
+        return domain;
+    }
+
+    private void computeProblem(Problem problem, String indexIndividual) {
+        // Add syntaxnode literals
+
+        String lastSyntaxNode = "n-1";
+        problem.addObject(lastSyntaxNode, "syntaxnode");
+
+        List<Term> currentSubterms = new ArrayList<Term>();
+        currentSubterms.add(new Constant(lastSyntaxNode));
+        problem.addToInitialState(new Compound("current", currentSubterms));
+
+        String newSyntaxNode;
+        for (int i = 2; i <= syntaxnodenum; i++) {
+            newSyntaxNode = "n-" + i;
+            problem.addObject(newSyntaxNode, "syntaxnode");
+
+            if (lastSyntaxNode != null) {
+                List<Term> subterms = new ArrayList<Term>();
+                subterms.add(new Constant(lastSyntaxNode));
+                subterms.add(new Constant(newSyntaxNode));
+                problem.addToInitialState(new Compound("next", subterms));
+            }
+            lastSyntaxNode = newSyntaxNode;
+
+        }
+
+        String lastReferent = indexIndividual;
+        problem.addObject(lastReferent, "individual");
+
+        String newReferent;
+        for (int i = 2; i <= referentnum; i++) {
+            newReferent = "e-" + i;
+            problem.addObject(newReferent, "individual");
+
+            if (lastReferent != null) {
+                List<Term> subterms = new ArrayList<Term>();
+                subterms.add(new Constant(lastReferent));
+                subterms.add(new Constant(newReferent));
+                problem.addToInitialState(new Compound("next-referent", subterms));
+            }
+            lastReferent = newReferent;
+
+        }
+    }
+
+    /*
     public void convert(CrispGrammar grammar, File problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException {
         convert(grammar, new FileReader(problemfile), domain, problem);
 
     }
+     * 
+     */
 
     /*********** auxiliary functions *************/
     /**

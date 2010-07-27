@@ -6,8 +6,8 @@ import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
 import de.saar.chorus.term.Term;
 import de.saar.penguin.tag.codec.ParserException;
-import de.saar.penguin.tag.grammar.CrispGrammar;
-import de.saar.penguin.tag.grammar.SituatedCrispXmlInputCodec;
+import crisp.grammar.CrispGrammar;
+import crisp.grammar.SituatedCrispXmlInputCodec;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -54,7 +54,9 @@ public class GenerateSentence {
 
         File problemfile = new File(args[1]);
         try {
-            new CurrentNextCrispConverter().convert(grammar, problemfile, domain, problem);
+            CurrentNextCrispConverter conv = new CurrentNextCrispConverter(grammar);
+            domain = conv.getDomain();
+            conv.convert(new FileReader(problemfile), problem);
         } catch (ParserConfigurationException ex) {
             System.err.println("Error configuring the XML parser. Exiting.");
             System.exit(1);        

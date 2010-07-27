@@ -1,4 +1,4 @@
-package de.saar.penguin.tag.grammar;
+package crisp.grammar;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -22,6 +22,11 @@ import de.saar.chorus.term.Term;
 import de.saar.chorus.term.parser.TermParser;
 import de.saar.penguin.tag.codec.InputCodec;
 import de.saar.penguin.tag.codec.ParserException;
+import de.saar.penguin.tag.grammar.Constraint;
+import de.saar.penguin.tag.grammar.ElementaryTree;
+import de.saar.penguin.tag.grammar.ElementaryTreeType;
+import de.saar.penguin.tag.grammar.Grammar;
+import de.saar.penguin.tag.grammar.NodeType;
 
 public class SituatedCrispXmlInputCodec implements InputCodec<Term> {
 

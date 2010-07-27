@@ -50,7 +50,7 @@ import de.saar.penguin.tag.grammar.filter.LexiconEntryFilter;
 * planning domains with costs and problems using a probabilistic TAG grammar. 
 */
 
-public class ProbCRISPConverter implements ProblemConverter {
+public class ProbCRISPConverter  {
                                                           // Default Handler already does a lot of work like
                                                           // parse error handling and registering the handler
                                                           // with a parser.                

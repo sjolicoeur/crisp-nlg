@@ -23,8 +23,8 @@ import crisp.planningproblem.Action;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
 import de.saar.penguin.tag.codec.ParserException;
-import de.saar.penguin.tag.grammar.CrispGrammar;
-import de.saar.penguin.tag.grammar.SituatedCrispXmlInputCodec;
+import crisp.grammar.CrispGrammar;
+import crisp.grammar.SituatedCrispXmlInputCodec;
 
 public class CurrentNextCrispConverterTest {
     private Domain domain;
@@ -46,8 +46,9 @@ public class CurrentNextCrispConverterTest {
 
         Reader problemfile = new InputStreamReader(getClass().getResourceAsStream("/problem-scrisp-give1-generated.xml"));
 
-        converter = new CurrentNextCrispConverter();
-        converter.convert(grammar, problemfile, domain, problem);
+        converter = new CurrentNextCrispConverter(grammar);
+        domain = converter.getDomain();
+        converter.convert(problemfile, problem);
 
         planDecoder = new CrispDerivationTreeBuilder(grammar);
     }
@@ -68,10 +69,11 @@ public class CurrentNextCrispConverterTest {
         codec.parse(new InputStreamReader(getClass().getResourceAsStream("/grammar-scrisp.xml")), grammar);
 
 
-        CurrentNextCrispConverter converter = new CurrentNextCrispConverter();
+        CurrentNextCrispConverter converter = new CurrentNextCrispConverter(grammar);
+        domain2 = converter.getDomain();
         Reader problemfile = new InputStreamReader(getClass().getResourceAsStream("/problem-scrisp-give1-generated.xml"));
 
-        converter.convert(grammar, problemfile, domain2, problem2);
+        converter.convert(problemfile, problem2);
 
         for (Action action : domain.getActions()) {
             for (Action action2 : domain2.getActions()) {
@@ -90,10 +92,11 @@ public class CurrentNextCrispConverterTest {
     public void testConvertTwice() throws IOException, SAXException, ParserConfigurationException {
         Domain domain2 = new Domain();
         Problem problem2 = new Problem();
-        CurrentNextCrispConverter converter = new CurrentNextCrispConverter();
+        CurrentNextCrispConverter converter = new CurrentNextCrispConverter(grammar);
         Reader problemfile = new InputStreamReader(getClass().getResourceAsStream("/problem-scrisp-give1-generated.xml"));
 
-        converter.convert(grammar, problemfile, domain2, problem2);
+        domain2 = converter.getDomain();
+        converter.convert(problemfile, problem2);
 
         for (Action action : domain.getActions()) {
             for (Action action2 : domain2.getActions()) {

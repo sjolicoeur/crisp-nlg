@@ -9,8 +9,8 @@ import de.saar.chorus.term.Term;
 import de.saar.penguin.tag.codec.ParserException;
 import de.saar.penguin.tag.derivation.DerivationTree;
 import de.saar.penguin.tag.derivation.DerivedTree;
-import de.saar.penguin.tag.grammar.CrispGrammar;
-import de.saar.penguin.tag.grammar.SituatedCrispXmlInputCodec;
+import crisp.grammar.CrispGrammar;
+import crisp.grammar.SituatedCrispXmlInputCodec;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -42,8 +42,9 @@ public class CrispDerivationTreeBuilderTest {
 
         Reader problemfile = new InputStreamReader(getClass().getResourceAsStream("/modifiers-problem.xml"));
 
-        converter = new CurrentNextCrispConverter();
-        converter.convert(grammar, problemfile, domain, problem);
+        converter = new CurrentNextCrispConverter(grammar);
+        domain = converter.getDomain();
+        converter.convert(problemfile, problem);
 
         CrispDerivationTreeBuilder planDecoder = new CrispDerivationTreeBuilder(grammar);
         PlannerInterface planner = new FfPlannerInterface();
@@ -71,8 +72,9 @@ public class CrispDerivationTreeBuilderTest {
 
         Reader problemfile = new InputStreamReader(getClass().getResourceAsStream("/modifiers-problem2.xml"));
 
-        converter = new CurrentNextCrispConverter();
-        converter.convert(grammar, problemfile, domain, problem);
+        converter = new CurrentNextCrispConverter(grammar);
+        domain = converter.getDomain();
+        converter.convert(problemfile, problem);
 
         CrispDerivationTreeBuilder planDecoder = new CrispDerivationTreeBuilder(grammar);
         PlannerInterface planner = new FfPlannerInterface();

@@ -26,11 +26,13 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import crisp.planningproblem.Action;
 import crisp.planningproblem.Domain;
-import crisp.planningproblem.Predicate;
 import crisp.planningproblem.Problem;
-import crisp.planningproblem.TypedVariableList;
-import crisp.planningproblem.effect.Effect;
-import crisp.planningproblem.goal.Goal;
+import crisp.planningproblem.formula.Conjunction;
+import crisp.planningproblem.formula.Formula;
+import crisp.planningproblem.formula.Literal;
+import crisp.planningproblem.formula.Negation;
+import crisp.planningproblem.formula.Universal;
+import crisp.planningproblem.formula.Conditional;
 import de.saar.chorus.term.Compound;
 import de.saar.chorus.term.Constant;
 import de.saar.chorus.term.Substitution;
@@ -95,10 +97,12 @@ public class FastCRISPConverter  {
         
         
         // All of these methods are specified in the ContentHandler interface.    
+        @Override
         public void startDocument() throws SAXException {
             characterBuffer = new StringWriter();
         }
         
+        @Override
         public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
             
             elementStack.push(qName);
@@ -107,10 +111,10 @@ public class FastCRISPConverter  {
             if (qName.equals("crispproblem")){
                 
                 // Retrieve and set name for the problem
-                problemname = atts.getValue("name");  
+                problemname = atts.getValue("name").toLowerCase();
                 domain.setName(problemname);
                 problem.setName(problemname);
-                problem.setDomain(domain);
+                //problem.setDomain(domain);
                 
                 try {
                     plansize = Integer.parseInt(atts.getValue("plansize"));
@@ -129,14 +133,13 @@ public class FastCRISPConverter  {
                 */
                 
                 // add Index TODO: what does this attribute do?
-                domain.addConstant(atts.getValue("index"),"individual");
+                domain.addConstant(atts.getValue("index").toLowerCase(),"individual");
                 
-                mainCat = atts.getValue("cat"); // TODO: do we really need this as a member variable?
+                mainCat = atts.getValue("cat").toLowerCase(); // TODO: do we really need this as a member variable?
                 
                 // This was in computeInitialState(Domain domain, Problem problem)
                 problem.addToInitialState(TermParser.parse("subst(" + mainCat+ ", root)"));
-                problem.addToInitialState(TermParser.parse("referent(root, " + 
-                atts.getValue("index") + ")"));
+                problem.addToInitialState(TermParser.parse("referent(root, " +atts.getValue("index") + ")"));
                 // TODO: maybe there is a better place for this
                 problem.addToInitialState(TermParser.parse("step(step1)")); 
                 
@@ -144,11 +147,11 @@ public class FastCRISPConverter  {
                 trueAtoms = new HashSet<Term>();
 
                 // add initial dummy atoms to sidestep a bug in LAMA
-                problem.addToInitialState(TermParser.parse("referent(dummysyntaxnode, dummyindiv)"));
-                problem.addToInitialState(TermParser.parse("distractor(dummysyntaxnode, dummyindiv)"));
-                problem.addToInitialState(TermParser.parse("subst(dummycategory, dummysyntaxnode)"));
-                problem.addToInitialState(TermParser.parse("canadjoin(dummycategory, dummysyntaxnode)"));
-                problem.addToInitialState(TermParser.parse("mustadjoin(dummycategory, dummysyntaxnode)"));        
+                //problem.addToInitialState(TermParser.parse("referent(dummysyntaxnode, dummyindiv)"));
+                //problem.addToInitialState(TermParser.parse("distractor(dummysyntaxnode, dummyindiv)"));
+                //problem.addToInitialState(TermParser.parse("subst(dummycategory, dummysyntaxnode)"));
+                //problem.addToInitialState(TermParser.parse("canadjoin(dummycategory, dummysyntaxnode)"));
+                //problem.addToInitialState(TermParser.parse("mustadjoin(dummycategory, dummysyntaxnode)"));
             }
             
             if (qName.equals("world")){
@@ -161,6 +164,7 @@ public class FastCRISPConverter  {
             
         }
         
+        @Override
         public void endElement(String namespaceURI, String localName, String qName)
         throws SAXException {
             
@@ -169,14 +173,20 @@ public class FastCRISPConverter  {
                 throw new SAXParseException("Cannot close "+qName+
             " here. Expected "+lastElement+".",null);
             
-            if (qName.equals("world")){ // Term definition ends here 
-                Term term = TermParser.parse(characterBuffer.toString()); // parse the Term               
+        if (qName.equals("world")){ // Term definition ends here
+                Term term = TermParser.parse(characterBuffer.toString()); // parse the Term
 
                 // This was in computeInitialState(Domain domain, Problem problem)
-                addPredicateInWorld((Compound) term);
-                domain.addPredicate(makeSemanticPredicate(term));
+                Compound compoundTerm = (Compound) term;
+                addPredicateInWorld(compoundTerm);
+
+                List<String> types = new ArrayList<String>();
+                for (int i=0; i<compoundTerm.getSubterms().size(); i++){
+                    types.add("individual");
+                }
+                domain.addPredicate(compoundTerm.getLabel(), types);
                 addIndividualConstants(term,domain);
-                
+
                 problem.addToInitialState(term);
                 trueAtoms.add(term);
             } 
@@ -240,73 +250,83 @@ public class FastCRISPConverter  {
     * @param problem
     */
     private void computeGoal(Domain domain, Problem problem) {
-        TypedVariableList tlNodeIndiv = new TypedVariableList();
-        tlNodeIndiv.addItem(new Variable("?u"), "syntaxnode");
-        tlNodeIndiv.addItem(new Variable("?x"), "individual");
+
+        List<Term> tlNodeIndiv = new ArrayList<Term>();
+        List<String> tlNodeIndivTypes = new ArrayList<String>();
+        tlNodeIndiv.add(new Variable("?u"));
+        tlNodeIndivTypes.add("syntaxnode");
+        tlNodeIndiv.add(new Variable("?x"));
+        tlNodeIndivTypes.add("individual");
         
-        TypedVariableList tlCatNode = new TypedVariableList();
-        tlCatNode.addItem(new Variable("?a"), "category");
-        tlCatNode.addItem(new Variable("?u"), "syntaxnode");
+        List<Term> tlCatNode = new ArrayList<Term>();
+        List<String> tlCatNodeTypes = new ArrayList<String>();
+        tlCatNode.add(new Variable("?a"));
+        tlCatNodeTypes.add("category");
+        tlCatNode.add(new Variable("?u"));
+        tlCatNodeTypes.add("syntaxnode");
         
         // collect all goals in this list
-        List<Goal> finalStateGoals = new ArrayList<Goal>();
+        List<Formula> finalStateGoals = new ArrayList<Formula>();
         
         // no positive "subst" literals in the goal state
-        Goal noSubst = new crisp.planningproblem.goal.Universal(tlCatNode,
-        new crisp.planningproblem.goal.Literal("subst(?a,?u)", false));
+        Formula noSubst = new Universal(tlCatNode, tlCatNodeTypes,
+        new Literal("subst(?a,?u)", false));
         
-        // no positive "distractor" literals in the goal state
-        //Goal noDistractors = new crisp.planningproblem.goal.Universal(tlNodeIndiv,
-        //new crisp.planningproblem.goal.Literal("distractor(?u,?x)", false));
-        
+             // no positive "distractor" literals in the goal state
+        Formula noDistractors = new Universal(tlNodeIndiv, tlNodeIndivTypes,
+                new Literal("distractor(?u,?x)", false));
+
         // no positive "mustadjoin" literals in the goal state
         //   this is only added if there is an action that creates a mustadjoin constraint
-        //   because otherwise the LAMA planner cannot handle universal preconditions 
-        //   involving this predicate.   
-        if (domain.sawMustadjoin()){           
-            Goal noMustAdj= new crisp.planningproblem.goal.Universal(tlCatNode,
-            new crisp.planningproblem.goal.Literal("mustadjoin(?a,?u)", false));
-            finalStateGoals.add(noMustAdj);
-        }
-        
+        //   because otherwise the LAMA planner cannot handle universal preconditions
+        //   involving this predicate.
+        //if (domain.sawMustadjoin()){
+        //    Goal noMustAdj= new crisp.planningproblem.goal.Universal(tlCatNode,
+        //    new crisp.planningproblem.goal.Literal("mustadjoin(?a,?u)", false));
+        //    finalStateGoals.add(noMustAdj);
+        //}
+
         finalStateGoals.add(noSubst);
-        //finalStateGoals.add(noDistractors);
-                
+        finalStateGoals.add(noDistractors);
+        
         // no positive needtoexpress-* literals, for any arity used in the communicative 
         // goals. If we would just do this for all arities the LAMA planner cannot handle 
         // the universal precondition involving needtoexpress predicates that do not occur        
         // elsewhere as an effect
         for( Integer i : problem.getComgoalArities()) {
-            TypedVariableList tlPredicate = new TypedVariableList();
-            tlPredicate.addItem(new Variable("?P"), "predicate");
+            List<Term> tlPredicate = new ArrayList<Term>();
+            List<String> tlPredicateTypes = new ArrayList<String>();
+            tlPredicate.add(new Variable("?P"));
+            tlPredicateTypes.add("predicate");
             
             List<Term> subterms = new ArrayList<Term>();
             subterms.add(new Variable("?P"));
             
             for( int j = 1; j <= i; j++ ) {
-                tlPredicate.addItem(new Variable("?x" + j), "individual");
+                tlPredicate.add(new Variable("?x" + j));
+                tlPredicateTypes.add("individual");
                 subterms.add(new Variable("?x" + j));                
             }
-            
-            finalStateGoals.add(new crisp.planningproblem.goal.Universal(tlPredicate,
-            new crisp.planningproblem.goal.Literal(new Compound("needtoexpress-" + i, subterms), false)));            
+
+
+            finalStateGoals.add(new Universal(tlPredicate, tlPredicateTypes,
+                    new Literal(new Compound("needtoexpress-" + i, subterms), false)));
         }
         
         // since negated needtoexpress-* literals can also occur with other arity we  
         // need to add predicates for any arity to the domain.        
-        for (int i = 1; i <= maximumArity; i++){
-            Predicate predNTE = new Predicate();
-            predNTE.setLabel("needtoexpress-" + i);
-            predNTE.addVariable("?P", "predicate");
-            
+        for (int i = 1; i <= maximumArity; i++){            
+                        
+            List<String> predNTEtypeList = new ArrayList<String>();
+            predNTEtypeList.add("predicate");
             for( int j = 1; j <= i; j++ ) 
-                predNTE.addVariable("?x" + j, "individual");
+                predNTEtypeList.add("individual");
             
-            domain.addPredicate(predNTE);
+            domain.addPredicate("needtoexpress-"+i, predNTEtypeList);
         }
         
         
-        problem.setGoal(new crisp.planningproblem.goal.Conjunction(finalStateGoals));
+        problem.setGoal(new Conjunction(finalStateGoals));
     }
     
     
@@ -340,31 +360,30 @@ public class FastCRISPConverter  {
         domain.addSubtype("predicate", "object");
         domain.addSubtype("rolename", "object");
         domain.addSubtype("treename", "object");
+
         
-        Predicate predSubst = new Predicate(); predSubst.setLabel("subst");
-        predSubst.addVariable("?x", "category"); predSubst.addVariable("?y", "syntaxnode");
-        domain.addPredicate(predSubst);
+        List<String> substTypeList = new ArrayList<String>();
+        substTypeList.add("category");
+        substTypeList.add("syntaxnode");        
+        domain.addPredicate("subst", substTypeList);
+
+        List<String> stepTypeList = new ArrayList<String>();
+        stepTypeList.add("stepindex");
+        domain.addPredicate("step", stepTypeList);
+
         
-        Predicate predStep = new Predicate(); predStep.setLabel("step");
-        predStep.addVariable("?i", "stepindex");
-        domain.addPredicate(predStep);
+        List<String> referentAndDistractorTypeList = new ArrayList<String>();
         
-        Predicate predDistractor = new Predicate(); predDistractor.setLabel("distractor");
-        predDistractor.addVariable("?u", "syntaxnode"); predDistractor.addVariable("?x", "individual");
-        domain.addPredicate(predDistractor);
+        referentAndDistractorTypeList.add("syntaxnode");
+        referentAndDistractorTypeList.add("individual");
+        domain.addPredicate("distractor",referentAndDistractorTypeList);
+        domain.addPredicate("referent",referentAndDistractorTypeList);
         
-        Predicate predReferent = new Predicate(); predReferent.setLabel("referent");
-        predReferent.addVariable("?u", "syntaxnode"); predReferent.addVariable("?x", "individual");
-        domain.addPredicate(predReferent);
-        
-        Predicate predCanadjoin = new Predicate(); predCanadjoin.setLabel("canadjoin");
-        predCanadjoin.addVariable("?x", "category"); predCanadjoin.addVariable("?y", "syntaxnode");
-        domain.addPredicate(predCanadjoin);
-        
-        Predicate predMustadjoin = new Predicate(); predMustadjoin.setLabel("mustadjoin");
-        predMustadjoin.addVariable("?x", "category"); predMustadjoin.addVariable("?y", "syntaxnode");
-        domain.addPredicate(predMustadjoin);
-        
+        List<String> adjoinTypeList = new ArrayList<String>();
+        adjoinTypeList.add("category");
+        adjoinTypeList.add("syntaxnode");
+        domain.addPredicate("canadjoin",adjoinTypeList);
+        domain.addPredicate("mustadjoin",adjoinTypeList);                
         
         domain.addConstant("root", "syntaxnode");
     }
@@ -382,7 +401,7 @@ public class FastCRISPConverter  {
         // for each tree in the grammar
         for(String treeName : grammar.getAllTreeNames() ) {
             
-            domain.addConstant(treeName, "treename");
+            domain.addConstant(normalizeTreename(treeName), "treename");
             
             // Get all nodes in the tree
             ElementaryTree<Term> tree = grammar.getTree(treeName);
@@ -391,8 +410,9 @@ public class FastCRISPConverter  {
             // store list of roles in each tree in a map by name
             HashSet<String> localRoles = new HashSet<String>();            
             for (String node : allNodeIds) {
-            	if( tree.getNodeDecoration(node) != null ) {
-            		localRoles.add(tree.getNodeDecoration(node).toString());
+                String decoration = tree.getNodeDecoration(node).toString();
+                if (decoration != null && (decoration.toString() != null) && tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION) {
+                    localRoles.add(tree.getNodeDecoration(node).toString());
             	}
             }            
             roles.put(treeName, localRoles);
@@ -411,7 +431,7 @@ public class FastCRISPConverter  {
             //System.out.println(entries.size());
             for (LexiconEntry entry: entries){
                 // Get the tree for this lexical entry from the hash map
-                String treeRef = entry.tree;
+                String treeRef = normalizeTreename(entry.tree);
                 ElementaryTree<Term> tree = grammar.getTree(entry.tree);
                 Collection<String> allNodes = tree.getAllNodes();
                 
@@ -422,17 +442,18 @@ public class FastCRISPConverter  {
                 //System.out.println("  " + treeRef + ": " + tree.getSignatureString());
                 
                 for (String node : allNodes) {
-                    String cat = tree.getNodeLabel(node);
+                    String cat = tree.getNodeLabel(node).toLowerCase();
                     if (cat==null || cat.equals("")) {
-                        cat = "NONE";
+                        cat = "none";
                     }
                     domain.addConstant(cat ,"category"); // add constants for categories to the domain
                     if (tree.getNodeType(node) == NodeType.SUBSTITUTION) {
                         substNodes.add(node);
                     } else {
                         if (tree.getNodeType(node) == NodeType.INTERNAL &&
-                            tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION &&
-                            tree.getNodeDecoration(node) != null) {
+                                tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION &&
+                                tree.getNodeDecoration(node) != null &&
+                                tree.getNodeDecoration(node).toString() != null) {
                                 adjNodes.add(node);            
                         }
                     }        
@@ -452,21 +473,20 @@ public class FastCRISPConverter  {
                 
                 //System.out.println(actionName);
                 
-                String rootCategory = tree.getNodeLabel(tree.getRoot());
+                String rootCategory = tree.getNodeLabel(tree.getRoot()).toLowerCase();
                 
                 for ( int i = 1; i <= plansize; i++ ) { 
                     domain.addConstant("step" + i, "stepindex");
-                    
-                    Predicate pred = new Predicate();
-                    List<Goal> goals = new ArrayList<Goal>();
-                    List<Effect> effects = new ArrayList<Effect>();
+                                        
+                    List<Formula> goals = new ArrayList<Formula>();
+                    List<Formula> effects = new ArrayList<Formula>();
                     
                     // compute n and I as in the paper
                     Map<String, String> n = new HashMap<String, String>();
                     Map<String, String> I = new HashMap<String, String>();
                     int roleno = 1;
                     
-                    for ( String role : roles.get(treeRef)) {
+                    for ( String role : roles.get(entry.tree)) {
                         //System.out.println(role);                        
                         if ( role.equals("self") )   
                             n.put(role,"?u");
@@ -477,27 +497,34 @@ public class FastCRISPConverter  {
                     }
                     
                     // compute the predicate
-                    pred.setLabel(actionName + "-" + i);
-                    pred.addVariable("?u", "syntaxnode");
-                    for ( String role : roles.get(treeRef) ) 
-                        pred.addVariable(I.get(n.get(role)), "individual");
-                    
+                    String label = actionName + "-" + i;
+                    List<Term> variables = new ArrayList<Term>();
+                    List<String> variableTypes = new ArrayList<String>();
+                    variables.add(new Variable("?u"));
+                    variableTypes.add("syntaxnode");
+                    for ( String role : roles.get(entry.tree) ) {
+                       variables.add(new Variable(I.get(n.get(role))));
+                       variableTypes.add("individual");
+                    }
+
+                    Compound pred = new Compound(label, variables);
+
                     // count the step
-                    goals.add(new crisp.planningproblem.goal.Literal("step(step" + i + ")", true));
-                    effects.add(new crisp.planningproblem.effect.Literal("step(step" + i + ")", false));
-                    effects.add(new crisp.planningproblem.effect.Literal("step(step" + (i+1) + ")", true));
+                    goals.add(new Literal("step(step" + i + ")", true));
+                    effects.add(new Literal("step(step" + i + ")", false));
+                    effects.add(new Literal("step(step" + (i+1) + ")", true));
                     
                     // require reference from u to the parameter for role self 
-                    goals.add(new crisp.planningproblem.goal.Literal("referent(?u,"+I.get("?u")+")", true));
+                    goals.add(new Literal("referent(?u,"+I.get("?u")+")", true));
                     
                     if (tree.getType() == ElementaryTreeType.INITIAL) {
                         // initial tree: fills substitution node
-                        goals.add(new crisp.planningproblem.goal.Literal("subst(" + rootCategory + ", ?u)", true));
-                        effects.add(new crisp.planningproblem.effect.Literal("subst(" + rootCategory + ", ?u)", false));
+                        goals.add(new Literal("subst(" + rootCategory + ", ?u)", true));
+                        effects.add(new Literal("subst(" + rootCategory + ", ?u)", false));
                     } else {
                         // auxiliary tree: adjoin, and satisfies mustadjoin requirements
-                        goals.add(new crisp.planningproblem.goal.Literal("canadjoin(" + rootCategory + ", ?u)", true));
-                        effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" + rootCategory + ", ?u)", false));
+                        goals.add(new Literal("canadjoin(" + rootCategory + ", ?u)", true));
+                        effects.add(new Literal("mustadjoin(" + rootCategory + ", ?u)", false));
                     }
                     
                     // all semantic contents must be satisfied 
@@ -509,13 +536,18 @@ public class FastCRISPConverter  {
                         Compound termWithVariables = (Compound) substituteVariablesForRoles(semContCompound, n, I);
                         
                         hasContent = true;
-                        
-                        domain.addPredicate(makeSemanticPredicate(semContCompound));
-                        goals.add(new crisp.planningproblem.goal.Literal(termWithVariables, true));
+
+                        Compound semPredicate = makeSemanticPredicate(semContCompound);
+                        List<String> semPredicateTypes = new ArrayList<String>();
+                        for (int j=0; j<semPredicate.getSubterms().size(); j++){
+                            semPredicateTypes.add("individual");
+                        }
+                        domain.addPredicate(semPredicate.getLabel(), semPredicateTypes);
+                        goals.add(new Literal(termWithVariables, true));
                         
                         contentWithVariables.add(termWithVariables);
                         
-                        effects.add(new crisp.planningproblem.effect.Literal(flattenTerm(termWithVariables, "needtoexpress"), false));
+                        effects.add(new Literal((Compound) flattenTerm(termWithVariables, "needtoexpress"), false));
                         
                         
                         if (semContCompound.getSubterms().size() > maximumArity) { 
@@ -538,40 +570,42 @@ public class FastCRISPConverter  {
                     
                     
                     // remove distractors
+                    
                     if ( hasContent ) {
                         Variable distractorVar = new Variable("?y");
                         Substitution distractorSubst = new Substitution(new Variable("?x1"), distractorVar);
-                        TypedVariableList distractorQuantifierVars = new TypedVariableList();
-                        distractorQuantifierVars.addItem(distractorVar, "individual");
+                        List<Term> distractorQuantifierVars = new ArrayList<Term>();
+                        List<String> distractorQuantifierVarTypes = new ArrayList<String>();
+
+                        distractorQuantifierVars.add(distractorVar);
+                        distractorQuantifierVarTypes.add("individual");
                         
-                        List<crisp.planningproblem.goal.Goal> literals = new ArrayList<crisp.planningproblem.goal.Goal>();
+                        List<Formula> literals = new ArrayList<Formula>();
                         for ( Term t: contentWithVariables ) 
-                            literals.add(new crisp.planningproblem.goal.Literal(distractorSubst.apply(t), true));
+                           literals.add(new Literal((Compound) distractorSubst.apply(t), true));
                         
-                        Goal distractorPrecondition = 
-                        new crisp.planningproblem.goal.Negation(new crisp.planningproblem.goal.Conjunction(literals));
+                        Formula distractorPrecondition =
+                        new Negation(new Conjunction(literals));
                         
-                        effects.add(new crisp.planningproblem.effect.Universal(distractorQuantifierVars,
-                        new crisp.planningproblem.effect.Conditional(distractorPrecondition,
-                        new crisp.planningproblem.effect.Literal("distractor(?u,?y)", false))));
+                        effects.add(new Universal(distractorQuantifierVars, distractorQuantifierVarTypes,
+                        new Conditional(distractorPrecondition, new Literal("distractor(?u,?y)", false))));
                     }
                     
-                    // TODO
-                    /* pragmatic effects
-                     *for( String pragEffect : entry.getPragEffects() ) {
-                     *   Compound effect = (Compound) TermParser.parse(pragEffect);
-                     * 
-                     *    if ( "uniqueref".equals(effect.getLabel())) {
-                     *       String roleN = n.get(effect.getSubterms().get(0).toString());
-                     *        TypedVariableList vars = new TypedVariableList();
-                     *        vars.addItem(new Variable("?y"), "individual");
-                     *
-                     *        effects.add(new crisp.planningproblem.effect.Universal(vars,
-                     *                new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", false)));
-                     *        break;
-                     *    }
-                     *}
-                     */
+                    // pragmatic effects
+                    /* for( String pragEffect : entry.getPragEffects() ) {
+                        Compound effect = (Compound) TermParser.parse(pragEffect);
+                      
+                         if ( "uniqueref".equals(effect.getLabel())) {
+                            String roleN = n.get(effect.getSubterms().get(0).toString());
+                             TypedVariableList vars = new TypedVariableList();
+                             vars.addItem(new Variable("?y"), "individual");
+                     
+                             effects.add(new crisp.planningproblem.effect.Universal(vars,
+                                     new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", false)));
+                             break;
+                         }
+                     }*/
+                     
                     
                     // effects for the substitution nodes
                     for (String substNode : substNodes) {
@@ -580,46 +614,72 @@ public class FastCRISPConverter  {
                         //System.out.println("    For substNode "+substNode);                            
                         //System.out.println(role+" "+roleN);
                         
-                        String cat = tree.getNodeLabel(substNode);
+                        String cat = tree.getNodeLabel(substNode).toLowerCase();
                         if (cat==null || cat.equals(""))                             
                             cat = "NONE";
                         
                         //subst 
-                        effects.add(new crisp.planningproblem.effect.Literal("subst(" + cat +", "+roleN + ")", true));
+                        effects.add(new Literal("subst(" + cat +", "+roleN + ")", true));
                         
                         if (!role.equals("self") ) 
                             domain.addConstant(roleN, "syntaxnode");
                         
                         //referent
-                        effects.add(new crisp.planningproblem.effect.Literal("referent(" + roleN + ", " + I.get(roleN) + ")", true));
+                        effects.add(new Literal("referent(" + roleN + ", " + I.get(roleN) + ")", true));
                         
                         //distractors
+                       
                         Variable distractorVar = new Variable("?y");
                         Substitution distractorSubst = new Substitution(new Variable(I.get(roleN)), distractorVar);
-                        TypedVariableList distractorQuantifierVars = new TypedVariableList();
-                        distractorQuantifierVars.addItem(distractorVar, "individual");
+
+                        List<Term> distractorQuantifierVars = new ArrayList<Term>();
+                        List<String> distractorQuantifierVarTypes = new ArrayList<String>();                        
+                        distractorQuantifierVars.add(distractorVar);
+                        distractorQuantifierVarTypes.add("individual");
                         
                         
                         // TODO - it's a bit of a hack that we use the same semantic requirement
                         // (modulo substitution) for each substitution node, even if it is irrelevant
                         // for the distractors of this substitution node.  But it seems to be ok.
-                        List<Goal> distractorPreconditions = new ArrayList<Goal>();
-                        distractorPreconditions.add(new crisp.planningproblem.goal.Literal("**equals**(?y," + I.get(roleN) + ")", false));
-                        
-                        /*
+                        List<Formula> distractorPreconditions = new ArrayList<Formula>();
+                        distractorPreconditions.add(new Literal("**equals**(?y," + I.get(roleN) + ")", false));
+                          /*
                         *for( String sr : entry.getSemReqs() ) {
                             *    Term term = distractorSubst.apply(substituteVariablesForRoles(TermParser.parse(sr), n, I));
                             *    domain.addPredicate(makeSemanticPredicate(term));
                             *    distractorPreconditions.add(new crisp.planningproblem.goal.Literal(term, true));
                         *}
                         */
+
+                        /*
+                        Formula distractorPrecondition = new Conjunction(distractorPreconditions);
                         
-                        Goal distractorPrecondition = new crisp.planningproblem.goal.Conjunction(distractorPreconditions);
-                        
-                        effects.add(new crisp.planningproblem.effect.Universal(distractorQuantifierVars,
-                        new crisp.planningproblem.effect.Conditional(distractorPrecondition,
-                        new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", true))));
-                        
+                        effects.add(new Universal(distractorQuantifierVars, distractorQuantifierVarTypes,
+                        new Conditional(distractorPrecondition, 
+                                    new Literal("distractor(" + roleN + ",?y)", true))));
+                         */
+                        /*
+                        for (Term sr : entry .getSemanticRequirements()) {
+                            Term term = distractorSubst.apply(substituteVariablesForRoles(sr, n, I));
+                            distractorPreconditions.add(new Literal((Compound) term, true));
+
+                            Compound distractorPredicate = makeSemanticPredicate(term);
+                            List<String> distractorPredicateTypes = new ArrayList<String>();
+                            for (int j = 0; j < distractorPredicate.getSubterms().size(); j++) {
+                                distractorPredicateTypes.add("individual");
+                            }
+
+                            domain.addPredicate(distractorPredicate.getLabel(), distractorPredicateTypes);
+
+                        }
+                        */
+                        Formula distractorPrecondition = new Conjunction(distractorPreconditions);
+
+                        effects.add(new Universal(distractorQuantifierVars, distractorQuantifierVarTypes,
+                                new Conditional(distractorPrecondition,
+                                new Literal("distractor(" + roleN + ",?y)", true))));
+
+
                     }
                     
                     // internal nodes: allow adjunction
@@ -627,29 +687,27 @@ public class FastCRISPConverter  {
                         
                         String role = tree.getNodeDecoration(adjNode).toString();
                         String roleN = n.get(role);
-                        String cat = tree.getNodeLabel(adjNode);
+                        String cat = tree.getNodeLabel(adjNode).toLowerCase();
                         
                         if (cat.equals(""))                             
                             cat = "NONE";
                         
                         // canadjoin
-                        effects.add(new crisp.planningproblem.effect.Literal("canadjoin(" + cat + ", " + roleN + ")", true));
+                        effects.add(new Literal("canadjoin(" + cat + ", " + roleN + ")", true));
                         
                         // mustadjoin                    
                         if( tree.getNodeConstraint(adjNode) == Constraint.OBLIGATORY_ADJUNCTION){ 
-                            effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(" + cat + ", " + roleN + ")", true));
-                            domain.registerMustadjoin(); // set mustadjoin flag
+                            effects.add(new Literal("mustadjoin(" + cat + ", " + roleN + ")", true));
+                            //domain.registerMustadjoin(); // set mustadjoin flag
                         }
                         
                         // don't need to add constant to the domain because we ASSUME that every role
                         // except for "self" decorates some substitution node (and hence is added there)                    
                     }
                     
-                    
-                    HashMap<String,String> constants = null;
-                    ArrayList<Predicate> predicates = null;
+                                      
                     // Finally create action and add it to the domain
-                    Action a = new Action(pred, new crisp.planningproblem.goal.Conjunction(goals), new crisp.planningproblem.effect.Conjunction(effects), constants, predicates);
+                    Action a = new Action(pred, variableTypes, new Conjunction(goals), new Conjunction(effects));
                     domain.addAction(a);
                 }
                 
@@ -661,36 +719,34 @@ public class FastCRISPConverter  {
 
 
         // Add dummy action, needed to sidestep a LAMA bug
-        ArrayList<Goal> preconds = new ArrayList<Goal>();
-        preconds.add(new crisp.planningproblem.goal.Literal("step(step1)",true));
-        ArrayList<Effect> effects = new ArrayList<Effect>();
-        HashMap<String,String> constants = new HashMap<String,String>();
-        List<Predicate> predicates = new ArrayList<Predicate>();
+        ArrayList<Formula> preconds = new ArrayList<Formula>();
+        preconds.add(new Literal("step(step1)",true));
+        ArrayList<Formula> effects = new ArrayList<Formula>();        
 
         domain.addConstant("dummyindiv", "individual");
         domain.addConstant("dummypred", "predicate");       
         domain.addConstant("dummysyntaxnode", "syntaxnode");
         domain.addConstant("dummycategory", "category");
 
-        effects.add(new crisp.planningproblem.effect.Literal("referent(dummysyntaxnode, dummyindiv)",false));
-        effects.add(new crisp.planningproblem.effect.Literal("distractor(dummysyntaxnode, dummyindiv)",false));
-        effects.add(new crisp.planningproblem.effect.Literal("subst(dummycategory, dummysyntaxnode)",false));
-        effects.add(new crisp.planningproblem.effect.Literal("canadjoin(dummycategory, dummysyntaxnode)",false));
-        effects.add(new crisp.planningproblem.effect.Literal("mustadjoin(dummycategory, dummysyntaxnode)",false));
+        effects.add(new Literal("referent(dummysyntaxnode, dummyindiv)",false));
+        effects.add(new Literal("distractor(dummysyntaxnode, dummyindiv)",false));
+        effects.add(new Literal("subst(dummycategory, dummysyntaxnode)",false));
+        effects.add(new Literal("canadjoin(dummycategory, dummysyntaxnode)",false));
+        effects.add(new Literal("mustadjoin(dummycategory, dummysyntaxnode)",false));
         for(int i=1; i <= maximumArity; i++ ) {
             List<Term> subterms = new ArrayList<Term>();
+            subterms.add(new Constant("dummypred"));
             for (int j=1; j<=i; j++){
                 subterms.add(new Constant("dummyindiv"));
             }
-            Compound c = new Compound("needtoexpress_"+i, subterms);
-            effects.add(new crisp.planningproblem.effect.Literal(c,false));
+            Compound c = new Compound("needtoexpress-"+i, subterms);
+            effects.add(new Literal(c,false));
         }
 
 
-        Action dummyAction = new Action(new Predicate("dummy"),
-                                        new crisp.planningproblem.goal.Conjunction(preconds),
-                                        new crisp.planningproblem.effect.Conjunction(effects),
-                                        constants, predicates);
+        Action dummyAction = new Action(new Compound("dummy", new ArrayList<Term>()), new ArrayList<String>(),
+                                        new Conjunction(preconds),
+                                        new Conjunction(effects));
         domain.addAction(dummyAction);
     }
     
@@ -783,10 +839,11 @@ public class FastCRISPConverter  {
     * @param treename
     * @return
     *
-    * private  String normalizeTreename(String treename) {
-        *   return treename.replace("i.", "init-").replace("a.", "aux-");
-    * }
     */
+    private  String normalizeTreename(String treename) {
+        return treename.replace("i.", "init-").replace("a.", "aux-");
+    }
+    
     
     /**
     * Translates a term into one in which the predicate symbol of the original
@@ -827,25 +884,25 @@ public class FastCRISPConverter  {
         }
     }
     
-    /**
+   /**
     * Translates a Term into a Predicate.  This method assumes that the argument
     * is really an object of class Compound.
     *
     * @param term
     * @return
     */
-    private  Predicate makeSemanticPredicate(Term term) {
-        Predicate ret = new Predicate();
+    public static Compound makeSemanticPredicate(Term term) {
+
         Compound t = (Compound) term;
-        
-        ret.setLabel(t.getLabel());
-        for( int i = 1; i <= t.getSubterms().size(); i++ ) {
-            ret.addVariable("?y" + i, "individual");
-        }
-        
-        return ret;
+
+        List<Term> subterms = new ArrayList<Term>();
+        for( int i = 1; i <= t.getSubterms().size(); i++ )
+            subterms.add(new Variable("?y" + i));
+
+        return new Compound(t.getLabel(),subterms);
     }
-    
+
+
     /*
     public static File convertGrammarPath(String filename){
         return new File(problempath,filename);

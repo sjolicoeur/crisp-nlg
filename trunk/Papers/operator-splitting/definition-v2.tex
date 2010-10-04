@@ -1,0 +1,182 @@
+
+
+\section{Initial Definition}
+\label{initial-definition}
+
+
+\joerg{Note: our email text is contained at the end of the tex file as
+  a comment}
+
+
+
+Given an operator $o$ with parameters $P(o)$, define as the
+\emph{parameter-groups} the set $G(o) = \{G_1, \dots, G_n\}$ of
+parameter subsets $G_i \subseteq P(o)$ that arises from starting with
+$G(o) = \emptyset$, then looping over all predicate $p$ in $o$'s
+description and inserting the set of $p$'s parameters as a new group
+$G_i$.
+
+
+A \emph{$k$-split} of $o$ is a set $S(o) = \{S_1, \dots, S_k\}$ of
+parameter subsets so that: (1) $\bigcup_{j=1}^k S_j = P(o)$; (2) for
+all $1 \leq i \leq n$ there exists $1 \leq j \leq k$ so that $G_i
+\subseteq S_j$. The \emph{arity} of a split $S(o)$ is $max_{1\leq j
+  \leq k} |S_j|$. A split is \emph{arity-minimizing} if there exists
+no other split (for any $k$) that has smaller arity. The
+\emph{overlap} of a split $S(o)$ is $|\bigcap_{j=1}^k S_j|$. A split
+is \emph{overlap-minimizing} if there exists no other split that has
+smaller overlap.
+%$S'(o)$ so that $max_{1\leq j \leq k} |S_j| > max_{1\leq j \leq k'}
+%  |S'_j|$. A $k$-split $S(o)$ is \emph{overlap-minimizing} if there
+%  exists no other split (for any $k$) $S'(o)$ so that
+%  $|\bigcap_{j=1}^k S_j| > |\bigcap_{j=1}^{k'} S'_j|$.
+\joerg{I'm not sure if overlap-minimzation is meaningful, but
+  I thought I can just as well state it. I haven't yet thought at all
+  about any possible implications between the two, neither whether
+  finding minimal splits is hard. I would guess it's not.}
+
+
+We observe that, given a split, we can re-write $o$ into $k$ operators
+$o_1, \dots, o_k$ so that executing $o$ is equivalent to executing
+$o_1, \dots, o_k$ in sequence -- note that this is basically inverting
+all the known work on macro-operators... :-)
+
+
+We introduce new $0$-ary predicates $processing\mbox{-}none$,
+$do\mbox{-}o_2, \dots, do\mbox{-}o_k$. We introduce new $1$-are
+predicates $arg_1(.), \dots, arg_l(.)$ where $l = |P(o)|$ is the
+number of parameters of $o$, and $x_1, \dots, x_l$ is an arbitrary
+ordering of $P(o)$. $processing\mbox{-}none$ becomes a precondition of
+every operator other than $o$, as well as of $o_1$; it becomes a
+delete of $o_1$, and an add effect of $o_k$. $do\mbox{-}o_i$ becomes
+an add effect of $o_{i-1}$, a precondition of $o_i$, and a delete
+effect of $o_i$. The precondition/add list/delete list of $o_i$
+consist: (a) of those predicates $p$ of $o$ whose parameters are a
+subset of $S_i$ -- more precisely, we put each predicates into exactly
+one (arbitrary) $o_i$ for which this is the case; (b) for any operator
+$op_i$ in which parameter $x_j$ appears for the first time in the
+sequence $o_1, \dots, o_k$, $arg_j(x_j)$ is inserted into the add
+effect of $o_1$, and into the precondition of any $o_g$, $g > i$,
+where $o_g$ also uses parameter $x_j$. \joerg{Unless I'm mistaken,
+  this simple construction does the job -- the modified planning task
+  has ``the same''set of plans, modulo replacing $o_1, \dots, o_k$
+  with an according instantiation of $o$ (of course we need to prove
+  this formally). Generalizing this to splitting up several operators
+  should be straightforward. ... I think there will also be an
+  inter-action with predicate-splitting as known in logics: smaller
+  predicate arity will yield smaller parameter groups and thus splits
+  with smaller arity!}
+
+
+For example, consider the blocksworld operator ``move(A,B,C)'', whose
+precondition is ``on(A,B),clear(A),clear(C)'', whose add is ``on(A,C),
+clear(B)'' and whose del is ``on(A,B), clear(C)''. A 2-split is given
+by ``A,B'' and ``A,C''. We get the actions ``move1(A,B)'' with pre
+``processing-none, on(A,B), clear(A)'', add ``do-move2, clear(B),
+arg1(A), arg2(B)'', del ``on(A B), processing-none''; and
+``move2(A,C)''with pre ``do-move2, clear(C), arg1(A)'', add ``on(A C),
+processing-none, arg3(C)'', del ``clear(C), do-move2''.
+
+
+
+\joerg{I note that this construction may run planners into trouble
+  because, somewhere along the way $o_1, \dots, o_k$, a precondition
+  may not be satisfied, ie there may not exists any continuation of
+  the operator $o$ -- an instantiation of the remaining parameters --
+  so that the op execution can be completed. The planner then finds
+  itself in a dead-end. One may think of giving the option to ``roll
+  back'' an execution. .. well dunno if this would help or be
+  detrimental. something to keep in mind.}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%OLD stuff / meta info
+
+
+
+\commentout{
+
+%email feedback by alex and carlos, replies by joerg (1 october 2010)
+
+> The encoding of move(A,B,C) in your draft does not work, for two
+>reasons. First, nothing in your encoding enforces that between move1
+>and move2, only component actions of "move" can be
+>executed. Presumably, putdown2 (created by splitting the putdown
+>operator) can also be executed whenever OK is false, even if do-move2
+>is true.
+
+Nope -- putdown2 has the precondition "do-putdown2" which will not be fulfilled here.
+
+> The second problem is that nothing in the encoding enforces that A
+> is bound to the same value in move1 and move2. One could easily
+> "split" move(a1,b,c) into the two actions move1(a1,b) and
+> move2(a2,c), and the planner would see nothing wrong with it. This
+> means that we need a mechanism for keeping track of the variable
+> bindings.
+
+>
+> We propose the following variant of your mechanism:
+>
+> move1(A,B)
+>  - pre: processing(none), on(A,B), clear(A)
+>  - effects: ~processing(none), processing(move), clear(B), ~on(A,B), arg1(A), arg2(B)
+>
+> move2(A,C)
+>  - pre: processing(move), arg1(A), clear(C)
+>  - effects: ~processing(move), processing(none), arg3(C), on(A,C)
+
+Yes, good point. I incorporated this into the draft.
+
+> - At each point in the plan, exactly one instance of processing(X)
+>is true. While a split of the action "a" is processed, this is the
+>atom processing(a); otherwise it is processing(none).
+
+Yep; the same effect is achieved via my construction, where the "do-*"
+predicate is true only for one operator (and one part i of that
+operator). I did adopt, in the draft, your name "processing-none"
+rather than my nondescript "OK".
+
+Note that I say "operator" not "action". This is old-school talk for
+distinguishing between the high-level "operators", using variables, in
+the usual PDDL file, and the grounded propositional-logic "actions". I
+know, it's not very consistent because in PDDL the denotation actually
+is "action"... ;-) ... anyway, let's please stick to this.
+
+> If the order in which the component actions of the split are
+>  executed is important, one could keep track of the action number in
+>  a separate predicate.
+
+The order is important, at least to the extent that we need to know
+what the *last* action will be -- the one to re-establish
+"processing-none". From a more general perspective, I think that a
+total ordering could be beneficial for planners because it gives less
+options to the search -- it is more explicit about the fact that the
+only choice we have is how to instantiate the remaining parameters.
+
+> However, one thing that may be inconvenient about this encoding is
+> that only one action can be executed at a time. This would make it
+> impossible e.g. for Graphplan to parallelize the execution of
+> different actions, because the components of splits for different
+> operators have mutex preconditions. Is this going to be a problem
+> for FF or other modern planners?
+
+The only potential problem I see is that the heuristic functions may
+get "confused" by this construction, ie yield worse search guidance
+than on the original planning task. ... we'll just have to see about
+this empirically.
+}

@@ -1,0 +1,82 @@
+
+
+\section{Definition Version 1}
+\label{definition-v1}
+
+\joerg{this entire section is outdated and kept only as a point of
+  reference.}
+
+
+
+Given an operator $o$ with parameters $P(o)$, define as the
+\emph{parameter-groups} the set $G(o) = \{G_1, \dots, G_n\}$ of
+parameter subsets $G_i \subseteq P(o)$ that arises from starting with
+$G(o) = \emptyset$, then looping over all predicate $p$ in $o$'s
+description and inserting the set of $p$'s parameters as a new group
+$G_i$.
+
+
+A \emph{$k$-split} of $o$ is a set $S(o) = \{S_1, \dots, S_k\}$ of
+parameter subsets so that: (1) $\bigcup_{j=1}^k S_j = P(o)$; (2) for
+all $1 \leq i \leq n$ there exists $1 \leq j \leq k$ so that $G_i
+\subseteq S_j$. The \emph{arity} of a split $S(o)$ is $max_{1\leq j
+  \leq k} |S_j|$. A split is \emph{arity-minimizing} if there exists
+no other split (for any $k$) that has smaller arity. The
+\emph{overlap} of a split $S(o)$ is $|\bigcap_{j=1}^k S_j|$. A split
+is \emph{overlap-minimizing} if there exists no other split that has
+smaller overlap.
+%$S'(o)$ so that $max_{1\leq j \leq k} |S_j| > max_{1\leq j \leq k'}
+%  |S'_j|$. A $k$-split $S(o)$ is \emph{overlap-minimizing} if there
+%  exists no other split (for any $k$) $S'(o)$ so that
+%  $|\bigcap_{j=1}^k S_j| > |\bigcap_{j=1}^{k'} S'_j|$.
+\joerg{I'm not sure if overlap-minimzation is meaningful, but
+  I thought I can just as well state it. I haven't yet thought at all
+  about any possible implications between the two, neither whether
+  finding minimal splits is hard. I would guess it's not.}
+
+
+We observe that, given a split, we can re-write $o$ into $k$ operators
+$o_1, \dots, o_k$ so that executing $o$ is equivalent to executing
+$o_1, \dots, o_k$ in sequence -- note that this is basically inverting
+all the known work on macro-operators... :-)
+
+
+We introduce new $0$-ary predicates $OK$, $do-o_2, \dots,
+do-o_k$. $OK$ becomes a precondition of every operator other than $o$,
+as well as of $o_1$; it becomes a delete of $o_1$. $do-o_i$ becomes an
+add effect of $o_{i-1}$, a precondition of $o_i$, and a delete effect
+of $o_i$. The precondition/add list/delete list of $o_i$ simply
+consists of those predicates $p$ of $o$ whose parameters are a subset
+of $S_i$ -- more precisely, we put each predicates into exactly one
+(arbitrary) $o_i$ for which this is the case. \joerg{Unless I'm
+  mistaken, this simple construction does the job -- the modified
+  planning task has ``the same''set of plans, modulo replacing $o_1,
+  \dots, o_k$ with an according instantiation of $o$ (of course we
+  need to prove this formally). Generalizing this to splitting up
+  several operators should be straightforward. ... I think there will
+  also be an inter-action with predicate-splitting as known in logics:
+  smaller predicate arity will yield smaller parameter groups and thus
+  splits with smaller arity!}
+
+
+For example, consider the blocksworld operator ``move(A,B,C)'', whose
+precondition is ``on(A,B),clear(A),clear(C)'', whose add is ``on(A,C),
+clear(B)'' and whose del is ``on(A,B), clear(C)''. A 2-split is given
+by ``A,B'' and ``A,C''. We get the actions ``move1(A,B)'' with pre
+``OK, on(A,B), clear(A)'', add ``do-move2, clear(B)'', del ``on(A B),
+OK''; and ``move2(A,C)''with pre ``do-move2, clear(C)'', add ``on(A
+C), OK'', del ``clear(C), do-move2''.
+
+
+
+\joerg{I note that this construction may run planners into trouble
+  because, somewhere along the way $o_1, \dots, o_k$, a precondition
+  may not be satisfied, ie there may not exists any continuation of
+  the operator $o$ -- an instantiation of the remaining parameters --
+  so that the op execution can be completed. The planner then finds
+  itself in a dead-end. One may think of giving the option to ``roll
+  back'' an execution. .. well, maybe this is nonsense because
+  branching factor inside $o_1, \dots, o_k$ is zero anyway so
+  back-tracking is ``easy''. Well, something to keep in mind.}
+
+

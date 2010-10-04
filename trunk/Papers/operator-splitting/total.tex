@@ -1,0 +1,111 @@
+\documentclass{llncs}
+\usepackage{times}
+\usepackage{helvet}
+\usepackage{courier}
+\usepackage{epsfig,graphics,latexsym}
+\usepackage{amsmath,amssymb,theorem,enumerate}
+
+
+%% Farbige Kommentar-Felder
+\usepackage[usenames]{color} % Only used in comment commands
+
+
+\newcommand{\commentout}[1]{}
+
+
+
+\definecolor{Blue}{rgb}{0,0.16,0.90}
+\definecolor{Red}{rgb}{0.90,0.16,0}
+\definecolor{DarkBlue}{rgb}{0,0.08,0.45}
+\definecolor{ChangedColor}{rgb}{0.9,0.08,0}
+\definecolor{CommentColor}{rgb}{0.2,0.8,0.2}
+\definecolor{ToDoColor}{rgb}{0.1,0.2,1}
+
+\definecolor{verylightgray}{rgb}{0.91,0.91,0.91}
+
+% *** Use this definition of the command to show the comments ***
+\newcommand{\todo}[1]{\textbf{\color{ToDoColor} TODO: #1}}
+\newcommand{\joerg}[1]{\textbf{\color{CommentColor} /* #1  (joerg)*/}}
+\newcommand{\alex}[1]{\textbf{\color{CommentColor} /* #1  (alex)*/}}
+\newcommand{\carlos}[1]{\textbf{\color{CommentColor} /* #1  (carlos)*/}}
+
+
+
+
+%\newenvironment{proof}{\noindent {\bf Proof:}}%
+%{\hfill \rule[0.3ex]{1ex}{1ex} \par \addvspace{\bigskipamount}}
+
+\newenvironment{proofsketch}{\noindent {\bf Proof Sketch:}}%
+{\hfill \rule[0.3ex]{1ex}{1ex} \par \addvspace{\bigskipamount}}
+
+
+
+
+\title{When Operators Learned How to Split Up}
+
+\author{Koller, Areces, Hoffmann, \& Friends}
+
+
+\institute{I'm sure they're working somewhere \dots}
+
+
+
+
+
+
+\begin{document}
+
+
+\maketitle
+
+
+\begin{abstract}
+PDDL is arguably a programming language for planners. While that
+language, in the case of ``fully automatic'' planners, is limited to a
+description of the mechanics of the domain of interest, it is
+well-known that different models of the same domain can yield immense
+differences in planner performance. Indeed, to a considerable extent
+the domain-designing activities of hitherto IPC organizers consisted
+of ``spoon-feeding'' the targeted domains to the planners, in that
+they used their inside knowledge of planning algorithms to design the
+domains in a way so that existing planners could attack them in a
+sensible way. However, what if actual ``end-users'', people that want
+to use planners but that haven't spent the last 10 years implementing
+them, wish to ``spoon-feed'' their domain to the planners?
+
+To some extent, this can be supported by documentation and best
+practices explanations, as well as graphical environments for domain
+modeling. However, the holy grail would be to provide
+\emph{domain-rewriting} techniques, in a manner similar to what is
+known as program re-writing: Given an input model designed by the
+end-user, can we automatically modify that model to yield better
+performance, while still encoding essentially the same domain?
+
+We herein begin to address this question, focussing on one particular
+technical detail that affects the pre-processing (and in certain ways
+also the search techniques) of many existing planners: the number of
+operator parameters. For example, in the development of the Pipesworld
+domain as used at IPC 2004, one of the essential steps was to split up
+some of the operators, so that each part would have less parameters
+and thus be more feasible for common pre-processing techniques. We
+herein provide an automatic method that does just that. We evaluate
+the method on IPC benchmarks, as well as on the domain of sentence
+generation, where pre-processing, in particular related to the number
+of operator parameters, is known to be one of the major obstacles.
+\end{abstract}
+
+
+
+
+\input{definition-v1}
+
+\input{definition-v2}
+
+
+
+
+\bibliographystyle{plain}
+\bibliography{biblio}
+
+
+\end{document}

@@ -15,7 +15,6 @@ import crisp.result.DerivationTreeBuilder;
 import de.saar.chorus.term.Term;
 import de.saar.penguin.tag.derivation.DerivationTree;
 import de.saar.penguin.tag.derivation.DerivedTree;
-import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -34,6 +33,7 @@ public class CurrentNextCrispConverterTest {
     private DerivationTreeBuilder planDecoder;
     private CrispGrammar grammar;
 
+    /*
     @Before
     public void setUp() throws FileNotFoundException, ParserException, IOException, ParserConfigurationException, SAXException {
         CurrentNextCrispConverter converter;
@@ -50,15 +50,36 @@ public class CurrentNextCrispConverterTest {
 
         planDecoder = new CrispDerivationTreeBuilder(grammar);
     }
+     * 
+     */
+
+    private void loadAndConvert(String grammarResourceName, String problemResourceName) throws ParserException, IOException, ParserConfigurationException, SAXException {
+        CurrentNextCrispConverter converter;
+        domain = new Domain();
+        problem = new Problem();
+
+        grammar = new CrispGrammar();
+        codec.parse(new InputStreamReader(getClass().getResourceAsStream(grammarResourceName)), grammar);
+
+        Reader problemfile = new InputStreamReader(getClass().getResourceAsStream(problemResourceName));
+
+        converter = new CurrentNextCrispConverter();
+        converter.convert(grammar, problemfile, domain, problem);
+
+        planDecoder = new CrispDerivationTreeBuilder(grammar);
+    }
 
     @Test
-    public void testConvertOnce() {
+    public void testConvertOnce() throws Exception {
+        loadAndConvert("/grammar-scrisp.xml", "/problem-scrisp-give1-generated.xml");
         assert domain != null;
         assert problem != null;
     }
 
     @Test
     public void testConvertTwiceFreshGrammar() throws IOException, SAXException, ParserConfigurationException, ParserException {
+        loadAndConvert("/grammar-scrisp.xml", "/problem-scrisp-give1-generated.xml");
+
         Domain domain2 = new Domain();
         Problem problem2 = new Problem();
 
@@ -86,7 +107,9 @@ public class CurrentNextCrispConverterTest {
     }
 
     @Test
-    public void testConvertTwice() throws IOException, SAXException, ParserConfigurationException {
+    public void testConvertTwice() throws Exception {
+        loadAndConvert("/grammar-scrisp.xml", "/problem-scrisp-give1-generated.xml");
+
         Domain domain2 = new Domain();
         Problem problem2 = new Problem();
         CurrentNextCrispConverter converter = new CurrentNextCrispConverter();
@@ -109,6 +132,8 @@ public class CurrentNextCrispConverterTest {
 
     @Test
     public void testDerivationTree() throws Exception {
+        loadAndConvert("/grammar-scrisp.xml", "/problem-scrisp-give1-generated.xml");
+
         PlannerInterface planner = new FfPlannerInterface();
         List<Term> plan = planner.runPlanner(domain, problem);
         DerivationTree result = planDecoder.buildDerivationTreeFromPlan(plan, domain);
@@ -127,47 +152,33 @@ public class CurrentNextCrispConverterTest {
 
     @Test
     public void testCorrectSentence() throws Exception {
-        PlannerInterface planner = new FfPlannerInterface();
-        List<Term> plan = planner.runPlanner(domain, problem);
-        DerivationTree derivationTree = planDecoder.buildDerivationTreeFromPlan(plan, domain);
-        DerivedTree derivedTree = derivationTree.computeDerivedTree(grammar);
-
-//        System.err.println("\n\nderivation:\n" + derivationTree);
-//        System.err.println("\n\nderived:\n" + derivedTree);
-
-        String sent = derivedTree.yield();
+        loadAndConvert("/grammar-scrisp.xml", "/problem-scrisp-give1-generated.xml");
+        String sent = planAndExtract();
 
         assertEquals("movetwosteps and turnleft then push the green button", sent);
     }
 
     @Test
-    public void testTransitive() throws Exception {
-        Domain domain2 = new Domain();
-        Problem problem2 = new Problem();
-        CrispGrammar grammar2 = new CrispGrammar();
+    public void testLongerScrispSentence() throws Exception {
+        loadAndConvert("/grammar-scrisp.xml", "/problem-scrisp-give1-generated-2.xml");
+        String sent = planAndExtract();
 
-        codec.parse(new InputStreamReader(getClass().getResourceAsStream("/modifiers-grammar.xml")), grammar2);
+        assertEquals("moveonestep and turnright then movetwosteps and movethreesteps then push the red button", sent);
+    }
 
-        Reader problemfile = new InputStreamReader(getClass().getResourceAsStream("/modifiers-transitive-problem.xml"));
-
-        CurrentNextCrispConverter converter = new CurrentNextCrispConverter();
-        converter.convert(grammar2, problemfile, domain2, problem2);
-
-        planDecoder = new CrispDerivationTreeBuilder(grammar2);
-
-
+    private String planAndExtract() throws Exception {
         PlannerInterface planner = new FfPlannerInterface();
-        List<Term> plan = planner.runPlanner(domain2, problem2);
-
-//        System.err.println("\n\nplan: " + plan);
-
-        DerivationTree derivationTree = planDecoder.buildDerivationTreeFromPlan(plan, domain2);
-//        System.err.println("\n\nderivation:\n" + derivationTree);
-
-        DerivedTree derivedTree = derivationTree.computeDerivedTree(grammar2);
-//        System.err.println("\n\nderived:\n" + derivedTree);
-
+        List<Term> plan = planner.runPlanner(domain, problem);
+        DerivationTree derivationTree = planDecoder.buildDerivationTreeFromPlan(plan, domain);
+        DerivedTree derivedTree = derivationTree.computeDerivedTree(grammar);
         String sent = derivedTree.yield();
+        return sent;
+    }
+
+    @Test
+    public void testTransitive() throws Exception {
+        loadAndConvert("/modifiers-grammar.xml", "/modifiers-transitive-problem.xml");
+        String sent = planAndExtract();
 
         assertEquals("the blue button likes the red button", sent);
     }

@@ -23,13 +23,14 @@ import java.util.List;
  * A simple implementation of the @{CRISPGeneratorInterface} using the current state
  * of the standard CRISP generation system (with "steps" andwithout pragmatics or
  * context or probabilistic grammars). It also creates a new PDDL domain for every
- * problem instance and thus does not benefit from Konstantinas optimizations.
+ * problem instance and thus does not benefit from Konstantina's optimizations.
  * <p/>
- * Use this class only through the @{CRISPGeneratorInterface} as it is likely to be modified
- * very soon.
+ * Please don't use this class any more. It relies on older versions of CRISP,
+ * and is no longer being maintained. Use GenerateSentence instead.
  *
  * @author dbauer
  */
+@Deprecated
 public class BasicCrispGenerator implements CrispGeneratorInterface {
     CrispGrammar grammar = null;
     CurrentNextCrispConverter converter;

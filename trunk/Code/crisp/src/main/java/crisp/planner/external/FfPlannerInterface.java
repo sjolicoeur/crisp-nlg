@@ -35,9 +35,6 @@ import java.util.regex.Pattern;
 
 
 public class FfPlannerInterface implements PlannerInterface {
-
-    public final String FF_BIN = "/proj/penguin/planners/FF-v2.3/new-ff-mac";
-
     public static final String TEMPDOMAIN_FILE = "/tmp/tmpdomain.lisp";
     public static final String TEMPPROBLEM_FILE = "/tmp/tmpproblem.lisp";
     public static final String TEMPRESULT_FILE = "/tmp/tmpresult";
@@ -55,10 +52,10 @@ public class FfPlannerInterface implements PlannerInterface {
 
         try {
             Properties crispProps = new Properties();
-            crispProps.load(new FileReader(new File(crisp.main.Generate.PROPERTIES_FILE)));
+            crispProps.load(new FileReader(new File(crisp.main.GenerateSentence.PROPERTIES_FILE)));
             binaryLocation = crispProps.getProperty("FfBinary");
         } catch (IOException ex) {
-            binaryLocation = FF_BIN;
+            throw new RuntimeException("An error occurred while trying to read the properties file: " + ex.getMessage());
         }
 
     }

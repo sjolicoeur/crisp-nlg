@@ -544,7 +544,7 @@ public class CurrentNextCrispConverter {
                 // Get the tree for this lexical entry from the hash map
                 String treeRef = normalizeTreename(entry.tree);
                 ElementaryTree<Term> tree = grammar.getTree(entry.tree);
-                Collection<String> allNodes = tree.getAllNodes();
+                Collection<String> allNodes = tree.getAllNodesInDfsOrder();
 
                 // Get lists of nodes that are open for substitution and adjunction
                 ArrayList<String> substNodes = new ArrayList<String>();

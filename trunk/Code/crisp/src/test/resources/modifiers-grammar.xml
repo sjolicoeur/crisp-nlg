@@ -31,6 +31,22 @@
         </node>
     </tree>
 
+    <tree id="i.trans">
+        <node cat="s" sem="self">
+            <node type="substitution" cat="np" sem="subj"/>
+            <node cat="vp" sem="self">
+                <leaf cat="v" type="anchor" sem="self"/>
+                <leaf type="substitution" cat="np" sem="obj" />
+            </node>
+        </node>
+    </tree>
+
+
+    <entry word='likes' pos='v'>
+        <tree refid='i.trans'>
+            <semcontent>like(self,subj,obj)</semcontent>
+        </tree>
+    </entry>
 
     <entry word='sleeps' pos='v'>
         <tree refid="i.intrans">

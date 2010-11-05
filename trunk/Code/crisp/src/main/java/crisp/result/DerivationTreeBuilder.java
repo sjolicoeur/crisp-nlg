@@ -101,12 +101,15 @@ public abstract class DerivationTreeBuilder{
     }    
     
     
-    public Action computeInstantiatedAction(Term term, Domain domain){        
+    public Action computeInstantiatedAction(Term term, Domain domain) {
         Compound compound = (Compound) term;
         String label = compound.getLabel();            
         List<Term> arguments = compound.getSubterms();
         Action action = domain.findAction(label);
 
+        if( action == null ) {
+            throw new RuntimeException("Couldn't find action: " + label);
+        }
 
         List<Term> variables = action.getPredicate().getSubterms();
         

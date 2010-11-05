@@ -12,12 +12,15 @@ import crisp.planningproblem.Action;
 import de.saar.chorus.term.Term;
 import de.saar.chorus.term.Constant;
 import de.saar.chorus.term.Compound;
+import de.saar.penguin.tag.grammar.Constraint;
+import de.saar.penguin.tag.grammar.NodeType;
+import java.util.ArrayList;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
 
@@ -38,8 +41,12 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
             this.treeNode = treeNode;
             this.cat = cat;
         }
-    }
 
+        @Override
+        public String toString() {
+            return "Site{" + "derivationNode=" + derivationNode + "treeNode=" + treeNode + "cat=" + cat + '}';
+        }
+    }
     private Map<String, Site> substitutionSites;
     private Map<String, Site> adjunctionSites;
 
@@ -48,8 +55,6 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
 
     }
 
-
-    // TODO - this looks like a terrible hack. What if there are two substitution nodes with the same category?? - ak, jan 10
     private String findNodeWithCat(String cat, ElementaryTree t) {
         for (String node : t.getAllNodes()) {
             if (t.getNodeLabel(node).equals(cat)) {
@@ -60,36 +65,60 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
 
     }
 
-    private String findLeafWithCat(String cat, ElementaryTree t) {
-        for (String node : t.getAllNodes()) {
-            if (t.getNodeLabel(node).equals(cat) && t.getChildren(node).isEmpty()) {
-                return node;
+    private void addSubstitutionSites(ElementaryTree tree, String derivationNode, List<String> plannerNodenames, Map<String, String> categoryForPlannerNodename) {
+        int positionInNodeList = 0;
+
+        for (String nodeInTree : tree.getAllNodesInDfsOrder()) {
+            if (tree.getChildren(nodeInTree).isEmpty()) {
+                // found a leaf
+                if (tree.getNodeType(nodeInTree) == NodeType.SUBSTITUTION) {
+                    String cat = categoryForPlannerNodename.get(plannerNodenames.get(positionInNodeList));
+                    assert tree.getNodeLabel(nodeInTree).equalsIgnoreCase(cat) : "node " + nodeInTree + " has label " + tree.getNodeLabel(nodeInTree) + ", but expected " + cat + " in elementary tree: " + tree;
+
+                    String key = cat + ":" + plannerNodenames.get(positionInNodeList);
+                    positionInNodeList++;
+
+                    if (!substitutionSites.containsKey(key)) {
+                        Site substSite = new Site(derivationNode, nodeInTree, cat);
+                        substitutionSites.put(key, substSite);
+                    }
+                }
             }
         }
-        return null;
-
     }
-
-
+    
     private void addNewSubstAndAdjSites(Action action, ElementaryTree tree, String derivationNode) {
+        Map<String, String> categoryForPlannerNodename = new HashMap<String, String>();
 
-        //System.out.println("processing action " + action );
+        // decode substitution effects
         List<Compound> substEffects = getSubstEffects(action);
-        List<Compound> adjEffects = getAdjEffects(action);
-
 
         for (Compound c : substEffects) {
-            //System.out.println("found subst effect "+c);
             List<Term> subterms = c.getSubterms();
             String cat = ((Constant) subterms.get(0)).getName();
             String syntaxnode = ((Constant) subterms.get(1)).getName();
-            String key = cat + ":" + syntaxnode;
 
-            if (!substitutionSites.containsKey(key)) {
-                Site substSite = new Site(derivationNode, findLeafWithCat(cat, tree), cat);
-                substitutionSites.put(key, substSite);
-            }
+            categoryForPlannerNodename.put(syntaxnode, cat);
         }
+
+
+        List<String> plannerNodenames = new ArrayList<String>();
+
+        for (Term arg : action.getPredicate().getSubterms()) {
+            String sArg = ((Constant) arg).getName();
+            plannerNodenames.add(sArg);
+        }
+
+        plannerNodenames.retainAll(categoryForPlannerNodename.keySet());
+
+        System.err.println("planner nodenames: " + plannerNodenames);
+        System.err.println("map: " + categoryForPlannerNodename);
+
+        addSubstitutionSites(tree, derivationNode, plannerNodenames, categoryForPlannerNodename);
+
+        // decode adjunction effects
+        List<Compound> adjEffects = getAdjEffects(action);
+
 
         for (Compound c : adjEffects) {
             List<Term> subterms = c.getSubterms();
@@ -108,10 +137,16 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
     public void processPlanStep(Action action) {
         Compound pred = (Compound) action.getPredicate();
         String predicateName = action.getPredicate().getLabel();
+        Pattern pattern = Pattern.compile("([^-]+)-(.*)-([^-]+)");
+        Matcher m = pattern.matcher(predicateName);
 
-        String[] predicateParts = predicateName.split("-");
-        String type = predicateParts[0];
-        String typelesstreename = predicateParts[1];
+        if (!m.matches()) {
+            throw new RuntimeException("Operator name does not encode lexicalized tree: " + action);
+        }
+
+        String type = m.group(1);
+        String typelesstreename = m.group(2);
+        String word = m.group(3);
 
         String treename = null;
         if (type.equals("aux")) {
@@ -119,8 +154,6 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
         } else {
             treename = "i." + typelesstreename;
         }
-
-        String word = predicateParts[2];
 
         ElementaryTree childTree = grammar.getTree(treename);
         LexiconEntry childEntry = grammar.getLexiconEntry(word, treename);
@@ -148,10 +181,11 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
                 addNewSubstAndAdjSites(action, childTree, newDerivNode);
             }
 
-            if (substituted != null)
+            if (substituted != null) {
                 substitutionSites.remove(substituted);
-            else
+            } else {
                 throw new RuntimeException("No substitution was performed for action " + action);
+            }
             break;
         }
 
@@ -179,17 +213,17 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
                 addNewSubstAndAdjSites(action, childTree, newDerivNode);
             }
 
-            if (adjoined != null)
+            if (adjoined != null) {
                 substitutionSites.remove(adjoined);
-            else
+            } else {
                 throw new RuntimeException("No substitution was performed for action " + action);
+            }
             break;
         }
 
 
         //}
     }
-
 
     public DerivationTree buildDerivationTreeFromPlan(List<Term> plan, Domain domain, String root_category) {
         currentDerivation = new DerivationTree();
@@ -212,10 +246,8 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
         return currentDerivation;
     }
 
-
     @Override
     public DerivationTree buildDerivationTreeFromPlan(List<Term> plan, Domain domain) {
         return buildDerivationTreeFromPlan(plan, domain, DEFAULT_ROOT_CATEGORY);
     }
-
 }

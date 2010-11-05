@@ -27,11 +27,11 @@ import de.saar.penguin.tag.grammar.CrispGrammar;
 import de.saar.penguin.tag.grammar.SituatedCrispXmlInputCodec;
 
 public class CurrentNextCrispConverterTest {
+
     private Domain domain;
     private Problem problem;
-
+    private SituatedCrispXmlInputCodec codec = new SituatedCrispXmlInputCodec();
     private DerivationTreeBuilder planDecoder;
-
     private CrispGrammar grammar;
 
     @Before
@@ -40,7 +40,6 @@ public class CurrentNextCrispConverterTest {
         domain = new Domain();
         problem = new Problem();
 
-        SituatedCrispXmlInputCodec codec = new SituatedCrispXmlInputCodec();
         grammar = new CrispGrammar();
         codec.parse(new InputStreamReader(getClass().getResourceAsStream("/grammar-scrisp.xml")), grammar);
 
@@ -141,4 +140,33 @@ public class CurrentNextCrispConverterTest {
         assertEquals("movetwosteps and turnleft then push the green button", sent);
     }
 
+    @Test
+    public void testTransitive() throws Exception {
+        Domain domain2 = new Domain();
+        Problem problem2 = new Problem();
+        CrispGrammar grammar2 = new CrispGrammar();
+
+        codec.parse(new InputStreamReader(getClass().getResourceAsStream("/modifiers-grammar.xml")), grammar2);
+
+        Reader problemfile = new InputStreamReader(getClass().getResourceAsStream("/modifiers-transitive-problem.xml"));
+
+        CurrentNextCrispConverter converter = new CurrentNextCrispConverter();
+        converter.convert(grammar2, problemfile, domain2, problem2);
+
+        planDecoder = new CrispDerivationTreeBuilder(grammar2);
+
+
+        PlannerInterface planner = new FfPlannerInterface();
+        List<Term> plan = planner.runPlanner(domain2, problem2);
+
+        DerivationTree derivationTree = planDecoder.buildDerivationTreeFromPlan(plan, domain2);
+        System.err.println("\n\nderivation:\n" + derivationTree);
+
+        DerivedTree derivedTree = derivationTree.computeDerivedTree(grammar2);
+        System.err.println("\n\nderived:\n" + derivedTree);
+
+        String sent = derivedTree.yield();
+
+        assertEquals("the blue button likes the red button", sent);
+    }
 }

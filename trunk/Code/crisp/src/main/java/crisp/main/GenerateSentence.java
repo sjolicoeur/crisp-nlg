@@ -67,10 +67,10 @@ public class GenerateSentence {
 
             System.out.println("derivation tree: " + derivationTree);
 
-            DerivedTree derivedTree = derivationTree.computeDerivedTree(grammar);
+            DerivedTree<Term> derivedTree = derivationTree.computeDerivedTree(grammar);
 
             System.out.println("derived tree: " + derivedTree);
-            
+
             String sent = derivedTree.yield();
 
             System.out.println("Sentence: " + sent);

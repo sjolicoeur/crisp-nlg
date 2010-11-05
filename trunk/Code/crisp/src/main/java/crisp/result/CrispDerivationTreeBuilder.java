@@ -57,7 +57,7 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
 
     private String findNodeWithCat(String cat, ElementaryTree t) {
         for (String node : t.getAllNodes()) {
-            if (t.getNodeLabel(node).equals(cat)) {
+            if (t.getNodeLabel(node).equalsIgnoreCase(cat)) {
                 return node;
             }
         }

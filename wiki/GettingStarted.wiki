@@ -25,13 +25,13 @@ Assuming your Java and Maven are installed properly, build CRISP as follows:
    Maven will automatically download all required dependencies and store them in your local maven repository. 
    It will then compile CRISP and finally assemble an executable jar file that contains CRISP and all required libraries.
 
-The executable Jar file is now in `target/crisp-nlg-[version number]-jar-with-dependencies.jar`.
+The executable Jar file is now in `target/crisp-[version number]-jar-with-dependencies.jar`.
 
 
 = Running CRISP =
 Run the combined converter and planner on an example input file:
 {{{
-java -jar target/crisp-nlg-[version number]-jar-with-dependencies.jar grammars/acl07/modifiers/problem-acl-mod2.xml
+java -jar target/crisp-[version number]-jar-with-dependencies.jar grammars/acl07/modifiers/problem-acl-mod2.xml
 }}}
 
 This should display a plan corresponding to the sentence "Mary likes the white foo1 rabbit", a TAG derivation tree, a derived trees and the resulting output sentence. It should also leave behind the files `crisptest-mod2-domain.lisp` and `crisptest-mod2-problem.lisp`, which are PDDL input files that can be solved with other off-the-shelf planners.

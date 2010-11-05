@@ -28,7 +28,18 @@ Assuming your Java and Maven are installed properly, build CRISP as follows:
 The executable Jar file is now in `target/crisp-[version number]-jar-with-dependencies.jar`.
 
 
+= Preparing to run CRISP =
+
+The current version of CRISP requires the FF planner to run, which is available [http://www.loria.fr/~hoffmanj/ff.html here]. You need to tell CRISP about FF's location on your file system by creating a file called "crisp.properties". This file must specify the full filename of FF like this:
+{{{
+FfBinary=/path/to/your/ff
+}}}
+
+
 = Running CRISP =
+
+_*Note: We have recently made changes to the input file format that CRISP assumes. This means that the (old) ACL files will no longer be processed by the current version. We will update the ACL files as soon as we can.*_
+
 Run the combined converter and planner on an example input file:
 {{{
 java -jar target/crisp-[version number]-jar-with-dependencies.jar grammars/acl07/modifiers/problem-acl-mod2.xml

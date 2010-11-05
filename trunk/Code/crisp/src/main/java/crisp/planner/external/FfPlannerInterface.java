@@ -98,7 +98,7 @@ public class FfPlannerInterface implements PlannerInterface {
 
 
     private List<Term> parsePlan(String string) {
-        Pattern p = Pattern.compile(".*found legal plan as follows(.*)time spent.*", Pattern.DOTALL);
+        Pattern p = Pattern.compile(".*found legal plan as follows(.*)time spent.*?(\\S+) seconds instantiating.*?(\\S+) seconds searching.*", Pattern.DOTALL);
         Matcher m = p.matcher(string);
 
         if (!m.matches()) {
@@ -107,6 +107,11 @@ public class FfPlannerInterface implements PlannerInterface {
             try {
                 FfPlanParser parser = new FfPlanParser(new StringReader(m.group(1)));
                 List<Term> ret = parser.plan();
+
+                preprocessingTime = (long) (1000*Double.parseDouble(m.group(2)));
+                searchTime = (long) (1000*Double.parseDouble(m.group(3)));
+
+
                 return ret;
             } catch (ParseException ex) {
                 ex.printStackTrace();

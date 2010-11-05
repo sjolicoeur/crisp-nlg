@@ -159,11 +159,13 @@ public class CurrentNextCrispConverterTest {
         PlannerInterface planner = new FfPlannerInterface();
         List<Term> plan = planner.runPlanner(domain2, problem2);
 
+//        System.err.println("\n\nplan: " + plan);
+
         DerivationTree derivationTree = planDecoder.buildDerivationTreeFromPlan(plan, domain2);
-        System.err.println("\n\nderivation:\n" + derivationTree);
+//        System.err.println("\n\nderivation:\n" + derivationTree);
 
         DerivedTree derivedTree = derivationTree.computeDerivedTree(grammar2);
-        System.err.println("\n\nderived:\n" + derivedTree);
+//        System.err.println("\n\nderived:\n" + derivedTree);
 
         String sent = derivedTree.yield();
 

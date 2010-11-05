@@ -471,17 +471,17 @@ public class CurrentNextCrispConverter {
      * @param grammar The grammar from which actions are generated
      */
     private void computeDomain(Domain domain, Problem problem, CrispGrammar grammar, String indexIndividual) {
-        Map<String, HashSet<String>> roles = new HashMap<String, HashSet<String>>();
+        Map<String, List<String>> roles = new HashMap<String, List<String>>();
 
         // for each tree in the grammar
         for (String treeName : grammar.getAllTreeNames()) {
 
             // Get all nodes in the tree
             ElementaryTree<Term> tree = grammar.getTree(treeName);
-            Collection<String> allNodeIds = tree.getAllNodes();
+            List<String> allNodeIds = tree.getAllNodesInDfsOrder();
 
             // store list of roles in each tree in a map by name
-            HashSet<String> localRoles = new HashSet<String>();
+            List<String> localRoles = new ArrayList<String>();
             for (String node : allNodeIds) {
                 Term decoration = tree.getNodeDecoration(node);
                 if (decoration != null && (decoration.toString() != null) && tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION) {

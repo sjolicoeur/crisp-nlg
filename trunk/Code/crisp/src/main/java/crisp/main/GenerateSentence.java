@@ -49,11 +49,11 @@ public class GenerateSentence {
         // print runtime statistics
         System.out.println("\n\nRuntime:");
         System.out.println("  conversion:        " + (end - start) + "ms\n");
-        System.out.println("  preproc: " + planner.getPreprocessingTime() + " ms");
+        System.out.println("  preproc:           " + planner.getPreprocessingTime() + " ms");
         System.out.println("  search:            " + planner.getSearchTime() + " ms");
         System.out.println("  total planning:    " + planner.getTotalTime() + " ms\n\n");
 
-        System.out.println(plan + "\n\n\n");
+//        System.out.println(plan + "\n\n\n");
 
 
 
@@ -64,13 +64,7 @@ public class GenerateSentence {
             DerivationTreeBuilder planDecoder = new CrispDerivationTreeBuilder(grammar);
             DerivationTree derivationTree = planDecoder.buildDerivationTreeFromPlan(plan, domain);
 
-
-            System.out.println("derivation tree: " + derivationTree);
-
             DerivedTree<Term> derivedTree = derivationTree.computeDerivedTree(grammar);
-
-            System.out.println("derived tree: " + derivedTree);
-
             String sent = derivedTree.yield();
 
             System.out.println("Sentence: " + sent);

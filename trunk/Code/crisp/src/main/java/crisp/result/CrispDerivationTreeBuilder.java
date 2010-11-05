@@ -110,10 +110,6 @@ public class CrispDerivationTreeBuilder extends DerivationTreeBuilder {
         }
 
         plannerNodenames.retainAll(categoryForPlannerNodename.keySet());
-
-        System.err.println("planner nodenames: " + plannerNodenames);
-        System.err.println("map: " + categoryForPlannerNodename);
-
         addSubstitutionSites(tree, derivationNode, plannerNodenames, categoryForPlannerNodename);
 
         // decode adjunction effects

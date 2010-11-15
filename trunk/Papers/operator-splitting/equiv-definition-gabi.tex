@@ -3,6 +3,77 @@
 \subsection{Definition: Gabi}
 \label{definition-gabi}
 
+Altough I started from the compilation schemes, I ended up with a definition
+that is much closer to reductions (an idea that Joerg also mentioned in the
+Skype call).
 
+For my definition, I use the following terminology:
+A (PDDL) planning task is a tuple $\left<D, P\right>$
+where $D$ is the domain description and $P=(O,I,\gamma)$ 
+is the instance description, consisting of the set of objects $O$, the
+initial state $I$ and the goal specification $\gamma$. 
 
+\begin{theorem}[Reduction]
+A reduction of planning domain $D$ to planning domain $D'$ is a tuple
+$\mathbf f=\left<f_P, f_{\pi'}\right>$ of functions
+such that for all planning tasks $\Pi = \left<D, P\right>$:
+\begin{enumerate}
+    \item $\left<D', f_P(P)\right>$ is a planning task,
+    \item for each plan $\pi'$ of $\left<D', f_P(P)\right>$, $f_{\pi'}(\pi')$ is
+          a plan for $\Pi$,
+    \item $f_P$ and $f_{\pi'}$ are polynomial-time computable,
+    \item for each two plans $\pi'_1$ and $\pi'_2$ of $\left<D', f_P(P)\right>$
+          it holds that $\textit{cost}(f_{\pi'}(\pi'_1)) >
+          \textit{cost}(f_{\pi'}(\pi'_2))$ iff $\textit{cost}(\pi'_1) >
+          \textit{cost}(\pi'_2)$, and
+    \item for at least one optimal plan $\pi^*$ of $\Pi$ there is a
+          plan $\pi'$ of $\left<D', f_P(P)\right>$
+          whose size is polynomial in the size of $\pi^*$ and
+          $\textit{cost}(\pi^*) = \textit{cost}(f_{\pi'}(\pi'))$.
+\end{enumerate}
+\end{theorem}
+
+\begin{theorem}[Reducibility]
+A planning domain $D$ is reducible to planning domain $D'$ (written $D\leq D'$)
+if there is a reduction $\mathbf f$ from $D$ to $D'$.
+\end{theorem}
+
+\begin{theorem}[Equivalence of planning domains]
+Two planning domains $D$ and $D'$ are equivalent (written $D\equiv D'$) iff
+$D\leq D'$ and $D'\leq D$.
+\end{theorem}
+
+\noindent Some random remarks:
+\begin{itemize}
+    \item From a practical perspective we are surely interested into generating
+        a more expressive domain (a domain which our original domain is 
+        reducible to) plus the reduction. However, from a theoretical point of
+        view, if we want to show that two domains are \emph{not} equivalent, we
+        want to prove that there is no reduction.
+    \item Reductions are composable, i.e.\ if $\left<f_P^1, f_{\pi'}^1\right>$
+          is a reduction of $D$ to $D_1$ and $\left<f_P^2, f_{\pi'}^2\right>$
+          is a reduction of $D_1$ to $D_2$, then $\left<f_P^2\circ f_P^1, 
+          f_{\pi'}^2\circ f_{\pi'}^1\right>$ is a reduction of $D$ to $D_2$.
+    \item Condition $2$ ensures (together with the existence requirement in
+          condition $5$) that there is a plan for $\Pi$ iff there is a
+          plan for $\left<D', f_P(P)\right>$.
+    \item Condition $4$ ensures that the domains caputure the same idea
+          of (relative) plan quality.
+    \item Condition $5$ makes the reduction optimality preserving. In practice
+          it is probably most of the time the case (and the easiest to show) that
+          this condition holds for all plans $\pi$ of $\Pi$ but the current
+          definition is sufficient to ensure that 
+          \begin{itemize}
+            \item for optimal planning, we can use the reduction to find an
+                optimal plan if there is a plan.
+            \item for satisficing planning, we can use the reduction to
+                find a plan if there is a plan.
+          \end{itemize}
+          However, if we do not extend condition $5$ to all plans $\pi$ of
+          $\Pi$, we are not guaranteed that we can find a plan for each
+          cost for which a plan in the original task exists.
+    \item I still have to think more about for what the time and space
+          restrictions are necessary and whether there must be a 
+          restriction on the size of $D'$ (currently I do not see, why).
+\end{itemize}
 

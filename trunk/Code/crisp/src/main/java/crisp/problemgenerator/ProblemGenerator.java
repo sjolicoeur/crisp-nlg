@@ -1,50 +1,79 @@
 package crisp.problemgenerator;
 
+import de.saar.penguin.tag.codec.CrispXmlInputCodec;
+import de.saar.penguin.tag.codec.ParserException;
+import de.saar.penguin.tag.grammar.CrispGrammar;
+import de.saar.penguin.tag.grammar.CrispLexiconEntry;
+
 import java.io.*;
 
 public class ProblemGenerator {
-    BufferedWriter br;
-    PrintWriter out;
+    PrintWriter pout;
+    PrintWriter gout;
     int senNum, valence, disNum;
+    String fileName, fne;
+    CrispGrammar grammar;
+    
     public static void main(String[] args) throws Exception {
-//        CrispGrammar grammar = new CrispGrammar();
-//        CrispXmlInputCodec codec = new CrispXmlInputCodec();
-        //TODO: generate the grammar at the same time.
-
-        if (args.length != 3) {
+        if (args.length != 4) {
             System.err.println("Wrong number of arguments.");
             usage();
             System.exit(1);
         }
-        new ProblemGenerator(Integer.valueOf(args[0]), Integer.valueOf(args[1]), Integer.valueOf(args[2])).generate();
-
+        new ProblemGenerator(Integer.valueOf(args[0]), Integer.valueOf(args[1]), Integer.valueOf(args[2]), args[3])
+                .generate();
     }
+
     public static void usage() {
-        System.out.println("ProblemGenerator [number of sentences] [valence] [number of distractors] ");
+        System.out.println("ProblemGenerator [number of sentences] [valence] [number of distractors] [file name]");
     }
 
-    public ProblemGenerator(int senNum, int val, int disNum) throws IOException {
-        FileWriter fr=new FileWriter("xtag-problem-" + senNum + "_" + val + "_" + disNum + ".xml");
-        br = new BufferedWriter(fr);
-		out = new PrintWriter(br);
-        this.senNum = senNum;
-        this.valence = val;
-        this.disNum = disNum;
+    public ProblemGenerator(int numOfSentences, int valenceNum, int numDistractors, String fileNamePrefix)
+            throws IOException, ParserException {
+        this.senNum = numOfSentences;
+        this.valence = valenceNum;
+        this.disNum = numDistractors;
+        this.fileName = fileNamePrefix;
+        fne = senNum + "-" + valence + "-" + disNum + ".xml";
+
+        FileWriter fr=new FileWriter(fileName + "-problem-" + fne);
+        BufferedWriter br = new BufferedWriter(fr);
+        pout = new PrintWriter(br);
+        grammar = new CrispGrammar();
+        CrispXmlInputCodec codec = new CrispXmlInputCodec();
+        codec.parse(new FileReader(new File("src/main/resources/base-grammar.xml")) , grammar);
+        FileWriter gfr = new FileWriter(fileName + "-grammar-" + fne);
+        BufferedWriter gbr = new BufferedWriter(gfr);
+        gout = new PrintWriter(gbr);
+        FileInputStream fstream = new FileInputStream("src/main/resources/base-grammar.xml");
+        DataInputStream in = new DataInputStream(fstream);
+        BufferedReader brr = new BufferedReader(new InputStreamReader(in));
+        String line;
+
+        while (!(line = brr.readLine()).equals("</crisp-grammar>"))
+            gout.write(line+"\n");
+        gout.flush();
+        in.close();
     }
 
-    public void generate(){
+    public void generate() throws IOException {
         printHeader();
-        for (int sentence = 1; sentence <= senNum; sentence++) {
+        int current = 1;
+        for (int sentence = 1; sentence <= senNum; sentence++, current++) {
 
-            for (int argument = 1; argument <= valence; argument++){
+            for (int argument = 1; argument <= valence; argument++, current++) {
                 printWorld("the-1(a" +sentence + "_" + argument + ")");
                 printCommGoal("the-1(a" +sentence + "_" + argument + ")");
-                printWorld("businessman-" + sentence + argument + "(a" +sentence + "_" + argument + ")");
-                printCommGoal("businessman-" + sentence + argument + "(a" +sentence + "_" + argument + ")");
-                for (int distractor = 1; distractor <= disNum; distractor++){
+                printWorld("businessman-1" + current + "(a" +sentence + "_" + argument + ")");
+                if (current > 1)
+                    addLexicalEntry("businessman", current);
+                printCommGoal("businessman-1" + current + "(a" +sentence + "_" + argument + ")");
+                for (int distractor = 1; distractor <= disNum; distractor++) {
                     printWorld("rich-1" + distractor + "(a" +sentence + "_" + argument + ")");
-                    printWorld("businessman-" + sentence + argument + "(a" +sentence + "_" + argument + "_dist" +
+                    printWorld("businessman-1" + current + "(a" +sentence + "_" + argument + "_dist" +
                             distractor + ")");
+                    if (current == 1 && distractor > 1)
+                        addLexicalEntry("rich", distractor);
                     printWorld("the-1(a" +sentence + "_" + argument + "_dist" + distractor + ")");
                     for (int i = 1; i <= disNum; i++)
                         if (i != distractor) {
@@ -68,20 +97,39 @@ public class ProblemGenerator {
             }
         }
         printFooter();
-        out.flush();
+        pout.flush();
+        gout.flush();
     }
-    private void printWorld(String str){
-        out.write("<world>" + str +"</world>");
+
+    private void printWorld(String str) {
+        pout.write("<world>" + str +"</world>\n");
     }
-    private void printCommGoal(String str){
-        out.write("<commgoal>" + str + "</commgoal>");
+
+    private void printCommGoal(String str) {
+        pout.write("<commgoal>" + str + "</commgoal>\n");
     }
-    private void printHeader(){
-        out.write("<?xml version='1.0' encoding='UTF-8'?><crispproblem name='xtag-" +
-                senNum + "-" + valence+ "-" + disNum + "' grammar='' cat='S' index='e1' plansize='5'>");
-        //TODO: find out the relation between the input arguments and the plansize
+
+    private void printHeader() {
+        pout.write("<crispproblem name='" + fileName + "-" + senNum + "-" + valence+ "-" + disNum
+                + "' grammar='" + fileName + "-grammar-"+ senNum + "-" + valence+ "-" + disNum  +".xml'" +
+                " cat='S' index='e1' syntaxnodes='5' referents='"+ senNum*valence +"'>\n");
+        //TODO: find out the relation between the input arguments and the syntaxnodes.
     }
-    private void printFooter(){
-        out.write("</crispproblem>");
+
+    private void printFooter() {
+        pout.write("</crispproblem>");
+        gout.write("</crisp-grammar>");
+    }
+
+    private void addLexicalEntry(String word, int num) throws IOException {
+        gout.write("<entry word='" + word + num + "'>\n");
+        String semantics;
+        for (CrispLexiconEntry lex : grammar.getCrispLexiconEntries(word + "1")) {
+            gout.write("<tree refid='" + lex.tree + "'>\n");
+
+            semantics = lex.semantics.get(0).toString().replace("1(" , num+"(");
+            gout.write("<semcontent>" + semantics + "</semcontent>\n</tree>\n");
+        }
+        gout.write("</entry>\n");
     }
 }

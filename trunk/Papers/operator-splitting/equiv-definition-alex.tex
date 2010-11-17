@@ -1,8 +1,127 @@
-
-
 \subsection{Definition: Alex}
 \label{definition-alex}
 
+My definition is inspired by existing work on comparing the generative
+capacity of grammar formalisms \cite{miller99:_stron}.  The basic idea
+is that in order to compare two parse trees (which may be in terms of
+two different grammar formalisms, and therefore look quite different),
+we interpret them both into the same algebra $A$.  We take the parse
+trees to be equivalent if they map to the same object in $A$.  Two
+grammars are equivalent if their parse tree languages map to the same
+set of objects in $A$.  One example is classical weak equivalence, in
+which $A$ is the string algebra and the interpretation function just
+takes the yield of the parse trees; but clearly, more powerful
+interpretation algebras can be used for a more fine-grained view on
+equivalence.
+
+\newcommand{\A}{{\mathcal A}}
+
+The fundamental parallel I see is that plans are essentially like
+parse trees, and planning problem instances are essentially like
+grammars.  Let's say we have a planning domain $D$, and let $A =
+\{a_1,\ldots,a_n\}$ be the set of all operator instances of $D$.  Then
+a plan is a string in $A^*$. Note that $(A^*,\cdot,a_1,\ldots,a_n)$ is
+an algebra where the $a_i$ are constants and $\cdot$ is binary
+concatenation.  I write $\A_D$ for the string algebra I get from the
+planning domain $D$.  I can now define plan equivalence as follows.
+
+\begin{definition}
+  Let $D$ and $D'$ be planning domains.  Let $I$ be some algebra, and
+  let $h:\A_D \rightarrow I$ and $h':\A_{D'} \rightarrow I$ be algebra
+  homomorphisms. Now if $\pi$ is a sequence of action instances of $D$
+  and $\pi'$ is a sequence of action instances of $D'$, $\pi$ is
+  equivalent to $\pi'$ with respect to $I,h,h'$ ($\pi \equiv \pi'$)
+  iff $h(\pi) = h'(\pi')$.
+\end{definition}
+
+Note that equivalence of plans (i.e., sequences of action instances
+that go from a specific initial state to a specific goal) is a special
+case of this. It is straightforward to lift this definition to
+planning tasks and domains:
+
+\begin{definition}
+  Let $t = \langle D,P \rangle$ and $t' = \langle D',P'\rangle$ be
+  planning tasks, and let $plans(t)$ be the set of all plans for the task
+  $t$. Then $t$ and $t'$ are equivalent if $h(plans(t)) =
+  h'(plans(t'))$.
+
+  Let $plans(D)$ be the union over all $plans(\langle D,P \rangle)$
+  for all tasks $\langle D,P \rangle$ that can be formed with the
+  signature defined by $D$.  Then we take two domains $D$ and $D'$ to
+  be equivalent if $h(plans(D)) = h'(plans(D'))$.
+\end{definition}
+
+Let's look at some special cases to illustrate the definitions.
+
+\newcommand{\states}{{\mathcal S}}
+\newcommand{\partialfunctions}{{\mathcal PF}}
+
+\begin{itemize}
+\item The most trivial special case is to require plan equivalence to
+  mean plan identity.  For this, we take $I = \A_D$ and $h$ and $h'$
+  the identity function.
+\item The other extreme case is a notion of plan equivalence in which
+  all plans are equivalent.  Clearly, this can be achieved if we take
+  $I$ to be an algebra that contains a single element $e$, and $h$ and
+  $h'$ map all plans to $e$.
+\item A more interesting case is Gabi's question about reordering of
+  actions in a plan: We want to see two plans over the same domain as
+  equivalent if they take us from the same initial states to the same
+  goals, but we don't care how the actions are ordered inside the
+  plans, as long as the ``meaning'' of the plan stays the same.  One
+  way to approach this is to let $I$  be the algebra
+  $\partialfunctions_D$ of partial functions $f:\states_D
+  \rightsquigarrow \states_D$, where $\states_D$ is the set of all
+  states specified by $D$.  If $a$ is an action instance, we say that
+  $h(a)$ is defined on a given state $s$ if the preconditions of $a$
+  are satisfied in $s$.  $h(a)(s)$ is then the state we get by
+  executing $a$ in $s$.  Concatenation of action sequences is
+  interpreted as composition of partial functions.  In this way, any
+  action sequence is interpreted as the partial function that is
+  defined if the action sequence can be executed in a state, and that
+  modifies the state as the actions specify.
+\item Finally, operator splitting.  This is basically like the
+  previous point, except that one domain has a richer signature,
+  containing predicates like ``processing-none'' and such.  Let's say
+  that $D$ was the original domain, and $D'$ is the enriched domain
+  for the split operators.  We can then interpret both the original
+  plan $\pi$ and the operator-split plan $\pi'$ into
+  $\partialfunctions_{D}$.  The homomorphism $h:\A_D
+  \rightarrow \partialfunctions_D$ is as above.  The homomorphism
+  $h':\A_{D'} \rightarrow \partialfunctions_D$ maps actions of $D'$
+  into partial functions over $\states_D$ by ignoring all
+  preconditions and effects that use predicates that exist in $D'$ but
+  not in $D$.  In this way, the fact that plans over $D$ are shorter
+  than the split-operator plans over $D'$ is irrelevant: Because $\pi$
+  can be executed in the same states in which $\pi'$ can be executed,
+  and the effects of the two plans are the same (as far as predicates
+  of $D$ are concerned), the plans count as equivalent.
+\end{itemize}
+
+My definition proposal is quite different in character from those of
+Carlos and Gabi. It is a model-theoretic rather than a computational
+notion: Plan equivalence is defined in terms of an interpretation of
+the plans into a third algebra, rather than in terms of a reduction.
+However, I feel that this is actually an advantage because the
+definition is more flexible and, as far as I can tell, simpler, and
+relies on very standard concepts such as algebras and homomorphisms.
+
+It is clear that we will typically be interested in algorithms that
+transform one class of plans into another, such as the
+operator-splitting algorithm in Section~\ref{initial-definition}.  But
+this does not mean that equivalence itself must be defined
+procedurally.  I would bet that any procedural definition of
+equivalence that we can come up with can be cast in terms of my
+definition, by selecting the appropriate interpretation algebra and
+homomorphisms for which the reduction is sound and complete.  One
+interesting twist is that Gabi's definition suggests that we may care
+about runtime and space bounds for the reduction.  This is one point
+for which it is not entirely clear to me how to capture it in my
+world.  Perhaps we can talk about why we care about them.
 
 
 
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "total"
+%%% End: 

@@ -1,31 +1,55 @@
 package crisp.problemgenerator;
 
+import crisp.converter.CurrentNextCrispConverter;
+import crisp.planningproblem.Domain;
+import crisp.planningproblem.Problem;
+import crisp.planningproblem.codec.PddlOutputCodec;
 import de.saar.penguin.tag.codec.CrispXmlInputCodec;
 import de.saar.penguin.tag.codec.ParserException;
 import de.saar.penguin.tag.grammar.CrispGrammar;
 import de.saar.penguin.tag.grammar.CrispLexiconEntry;
+import de.saar.penguin.tag.grammar.SituatedCrispXmlInputCodec;
 
 import java.io.*;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 public class ProblemGenerator {
+
     PrintWriter pout;
     PrintWriter gout;
     int numberOfSentences, arity, numberOfDistractors;
     String fileName, fne;
     CrispGrammar grammar;
-    
+
     public static void main(String[] args) throws Exception {
-        if (args.length != 4) {
+        boolean generatePddl = false;
+
+        if (args.length < 4) {
             System.err.println("Wrong number of arguments.");
             usage();
             System.exit(1);
         }
-        new ProblemGenerator(Integer.valueOf(args[0]), Integer.valueOf(args[1]), Integer.valueOf(args[2]), args[3])
-                .generate();
+
+        int i = 0;
+
+        if (args[i].equals("--pddl")) {
+            generatePddl = true;
+            i++;
+        }
+
+        ProblemGenerator generator = new ProblemGenerator(Integer.valueOf(args[i]), Integer.valueOf(args[i + 1]), Integer.valueOf(args[i + 2]), args[i + 3]);
+        if (generatePddl) {
+            generator.generatePddlProblem();
+        } else {
+            generator.generateCrispProblem();
+        }
     }
 
     public static void usage() {
-        System.out.println("ProblemGenerator [number of sentences] [valence] [number of distractors] [file name]");
+        System.out.println("ProblemGenerator [options] <number of sentences> <verb arity> <number of distractors> <output filename prefix>");
+        System.out.println("Options:");
+        System.out.println("   --pddl     generate <prefix>-domain.lisp and <prefix>-problem.lisp");
     }
 
     public ProblemGenerator(int numOfSentences, int valenceNum, int numDistractors, String fileNamePrefix) throws IOException, ParserException {
@@ -35,68 +59,91 @@ public class ProblemGenerator {
         this.fileName = fileNamePrefix;
         fne = numberOfSentences + "-" + arity + "-" + numberOfDistractors + ".xml";
 
-        FileWriter fr=new FileWriter(fileName + "-problem-" + fne);
-        BufferedWriter br = new BufferedWriter(fr);
-        pout = new PrintWriter(br);
-        grammar = new CrispGrammar();
-        CrispXmlInputCodec codec = new CrispXmlInputCodec();
-        codec.parse(getBaseGrammarReader(), grammar);
-
-        FileWriter gfr = new FileWriter(fileName + "-grammar-" + fne);
-        BufferedWriter gbr = new BufferedWriter(gfr);
-
-        gout = new PrintWriter(gbr);
-
-//        FileInputStream fstream = new FileInputStream("src/main/resources/base-grammar.xml");
-//        DataInputStream in = new DataInputStream(fstream);
-        BufferedReader brr = new BufferedReader(getBaseGrammarReader());
-        String line;
-
-        while (!(line = brr.readLine()).equals("</crisp-grammar>")) {
-            gout.write(line+"\n");
-        }
-        gout.flush();
-//        in.close();
     }
 
     private static Reader getBaseGrammarReader() {
         return new InputStreamReader(ProblemGenerator.class.getResourceAsStream("/base-grammar.xml"));
     }
 
-    public void generate() throws IOException {
+    public void generateCrispProblem() throws IOException, ParserException {
+        gout = new PrintWriter(new FileWriter(fileName + "-grammar-" + fne));
+        pout = new PrintWriter(new FileWriter(fileName + "-problem-" + fne));
+        generateProblem();
+    }
+
+    public void generatePddlProblem() throws IOException, ParserException, ParserConfigurationException, SAXException {
+        StringWriter crispGrammarWriter = new StringWriter();
+        StringWriter crispProblemWriter = new StringWriter();
+
+        gout = new PrintWriter(crispGrammarWriter);
+        pout = new PrintWriter(crispProblemWriter);
+        generateProblem();
+
+        CurrentNextCrispConverter converter = new CurrentNextCrispConverter();
+        SituatedCrispXmlInputCodec codec = new SituatedCrispXmlInputCodec();
+        CrispGrammar fullGrammar = new CrispGrammar();
+        Domain domain = new Domain();
+        Problem problem = new Problem();
+
+        codec.parse(new StringReader(crispGrammarWriter.toString()), fullGrammar);
+        converter.convert(fullGrammar, new StringReader(crispProblemWriter.toString()), domain, problem);
+
+        PrintWriter domainWriter = new PrintWriter(new FileWriter(fileName + "-domain.lisp"));
+        PrintWriter problemWriter = new PrintWriter(new FileWriter(fileName + "-problem.lisp"));
+        new PddlOutputCodec().writeToDisk(domain, problem, domainWriter, problemWriter);
+
+    }
+
+    private void generateProblem() throws IOException, ParserException {
+        grammar = new CrispGrammar();
+
+        CrispXmlInputCodec codec = new CrispXmlInputCodec();
+        codec.parse(getBaseGrammarReader(), grammar);
+
+
+        BufferedReader brr = new BufferedReader(getBaseGrammarReader());
+        String line;
+
+        while (!(line = brr.readLine()).equals("</crisp-grammar>")) {
+            gout.println(line);
+        }
+
+        gout.flush();
+
         printHeader();
         int current = 1;
         for (int sentence = 1; sentence <= numberOfSentences; sentence++, current++) {
 
             for (int argument = 1; argument <= arity; argument++, current++) {
-                printWorld("the-1(a" +sentence + "_" + argument + ")");
-                printCommGoal("the-1(a" +sentence + "_" + argument + ")");
-                printWorld("businessman-1" + current + "(a" +sentence + "_" + argument + ")");
-                if (current > 1)
+                printWorld("the-1(a" + sentence + "_" + argument + ")");
+                printCommGoal("the-1(a" + sentence + "_" + argument + ")");
+                printWorld("businessman-1" + current + "(a" + sentence + "_" + argument + ")");
+                if (current > 1) {
                     addLexicalEntry("businessman", current);
-                printCommGoal("businessman-1" + current + "(a" +sentence + "_" + argument + ")");
+                }
+                printCommGoal("businessman-1" + current + "(a" + sentence + "_" + argument + ")");
                 for (int distractor = 1; distractor <= numberOfDistractors; distractor++) {
-                    printWorld("rich-1" + distractor + "(a" +sentence + "_" + argument + ")");
-                    printWorld("businessman-1" + current + "(a" +sentence + "_" + argument + "_dist" +
-                            distractor + ")");
-                    if (current == 1 && distractor > 1)
+                    printWorld("rich-1" + distractor + "(a" + sentence + "_" + argument + ")");
+                    printWorld("businessman-1" + current + "(a" + sentence + "_" + argument + "_dist"
+                            + distractor + ")");
+                    if (current == 1 && distractor > 1) {
                         addLexicalEntry("rich", distractor);
-                    printWorld("the-1(a" +sentence + "_" + argument + "_dist" + distractor + ")");
-                    for (int i = 1; i <= numberOfDistractors; i++)
+                    }
+                    printWorld("the-1(a" + sentence + "_" + argument + "_dist" + distractor + ")");
+                    for (int i = 1; i <= numberOfDistractors; i++) {
                         if (i != distractor) {
-                            printWorld("rich-1" + i + "(a" +sentence + "_" + argument + "_dist" + distractor + ")");
+                            printWorld("rich-1" + i + "(a" + sentence + "_" + argument + "_dist" + distractor + ")");
                         }
+                    }
                 }
             }
             if (arity == 1) {
                 printWorld("sneeze-2(e" + sentence + ",a" + sentence + "_1)");
                 printCommGoal("sneeze-2(e" + sentence + ",a" + sentence + "_1)");
-            }
-            else if (arity == 2) {
+            } else if (arity == 2) {
                 printWorld("admire-3(e" + sentence + ",a" + sentence + "_1" + ",a" + sentence + "_2)");
                 printCommGoal("admire-3(e" + sentence + ",a" + sentence + "_1" + ",a" + sentence + "_2)");
-            }
-            else if (arity == 3) {
+            } else if (arity == 3) {
                 printWorld("give-4(e" + sentence + ",a" + sentence + "_1" + ",a" + sentence + "_2" + ",a"
                         + sentence + "_3)");
                 printCommGoal("give-4(e" + sentence + ",a" + sentence + "_1" + ",a" + sentence + "_2" + ",a"
@@ -109,7 +156,7 @@ public class ProblemGenerator {
     }
 
     private void printWorld(String str) {
-        pout.write("<world>" + str +"</world>\n");
+        pout.write("<world>" + str + "</world>\n");
     }
 
     private void printCommGoal(String str) {
@@ -117,9 +164,9 @@ public class ProblemGenerator {
     }
 
     private void printHeader() {
-        pout.write("<crispproblem name='" + fileName + "-" + numberOfSentences + "-" + arity+ "-" + numberOfDistractors
-                + "' grammar='" + fileName + "-grammar-"+ numberOfSentences + "-" + arity+ "-" + numberOfDistractors  +".xml'" +
-                " cat='S' index='e1' syntaxnodes='" + numberOfSentences*(arity+2) + "' referents='0'>\n");
+        pout.write("<crispproblem name='" + fileName + "-" + numberOfSentences + "-" + arity + "-" + numberOfDistractors
+                + "' grammar='" + fileName + "-grammar-" + numberOfSentences + "-" + arity + "-" + numberOfDistractors + ".xml'"
+                + " cat='S' index='e1' syntaxnodes='" + numberOfSentences * (arity + 2) + "' referents='0'>\n");
     }
 
     private void printFooter() {
@@ -133,7 +180,7 @@ public class ProblemGenerator {
         for (CrispLexiconEntry lex : grammar.getCrispLexiconEntries(word + "1")) {
             gout.write("<tree refid='" + lex.tree + "'>\n");
 
-            semantics = lex.semantics.get(0).toString().replace("1(" , num+"(");
+            semantics = lex.semantics.get(0).toString().replace("1(", num + "(");
             gout.write("<semcontent>" + semantics + "</semcontent>\n</tree>\n");
         }
         gout.write("</entry>\n");

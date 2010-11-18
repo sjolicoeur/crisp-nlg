@@ -44,7 +44,7 @@ public class GenerateSentence {
         long end = System.currentTimeMillis();
 
         // run planner
-        PlannerInterface planner = new FfPlannerInterface();
+        PlannerInterface planner = new FfPlannerInterface("-B -T -H");
         List<Term> plan = planner.runPlanner(domain, problem);
 
         // print runtime statistics

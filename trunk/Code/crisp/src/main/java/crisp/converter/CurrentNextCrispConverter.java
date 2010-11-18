@@ -56,25 +56,22 @@ import de.saar.penguin.tag.grammar.NodeType;
  */
 public class CurrentNextCrispConverter {
 
-
     private enum ConstantType {
+
         ID,
         NEXT,
         QUANT,
         NORMAL;
     }
-
     // Default Handler already does a lot of work like
     // parse error handling and registering the handler
     // with a parser.
-
     private String problempath;   // Absolute pathname for the directory that stores problem and grammar
     private int referentnum;        // the number of referents for this problem
     private int syntaxnodenum;    // the number of syntaxnodes for this problem
     private int maximumArity = 0; // the maximum arity of any predicate in the problem file
     private String problemname;   // the name for the problem as specified in the problem file
     private String mainCat;       // main category for the problem in the problem file
-
     private Domain domain;
     private boolean useOldDomain;
 
@@ -100,7 +97,6 @@ public class CurrentNextCrispConverter {
         }
 
         // All of these methods are specified in the ContentHandler interface.
-
         @Override
         public void startDocument() throws SAXException {
             characterBuffer = new StringWriter();
@@ -139,14 +135,14 @@ public class CurrentNextCrispConverter {
                 }
 
                 /* Grammar is not parsed from here any more// Open and parse the grammar file
-                * try {
-                *    grammar = GrammarParser.parseGrammar(convertGrammarPath(atts.getValue("grammar")));
-                *} catch (ParserConfigurationException e) {
-                *    throw new SAXParseException("Couldn't initialize grammar parse.",null);
-                *} catch (IOException e) {
-                *    throw new SAXParseException("Couldn't open grammar file.",null);
-                *}
-                */
+                 * try {
+                 *    grammar = GrammarParser.parseGrammar(convertGrammarPath(atts.getValue("grammar")));
+                 *} catch (ParserConfigurationException e) {
+                 *    throw new SAXParseException("Couldn't initialize grammar parse.",null);
+                 *} catch (IOException e) {
+                 *    throw new SAXParseException("Couldn't open grammar file.",null);
+                 *}
+                 */
 
                 // add Index TODO: what does this attribute do?
                 String indexIndividual = atts.getValue("index").toLowerCase();
@@ -195,8 +191,8 @@ public class CurrentNextCrispConverter {
 
             String lastElement = elementStack.pop();
             if (!(lastElement.equals(qName))) {
-                throw new SAXParseException("Cannot close " + qName +
-                        " here. Expected " + lastElement + ".", null);
+                throw new SAXParseException("Cannot close " + qName
+                        + " here. Expected " + lastElement + ".", null);
             }
 
             if (qName.equals("world")) { // Term definition ends here
@@ -462,8 +458,6 @@ public class CurrentNextCrispConverter {
         problem.addObject("root", "syntaxnode");
     }
 
-
-
     /**
      * Computes the domain of the PDDL planning problem.  In particular, this method
      * generates the actions.
@@ -485,7 +479,11 @@ public class CurrentNextCrispConverter {
             for (String node : allNodeIds) {
                 Term decoration = tree.getNodeDecoration(node);
                 if (decoration != null && (decoration.toString() != null) && tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION) {
-                    localRoles.add(tree.getNodeDecoration(node).toString());
+                    String role = tree.getNodeDecoration(node).toString();
+
+                    if (!localRoles.contains(role)) {
+                        localRoles.add(role);
+                    }
                 }
             }
             roles.put(treeName, localRoles);
@@ -547,8 +545,8 @@ public class CurrentNextCrispConverter {
                 Collection<String> allNodes = tree.getAllNodesInDfsOrder();
 
                 // Get lists of nodes that are open for substitution and adjunction
-                ArrayList<String> substNodes = new ArrayList<String>();
-                ArrayList<String> adjNodes = new ArrayList<String>();
+                List<String> substNodes = new ArrayList<String>();
+                List<String> adjNodes = new ArrayList<String>();
 
                 //System.out.println("  " + treeRef + ": " + tree.getSignatureString());
 
@@ -561,10 +559,10 @@ public class CurrentNextCrispConverter {
                     if (tree.getNodeType(node) == NodeType.SUBSTITUTION) {
                         substNodes.add(node);
                     } else {
-                        if ((tree.getNodeType(node) == NodeType.INTERNAL || tree.getNodeType(node) == NodeType.ANCHOR) &&
-                                tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION &&
-                                tree.getNodeDecoration(node) != null &&
-                                tree.getNodeDecoration(node).toString() != null) {
+                        if ((tree.getNodeType(node) == NodeType.INTERNAL || tree.getNodeType(node) == NodeType.ANCHOR)
+                                && tree.getNodeConstraint(node) != Constraint.NO_ADJUNCTION
+                                && tree.getNodeDecoration(node) != null
+                                && tree.getNodeDecoration(node).toString() != null) {
                             adjNodes.add(node);
                         }
                     }
@@ -802,20 +800,20 @@ public class CurrentNextCrispConverter {
 
                 // TODO
                 /* pragmatic effects
-                *for( String pragEffect : entry.getPragEffects() ) {
-                *   Compound effect = (Compound) TermParser.parse(pragEffect);
-                *
-                *    if ( "uniqueref".equals(effect.getLabel())) {
-                *       String roleN = n.get(effect.getSubterms().get(0).toString());
-                *        TypedVariableList vars = new TypedVariableList();
-                *        vars.addItem(new Variable("?y"), "individual");
-                *
-                *        effects.add(new crisp.planningproblem.effect.Universal(vars,
-                *                new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", false)));
-                *        break;
-                *    }
-                *}
-                */
+                 *for( String pragEffect : entry.getPragEffects() ) {
+                 *   Compound effect = (Compound) TermParser.parse(pragEffect);
+                 *
+                 *    if ( "uniqueref".equals(effect.getLabel())) {
+                 *       String roleN = n.get(effect.getSubterms().get(0).toString());
+                 *        TypedVariableList vars = new TypedVariableList();
+                 *        vars.addItem(new Variable("?y"), "individual");
+                 *
+                 *        effects.add(new crisp.planningproblem.effect.Universal(vars,
+                 *                new crisp.planningproblem.effect.Literal("distractor(" + roleN + ",?y)", false)));
+                 *        break;
+                 *    }
+                 *}
+                 */
 
                 // effects for the substitution nodes
                 for (String substNode : substNodes) {
@@ -859,19 +857,19 @@ public class CurrentNextCrispConverter {
                             //Compound distractorPredicate = makeSemanticPredicate(term);
                             /*List<String> distractorPredicateTypes = new ArrayList<String>();
                             for (int j = 0; j < distractorPredicate.getSubterms().size(); j++) {
-                                distractorPredicateTypes.add("individual");
+                            distractorPredicateTypes.add("individual");
                             }
 
                             )
                             domain.addPredicate(distractorPredicate.getLabel(), distractorPredicateTypes);
-                            */
+                             */
                         }
 
                         Formula distractorPrecondition = new Conjunction(distractorPreconditions);
 
                         effects.add(new Universal(distractorQuantifierVars, distractorQuantifierVarTypes,
                                 new Conditional(distractorPrecondition,
-                                        new Literal("distractor(" + roleN + ",?y)", true))));
+                                new Literal("distractor(" + roleN + ",?y)", true))));
                     }
                 }
 
@@ -970,28 +968,27 @@ public class CurrentNextCrispConverter {
 
     /*
     private Term substituteVariablesForRoles(Term term, Map<String, String> n, Map<String, String> I) {
-        if (term instanceof Compound) {
-            Compound t = (Compound) term;
-            List<Term> newChildren = new ArrayList<Term>();
+    if (term instanceof Compound) {
+    Compound t = (Compound) term;
+    List<Term> newChildren = new ArrayList<Term>();
 
-            for (Term sub : t.getSubterms()) {
-                newChildren.add(substituteVariablesForRoles(sub, n, I));
-            }
-
-            return new Compound(t.getLabel(), newChildren);
-        } else if (term instanceof Constant) {
-            Constant t = (Constant) term;
-            if (n.containsKey(t.getName())) {
-                return new Variable(I.get(n.get(t.getName())));
-            } else {
-                return t;
-            }
-        } else {
-            return term;
-        }
+    for (Term sub : t.getSubterms()) {
+    newChildren.add(substituteVariablesForRoles(sub, n, I));
     }
-    */
 
+    return new Compound(t.getLabel(), newChildren);
+    } else if (term instanceof Constant) {
+    Constant t = (Constant) term;
+    if (n.containsKey(t.getName())) {
+    return new Variable(I.get(n.get(t.getName())));
+    } else {
+    return t;
+    }
+    } else {
+    return term;
+    }
+    }
+     */
     /**
      * Translates XTAG style tree names into tree names that PDDL will accept.
      *
@@ -1032,7 +1029,6 @@ public class CurrentNextCrispConverter {
 
         return new Compound(newLabel + "-" + t.getSubterms().size(), subterms);
     }
-
 
     private String renamePredicate(String predicate) {
         return "pred-" + predicate;
@@ -1099,8 +1095,6 @@ public class CurrentNextCrispConverter {
     return new File(problempath,filename);
     }
      */
-
-
     private Term newSubstituteVariablesForRoles(Term term, Map<String, String> n, Map<String, String> I, Map<String, String> nextMap, Set<String> additionalParams, Map<String, String> additionalVars, ConstantType type) {
         if (term.isCompound()) {
             Compound t = (Compound) term;
@@ -1175,6 +1169,4 @@ public class CurrentNextCrispConverter {
             return term;
         }
     }
-
-
 }

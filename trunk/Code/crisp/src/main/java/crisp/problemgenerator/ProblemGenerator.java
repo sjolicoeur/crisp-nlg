@@ -28,8 +28,7 @@ public class ProblemGenerator {
         System.out.println("ProblemGenerator [number of sentences] [valence] [number of distractors] [file name]");
     }
 
-    public ProblemGenerator(int numOfSentences, int valenceNum, int numDistractors, String fileNamePrefix)
-            throws IOException, ParserException {
+    public ProblemGenerator(int numOfSentences, int valenceNum, int numDistractors, String fileNamePrefix) throws IOException, ParserException {
         this.numberOfSentences = numOfSentences;
         this.arity = valenceNum;
         this.numberOfDistractors = numDistractors;
@@ -41,19 +40,27 @@ public class ProblemGenerator {
         pout = new PrintWriter(br);
         grammar = new CrispGrammar();
         CrispXmlInputCodec codec = new CrispXmlInputCodec();
-        codec.parse(new FileReader(new File("src/main/resources/base-grammar.xml")) , grammar);
+        codec.parse(getBaseGrammarReader(), grammar);
+
         FileWriter gfr = new FileWriter(fileName + "-grammar-" + fne);
         BufferedWriter gbr = new BufferedWriter(gfr);
+
         gout = new PrintWriter(gbr);
-        FileInputStream fstream = new FileInputStream("src/main/resources/base-grammar.xml");
-        DataInputStream in = new DataInputStream(fstream);
-        BufferedReader brr = new BufferedReader(new InputStreamReader(in));
+
+//        FileInputStream fstream = new FileInputStream("src/main/resources/base-grammar.xml");
+//        DataInputStream in = new DataInputStream(fstream);
+        BufferedReader brr = new BufferedReader(getBaseGrammarReader());
         String line;
 
-        while (!(line = brr.readLine()).equals("</crisp-grammar>"))
+        while (!(line = brr.readLine()).equals("</crisp-grammar>")) {
             gout.write(line+"\n");
+        }
         gout.flush();
-        in.close();
+//        in.close();
+    }
+
+    private static Reader getBaseGrammarReader() {
+        return new InputStreamReader(ProblemGenerator.class.getResourceAsStream("/base-grammar.xml"));
     }
 
     public void generate() throws IOException {

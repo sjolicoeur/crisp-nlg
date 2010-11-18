@@ -13,7 +13,7 @@ where $D$ is the domain description and $P=(O,I,\gamma)$
 is the instance description, consisting of the set of objects $O$, the
 initial state $I$ and the goal specification $\gamma$. 
 
-\begin{theorem}[Reduction]
+\begin{definition}[Reduction]
 A reduction of planning domain $D$ to planning domain $D'$ is a tuple
 $\mathbf f=\left<f_P, f_{\pi'}\right>$ of functions
 such that for all planning tasks $\Pi = \left<D, P\right>$:
@@ -31,17 +31,17 @@ such that for all planning tasks $\Pi = \left<D, P\right>$:
           whose size is polynomial in the size of $\pi^*$ and
           $\textit{cost}(\pi^*) = \textit{cost}(f_{\pi'}(\pi'))$.
 \end{enumerate}
-\end{theorem}
+\end{definition}
 
-\begin{theorem}[Reducibility]
+\begin{definition}[Reducibility]
 A planning domain $D$ is reducible to planning domain $D'$ (written $D\leq D'$)
 if there is a reduction $\mathbf f$ from $D$ to $D'$.
-\end{theorem}
+\end{definition}
 
-\begin{theorem}[Equivalence of planning domains]
+\begin{definition}[Equivalence of planning domains]
 Two planning domains $D$ and $D'$ are equivalent (written $D\equiv D'$) iff
 $D\leq D'$ and $D'\leq D$.
-\end{theorem}
+\end{definition}
 
 \noindent Some random remarks:
 \begin{itemize}

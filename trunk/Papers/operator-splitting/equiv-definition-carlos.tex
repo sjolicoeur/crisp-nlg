@@ -1,7 +1,58 @@
+\newcommand{\tup}[1]{\langle #1 \rangle}
+
 
 
 \subsection{Definition: Carlos}
 \label{definition-carlos}
+
+Let start by introducing some basic notation
+
+\begin{definition}
+An \emph{action} is a pair $a = \tup{P,E}$ where both $P$ and $E$ are finite sets of 
+propositional literals. $P$ is the set of \emph{preconditions} of $a$. $E$ is the set of \emph{effects} of $a$. 
+
+A \emph{planning domain} $D$ is a finite set of actions. \fixme{If we want, we can define something like a `\emph{restricted planning domain}' as a pair $D=\tup{A,R}$ where $A$ is a finite set of actions, and $R$ is a finite set of 
+propositional formulas$.  We would use $R$ to restrict planning tasks by requesting consistency with $R$.}
+
+
+A \emph{planning task} is a tuple $\tup{D, P}$
+where $D$ is a planning domain and  $P=\tup{I,F)$ 
+is an \emph{instance description}, consisting of a finite set of literals $I$
+(the \emph{initial state}) and the a finite set of literals $O$ (the \emph{final state}). 
+
+\end{definition}
+
+
+\begin{definition}[Reduction]
+A reduction of planning domain $D$ to planning domain $D'$ is a tuple
+$\mathbf f=\left<f_P, f_{\pi'}\right>$ of functions
+such that for all planning tasks $\Pi = \left<D, P\right>$:
+\begin{enumerate}
+    \item $\left<D', f_P(P)\right>$ is a planning task,
+    \item for each plan $\pi'$ of $\left<D', f_P(P)\right>$, $f_{\pi'}(\pi')$ is
+          a plan for $\Pi$,
+    \item $f_P$ and $f_{\pi'}$ are polynomial-time computable,
+    \item for each two plans $\pi'_1$ and $\pi'_2$ of $\left<D', f_P(P)\right>$
+          it holds that $\textit{cost}(f_{\pi'}(\pi'_1)) >
+          \textit{cost}(f_{\pi'}(\pi'_2))$ iff $\textit{cost}(\pi'_1) >
+          \textit{cost}(\pi'_2)$, and
+    \item for at least one optimal plan $\pi^*$ of $\Pi$ there is a
+          plan $\pi'$ of $\left<D', f_P(P)\right>$
+          whose size is polynomial in the size of $\pi^*$ and
+          $\textit{cost}(\pi^*) = \textit{cost}(f_{\pi'}(\pi'))$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Reducibility]
+A planning domain $D$ is reducible to planning domain $D'$ (written $D\leq D'$)
+if there is a reduction $\mathbf f$ from $D$ to $D'$.
+\end{definition}
+
+\begin{definition}[Equivalence of planning domains]
+Two planning domains $D$ and $D'$ are equivalent (written $D\equiv D'$) iff
+$D\leq D'$ and $D'\leq D$.
+\end{definition}
+
 
 
 

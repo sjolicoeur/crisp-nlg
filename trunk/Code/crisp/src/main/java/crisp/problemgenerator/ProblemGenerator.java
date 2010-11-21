@@ -49,7 +49,7 @@ public class ProblemGenerator {
     public static void usage() {
         System.out.println("ProblemGenerator [options] <number of sentences> <verb arity> <number of distractors> <output filename prefix>");
         System.out.println("Options:");
-        System.out.println("   --pddl     generate <prefix>-domain.lisp and <prefix>-problem.lisp");
+        System.out.println("   --pddl     generate PDDL files instead of a generation problem instance");
     }
 
     public ProblemGenerator(int numOfSentences, int valenceNum, int numDistractors, String fileNamePrefix) throws IOException, ParserException {
@@ -88,8 +88,8 @@ public class ProblemGenerator {
         codec.parse(new StringReader(crispGrammarWriter.toString()), fullGrammar);
         converter.convert(fullGrammar, new StringReader(crispProblemWriter.toString()), domain, problem);
 
-        PrintWriter domainWriter = new PrintWriter(new FileWriter(fileName + "-domain.lisp"));
-        PrintWriter problemWriter = new PrintWriter(new FileWriter(fileName + "-problem.lisp"));
+        PrintWriter domainWriter = new PrintWriter(new FileWriter(fileName + "-domain-" + fne + ".lisp"));
+        PrintWriter problemWriter = new PrintWriter(new FileWriter(fileName + "-problem-" + fne + ".lisp"));
         new PddlOutputCodec().writeToDisk(domain, problem, domainWriter, problemWriter);
 
     }

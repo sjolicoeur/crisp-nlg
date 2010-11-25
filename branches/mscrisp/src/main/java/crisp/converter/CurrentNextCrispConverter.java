@@ -44,6 +44,7 @@ import de.saar.penguin.tag.grammar.CrispGrammar;
 import de.saar.penguin.tag.grammar.CrispLexiconEntry;
 import de.saar.penguin.tag.grammar.ElementaryTree;
 import de.saar.penguin.tag.grammar.ElementaryTreeType;
+import de.saar.penguin.tag.grammar.Grammar;
 import de.saar.penguin.tag.grammar.NodeType;
 
 /**
@@ -54,7 +55,7 @@ import de.saar.penguin.tag.grammar.NodeType;
  * parser in CRISPConverter, which is particularly important for parsing large grammar
  * description files.
  */
-public class CurrentNextCrispConverter {
+public class CurrentNextCrispConverter implements CrispConverter {
 
     private enum ConstantType {
 
@@ -923,7 +924,7 @@ public class CurrentNextCrispConverter {
      * @throws SAXException
      * @throws IOException
      */
-    public void convert(CrispGrammar grammar, Reader problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException {
+    public void convert(Grammar grammar, Reader problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException {
 
         //initialize domain and problem
         setupDomain(domain);
@@ -940,7 +941,7 @@ public class CurrentNextCrispConverter {
             parser.parse(new InputSource(problemfile), handler);
 
 //            CrispGrammar filteredGrammar = (CrispGrammar) new GrammarFilterer<Term>().filter(grammar, new SemanticsPredicateListFilter(handler.predicatesInWorld) );
-            computeDomain(domain, problem, grammar, handler.getIndexIndividual());
+            computeDomain(domain, problem, (CrispGrammar) grammar, handler.getIndexIndividual());
             computeGoal(domain, problem);
 
         } catch (ParserConfigurationException e) {
@@ -949,7 +950,7 @@ public class CurrentNextCrispConverter {
 
     }
 
-    public void convert(CrispGrammar grammar, File problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException {
+    public void convert(Grammar grammar, File problemfile, Domain domain, Problem problem) throws ParserConfigurationException, SAXException, IOException {
         convert(grammar, new FileReader(problemfile), domain, problem);
 
     }

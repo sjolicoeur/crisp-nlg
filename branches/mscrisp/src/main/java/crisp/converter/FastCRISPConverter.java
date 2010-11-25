@@ -57,7 +57,7 @@ import de.saar.penguin.tag.grammar.filter.SemanticsPredicateListFilter;
 * description files.
 */
 
-public class FastCRISPConverter  {  
+public class FastCRISPConverter implements CrispConverter  {  
     // Default Handler already does a lot of work like
     // parse error handling and registering the handler
     // with a parser.

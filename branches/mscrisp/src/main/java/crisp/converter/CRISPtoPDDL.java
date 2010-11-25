@@ -22,7 +22,7 @@ public class CRISPtoPDDL {
 
     /**
      * Main program.  When running the converter from the command line, pass
-     * the name of the CRISP problem file as the first argument.
+     * the name of the CRISP grammar file as the first argument.
      *
      * @param args
      * @throws Exception

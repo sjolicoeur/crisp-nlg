@@ -1,0 +1,147 @@
+<!-- mvn assembly:assembly -DdescriptorId=jar-with-dependencies -->
+
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>de.saar.penguin</groupId>
+  <artifactId>crisp</artifactId>
+  <packaging>jar</packaging>
+  <version>1.1.5-SNAPSHOT</version>
+  <name>crisp</name>
+  <url>http://maven.apache.org</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.5</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>jgraph</groupId>
+      <artifactId>jgraph</artifactId>
+      <version>5.8.3.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>jgraph</groupId>
+      <artifactId>jgraphaddons</artifactId>
+      <version>chorus</version>
+    </dependency>
+
+    <dependency>
+      <groupId>de.saar.coli</groupId>
+      <artifactId>basics</artifactId>
+      <version>1.2.3</version>
+    </dependency>
+    
+   <dependency>
+      <groupId>de.saar.penguin</groupId>
+      <artifactId>tag</artifactId>
+      <version>1.0.6</version>
+    </dependency>
+
+
+    <dependency>
+        <groupId>de.saar.penguin</groupId>
+        <artifactId>lazyff</artifactId>
+        <version>1.1.2</version>
+    </dependency>
+
+    
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.6</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-compiler-plugin</artifactId>
+	<version>2.0.2</version>
+	<configuration>
+	  <source>1.5</source>
+	  <target>1.5</target>
+	</configuration>
+      </plugin>
+
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-surefire-plugin</artifactId>
+	<configuration>
+	  <forkMode>once</forkMode> 
+	  <argLine>-Xmx1024M -ea</argLine>
+	  <testFailureIgnore>false</testFailureIgnore> 
+	  <skip>false</skip>
+	  <excludes>
+	    <exclude>**/SerializationCodecTest.java</exclude>
+	  </excludes>
+	</configuration>
+      </plugin>
+    
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>crisp.problemgenerator.ProblemGenerator</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        </plugin>
+    </plugins>
+  </build>
+
+  <distributionManagement>
+    <repository>
+      <id>ecl-repository</id>
+      <name>Coli ECL Maven repository</name>
+      <url>scp://httpd.coli.uni-saarland.de/web/www.coli.uni-saarland.de/html/projects/ecl/maven2/releases</url>
+    </repository>
+
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>ecl-snapshots</id>
+      <name>ECL release snapshots</name>
+      <url>scp://httpd.coli.uni-saarland.de/web/www.coli.uni-saarland.de/html/projects/ecl/maven2/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <repositories>
+    <repository>
+      <id>external</id>
+      <name>ECL external libraries</name>
+      <url>http://www.coli.uni-saarland.de/projects/ecl/maven2/external</url>
+      <releases>
+	<enabled>true</enabled>
+      </releases>
+      <snapshots>
+	<enabled>false</enabled>
+      </snapshots>
+    </repository>
+
+    <repository>
+      <id>ecl-releases</id>
+      <name>ECL releases</name>
+      <url>http://www.coli.uni-saarland.de/projects/ecl/maven2/releases</url>
+      <releases>
+	<enabled>true</enabled>
+      </releases>
+      <snapshots>
+	<enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <scm>
+    <developerConnection>scm:svn:https://crisp-nlg.googlecode.com/svn/tags/crisp-nlg-situated-1.1.3</developerConnection>
+  </scm>
+</project>

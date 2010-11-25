@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<crispproblem name="modifiers" grammar="modifiers-grammar.xml"
+              cat="s" index="e-1" syntaxnodes="5" referents="4">
+    <commgoal>sleep(e-1,b1)</commgoal>
+
+    <world>sleep(e-1,b1)</world>
+    <world>button(b1)</world>
+    <world>button(b2)</world>
+    <world>button(b3)</world>
+
+    <world>blue(b1)</world>
+    <world>blue(b2)</world>
+    <world>green(b3)</world>
+
+    <world>left-of(b3,b2)</world>
+    <world>left-of(b1,b2)</world>
+</crispproblem>

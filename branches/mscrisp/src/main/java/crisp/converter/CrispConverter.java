@@ -1,7 +1,6 @@
 package crisp.converter;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
@@ -12,7 +11,6 @@ import org.xml.sax.SAXException;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
 import de.saar.chorus.term.Term;
-import de.saar.penguin.tag.grammar.CrispGrammar;
 import de.saar.penguin.tag.grammar.Grammar;
 
 public interface CrispConverter {

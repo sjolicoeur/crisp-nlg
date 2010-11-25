@@ -39,7 +39,12 @@ public class GenerateSentence {
             usage();
             System.exit(1);
         }
+
+        Domain domain = new Domain();
+        Problem problem = new Problem();
+        CrispGrammar grammar = new CrispGrammar();
         
+        // read command line arguments
         InputCodec codec = null;        
         if (args[2].equalsIgnoreCase("crispCodec")) {
             codec = new CrispXmlInputCodec();
@@ -59,10 +64,6 @@ public class GenerateSentence {
             System.err.println("Converter options: fastConverter, currentNextConverter");
             System.exit(1);
         }
-
-        Domain domain = new Domain();
-        Problem problem = new Problem();
-        CrispGrammar grammar = new CrispGrammar();
         
         PlannerInterface planner = null;
         if (args[4].equalsIgnoreCase("ffPlanner")) {
@@ -100,8 +101,6 @@ public class GenerateSentence {
 
         System.out.println("Plan: " + plan + "\n\n");
 
-
-
         // decode plan into sentence
         if (plan == null) {
             System.out.println("No plan found.");
@@ -115,6 +114,7 @@ public class GenerateSentence {
         }
     }
 
+    @Deprecated
     public static String generateSentence(Reader grammarReader, Reader problemReader) throws Exception {
         Domain domain = new Domain();
         Problem problem = new Problem();

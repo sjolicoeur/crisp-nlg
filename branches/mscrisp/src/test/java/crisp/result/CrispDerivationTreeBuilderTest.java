@@ -5,6 +5,7 @@ import crisp.planner.external.FfPlannerInterface;
 import crisp.planner.external.PlannerInterface;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
+import crisp.planningproblem.codec.PddlOutputCodec;
 import de.saar.chorus.term.Term;
 import de.saar.penguin.tag.codec.ParserException;
 import de.saar.penguin.tag.derivation.DerivationTree;
@@ -47,7 +48,7 @@ public class CrispDerivationTreeBuilderTest {
 
         CrispDerivationTreeBuilder planDecoder = new CrispDerivationTreeBuilder(grammar);
         PlannerInterface planner = new FfPlannerInterface();
-        List<Term> plan = planner.runPlanner(domain, problem);
+        List<Term> plan = planner.runPlanner(domain, problem, new PddlOutputCodec());
         DerivationTree derivationTree = planDecoder.buildDerivationTreeFromPlan(plan, domain, "s");
         DerivedTree derivedTree = derivationTree.computeDerivedTree(grammar);
 
@@ -76,7 +77,7 @@ public class CrispDerivationTreeBuilderTest {
 
         CrispDerivationTreeBuilder planDecoder = new CrispDerivationTreeBuilder(grammar);
         PlannerInterface planner = new FfPlannerInterface();
-        List<Term> plan = planner.runPlanner(domain, problem);
+        List<Term> plan = planner.runPlanner(domain, problem, new PddlOutputCodec());
         DerivationTree derivationTree = planDecoder.buildDerivationTreeFromPlan(plan, domain, "s");
         DerivedTree derivedTree = derivationTree.computeDerivedTree(grammar);
 

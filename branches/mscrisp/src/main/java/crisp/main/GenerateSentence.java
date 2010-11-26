@@ -5,9 +5,13 @@ import crisp.converter.CurrentNextCrispConverter;
 import crisp.converter.FastCRISPConverter;
 import crisp.planner.external.FfPlannerInterface;
 import crisp.planner.external.LazyFfInterface;
+import crisp.planner.external.MetricFfPlannerInterface;
 import crisp.planner.external.PlannerInterface;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
+import crisp.planningproblem.codec.CostPddlOutputCodec;
+import crisp.planningproblem.codec.FluentsPddlOutputCodec;
+import crisp.planningproblem.codec.PddlOutputCodec;
 import crisp.result.CrispDerivationTreeBuilder;
 import crisp.result.DerivationTreeBuilder;
 import de.saar.chorus.term.Term;
@@ -26,16 +30,17 @@ public class GenerateSentence {
     public static final String PROPERTIES_FILE = "crisp.properties";
 
     public static void usage() {
-        System.out.println("Usage: crisp.main.GenerateSentence [grammar file] [problem file] [codec] [converter] [planner] [decoder]");
-        System.out.println("Codec options: crispCodec, situatedCrispCodec");
+        System.out.println("Usage: crisp.main.GenerateSentence [grammar file] [problem file] [input codec] [converter] [output codec] [planner] [decoder]");
+        System.out.println("Input codec options: crispInput, situatedCrispInput");
         System.out.println("Converter options: fastConverter, currentNextConverter");
-        System.out.println("Planner options: ffPlanner, lazyFFPlanner");
-        System.out.println("Decoder options: crispDecoder");
+        System.out.println("Output codec options: pddlOutput, costPddlOutput, fluentsPddlOutput");
+        System.out.println("Planner options: ffPlanner, metricFfPlanner, lazyFFPlanner");
+        System.out.println("Decoder options: crispDecoder\n");
     }
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 6) {
-            System.err.println("Wrong number of arguments.");
+        if (args.length != 7) {
+            System.err.println("Wrong number of arguments.\n");
             usage();
             System.exit(1);
         }
@@ -45,13 +50,14 @@ public class GenerateSentence {
         CrispGrammar grammar = new CrispGrammar();
         
         // read command line arguments
-        InputCodec codec = null;        
-        if (args[2].equalsIgnoreCase("crispCodec")) {
-            codec = new CrispXmlInputCodec();
-        } else if (args[2].equalsIgnoreCase("situatedCrispCodec")) {	
-            codec = new SituatedCrispXmlInputCodec();
+        InputCodec inputCodec = null;        
+        if (args[2].equalsIgnoreCase("crispInput")) {
+            inputCodec = new CrispXmlInputCodec();
+        } else if (args[2].equalsIgnoreCase("situatedCrispInput")) {	
+            inputCodec = new SituatedCrispXmlInputCodec();
         } else {
-            System.err.println("Codec options: crispCodec, situatedCrispCodec");
+            System.err.println("Wrong input codec.\n");
+            usage();
             System.exit(1);
         }
         
@@ -61,36 +67,54 @@ public class GenerateSentence {
         } else if (args[3].equalsIgnoreCase("currentNextConverter")) {
             converter = new CurrentNextCrispConverter();
         } else {
-            System.err.println("Converter options: fastConverter, currentNextConverter");
+            System.err.println("Wrong converter.\n");
+            usage();
             System.exit(1);
         }
         
+        PddlOutputCodec outputCodec = null;
+        if (args[4].equalsIgnoreCase("pddlOutput")) {
+            outputCodec = new PddlOutputCodec();
+        } else if (args[4].equalsIgnoreCase("costPddlOutput")) {
+            outputCodec = new CostPddlOutputCodec();
+        } else if (args[4].equalsIgnoreCase("fluentsPddlOutput")) {
+            outputCodec = new FluentsPddlOutputCodec();
+        } else {
+            System.err.println("Wrong output codec.\n");
+            usage();
+            System.exit(1);            
+        }
+        
         PlannerInterface planner = null;
-        if (args[4].equalsIgnoreCase("ffPlanner")) {
+        if (args[5].equalsIgnoreCase("ffPlanner")) {
             planner = new FfPlannerInterface("-B -T -H");
-        } else if (args[4].equalsIgnoreCase("lazyFFPlanner")) {
+        } else if (args[5].equalsIgnoreCase("metricFFPlanner")) {
+            planner = new MetricFfPlannerInterface();
+        } else if (args[5].equalsIgnoreCase("lazyFFPlanner")) {
             planner = new LazyFfInterface();
         } else {
-            System.err.println("Planner options: ffPlanner, lazyFFPlanner");
+            System.err.println("Wrong planner.\n");
+            usage();
             System.exit(1);            
         }
         
         DerivationTreeBuilder planDecoder = null;
-        if (args[5].equalsIgnoreCase("crispDecoder")) {
+        if (args[6].equalsIgnoreCase("crispDecoder")) {
             planDecoder = new CrispDerivationTreeBuilder(grammar);
         } else {
-            System.err.println("Decoder options: crispDecoder");
+            System.err.println("Wrong decoder.\n");
+            usage();
             System.exit(1);            
         }
 
         // read grammar and problem and convert them into planning problem
         long start = System.currentTimeMillis();
-        codec.parse(new FileReader(new File(args[0])), grammar);
+        inputCodec.parse(new FileReader(new File(args[0])), grammar);
         converter.convert(grammar, new FileReader(new File(args[1])), domain, problem);
         long end = System.currentTimeMillis();
 
         // run planner
-        List<Term> plan = planner.runPlanner(domain, problem);
+        List<Term> plan = planner.runPlanner(domain, problem, outputCodec);
 
         // print runtime statistics
         System.out.println("\n\nRuntime:");
@@ -128,7 +152,7 @@ public class GenerateSentence {
 
         // run planner
         PlannerInterface planner = new FfPlannerInterface();
-        List<Term> plan = planner.runPlanner(domain, problem);
+        List<Term> plan = planner.runPlanner(domain, problem, new PddlOutputCodec());
 
         // decode plan into sentence
         if (plan == null) {

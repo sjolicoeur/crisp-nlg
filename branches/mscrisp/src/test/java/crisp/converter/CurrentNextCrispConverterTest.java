@@ -21,6 +21,7 @@ import org.xml.sax.SAXException;
 import crisp.planningproblem.Action;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
+import crisp.planningproblem.codec.PddlOutputCodec;
 import de.saar.penguin.tag.codec.ParserException;
 import de.saar.penguin.tag.grammar.CrispGrammar;
 import de.saar.penguin.tag.grammar.SituatedCrispXmlInputCodec;
@@ -135,7 +136,7 @@ public class CurrentNextCrispConverterTest {
         loadAndConvert("/grammar-scrisp.xml", "/problem-scrisp-give1-generated.xml");
 
         PlannerInterface planner = new FfPlannerInterface();
-        List<Term> plan = planner.runPlanner(domain, problem);
+        List<Term> plan = planner.runPlanner(domain, problem, new PddlOutputCodec());
         DerivationTree result = planDecoder.buildDerivationTreeFromPlan(plan, domain);
 
         assert result != null;
@@ -168,7 +169,7 @@ public class CurrentNextCrispConverterTest {
 
     private String planAndExtract() throws Exception {
         PlannerInterface planner = new FfPlannerInterface();
-        List<Term> plan = planner.runPlanner(domain, problem);
+        List<Term> plan = planner.runPlanner(domain, problem, new PddlOutputCodec());
         DerivationTree derivationTree = planDecoder.buildDerivationTreeFromPlan(plan, domain);
         DerivedTree derivedTree = derivationTree.computeDerivedTree(grammar);
         String sent = derivedTree.yield();

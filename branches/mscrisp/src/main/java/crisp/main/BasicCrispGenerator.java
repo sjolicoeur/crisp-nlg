@@ -5,6 +5,7 @@ import crisp.planner.external.FfPlannerInterface;
 import crisp.planner.external.PlannerInterface;
 import crisp.planningproblem.Domain;
 import crisp.planningproblem.Problem;
+import crisp.planningproblem.codec.PddlOutputCodec;
 import crisp.result.CrispDerivationTreeBuilder;
 import crisp.result.DerivationTreeBuilder;
 import de.saar.chorus.term.Term;
@@ -117,7 +118,7 @@ public class BasicCrispGenerator implements CrispGeneratorInterface {
 
             // run the planner
             try {
-                plan = planner.runPlanner(domain, problem);
+                plan = planner.runPlanner(domain, problem, new PddlOutputCodec());
             } catch (Exception e) {
 //                e.printStackTrace();
                 throw new CrispGeneratorException("Error running the planner.", e);
@@ -148,7 +149,7 @@ public class BasicCrispGenerator implements CrispGeneratorInterface {
 
             // run the planner
             try {
-                plan = planner.runPlanner(domain, problem);
+                plan = planner.runPlanner(domain, problem, new PddlOutputCodec());
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new CrispGeneratorException("Error running the planner.");

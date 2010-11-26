@@ -97,8 +97,8 @@ public class LazyFfInterface implements PlannerInterface {
      * @param problem The planning problem
      * @return a list of ground (compound) Terms describing instantiated plan actions
      */
-    public List<Term> runPlanner(Domain domain, Problem problem) throws Exception {
-        return runPlanner(domain, problem, 0);
+    public List<Term> runPlanner(Domain domain, Problem problem, PddlOutputCodec outputCodec) throws Exception {
+        return runPlanner(domain, problem, outputCodec, 0);
     }
 
     /**
@@ -107,14 +107,11 @@ public class LazyFfInterface implements PlannerInterface {
      * @param problem The planning problem
      * @return a list of ground (compound) Terms describing instantiated plan actions
      */
-    public List<Term> runPlanner(Domain domain, Problem problem, long timeout) throws Exception {
+    public List<Term> runPlanner(Domain domain, Problem problem, PddlOutputCodec outputCodec, long timeout) throws Exception {
         // This does look a bit like LAMA.sh. Calling the individual commands from here makes it easier to measure time
 
         long start;
         long end;
-
-        OutputCodec outputCodec = new PddlOutputCodec();
-        //OutputCodec outputCodec2 = new CostPddlOutputCodec();
 
         StringWriter domainWriter = new StringWriter();
         StringWriter problemWriter = new StringWriter();
@@ -252,7 +249,7 @@ public class LazyFfInterface implements PlannerInterface {
 
         System.out.println("Running planner ... ");
         LazyFfInterface planner = new LazyFfInterface();
-        List<Term> plan = planner.runPlanner(domain,problem, 600000);
+        List<Term> plan = planner.runPlanner(domain, problem, new PddlOutputCodec(), 600000);
 
         System.out.println(planner.getTotalTime());
         System.out.println(planner.getPreprocessingTime());

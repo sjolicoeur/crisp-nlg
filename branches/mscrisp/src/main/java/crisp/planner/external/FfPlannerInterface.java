@@ -64,12 +64,12 @@ public class FfPlannerInterface implements PlannerInterface {
         this("");
     }
 
-    public List<Term> runPlanner(Domain domain, Problem problem) throws Exception {
+    public List<Term> runPlanner(Domain domain, Problem problem, PddlOutputCodec outputCodec) throws Exception {
 
         long start;
         long end;
 
-        new PddlOutputCodec().writeToDisk(domain, problem, new PrintWriter(new FileWriter(new File(TEMPDOMAIN_FILE))),
+        outputCodec.writeToDisk(domain, problem, new PrintWriter(new FileWriter(new File(TEMPDOMAIN_FILE))),
                 new PrintWriter(new FileWriter(new File(TEMPPROBLEM_FILE))));
 
 
@@ -119,9 +119,9 @@ public class FfPlannerInterface implements PlannerInterface {
     }
 
 
-    public List<Term> runPlanner(Domain domain, Problem problem, long timeout) throws Exception {
+    public List<Term> runPlanner(Domain domain, Problem problem, PddlOutputCodec outputCodec, long timeout) throws Exception {
         //TODO: implement timeout for SGPlan
-        return runPlanner(domain, problem);
+        return runPlanner(domain, problem, outputCodec);
     }
 
     public long getPreprocessingTime() {
@@ -134,11 +134,6 @@ public class FfPlannerInterface implements PlannerInterface {
 
     public long getTotalTime() {
         return preprocessingTime + searchTime;
-    }
-
-
-    public static void usage() {
-        System.out.println("Usage: java crisp.evaluation.LamaPlannerInterface [CRISP grammar] [CIRISP problem]");
     }
 
 

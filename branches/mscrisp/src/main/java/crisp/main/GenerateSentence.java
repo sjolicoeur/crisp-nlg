@@ -1,6 +1,7 @@
 package crisp.main;
 
 import crisp.converter.CrispConverter;
+import crisp.converter.CurrentNextConverterWithCosts;
 import crisp.converter.CurrentNextCrispConverter;
 import crisp.converter.FastCRISPConverter;
 import crisp.planner.external.FfPlannerInterface;
@@ -32,7 +33,7 @@ public class GenerateSentence {
     public static void usage() {
         System.out.println("Usage: crisp.main.GenerateSentence [grammar file] [problem file] [input codec] [converter] [output codec] [planner] [decoder]");
         System.out.println("Input codec options: crispInput, situatedCrispInput");
-        System.out.println("Converter options: fastConverter, currentNextConverter");
+        System.out.println("Converter options: fastConverter, currentNextConverter, currentNextConverterWithCosts");
         System.out.println("Output codec options: pddlOutput, costPddlOutput, fluentsPddlOutput");
         System.out.println("Planner options: ffPlanner, metricFfPlanner, lazyFFPlanner");
         System.out.println("Decoder options: crispDecoder\n");
@@ -66,6 +67,8 @@ public class GenerateSentence {
             converter = new FastCRISPConverter();
         } else if (args[3].equalsIgnoreCase("currentNextConverter")) {
             converter = new CurrentNextCrispConverter();
+        } else if (args[3].equalsIgnoreCase("currentNextConverterWithCosts")) {
+            converter = new CurrentNextConverterWithCosts();
         } else {
             System.err.println("Wrong converter.\n");
             usage();

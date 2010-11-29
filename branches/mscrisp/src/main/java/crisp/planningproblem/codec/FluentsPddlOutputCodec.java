@@ -5,9 +5,11 @@ package crisp.planningproblem.codec;
 
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 
 import crisp.planningproblem.Action;
 import crisp.planningproblem.Domain;
+import crisp.planningproblem.Problem;
 import crisp.planningproblem.TypeHierarchy;
 import crisp.planningproblem.formula.Conditional;
 import crisp.planningproblem.formula.Conjunction;
@@ -23,6 +25,43 @@ import de.saar.chorus.term.Term;
  *
  */
 public class FluentsPddlOutputCodec extends PddlOutputCodec {
+    
+    @Override
+    public void writeProblem(Problem problem, PrintWriter pw) {
+        String name = problem.getName();
+
+        pw.println("(define (problem " + name + ")");
+        pw.println("   (:domain " + problem.getDomain().getName() + ")");
+
+        // Write objects
+        Map<String, String> objects = problem.getUniverse();
+        if (!objects.isEmpty()) {
+            pw.println("    (:objects");
+            for (String object : objects.keySet()) {
+                pw.println("        " + object + " - " + objects.get(object));
+            }            
+            pw.println("    )");
+        }
+
+        // Write initial state
+        pw.println("   (:init");
+        for (Term term : problem.getInitialState()) {
+            pw.println("      " + term.toLispString());
+        }
+        
+        // Include initial value of total cost
+        pw.println("      (= (total-cost) 0)");	
+        pw.println("   )\n");
+
+
+        // Write goal condition
+        pw.println("   (:goal " + toPddlString(problem.getGoal()) + ")\n");
+        
+        // Write optimization metric
+        pw.println("   (:metric minimize (total-cost))");
+        pw.println(")");
+        pw.flush(); //otherwise output is incomplete 
+    }
 
 
     @Override

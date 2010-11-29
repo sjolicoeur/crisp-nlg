@@ -465,7 +465,7 @@ public class CurrentNextCrispConverter implements CrispConverter {
      *
      * @param grammar The grammar from which actions are generated
      */
-    private void computeDomain(Domain domain, Problem problem, CrispGrammar grammar, String indexIndividual) {
+    protected void computeDomain(Domain domain, Problem problem, CrispGrammar grammar, String indexIndividual) {
         Map<String, List<String>> roles = new HashMap<String, List<String>>();
 
         // for each tree in the grammar

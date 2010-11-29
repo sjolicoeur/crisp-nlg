@@ -17,6 +17,7 @@ public class CrispLexiconEntry extends LexiconEntry {
     private List<Term> pragmaticPreconditions;
     private List<Term> pragmaticEffects;
     private List<Term> imperativeEffects;
+    private List<Term> costClass;
     private Map<String, String> additionalParams;
     private Map<String, String> additionalVars;
 
@@ -26,6 +27,7 @@ public class CrispLexiconEntry extends LexiconEntry {
         pragmaticPreconditions = new ArrayList<Term>();
         pragmaticEffects = new ArrayList<Term>();
         imperativeEffects = new ArrayList<Term>();
+        costClass = new ArrayList<Term>();
         additionalParams = new HashMap<String, String>();
         additionalVars = new HashMap<String, String>();
         
@@ -78,6 +80,14 @@ public class CrispLexiconEntry extends LexiconEntry {
 
     public List<Term> getImperativeEffects(){
         return imperativeEffects;
+    }
+
+    public void addCostClass(List<Term> currentCostClass) {
+	costClass.addAll(currentCostClass);	
+    }
+    
+    public List<Term> getCostClass() {
+	return costClass;
     }
 
 

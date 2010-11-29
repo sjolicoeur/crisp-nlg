@@ -58,6 +58,7 @@ public class SituatedCrispXmlInputCodec implements InputCodec<Term> {
         private List<Term> currentPragCond;
         private List<Term> currentPragEff;
         private List<Term> currentImpEff;
+        private List<Term> currentCostClass;
         private Map<String, String> additionalParams;
         private Map<String, String> additionalVars;
         private String currentParamType;
@@ -82,6 +83,7 @@ public class SituatedCrispXmlInputCodec implements InputCodec<Term> {
                     currentPragCond = new ArrayList<Term>();
                     currentPragEff = new ArrayList<Term>();
                     currentImpEff = new ArrayList<Term>();
+                    currentCostClass = new ArrayList<Term>();
                     additionalParams = new HashMap<String,String>();
                     additionalVars = new HashMap<String,String>();                    
                 } else {
@@ -106,7 +108,7 @@ public class SituatedCrispXmlInputCodec implements InputCodec<Term> {
                 currentAux.put(attributes.getValue("pos"), attributes.getValue("word"));
             } else if (name.equals("semcontent") || name.equals("semreq") ||
                        name.equals("pragcond") || name.equals("prageff") ||
-                       name.equals("impeff") ) {
+                       name.equals("impeff") || name.equals("costclass")) {
                 characterBuffer = new StringWriter();
             } else if (name.equals("param")) {
                 characterBuffer = new StringWriter();
@@ -132,6 +134,7 @@ public class SituatedCrispXmlInputCodec implements InputCodec<Term> {
                     newEntry.addPragmaticPreconditions(currentPragCond);
                     newEntry.addPragmaticEffects(currentPragEff);
                     newEntry.addImperativeEffects(currentImpEff);
+                    newEntry.addCostClass(currentCostClass);
                     newEntry.addAdditionalParams(additionalParams);
                     newEntry.addAdditionalVars(additionalVars);
                     grammar.addLexiconEntry(newEntry);
@@ -142,12 +145,14 @@ public class SituatedCrispXmlInputCodec implements InputCodec<Term> {
                 currentSem.add(TermParser.parse(characterBuffer.toString()));
             } else if (name.equals("semreq")) {
                 currentSemReq.add(TermParser.parse(characterBuffer.toString()));
-            } else if (name.equals("pragcond")) {
+            } else if (name.equals("pragcond")) { 
                 currentPragCond.add(TermParser.parse(characterBuffer.toString()));
             } else if (name.equals("prageff")) {
                 currentPragEff.add(TermParser.parse(characterBuffer.toString()));
             } else if (name.equals("impeff")) {
                 currentImpEff.add(TermParser.parse(characterBuffer.toString()));
+            } else if (name.equals("costclass")) {
+                currentCostClass.add(TermParser.parse(characterBuffer.toString()));
             } else if (name.equals("param")) {
                 additionalParams.put(characterBuffer.toString(), currentParamType);
             } else if (name.equals("var")) {

@@ -92,7 +92,7 @@ public class GenerateSentence {
         if (args[5].equalsIgnoreCase("ffPlanner")) {
             planner = new FfPlannerInterface("-B -T -H");
         } else if (args[5].equalsIgnoreCase("metricFFPlanner")) {
-            planner = new MetricFfPlannerInterface();
+            planner = new MetricFfPlannerInterface("-B");	// available flags: "-B" "-E" "-T" "-H"; also "-g 5 -h 1" or similar to switch to FF.quality 
         } else if (args[5].equalsIgnoreCase("lazyFFPlanner")) {
             planner = new LazyFfInterface();
         } else {

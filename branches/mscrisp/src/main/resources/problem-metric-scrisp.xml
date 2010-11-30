@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<crispproblem name="scrisp-give1" grammar="grammar-scrisp.xml"
-  cat="S" index="e-1" syntaxnodes="5" referents="3">
+<crispproblem name="metric-scrisp" grammar="metric-scrisp-grammar.xml"
+  cat="S" index="e-1" syntaxnodes="3" referents="1">
 
-<impgoal>push(b5)</impgoal>
+<impgoal>push(b3)</impgoal>
+<world>target(b3)</world>
 
-<world>conj-node()</world>
+<world type="syntaxnode">premod-index-zero(root)</world>
+<world type="syntaxnode">premod-index-one(root)</world>
+<world type="syntaxnode">premod-index-two(root)</world>
 
-<world type="syntaxnode">adjective-level-zero(root)</world>
-<world type="syntaxnode">adjective-level-one(root)</world>
-<world type="syntaxnode">adjective-level-two(root)</world>
+<world>landmark(p1)</world>
+<world>landmark(chair1)</world>
+<world>landmark(flower1)</world>
+<world>landmark(lamp1)</world>
 
-<!-- domain static predicates -->
+<!-- only objects in target's room here -->
 
 <world>button(b1_dist1)</world>
 <world>green(b1_dist1)</world>
@@ -21,16 +25,10 @@
 <world>blue(b1_dist2)</world>
 <world>button(b1_dist3)</world>
 <world>green(b1_dist3)</world>
-<world>button(bt1)</world>
-<world>blue(bt1)</world>
 <world>button(b5_dist1)</world>
 <world>blue(b5_dist1)</world>
 <world>button(b3_dist1)</world>
 <world>blue(b3_dist1)</world>
-<world>button(bt2)</world>
-<world>green(bt2)</world>
-<world>button(bt3)</world>
-<world>yellow(bt3)</world>
 <world>button(b4_dist2)</world>
 <world>yellow(b4_dist2)</world>
 <world>button(b4_dist1)</world>
@@ -48,7 +46,7 @@
 <world>button(b3)</world>
 <world>blue(b3)</world>
 <world>button(b2)</world>
-<world>yellow(b2)</world>
+<world>red(b2)</world>
 <world>button(b5)</world>
 <world>red(b5)</world>
 <world>button(b4)</world>
@@ -61,14 +59,12 @@
 <world>lamp(lamp1)</world>
 <world>safe(s1)</world>
 <world>door(dt1)</world>
-<world>picture(pt1)</world>
 
 <world>left-of(b6,b6_dist1)</world>
 <world>left-of(b6,b6_dist2)</world>
 <world>left-of(b1_dist1,b1_dist2)</world>
 <world>left-of(b1_dist3,b4_dist1)</world>
 <world>left-of(b1_dist1,b1_dist3)</world>
-<world>left-of(b3_dist1,bt1)</world>
 <world>left-of(b2_dist1,b5_dist1)</world>
 <world>left-of(b2_dist2,b5)</world>
 <world>left-of(b1,b4_dist1)</world>
@@ -91,11 +87,45 @@
 <world>left-of(b2,b5)</world>
 <world>above(b1_dist3,b1_dist2)</world>
 <world>above(b4_dist2,b4)</world>
-<world>above(bt3,bt2)</world>
 <world>above(b1,b1_dist1)</world>
 
-<!-- domain dynamic predicates -->
-
-<world>target(b5)</world>
+<world>above(b3,chair1)</world>
+<world>above(b3_dist1,chair1)</world>
+<world>left-of(lamp1,b1)</world>
+<world>left-of(lamp1,b1_dist1)</world>
+<world>left-of(lamp1,b1_dist2)</world>
+<world>left-of(lamp1,b1_dist3)</world>
+<world>left-of(p1,b2)</world>
+<world>left-of(p1,b2_dist1)</world>
+<world>left-of(p1,b2_dist2)</world>
+<world>left-of(p1,b5)</world>
+<world>left-of(p1,b5_dist1)</world>
+<world>left-of(b6,p1)</world>
+<world>left-of(b6_dist1,p1)</world>
+<world>left-of(b6_dist2,p1)</world>
+<world>left-of(b4_dist1,flower1)</world>
+<world>left-of(flower1,b4)</world>
+<world>left-of(flower1,b4_dist2)</world>
+<world>left-of(dt1,b6)</world>
+<world>left-of(dt1,b6_dist1)</world>
+<world>left-of(dt1,b6_dist2)</world>
+<world>left-of(b3,dt1)</world>
+<world>left-of(b3_dist1,dt1)</world>
+<world>left-of(s1,b2)</world>
+<world>left-of(s1,b2_dist1)</world>
+<world>left-of(s1,b2_dist2)</world>
+<world>left-of(s1,b5)</world>
+<world>left-of(s1,b5_dist1)</world>
+<world>left-of(b6,s1)</world>
+<world>left-of(b6_dist1,s1)</world>
+<world>left-of(b6_dist2,s1)</world>
+<world>left-of(a1,b2)</world>
+<world>left-of(a1,b2_dist1)</world>
+<world>left-of(a1,b2_dist2)</world>
+<world>left-of(a1,b5)</world>
+<world>left-of(a1,b5_dist1)</world>
+<world>left-of(b6,a1)</world>
+<world>left-of(b6_dist1,a1)</world>
+<world>left-of(b6_dist2,a1)</world>
 
 </crispproblem>

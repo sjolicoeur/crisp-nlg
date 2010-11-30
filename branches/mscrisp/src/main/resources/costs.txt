@@ -1,2 +1,4 @@
-taxonomic 100
-absolute 10
+taxonomic 0
+absolute 0
+viewer 50
+micro 20

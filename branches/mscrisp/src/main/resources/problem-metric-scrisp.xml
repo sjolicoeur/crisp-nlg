@@ -10,11 +10,6 @@
 <world type="syntaxnode">premod-index-one(root)</world>
 <world type="syntaxnode">premod-index-two(root)</world>
 
-<world>landmark(p1)</world>
-<world>landmark(chair1)</world>
-<world>landmark(flower1)</world>
-<world>landmark(lamp1)</world>
-
 <!-- only objects in target's room here -->
 
 <world>button(b1_dist1)</world>
@@ -59,6 +54,11 @@
 <world>lamp(lamp1)</world>
 <world>safe(s1)</world>
 <world>door(dt1)</world>
+
+<world>micro(p1)</world>
+<world>micro(chair1)</world>
+<world>micro(flower1)</world>
+<world>micro(lamp1)</world>
 
 <world>left-of(b6,b6_dist1)</world>
 <world>left-of(b6,b6_dist2)</world>

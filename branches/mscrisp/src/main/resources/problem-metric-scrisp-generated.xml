@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<crispproblem name="metric-scrisp" grammar="metric-scrisp-grammar.xml"
+  cat="S" index="e-1" syntaxnodes="3" referents="1">
+
+<impgoal>push(b5)</impgoal>
+<world>target(b5)</world>
+
+<world type="syntaxnode">premod-index-zero(root)</world>
+<world type="syntaxnode">premod-index-one(root)</world>
+<world type="syntaxnode">premod-index-two(root)</world>
+
+<!-- room object predicates -->
+
+<world>door(d3)</world>
+<world>button(b5)</world>
+<world>blue(b5)</world>
+<world>door(d4)</world>
+<world>lamp(lamp1)</world>
+<world>micro(lamp1)</world>
+<world>micro(t1)</world>
+
+<!-- spatial relation predicates -->
+
+<world>left-of(d3,b5)</world>
+<world>left-of(b5,lamp1)</world>
+<world>above(t1,d3)</world>
+
+</crispproblem>

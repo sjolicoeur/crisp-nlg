@@ -90,6 +90,19 @@ herein provide an automatic method that does just that. We evaluate
 the method on IPC benchmarks, as well as on the domain of sentence
 generation, where pre-processing, in particular related to the number
 of operator parameters, is known to be one of the major obstacles.
+
+\joerg{NOTE: instead of selling this as a re-writing technique, we
+  could just as well sell it is a way to ``get complex operators
+  through common pre-processors'': after all, once the pre-processing
+  is through, inside the planner we could easily ``unsplit'' the
+  operators again, yielding exactly the same grounded representation
+  that we would have got from the original operators. ... the
+  advantage is that we will not suffer from any potential search
+  degradation, and can focus exclusively on reducing instantiation
+  time. the disadvantage of course is in cases where the grounded
+  representation is prohibitively big -- the number of ``original''
+  ground ops can be exponentially (in the number of op params) larger
+  than the number of ``splitted'' ground ops.}
 \end{abstract}
 
 

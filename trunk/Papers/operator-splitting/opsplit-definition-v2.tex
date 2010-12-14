@@ -74,7 +74,7 @@ clear(B)'' and whose del is ``on(A,B), clear(C)''. A 2-split is given
 by ``A,B'' and ``A,C''. We get the actions ``move1(A,B)'' with pre
 ``processing-none, on(A,B), clear(A)'', add ``do-move2, clear(B),
 arg1(A), arg2(B)'', del ``on(A B), processing-none''; and
-``move2(A,C)''with pre ``do-move2, clear(C), arg1(A)'', add ``on(A C),
+``move2(A,C)'' with pre ``do-move2, clear(C), arg1(A)'', add ``on(A C),
 processing-none, arg3(C)'', del ``clear(C), do-move2''.
 
 
@@ -87,6 +87,37 @@ processing-none, arg3(C)'', del ``clear(C), do-move2''.
   itself in a dead-end. One may think of giving the option to ``roll
   back'' an execution. .. well dunno if this would help or be
   detrimental. something to keep in mind.}
+
+
+
+One important remark concerning planner performance: splitting up
+operators in the above way may produce dead-ends. After the first
+operator is applied, we do not have $processing\mbox{-}none$ anymore
+and thus there is no chance of reaching the goal other than by
+completing the split, i.e., reaching an operator
+$do\mbox{-}o_k$. That, however, may not be possible. As of the first
+operator, we commit to a partial variable instantiation $i$ for the
+operator in question, in terms of the $arg_1(.), \dots, arg_l(.)$
+predicates. Any completion of the split -- at any point during the
+execution of the split -- must stick to $i$. It may be the case that
+some ``future'' precondition, i.e., a precondition included in a
+later-on part of the split, cannot be satisfied in the current state
+in conformance with $i$. As a simple example, if we enrich the
+blocksworld with an additional static predicate ``can-stack(x y)'' and
+allow ``move(A,B,C)'' only if ``can-stack(A C)'' holds, then in the
+above split ``move2(A,C)'' has the additional precondition
+``can-stack(A C)''. However, there may not exist ``C'' for which both
+``can-stack(A C)'' and ``clear(C)'' hold. In this case, upon
+application of ``move1(A,B)'' we're in a dead-end. However, if the
+planner is using a relaxed-plan based heuristic, then these dead-ends
+``do not do a lot of damage'', in the sense that for any such dead-end
+state $s$, no relaxed plan will exist and thus the heuristic value
+will be $\infty$ and the state will be immediately pruned. The simple
+reason for this is that $processing\mbox{-}none$ must be re-achieved
+also in the relaxed plan, and doing so is not possible because at some
+point along the split sequence no more actions will be applicable.
+
+
 
 
 

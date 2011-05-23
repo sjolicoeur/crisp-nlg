@@ -1,0 +1,10 @@
+
+
+
+
+
+latex main
+
+dvips -Ppdf -G0 -tletter main
+
+ps2pdf -dPDFSETTINGS=/printer -dCompatibilityLevel=1.4 -dMaxSubsetPct=0 -dSubsetFonts=false -dEmbedAllFonts=true -sPAPERSIZE=letter main.ps

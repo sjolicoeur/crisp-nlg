@@ -1,0 +1,109 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Natural language generation (NLG; \citeauthor{reiter00building}
+\citeyear{reiter00building}) is one of the major subfields of natural
+language processing, concerned with computing natural language
+sentences or texts that convey a given piece of information to the
+user. Intuitively, this task can be viewed as a problem involving
+actions, beliefs, and goals: an agent communicating with another agent
+tries to change the mental state of the hearer by applying actions
+which correspond to the utterance of words or sentences. This
+characterisation of NLG suggests obvious parallels to automated
+planning---a view which has a long tradition in NLG
+\cite{appelt:planning,young94dpocl}.  More recently, there has been a
+resurgence of interest in applying modern planning techniques to NLG
+\cite{Steedman-Petrick:07,KolSto07,benotti08b}.  While efficiency has
+not always been the main focus of NLG, problems in NLG are often more
+complex than their counterparts in other areas of natural language
+processing (such as parsing \cite{KolStr02}), giving rise to
+computationally challenging domains. These new approaches combine an
+interest in planning as a modelling tool for natural language, with a
+hope of improved efficiency by exploiting modern approaches and
+algorithms.
+
+The focus of this paper is twofold. We begin by presenting two recent
+planning domains that arise in the context of natural language generation:
+the sentence generation domain and the GIVE domain. In the sentence
+generation task, the goal is to generate a single sentence that expresses a
+given meaning. \citeauthor{KolSto07}~\shortcite{KolSto07} cast this domain
+as a planning problem, where the plan encodes the necessary sentence and
+the actions correspond to uttering individual words. In the GIVE domain
+(``Generating Instructions in Virtual Environments''), we describe a new
+shared task that was recently posed as a challenge for the NLG community
+\cite{alexander07:_shared_task_propos}. GIVE uses planning as one module of
+an NLG system that generates natural-language instructions to guide a
+user performing a given task in a virtual environment.
+
+We then discuss some of our experiences using off-the-shelf planners in our
+two domains. In particular, we explore the efficiency of FF
+\cite{HoffmannNebel01} and SGPLAN
+\cite{hsu06:_new_featur_in_sgplan_for}---planners that are easily
+available, support an expressive subset of PDDL for encoding preconditions
+and effects, and have been successful on traditional benchmarks and in the
+International Planning Competition (IPC)---on a range of problem instances
+from our planning domains.  We also compare these results against an ad-hoc
+Java implementation of GraphPlan \cite{Blum1997}.  Our findings are mixed.
+On the one hand, it turns out that modern planners handle some of the
+search problems that arise in NLG quite easily (although large problem
+instances still remain a challenge).  On the other hand, these same
+planners spend tremendous amounts of time on preprocessing. For instance,
+FF spends 90\% of its runtime in the sentence generation domain on
+grounding out literals and actions, and ends up slower than our version of
+GraphPlan that avoids grounding. For domains like ours, which are dominated
+by the number of actions and the universe size, rather than the
+combinatorics of the search problem, this observation suggests that the
+overall runtime of a planner could be improved by grounding more
+selectively. We therefore offer these domains as challenges for the
+planning community.
+%available, support expressive preconditions and effects out of the box, 
+
+
+%Natural language generation (NLG; \citeauthor{reiter00building} 2000)
+%is one of the major subfields of natural language processing.  It is
+%concerned with computing natural language sentences or texts that
+%convey a given piece of information to the user.  Problems in NLG are
+%often more complex than their counterparts in parsing \cite{KolStr02},
+%and indeed efficiency has not traditionally been the main focus of
+%NLG.  On the other hand, NLG has some obvious parallels with planning:
+%One tries to change the mental state of the hearer by applying actions
+%which correspond to uttering words or sentences.  This parallel has a
+%long tradition in NLG \cite{appelt:planning,young94dpocl}, and there
+%has recently been a resurgence of interest in applying modern planning
+%techniques to NLG \cite{Steedman-Petrick:07,KolSto07,benotti08b}.
+%These new approaches combine an interest in planning as a modelling
+%tool for natural language with a hope for improved efficiency by
+%exploiting modern planning algorithms to help with the search.
+
+%In this paper, we present two recent planning domains that arise in the
+%context of applying planning to natural language generation.  We will
+%first review the sentence generation domain, which was cast as a planning
+%problem by \citeauthor{KolSto07}~\shortcite{KolSto07}.  In this domain,
+%the goal is to generate a single sentence that expresses a given piece of
+%meaning; the plan encodes this sentence, and the actions correspond to
+%uttering individual words.  We will then introduce the GIVE domain
+%(``Generating Instructions in Virtual Environments'').  GIVE is a new
+%shared task that was recently posed as a challenge for the NLG community
+%\cite{alexander07:_shared_task_propos}.  It uses planning as one module of
+%a NLG system which generates natural-language instructions that will guide
+%the user towards performing a given task in a virtual environment.
+
+%We will then discuss some experiences with using off-the-shelf planners in
+%these domains.  In particular, we explore the efficiency of FF
+%\cite{HoffmannNebel01} and SGPLAN \cite{hsu06:_new_featur_in_sgplan_for} on
+%instances of our planning domains of varying sizes.  Our findings are
+%mixed.  On the one hand, it turns out that modern planners handle the
+%search problems that arise in NLG quite easily.  On the other hand, they
+%spend tremendous amounts of time on preprocessing; for instance, FF spends
+%90\% of its runtime in the sentence generation domain on grounding out the
+%literals and actions, and ends up slower than an ad-hoc Java implementation
+%of GraphPlan that avoids grounding.  We argue that for domains like ours,
+%which are dominated by the number of actions and the universe size rather
+%than the combinatorics of the search problem, the overall runtime of a
+%planner could be improved by grounding more selectively.
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "experiences"
+%%% End: 

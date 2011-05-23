@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<scrisp-grammar>
+
+    <!-- grammar -->
+
+    <tree id="i.n">
+        <leaf cat="n" type="anchor" sem="self"/>
+    </tree>
+
+    <tree id="a.an">
+        <node cat="n" sem="self">
+            <leaf cat="a" type="anchor" sem="self"/>
+            <leaf cat="n" type="foot" sem="self"/>
+        </node>
+    </tree>
+
+    <tree id="i.dn">   <!-- non-xtag -->
+        <node cat="np" sem="self">
+            <leaf cat="d" type="anchor" sem="self"/>
+            <node type="substitution" cat="n" sem="self"/>
+        </node>
+    </tree>
+
+    <tree id="i.intrans">
+        <node cat="s" sem="self">
+            <node type="substitution" cat="np" sem="subj"/>
+            <node cat="vp" sem="self">
+                <leaf cat="v" type="anchor" sem="self"/>
+            </node>
+        </node>
+    </tree>
+
+
+    <entry word='sleeps' pos='v'>
+        <tree refid="i.intrans">
+            <semcontent>sleep(self,subj)</semcontent>
+        </tree>
+    </entry>
+
+    <entry word='left' pos='a'>
+        <tree refid='a.an'>
+            <pragcond>forall(y,not(and(distractor(id(self),y),left-of(y,self))))</pragcond>
+            <prageff>forall(y,when(left-of(self,y),not(distractor(id(self),y))))</prageff>
+            <var>y</var>
+        </tree>
+    </entry>
+
+    <entry word='blue' pos='a'>
+        <tree refid='a.an'>
+            <semcontent>blue(self)</semcontent>
+        </tree>
+    </entry>
+
+    <entry word='red' pos='a'>
+        <tree refid='a.an'>
+            <semcontent>red(self)</semcontent>
+        </tree>
+    </entry>
+
+    <entry word='green' pos='a'>
+        <tree refid='a.an'>
+            <semcontent>green(self)</semcontent>
+        </tree>
+    </entry>
+
+    <entry word='the' pos='d'>
+        <tree refid="i.dn">
+        </tree>
+    </entry>
+
+    <entry word='button' pos='n'>
+        <tree refid="i.n">
+            <semcontent>button(self)</semcontent>
+        </tree>
+    </entry>
+
+</scrisp-grammar>

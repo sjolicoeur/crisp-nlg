@@ -1,0 +1,49 @@
+<crispproblem name="crisptest-mod4-tight" grammar="grammar-acl.xml" 
+	      cat="S" index="e" plansize="8">
+  <world>animate(m)</world>
+  <world>name(m,mary)</world>
+  <world>like(e,m,r)</world>
+
+
+
+
+  <world>rabbit(r)</world>
+  <world>animate(r)</world>
+  <world>white(r)</world>
+  <world>foo1(r)</world>
+  <world>foo2(r)</world>
+  <world>foo3(r)</world>
+
+  <world>rabbit(r2)</world>
+  <world>animate(r2)</world>
+  <world>foo1(r2)</world>
+  <world>foo2(r2)</world>
+  <world>foo3(r2)</world>
+
+  <world>rabbit(r3)</world>
+  <world>animate(r3)</world>
+  <world>white(r3)</world>
+  <world>foo2(r3)</world>
+  <world>foo3(r3)</world>
+
+  <world>rabbit(r4)</world>
+  <world>animate(r4)</world>
+  <world>white(r4)</world>
+  <world>foo1(r4)</world>
+  <world>foo3(r4)</world>
+
+  <world>rabbit(r5)</world>
+  <world>animate(r5)</world>
+  <world>white(r5)</world>
+  <world>foo1(r5)</world>
+  <world>foo2(r5)</world>
+
+
+
+
+  <!-- <world>in(foo,bar)</world> -->
+
+  <!-- <world>discoursenew(r)</world> -->
+
+  <commgoal>like(e,m,r)</commgoal>
+</crispproblem>

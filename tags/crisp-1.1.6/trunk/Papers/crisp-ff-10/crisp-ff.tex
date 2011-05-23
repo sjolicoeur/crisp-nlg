@@ -1,0 +1,373 @@
+\section{FF Pitfalls and Fixes}
+\label{sec:crisp-ff}
+
+%FF exhibits a number of problems in this domain that were previously
+%unknown.  
+
+The basic observation of FF's inefficiency in the NLG domain was made
+before \cite{koller10:_exper_with_plann_for_natur_languag_gener}; here
+we examine its causes in detail. For some of the observed pitfalls, we
+are able to provide simple fixes. Others pose serious challenges to
+planning research.
+
+
+\subsection{Preprocessing}
+\label{sec:crisp-ff:preprocess}
+
+
+
+%../ff -o xtag-3-2-domain.lisp -f xtag-3-2-problem.lisp -T -H: 0.10
+%../ff -o xtag-3-2-domain.lisp -f xtag-3-2-problem.lisp -T: 1.54
+%../ff -o xtag-3-2-domain.lisp -f xtag-3-2-problem.lisp -H: 0.30
+%../ff -o xtag-3-2-domain.lisp -f xtag-3-2-problem.lisp: 1.80
+
+
+%../ff -o xtag-5-2-domain.lisp -f xtag-5-2-problem.lisp -T -H: 0.29
+%../ff -o xtag-5-2-domain.lisp -f xtag-5-2-problem.lisp -T: seg fault ie too much memory
+%../ff -o xtag-5-2-domain.lisp -f xtag-5-2-problem.lisp -H: 11.08
+%../ff -o xtag-5-2-domain.lisp -f xtag-5-2-problem.lisp: seg fault ie too much memory
+
+
+%../ff -o xtag-3-3-domain.lisp -f xtag-3-3-problem.lisp -T -H: 
+%../ff -o xtag-3-3-domain.lisp -f xtag-3-3-problem.lisp -T: seg fault ie too much memory
+%../ff -o xtag-3-3-domain.lisp -f xtag-3-3-problem.lisp -H: 
+%../ff -o xtag-3-3-domain.lisp -f xtag-3-3-problem.lisp: seg fault ie too much memory
+
+
+
+
+
+
+
+
+%FF's preprocessor contains two details that, before this paper, were
+%so detrimental that we were not able to seriously propose FF as a
+%practical solution.
+%Simple fixes
+%to these details are so effective that FF is now a practical (if not
+%perfect) possibility.
+
+
+
+While preprocessing the ADL formulas, FF has a subroutine that
+checks the grounded formulas
+% -- quantifiers already compiled into
+%grounded conjunctions and disjunctions -- 
+for tautologies. This involves a loop checking all pairs of
+sub-formulas within every conjunction and disjunction, testing whether
+they are identical/identical modulo their sign. For example, if we
+find $\phi$ and $\neg \phi$ within a disjunction, then the disjunction
+is replaced by TRUE. We haven't tested whether this subroutine has a
+notable effect in other benchmarks. In our domain, the only effect it
+has is to take a huge amount of runtime on the long goal conjunctions
+stating that we do not want any open substitution nodes or
+distractors. The fix is to switch this subroutine off. This trivial
+operation alone can render previously infeasible instances
+(preprocessing time $>15$ minutes) harmless (instance solved in $6$
+seconds {\em total} time).
+
+%In small instances, this gives advantages like
+%$0.29s$ vs.\ $11s$ pre-processing time. In a larger instance we ran,
+%original FF's pre-process doesn't finish within 15 minutes whereas our
+%fix yields a pre-processing time of about $3s$.
+
+
+FF's preprocessor contains a very small imprudence that apparently
+didn't surface in other domains, but that does in ours. FF
+distinguishes operators into ``easy'' (DNF precondition) and ``hard''
+(non-DNF precondition), which go through different instantiation
+procedures. The procedure for hard operators uses a data structure
+encompassing an integer for every possible instantiation of all
+predicates. Since this does not take into account reachability, it is
+prohibitively huge in our domain. Now, we actually have no hard
+operators. But FF builds the data structure anyway, which exhausts
+memory and causes a segmentation fault on serious instances. 
+
+%The
+%obvious fix is to not build the data structure if there are no hard
+%operators.
+
+%We fix this problem by only computing the data structure for problem
+%instances that actually contain hard operators.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Search Techniques}
+\label{sec:crisp-ff:preprocess:heuristics}
+
+
+
+
+
+FF's preprocessing pitfalls are certainly baffling, but easily
+fixed. We now turn our attention to some of FF's search techniques,
+variations of which are used in many planners, and which are very much
+not easily fixed. Our solution for the moment are simple configuration
+changes. %; these give much better performance but do .
+
+
+%\item Goal agenda: For some reason that I don't understand in detail,
+%  the goal agenda heuristic chooses that the ``subst'' goal must be
+%  reached before even the ``expressed'' goal. This leads the planner
+%  to generating some arbitrary sentence. Because the example grammar
+%  is so small, this leads to a state from which the ``expressed'' goal
+%  can no longer be achieved. (A realistic big grammar should be able
+%  to recover from this by introducing a conjunction or relative clause
+%  or some such -- but of course, this would still lead to a stupid
+%  sentence.) FIX: turn goal agenda off. alternatively, develop
+%  appropriate goal ordering techniques.
+
+
+First, we consider Koehler and Hoffmann's
+\shortcite{koehler:hoffmann:jair-00} ``reasonable goal orderings'',
+variants and extensions of which are in prominent use today, e.g.\ in
+LAMA \cite{richter:etal:aaai-08}. FF as used in the 2000 competition
+approximates reasonable orders as a preprocess and then partitions the
+goal set into a {\em goal agenda}, a sequence of goal subsets. Each
+subset is posed to the planner in isolation. The final plan is the
+concatenation of the plans for all entries.
+
+%EXAMPLE missing
+
+The goal agenda is completely off-target in our domain. The most
+striking point concerns the interaction between the goal to create a
+sentence ($\neg \mathsf{subst}(S,\mathsf{root})$ in the rabbit
+example), and the goal to express a certain meaning
+($\f{expressed}(\f{sleep},e,r_1)$). The goal agenda orders the former
+before the latter because it detects that, once a meaning is
+expressed, the sentence creation has started and it is not possible to
+start anew anymore. Unless the inverse also holds,\footnote{The
+  inverse holds if, in the given grammar, the only way to communicate
+  a meaning is in the main clause -- i.e., there are no subordinate
+  clauses like ``the sleeping rabbit''.}
+$\mathsf{subst}(S,\mathsf{root})$ is alone in the first goal agenda
+entry. Consequently, the planner decides to generate {\em any}
+sentence, with some arbitrary meaning. If it happens to be the wrong
+sentence, the planner is stuck in a dead-end. %
+%While that dead end is recognized by
+%the relaxed plan heuristic -- i.e., it is easy to see that the actions
+%needed for achieving the goal cannot be applied anymore -- certainly
+%this is an entirely unintended (and a bit amusing) outcome of this
+%technique.
+% Switching it off, we {\bf \dots
+%example before/after.}
+It is not clear to us, at this point, how goal ordering techniques
+could be modified so that they return more sensible results.
+
+%The issue regarding $\neg
+%\mathsf{subst}(S,\mathsf{root})$ and $\mathsf{sleep}(e,r_1)$ could
+%potentially be addressed by recognizing that, once the latter is
+%achieved, the former is already true anyway. Whether such techniques
+%suffice to obtain useful goal orderings overall remains to be seen.
+
+%More generally however,
+%as outlined below the life-cycle of substitution nodes and distractors
+%is weird; %
+% -- as we
+%outline below, it follows a false-true-false pattern --
+%it seems difficult to detect this based on domain analysis.
+
+
+
+
+
+
+
+
+
+
+%\item Subst and distractor atoms have a weird lifecycle: They start as
+%  false, then get made true at some point, and then false again.
+%  After they have been made false, they can never become true
+%  again. FIX: no fix just yet. highly non-trivial challenge to
+%  generation of h fns. {\bf (QUESTION: does lama do better? do any of
+%    the known admissible heuristics do better?)}
+
+
+In our improved FF, the goal agenda is simply switched off. Having
+thus disposed of goal orderings, let us turn our attention to the
+relaxed plan heuristic. %
+%While the goal agenda meltdown may be more amusing than alarming, we
+%next report that relaxed plan heuristics are not far from such a
+%meltdown either. They are fatally 
+This meets its Waterloo in the unusual life-cycle of facts encoding
+substitution nodes and distractors.
+%In instances where these
+%constructs are important for the construction of a valid sentence,
+These facts are required to be false in the goal, and most of them are
+initially false. However, any valid plan must make many of them true
+at some intermediate time point (e.g.\ distractors arise depending on
+the decisions taken by the planner). Hence, from the perspective of
+the relaxed plan heuristic, from one state to the next whole classes
+of goals suddenly appear ``out of the blue''.
+%These goals are not
+%accounted for at all in the preceding state.
+%, and hence the relaxed plan is
+%completely un-informative.
+
+
+Consider again the rabbit example. In the initial state, the relaxed
+plan has length $1$ because we only need to achieve $\neg
+\mathsf{subst}(S,\mathsf{root})$ and $\f{expressed}(\f{sleep},e,r_1)$,
+which is done by the single action ``sleeps''. However, that action
+has the effect $\forall y. y \neq x_1 \rightarrow
+\f{distractor}(u_1,y)$, which introduces new distractors. Thus the
+relaxed plan for the second state contains \emph{two} actions. In
+general (if there are $n$ rabbits, say), the relaxed plan may become
+arbitrarily long.
+%To give just one concrete example, say we are in the initial state,
+%and have not yet committed to a sentence. For certain kinds of
+%sentences ({\bf more concrete here???}), the relaxed plan has length
+%$1$ because the we only need to choose the desired meaning. However,
+%in the state $s$ resulting from this action, the mechanisms of the
+%planning task introduce all the sub-goals that are required in order
+%to pin-point that meaning (in particular we get a new goal for all the
+%distractors that must be removed). Hence the relaxed plan is much
+%longer than before -- arbitrarily longer, in general.  
+For FF's particular search algorithm, enforced hill-climbing (EHC),
+this means that {\em FF turns into a blind breadth-first search}: EHC
+starts at $h$ value $1$ and thereafter needs to solve the whole
+problem in order to find a (goal) state with lower $h$ value.
+
+%../ff -o modifiers-10-10-domain.lisp -f modifiers-10-10-problem.lisp -T -H
+
+%\item As a consequence, Enforced hillclimbing: Initial state of
+%  example problem has a relaxed graph of length one because
+%  ``expressed'' and ``subst'' goals are achieved, and newly introduced
+%  violations of ``subst'' and ``distractor'' are not noticed. As a
+%  consequence, EHC on the second state spends all of its time in
+%  breadth-first search. FIX: don't use EHC.
+
+
+More generally, from this example we immediately see that, in the
+terms of Hoffmann \shortcite{hoffmann:jair-05}, the exit distance from
+local minima under $h^+$ is unbounded. Also, we have unrecognized
+dead-ends, i.e., dead-end states that have a relaxed plan. An example
+is the initial state of a task that it unsolvable because not all
+distractors can be removed; its $h$ value will still be $1$. So the
+domain is in the most difficult class of Hoffmann's
+\shortcite{hoffmann:jair-05} planning domain taxonomy. While it shares
+this property with several other challenging domains, turning EHC into
+a breadth-first search is unheard of.
+
+
+%Can we design heuristics that are better at dealing with the lifecycle
+%of substitution nodes and distractors? The problem of not noticing
+%them in the initial state is present for all approaches that are
+%dominated by $h^+$,
+%e.g.\ \cite{karpas:domshlak-ijcai-09,helmert:domshlak:icaps-09}. The
+%same problem is also present for the inadmissible landmarks heuristic
+%\cite{richter:etal:aaai-08}, as well as for $h^{\mathsf{cea}}$
+%\cite{helmert:geffner:icaps-08} and its variant $h^{\mathsf{pcc}}$
+%\cite{cai:etal:icaps-09}, and hence also for $h^{\mathsf{CG}}$
+%\cite{helmert:icaps-04}. As far as known heuristics are concerned,
+%hope thus resides mainly in the $h^m$ family and in abstraction
+%heuristics. We ran a few tests with an example like the rabbit one,
+%except that there are 10 distractors. The Graphplan estimate for the
+%initial state is $4$, i.e., $h^2$ is better than $h^+$ here. Still,
+%$4$ is far away from the real goal distance $14$. %
+%{\bf here I could use
+%  differently scaled versions to see whether the distance estimate is
+%  constant across the number of distractors; I would think that
+%  yes}. 
+% .. have tried IPP on NEUES-MODIFIER-SET but get seg faults and shit..
+% oh, whatever.
+%With merge\&shrink \cite{helmert:etal:icaps07}, we obtained the
+%estimate $11$ for the initial state, which is much better. Still, we
+%could not find a parameter setting that reduced the search nodes to
+%less than $5200$, which is not much better than blind search ($13800$
+%nodes). All in all, finding better heuristic functions for this kind
+%of problem remains a challenge.
+
+
+Can we design heuristics that are better at dealing with the life-cycle
+of substitution nodes and distractors? It is easy to see that the
+problem of not noticing them in the initial state is present for most
+known heuristics
+\cite{helmert:icaps-04,richter:etal:aaai-08,karpas:domshlak-ijcai-09,helmert:domshlak:icaps-09,cai:etal:icaps-09}. The
+two notable exceptions are the $h^m$ family, and abstraction
+heuristics. We ran a few tests with a variant of the example problem
+involving 10 rabbits.  The Graphplan estimate for the initial state is
+$4$, i.e., $h^2$ is better than $h^+$ here (although still far from
+the real goal distance of $14$). With merge\&shrink
+\cite{helmert:etal:icaps07}, we obtained the estimate $11$ for the
+initial state, which is much better. Still the search space with that
+latter heuristic remained fairly large ($5200$ nodes vs.\ $13800$
+nodes for blind search), and it is not clear how well the technique
+will scale to larger instances and instances with a more complex
+grammar. Certainly, interesting challenges remain.
+
+
+
+
+
+
+
+%NEUES-MODIFIER-SET$ ../ff -o modifiers-5-5-domain.lisp  -f modifiers-5-5-problem.lisp -T -H: 102
+%NEUES-MODIFIER-SET$ ../ff -o modifiers-5-5-domain.lisp  -f modifiers-5-5-problem.lisp -T -H -N: 282
+%NEUES-MODIFIER-SET$ ../ff -o modifiers-10-10-domain.lisp  -f modifiers-10-10-problem.lisp -T -H: 3078
+%NEUES-MODIFIER-SET$ ../ff -o modifiers-10-10-domain.lisp  -f modifiers-10-10-problem.lisp -T -H -N: 16875
+%NEUES-MODIFIER-SET$ ../ff -o modifiers-15-15-domain.lisp  -f modifiers-15-15-problem.lisp -T -H: ?? sehr lange
+%NEUES-MODIFIER-SET$ ../ff -o modifiers-15-15-domain.lisp  -f modifiers-15-15-problem.lisp -T -H -N: ?? sehr lange
+
+The only FF technique that appears to be clearly useful here is its
+action pruning technique. While the relaxed plan is often much too
+short, it appears to always contain at least one of the actions that
+actually are useful.
+%
+%As our experiments data
+%will show, it certainly prunes the set of available actions quite
+%effectively.
+%
+%For example, in the
+%10-distractor test instance, $16875$ nodes are explored without
+%helpful actions pruning; with pruning, this reduces to $3078$. For
+%larger examples, the factor between the two numbers tends to become
+%larger. 
+%
+%
+%Since EHC is often completely inadequate, and helpful actions are
+%quite effective, 
+%
+Given the above observations, we modified FF to directly run
+best-first search with helpful actions (as
+% regarding EHC and helpful actions, our
+%modified FF directly runs best-first search with helpful actions (as
+opposed to original FF, which switches to best-first with{\em out}
+helpful actions if EHC fails).
+
+
+%\item The only thing that works well is helpful actions. However,
+%  these didn't get around to be used due to no helpful actions in
+%  best-first search: After failure of EHC, FF falls back to best-first
+%  search, but doesn't use the helpful actions heuristic in this
+%  search. FIX: simply go straight to BFS with helpful actions.
+
+
+
+
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End: 

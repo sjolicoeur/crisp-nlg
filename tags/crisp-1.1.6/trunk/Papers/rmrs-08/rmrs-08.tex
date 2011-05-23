@@ -1,0 +1,97 @@
+\documentclass[11pt]{article}
+
+\usepackage{eacl2009}
+\usepackage{examples, url,amsthm, amssymb, graphicx}
+\renewcommand*{\rmdefault}{ptm}
+%\usepackage{microtype}
+
+\input{QobiTree}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}{Proposition}
+\newtheorem{claim}{Claim}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\newcommand{\core}{Core-RMRS}
+
+\newcommand{\ovar}{\ensuremath{\mathsf{BVar}}}
+\newcommand{\nvar}{\ensuremath{\mathsf{NVar}}}
+\newcommand{\pred}{\ensuremath{\mathsf{Pred}}}
+
+\newcommand{\vocab}{\ensuremath{\mathsf{v}}}
+
+\newcommand{\Neq}{{:}}
+\newcommand{\dom}{\lhd^*}
+
+\newcommand{\spec}{\sqsubseteq}
+\newcommand{\ep}[3]{#1 {:} #2 {:} #3}
+\newcommand{\ARG}{\mathsf{ARG}}
+\newcommand{\qeq}{=_q}
+\newcommand{\qeqdom}{\lhd^*_q}
+\newcommand{\wedgedom}{\lhd^*_\wedge}
+\newcommand{\ar}{\mathsf{ar}}
+
+\newcommand{\N}{\mathbb{N}}
+
+\newcommand{\handel}{\colon\!}
+
+\newcommand{\rmrs}{{\sc rmrs}}
+\newcommand{\mrs}{{\sc mrs}}
+
+\newcommand{\sem}[1]{\mathsf{#1}}
+\newcommand{\sempred}[1]{\mathrm{#1}}
+
+
+
+\newcommand{\hidden}[1]{}
+\newcommand{\todo}[1]{\textbf{(#1)}}
+
+\title{A Logic of Semantic Representations for Shallow Parsing}
+
+ \author{Alexander Koller \\
+   Saarland University \\
+   Saarbr{\"u}cken, Germany \\
+   \texttt{koller@mmci.uni-saarland.de}
+ \And
+  Alex Lascarides \\
+  University of Edinburgh \\
+  Edinburgh, UK \\
+  \texttt{alex@inf.ed.ac.uk} \\ 
+ }
+
+\date{}
+
+%\renewcommand{\baselinestretch}{0.99}
+
+
+% \setlength{\titlebox}{3.5cm}
+
+
+\begin{document}
+
+\maketitle
+
+\input abstract
+
+\input introduction
+\input motivation
+\input rmrs
+\input entailment
+\input conclusion
+
+
+\bibliographystyle{acl}
+\bibliography{lascarides,bibliography}
+
+
+\end{document}
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

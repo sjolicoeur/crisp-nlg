@@ -1,0 +1,45 @@
+<crispproblem name="rfh2" grammar="grammar-rfh.xml" 
+	      cat="S" index="e" plansize="10">
+
+<!--
+  <world>rabbit(r1)</world>
+  <world>rabbit(r2)</world>
+  <world>rabbit(r3)</world>
+
+  <world>hat(h1)</world>
+  <world>hat(h2)</world>
+  <world>hat(h3)</world>
+
+  <world>flower(f1)</world>
+  <world>flower(f2)</world>
+
+  <world>bowl(b1)</world>
+  <world>bowl(b2)</world>
+
+  <world>in(r1,h1)</world>
+  <world>in(r3,b1)</world> 
+  <world>in(f2,h1)</world>
+  <world>in(f1,h3)</world>
+-->
+
+  <world>name(p,peter)</world>
+  <world>animate(p)</world>
+
+  <world>name(m,mary)</world>
+
+
+  <world>takefrom(e,r1,h1)</world>
+
+
+<!--
+  <world>white(r1)</world>
+  <world>foo1(h1)</world>
+-->
+  
+
+  <commgoal>takefrom(e,r1,h1)</commgoal>
+</crispproblem>
+
+<!--
+
+-->

@@ -1,0 +1,259 @@
+--------------------------------------------------------------
+--- For your convenience, this form can be processed by EasyChair
+--- automatically. You can fill out this form offline and then
+--- upload it to EasyChair. Several review forms can be uploaded
+--- simultaneously. You can modify your reviews as many times as
+--- you want.
+--- When filling out the review form please mind
+--- the following rules:
+--- (1) Lines beginning with --- are comments. EasyChair will
+---     ignore them. Do not start lines in your review with ---
+---     as they will be ignored. You can add comments to the
+---     review form or remove them
+--- (2) Lines beginning with *** are used by EasyChair. Do not
+---     remove or modify these lines or the review will become
+---     unusable and will be rejected by EasyChair
+--------------------------------------------------------------
+*** REVIEW FORM ID: unknown::unknown
+*** SUBMISSION NUMBER: unknown
+*** TITLE: Waking up a sleeping rabbit: On natural-language sentence generation with FF
+
+*** REVIEW:
+---  Please provide a detailed review, including justification for
+---  your scores. This review will be sent to the authors unless
+---  the PC chairs decide not to do so. This field is required.
+
+Please make sure that your evaluation criteria matches the submission type: 1) *Full Technical Papers* reviewed based on the standard criteria of clarity, relevance, significance, originality, and soundness. 2) *Short Technical Papers* reviewed with same criteria  except that given the restrictions on space, they can be more focused.  3) *Challenge Papers* are expected to present novel, concrete, and precise practical or theoretical challenges and the reasons for which it is beneficial for ICAPS researchers to tackle them explicitly. 4) *Position Papers* can address the state of automated planning and scheduling field or parts thereof, drawing concrete lessons on past experiences and research, and providing useful insights for the future. Please justify your evaluation and provide authors with informative feedback. 
+---
+
+Comments to Authors:
+
+
+
+
+Summary (reasons to accept and/or reject):
+
+This work is on improving the performance of the FF planner in the application of natural language generation (NLG), a problem that has previously been modelled as a planning domain. Based on previous observations that off-the-shelf FF doesn't perform very well in this domain, the authors perform a deeper analysis and propose a few changes that improve the performance quite significantly. 
+
+All changes are trivial. Three of them simply switch off two preprocessing features and the use of goal agendas. The other change is to run directly best first search (that is, switch off enforced hill climbing) and to add helpful action pruning to best first search.
+
+As stated in the brief evaluation guidelines present in the evaluation forms, short technical papers have to be reviewed with the same criteria as full papers except that short papers can be more focused. This appears to be different from ICAPS'09, where work in a preliminary stage was more or less acceptable in short papers. Following the guidelines, I consider that the suggested solutions have a somewhat limited significance compared to ICAPS' standards.
+
+I also think that this line of work can have a good potential for the future, making FF a better tool for the domain at hand. Some of the positive aspects are that the current paper shows a short but clear analysis of how FF works in this application and that the results are good.
+
+The authors state that FF's preprocessing pitfalls didn't occur to anyone before. In fact, some of them have. The ADL version of Promela Optical Telegraph is an example of a domain where the "data structure encompassing an integer for every possible instantiation of all predicates" seems to be a bottleneck. As far as I know, when that pre-processing step is needed (which is not the case in NLG), a previously implemented solution is to replace the large array with a tree that gets populated as needed.
+
+I suggest to rephrase the sentence "In the past two years, the ideas has been picked up...". It doesn't read well after the second comma.
+
+The section "Sentence generation as a planning problem" is slow to read because of the lack of details (which is probably caused by the lack of space). Also, I didn't see definitions of "syntax node" and "substitution node".
+
+
+Suitable for best paper/student paper/application paper award? (yes/no; if yes, give type and reason)
+
+No
+
+
+
+-------------------------------------------------------------
+
+--------------------------------------------------------------
+--- For your convenience, this form can be processed by EasyChair
+--- automatically. You can fill out this form offline and then
+--- upload it to EasyChair. Several review forms can be uploaded
+--- simultaneously. You can modify your reviews as many times as
+--- you want.
+--- When filling out the review form please mind
+--- the following rules:
+--- (1) Lines beginning with --- are comments. EasyChair will
+---     ignore them. Do not start lines in your review with ---
+---     as they will be ignored. You can add comments to the
+---     review form or remove them
+--- (2) Lines beginning with *** are used by EasyChair. Do not
+---     remove or modify these lines or the review will become
+---     unusable and will be rejected by EasyChair
+--------------------------------------------------------------
+*** REVIEW FORM ID: NOT KNOWN
+*** SUBMISSION NUMBER: NOT KNOWN
+*** TITLE: Waking up a sleeping rabbit: On Natural-Language Sentence Generation with FF
+--------------------------------------------------------------
+*** REVIEW:
+---  Please provide a detailed review, including justification for
+---  your scores. This review will be sent to the authors unless
+---  the PC chairs decide not to do so. This field is required.
+
+Please make sure that your evaluation criteria matches the submission type: 1) *Full Technical Papers* reviewed based on the standard criteria of clarity, relevance, significance, originality, and soundness. 2) *Short Technical Papers* reviewed with same criteria  except that given the restrictions on space, they can be more focused.  3) *Challenge Papers* are expected to present novel, concrete, and precise practical or theoretical challenges and the reasons for which it is beneficial for ICAPS researchers to tackle them explicitly. 4) *Position Papers* can address the state of automated planning and scheduling field or parts thereof, drawing concrete lessons on past experiences and research, and providing useful insights for the future. Please justify your evaluation and provide authors with informative feedback. 
+---
+
+Comments to Authors:
+
+The paper discusses the application of planning techniques to Natural Language Generation (NLG), highlighting some crucial difficulties that make the problem challenging even for state-of-the-art systems. 
+
+In particular, the authors focus on the adoption of the well-known FF planner to the problem, showing how most of the advanced techniques embedded in the planner do not seem to contribute positively to speed up the search in this domain, and actually seem to be counter-productive.
+
+After rapidly explaining the problem, the authors delve into the analysis of the various FF techniques, discussing why they do not work as expected, and proposing fixes (which in most cases consist in 'turn the technique off'). In particular:
+- it looks like ground tautology checking is a hard bottleneck in this domain, 
+  and is better turned off;
+- recognition of 'hard' (non-DNF) operators is also a bottleneck, even though
+  no hard operators arise in the proposed encoding of NLG (so it is also better
+  to turn this off);
+- goal ordering (producing a goal agenda) is also counter-productive in this
+  domain, as it is led off-target and may drive FF into dead-ends. Again,
+  the authors improve ths situation by turning this off.
+- the enforced hill climbing heuristic, in the NLG, boils down to a blind 
+  breadth-first search, which is of course undesirable. Hence the authors
+  'turn off' enforced hill climbing and modify FF so to run directly
+  best-first search search on helpful actions.
+Finally, the authors provide some experiments showing how, for a set of scalable experiments in the NLG domain considering sentences of a fixed form, their proposed changes to FF (that is, turning off the abovementioned techniques) significantly improve performance.
+
+I have very mixed feelings about this work.
+
+On one side, it provides an interesting example that shows how, for a 
+reasonable domain, that is one coming from a 'real' problem and not one made
+up on purpose, techniques that seem to work in a wide variety of situations
+are led astray. 
+On the other side, also due to the length of the paper, I find the analysis 
+not as complete as it should, and the experiments not as compelling.
+
+First, the analysis focuses exclusively on FF (as clear straight ahead from 
+the title). One wonders if, for NLG, given all the issues shown for FF, 
+other systems, using different techniques, exhibit a better behavior.
+This is left unanswered.
+
+But, also accepting the focus on FF, the analysis is sort of
+restrained to show that "these techniques work badly, better turn them
+off". Given that FF is a general-purpose system that has been shown to
+work effective on a wide variety of domains, one wonders what would be
+then the effect of 'turning off' those techniques in a more general
+setting. Ideally, for each of the discussed techniques, one would like to 
+find a replacement (or refinement) that avoids the issues shown in the 
+NLG domain, while retaining the effectiveness in other domains. 
+
+Furthermore, while the analysis is performed for NLG, one is left to wonder
+what 'general features' of NLG are critical for the various techniques.
+This is just sort of sketched in the various cases. E.g. for the 'tautology 
+check' issue, the problem seems to be 'domain featuring very long 
+conjunctions'; but, is this experimentally checked? Similarly for the 
+'hard predicates' case, is 'many unreachable ground predicates' the source of
+the problem? Is it checked? 
+
+Of course extending the analysis of the problem and proposing better
+solutions would require more space than that available for a short paper. 
+In a way, I think that the authors should have striven to have more
+complete results, and propose a full-fledged paper instead of this. At
+this stage, I do not believe that the proposed 'turn (almost)
+everything off' solution is the better one in general, and probably
+even for NLG; furthermore, experiments are pretty limited (and btw, 
+using linear timescales is perhaps not the best choice; logscale and
+more problem instances would be welcome).
+
+Still, in spite of this, I find the paper has some merits, showing how a
+known problem is actually challenging and may call for substantial refinement 
+of well-established techniques to achieve reasonable performance. 
+If accepted, I think the paper is likely to be quite controversial, and raise
+some interesting discussion at the conference. 
+
+As such, I see this as a borderline paper, which in spite of some
+presentation flaws and incomplete analysis, might appear in the
+conference (even though in its current state, it would perhaps better
+suit a workshop).
+
+
+Summary (reasons to accept and/or reject):
+
+The paper shows how the encoding of a known domain, Natural Language Generation
+(NLG) is problematic for the FF planner, to the point where most of FF's 
+techniques are better turned off. 
+
+The point is interesting, especially since FF has been (and is) such
+an influential system; the analysis however is not complete, neither
+it could be completed in the space of a short paper. A long paper
+would have given much better chances at a more detailed discussion of
+(a) the reasons behind the problems, (b) actual solutions other than
+'turn FF's technique off', (c) wider evaluation (NLG on other systems;
+other NLG instances; effects of envisaged solutions in FF on other
+domains). Especially (a) and (c) could be takled within a reasonable effort,
+while my guess is that (b) is a substantial piece of research which is
+triggered by the observations of this paper.
+
+In spite of its defects, the paper already at this stage may raise
+some interesting discussion and trigger some interesting research to
+improve well-known techniques. I am not totally sure that the main
+conference is the best place to air this work, but will not fight
+against it being accepted either.
+ 
+
+Suitable for best paper/student paper/application paper award? (yes/no; if yes, give type and reason)
+
+No.
+
+
+
+
+--------------------------------------------------------------
+
+--------------------------------------------------------------
+--------------------------------------------------------------
+--- For your convenience, this form can be processed by EasyChair
+--- automatically. You can fill out this form offline and then
+--- upload it to EasyChair. Several review forms can be uploaded
+--- simultaneously. You can modify your reviews as many times as
+--- you want.
+--- When filling out the review form please mind
+--- the following rules:
+--- (1) Lines beginning with --- are comments. EasyChair will
+---     ignore them. Do not start lines in your review with ---
+---     as they will be ignored. You can add comments to the
+---     review form or remove them
+--- (2) Lines beginning with *** are used by EasyChair. Do not
+---     remove or modify these lines or the review will become
+---     unusable and will be rejected by EasyChair
+--------------------------------------------------------------
+*** REVIEW FORM ID: SHORT-PAPER
+*** SUBMISSION NUMBER: FROM-DEREK
+*** TITLE: Waking up a sleeping rabbit: On natural sentence language 
+generation with FF
+--------------------------------------------------------------
+*** REVIEW:
+---  Please provide a detailed review, including justification for
+---  your scores. This review will be sent to the authors unless
+---  the PC chairs decide not to do so. This field is required.
+
+Please make sure that your evaluation criteria matches the submission 
+type: 1) *Full Technical Papers* reviewed based on the standard criteria 
+of clarity, relevance, significance, originality, and soundness. 2) *Short 
+Technical Papers* reviewed with same criteria  except that given the 
+restrictions on space, they can be more focused.  3) *Challenge Papers* 
+are expected to present novel, concrete, and precise practical or 
+theoretical challenges and the reasons for which it is beneficial for 
+ICAPS researchers to tackle them explicitly. 4) *Position Papers* can 
+address the state of automated planning and scheduling field or parts 
+thereof, drawing concrete lessons on past experiences and research, and 
+providing useful insights for the future. Please justify your evaluation 
+and provide authors with informative feedback. 
+---
+
+Comments to Authors:
+
+The paper is novel and useful in that it presents how sentence generation 
+in natural language can be solved effectively using FF. The problem was 
+introduced earlier and the problem of scale-up was identified.
+
+The changes needed in FF are mostly simple. But that in itself does not 
+diminish the paper because identifying the source of the problem is still 
+important and validation of changes was shown. Open issues in search are 
+also identified.
+
+
+Summary (reasons to accept and/or reject):
+
+The paper helps understand the NL sentence generation domain, how FF style 
+planners behave in them, and how to improve them. The paper is relevant 
+and progresses the state-of-the-art.
+
+Suitable for best paper/student paper/application paper award? (yes/no; if 
+yes, give type and reason)
+
+No
+
+
+

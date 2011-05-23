@@ -1,0 +1,35 @@
+#summary How to run the Mysql-CSP tool
+
+= Prerequisites =
+
+ * g++, make, etc.
+ * MySQL-dev
+ * [http://tangentsoft.net/mysql++/ MySQL++]
+
+
+= Downloading =
+
+{{{
+svn checkout https://crisp-nlg.googlecode.com/svn/trunk/Code/mysql-csp
+}}}
+
+(see also the instructions in the "source" tab above)
+
+
+= Compiling =
+
+Set the following environment variables:
+  * MYSQL_LIB_DIR to the directory that contains libmysqlclient
+  * MYSQLPP_LIB_DIR to the directory that contains libmysqlpp
+  * MYSQL_INCL_DIR to the directory that contains mysql.h
+
+Then type "make". This should build libMysqlCSP.{so,dylib} and mysqlcsp.
+
+
+
+= Running =
+
+Set the environment variable that controls where the linker looks for dynamic libraries to .:$MYSQL_LIB_DIR:$MYSQLPP_LIB_DIR.  This is LD_LIBRARY_PATH on Linux and DYLD_LIBRARY_PATH on MacOS.
+
+Then type ./mysqlcsp.
+

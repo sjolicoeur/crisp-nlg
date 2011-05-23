@@ -1,0 +1,504 @@
+\documentclass[11pt,a4]{article}
+
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage[round]{natbib}
+\usepackage{amsfonts,amsthm}
+
+\def\N{\mathbb{N}}
+\newcommand{\sem}{\mathsf{sem}}
+\newcommand{\self}{\mathsf{self}}
+\newcommand{\produ}{\mathsf{prod}}
+\newcommand{\roles}{\mathsf{roles}}
+\newcommand{\Neq}{{:}}
+\newcommand{\refr}{\mathsf{ref}}
+\newcommand{\id}{\mathsf{id}}
+\newcommand{\idsem}{\mathsf{idsem}}
+\newcommand{\Vars}{\mathsf{Vars}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{kor}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{verm}{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{bem}{Remark}
+
+\newcommand{\actionname}[3]{\mathbf{\mathtt{#1}\mbox{-}\mathtt{#2}\mbox{-}\mathtt{#3}}}
+\newcommand{\action}[4]{\textbf{Action \texttt{#1}$(#2)$.}\\
+\strut\quad   Precond:$\;$ \parbox[t]{12cm}{\ensuremath{#3}}\\
+\strut\quad   Effect:$\;$ \parbox[t]{12cm}{\ensuremath{#4}}}
+\newcommand{\actionc}[4]{\textbf{Action \texttt{#1}$(#2)$.}
+Precond:$\;$ \parbox[t]{3cm}{\ensuremath{#3}}\\
+\strut\quad   Effect:$\;$ \parbox[t]{12cm}{\ensuremath{#4}}}
+
+\newcommand{\open}{\ensuremath{\mathsf{open}}}
+\newcommand{\gensym}{\ensuremath{\mathsf{gensym}()}}
+
+
+\title{Sentence generation with RTGs}
+\author{Alexander Koller \\ Saarland University \\
+  \url{koller@mmci.uni-saarland.de}}
+\date{\today\ (v3.0)}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction} \label{sec:introduction}
+
+In \citet{KolSto07}, Matthew Stone and I showed how the sentence
+generation problem of TAG grammars can be encoded into a planning
+problem. A planner could then be used to compute a plan, and this plan
+could be decoded into a TAG derivation, and further into a sentence.
+
+In this manuscript, I generalize this result to sentence generation
+with regular tree grammars \citep{tata2007}.  Our older TAG encoding
+is indeed a special case of this because it is known that for each TAG
+grammar, the language of derivation trees forms a regular tree
+language \citep{schmitz08:_featur_in_tag_deriv_trees}. On the other
+hand, there are many other grammar formalisms whose derivational
+structures can be seen as regular tree languages -- including regular
+dependency grammars \citep{kuhlmann2007mildly}, linear context-free
+rewrite systems
+\citep{weir88:_charac_mildl_contex_sensit_gramm_formal}, and
+combinatory categorial grammars
+\citep{steedman01:_syntac_proces,KolKuh09}. What distinguishes these
+grammar formalisms from each other is how they assign word order to
+the trees in the regular tree language. But as long as we can read the
+trees we generate with our RTG as having each node decorated with
+lexicon entries of the underlying grammar formalism, we can leave it
+up to the grammar formalism to compute the word order (e.g., by
+computing a derived tree from a TAG derivation tree and reading the
+leaves left to right). As a consequence, the construction in this
+paper generalizes our sentence-generation-as-planning approach to a
+whole range of mildly context-sensitive grammar formalisms.
+
+The paper is structured as follows. In
+Section~\ref{sec:gener-probl-regul}, I will define the sentence
+generation problem of regular tree grammars and illustrate it with an
+example. In Section~\ref{sec:rtg-generation-as-planning}, I will
+sketch how to adapt the planning construction by \citet{KolSto07} to
+regular tree grammars. In Section~\ref{sec:np-completeness}, I prove
+that the sentence generation problem of RTGs is NP-complete, which
+justifies the use of a worst-case exponential algorithm like a planner
+for solving the problem. Section~\ref{sec:conclusion} concludes and
+points to future work.
+
+
+
+
+\section{The generation problem of regular tree grammars}
+\label{sec:gener-probl-regul}
+
+We start by defining the generation problem of regular tree
+grammars. We will first show how RTGs can be equipped with semantic
+information; we call the result a \emph{regular generation grammar
+  (RGG)} (see Def.~\ref{def:rgg}). Then we will define the
+grammatically correct derivations of an RGG, and a \emph{successful}
+derivation as one that also achieves a given communicative goal in
+Def.~\ref{def:rgg-deriv}. We will then discuss an example in
+Section~\ref{sec:rgg-example}.
+
+
+\subsection{Definitions}
+
+I write $\N_n$ for the set $\{1,\ldots,n\}$.  I write $T_A(B)$ for the
+set of terms $f(a_1,\ldots,a_n)$ with $f \in A$ and $a_1,\ldots,a_n
+\in B$.  I also assume that the set of nodes in a tree is a set of
+strings in $\N^*$ that is closed under left sister (i.e., if $ui$ is a
+node of some tree and $i>1$, then $u(i-1)$ is also a node) and prefix
+(i.e., if $ui$ is a node of the tree, then $u$ is too).
+
+\begin{definition} \label{def:rgg}
+  A \emph{regular generation grammar (RGG)} is a tuple $G =
+  (N,\Sigma,S,Pred,R,L)$ consisting of a terminal alphabet $\Sigma$, a
+  nonterminal alphabet $N$, a start symbol $S \in N$, a set $Pred$ of
+  \emph{predicate symbols}, a set $R$ of \emph{roles}, and a finite
+  set $L$ of \emph{lexicon entries} $l = (P,\sem,r)$, where $P = A
+  \rightarrow f(B_1,\ldots,B_n)$ is an RTG production rule over $N$
+  and $\Sigma$, $r:\N_n \rightarrow R$ an assignment of roles to
+  right-hand nonterminal occurrences that assigns the role $\self$ to
+  exactly one number, and $\sem \subseteq
+  T_{Pred}(\{r(1),\ldots,r(n)\})$ is the semantic representation.
+\end{definition}
+
+We write $A \rightarrow f(B_1\Neq r_1,\ldots,B_n \Neq r_n)$ to
+abbreviate a production rule with a role assignment that maps $i$ to
+$r_i$ for each $1 \leq i \leq n$. We write $\produ(l)$, $\roles(l)$,
+and $\sem(l)$ for the production rule, the set of roles
+$\{r(1),\ldots,r(n)\}$, and the $\sem$ value of the lexicon entry
+respectively.
+
+We will now define the derivations of RGGs. Derivations are sequences
+of lexicon entries. It is intuitively clear that the sequence of RTG
+production rules in each of these lexicon entries should constitute an
+ordinary RTG derivation. Furthermore, we require that there is a
+function $\id$ that maps (the position of) a lexicon entry in the
+derivation and a role to a variable, and a variable assignment $\refr$
+that maps variables to individuals in the universe. For a derivation
+to be correct, we insist that the variables assigned by $\id$ are
+chosen consistently, i.e.\ if we use some rule $\produ(l_k)$ to expand
+a right-hand nonterminal $A \Neq r$ introduced by the rule
+$\produ(l_i)$, then the $\self$ variable of $k$ must be the same as
+the $r$ variable of $i$.
+
+\begin{definition} \label{def:rgg-deriv}
+  Assume a universe $U$ and an infinite set $\Vars$ of variables. A
+  \emph{derivation} of a regular generation grammar $G$ is a sequence
+  $d = l_1,\ldots,l_n$ of lexicon entries from $G$ such that there are
+  functions $\id:\N_n \times R \rightsquigarrow \Vars$ and
+  $\refr:\Vars \rightarrow U$ such that
+  \begin{enumerate}
+  \item grammaticality: the sequence $\produ(l_1),\ldots,\produ(l_n)$
+    is a complete RTG derivation that maps $S$ into a tree of terminal
+    symbols;
+  \item definedness: $\id(i,r)$ is defined iff $r \in
+    \roles(l_i)$;
+  \item consistent reference: if $\produ(l_k)$ expands the right-hand
+    nonterminal $A:r$ in $\produ(l_i)$, then $\id(k,\self) =
+    \id(j,r)$;
+  \item naming apart: if $r_1,r_2 \in \roles(l_i)$ and $r_1\neq r_2$,
+    then $\id(i,r_1) \neq \id(i,r_2)$.
+  \end{enumerate}
+\end{definition}
+
+We write $\idsem(l_i) = \{P(x_1,\ldots,x_m) \;|\;
+\mbox{$P(r_1,\ldots,r_m) \in \sem(l_i)$ and $x_k = \id(i,r_k)$ for all
+  $k$}\}$, and take $||S||_M$ to be the set of all variable
+assignments $\Vars \rightarrow U$ that satisfy $S$ in all models over
+$U$ that satisfy all formulas in the set $M$.
+
+Then we can define a \emph{successful derivation} as a derivation that
+also achieves a given communicative goal. We assume two knowledge
+bases $SKB$ and $HKB$, which are sets of ground atoms representing the
+speaker's and hearer's knowledge, respectively. Then we insist that
+the generated statement is truthful (i.e., the semantic
+representations of all used lexicon entries are supported by the SKB),
+the communicative goal was achieved, and all referring expressions can
+be resolved uniquely by the hearer.
+
+\begin{definition} \label{def:rgg-succ-deriv} A \emph{successful
+    derivation} of $G$ for the communicative goal $C \subseteq
+  T_{Pred}(U)$, the target referent $e \in U$, and the speaker and
+  hearer knowledge bases $SKB, HKB \subseteq T_{Pred}(U)$ is a
+  derivation $l_1,\ldots,l_n$ of $G$ such that:
+
+  \begin{enumerate}
+  \item truthfulness: for all $i$, $\refr(\idsem(l_i)) \subseteq SKB$;
+  \item communicative goal achieved: $C \subseteq \cup_{k=1}^n \refr(\idsem(l_k))$;
+  \item unique reference: for all $1 \leq i \leq n$ and $r \in
+    \roles(l_i)$, $|| \cup_{k=1}^n \idsem(l_k) ||_{HKB}(\id(i,r)) =
+    \{\refr(\id(i,r))\}$.
+  \end{enumerate}
+
+  The \emph{sentence generation problem} of RGGs is to decide for a
+  grammar $G$ and the communicative goal, target referent, and
+  knowledge bases, whether there is a successful derivation.
+\end{definition}
+
+Compared to a system like SPUD \citep{Stone2003a}, the mapping from
+the semantic roles in the lexicon entries to individuals in the
+universe is relatively indirect: The semantic roles are first mapped
+to variables by the $\id$ function, and then the variables are
+assigned individuals by $\refr$. The point about this two-step process
+is that it makes it possible to specify the ``unique reference''
+condition. By mapping the roles to variables first, we can ask for the
+set of all variable assignments that satisfy the combined semantic
+representations of all lexicon entries (given the hearer's
+knowledge). We can then convince ourselves that the information in the
+semantic representations was precise enough that the hearer can
+identify the referent uniquely by checking that all these variable
+assignments assign the same individual to the variable for the
+referring expression, and that this individual is indeed the target
+referent. If we had mapped roles to individuals directly, rather than
+distinguishing $\refr$ and $\i$, we could have verified that the
+assignment satisfies all the semantic representations, but we couldn't
+have stated that it is the \emph{only} such assignment.
+
+
+\subsection{An example} \label{sec:rgg-example}
+
+Let's go through an example to illustrate these definitions.
+
+Consider the following grammar, which is defined over the nonterminals
+$\{S, NP, Det, Adj\}$, start symbol $S$, roles $\{\self,
+\mathsf{subj}, \mathsf{obj}\}$, and the following lexicon
+entries:\footnote{I assume a predicate ``$\cdot = \mathsf{peter}$'' of
+  which  $\self = \mathsf{peter}$ is an instance.}
+
+$$\begin{array}{lp{1cm}l}
+S \rightarrow \mathrm{likes}(NP \Neq \mathsf{subj}, NP \Neq
+\mathsf{obj}) 
+&&
+Det \rightarrow \mathrm{the} \\
+\mathsf{sem} = \{ \mathsf{likes}(\self, \mathsf{subj}, \mathsf{obj})
+\} 
+&&
+\mathsf{sem} = \emptyset \\
+&&\\
+%
+%
+NP \rightarrow \mathrm{Peter} 
+&&
+Adj \rightarrow \mathrm{white} \\
+\mathsf{sem} = \{ \self = \mathsf{peter} \}
+&&
+\mathsf{sem} = \{ \mathsf{white}(\self) \} \\
+&&\\
+%
+%
+NP \rightarrow \mathrm{rabbit}(Det \Neq \self, Adj \Neq \mathsf{self})
+&&
+Adj \rightarrow \epsilon \\
+\mathsf{sem} = \{ \mathsf{rabbit}(\self) \}
+&&
+\mathsf{sem} = \emptyset
+\end{array}
+$$
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.6]{pic-rdg-crisp}
+  \caption{Verbalization of the example. Each node displays its
+    terminal, nonterminal, and $\id$ function, in this order. $\refr$
+    is $\{x \mapsto e, y \mapsto p, z \mapsto r_1\}$.}
+  \label{fig:rdg-crisp}
+\end{figure}
+
+
+There are several different derivations for this grammar. Identifying
+words with lexicon entries, we can write two of these as:
+$$
+\begin{array}{lll}
+  d_1 &= &(\mathrm{likes}, \mathrm{Peter}, \mathrm{rabbit},
+  \mathrm{the}, \mathrm{white}) \\
+  d_2 &= &(\mathrm{likes}, \mathrm{Peter}, \mathrm{rabbit},
+  \mathrm{the}, \epsilon) 
+\end{array}
+$$
+
+In each of these cases, we can assume an $\id$ function that looks as
+follows:
+$$\begin{array}{ll|l}
+i&r&\id(i,r) \\\hline
+1&\self&x_1 \\
+1&\mathsf{subj}&x_2 \\
+1&\mathsf{obj}&x_3 \\
+2&\self&x_2 \\
+3&\self&x_3 \\
+4&\self&x_3 \\
+5&\self&x_3
+\end{array}
+$$
+
+The tree represented by the derivation $d_1$ is shown in
+Fig.~\ref{fig:rdg-crisp}.  The values of $\refr$ are irrelevant at
+this point.
+
+Now let's determine which of these derivations is
+\emph{successful}. We assume the following knowledge bases, the
+communicative goal $C=\{\mathsf{likes}(e,p,r_1)\}$, and the target
+referent $e$.
+
+$$\begin{array}{lll}
+  SKB &=
+  &\{\mathsf{likes}(e,p,r_1), p = \mathsf{peter}, \mathsf{rabbit}(r_1),
+  \mathsf{rabbit}(r_2), \mathsf{white}(r_1)\} \\
+  HKB &= &\{p = \mathsf{peter}, \mathsf{rabbit}(r_1),
+  \mathsf{rabbit}(r_2), \mathsf{white}(r_1)\} 
+\end{array}
+$$
+
+Then both $d_1$ and $d_2$ are truthful and convey the communicative
+goal for $\refr$ being $\{x_1 \mapsto e, x_2 \mapsto p, x_3 \mapsto
+r_1\}$. However, the reference in $d_2$ is not unique: $||\cup
+\idsem(l_k)||(x_3)$ is $\{r_1,r_2\}$, i.e.\ the hearer might mistake
+the object of the liking as the rabbit $r_2$. Therefore $d_2$ is not
+successful. On the other hand, the unique reference condition is
+satisfied in $d_1$, and so it is a successful derivation. Thus we can
+read off the sentence ``Peter likes the white rabbit'' as a correct
+verbalization of $C$ from Fig.~\ref{fig:rdg-crisp}.
+
+
+
+\section{RTG generation as planning} 
+\label{sec:rtg-generation-as-planning}
+
+It is straightforward to extend the encoding of TAG sentence
+generation to planning \citep{KolSto07} to regular tree grammars.
+Notice that this makes the \citet{KolSto07} encoding a special case of
+the algorithm presented here, as the derivation trees of a given TAG
+grammar form regular tree languages
+\citep{schmitz08:_featur_in_tag_deriv_trees} and can therefore be
+described by RTGs.\footnote{This is not strictly speaking true,
+  because we have not shown how to represent the pragmatic conditions
+  and semantic requirements in an RGG, in order to keep the
+  presentation simple; but it is obvious how these could be added.}
+
+Let $l$ be a lexicon entry with production rule $A \rightarrow
+\sigma(B_1 \Neq r_1, \ldots, B_n \Neq r_n)$.  Then the grammaticality
+condition is encoded by the precondition and effects of a planning
+operator as follows:\footnote{I write $r(u)$ to indicate the
+  construction of a new symbol representing the $r$-child of $u$. I
+  take $\self(u) = u$ as a special case. This cannot be expressed in
+  PDDL, but can be encoded with the same planning-step-counting
+  construction as in the ACL paper.}
+
+\strut\\
+\action{$\sigma$/$L$}{u}
+{\open(u,A)}
+{\neg \open(u,A), \open(r_1(u),,A_1), \ldots, \open(r_n(u),A_n)}\\
+
+Notice that I write $\open$ to encode the unprocessed nodes in the
+tree we are constructing, rather than $\mathsf{subst}$ and
+$\mathsf{adj}$ as in the paper. Those were TAG-specific predicates,
+encoding TAG's substitution and adjunction operation, and are no
+longer necessary here. Effectively, what happens here is that the plan
+encodes a derivation of the underlying RTG grammar; an atom
+$\open(u,A)$ in the current planning state encodes the fact that the
+current partial RTG derivation contains a leaf $u$ that is labeled
+with the nonterminal symbol $A$ (and still needs to be expanded in the
+future).
+
+The translation of the semantic and reference conditions then proceeds
+essentially as in the paper.  However, one crucial difference is that
+we no longer distinguish between substitution and adjunction, and thus
+it is not completely obvious where distractors for new referring
+expressions get introduced. This used to happen exactly at the
+substitution nodes. Now we can get the same effect by introducing
+distractors only for those nonterminal occurrences on the right-hand
+side that are labeled with a semantic role that is not $\self$.
+
+Note that the encoding of RGG generation as a planning problem is not
+entirely correct.  The difference is that in the problem as defined in
+Section~\ref{sec:gener-probl-regul}, we took $a$ to be a possible
+distractor for a new referring expression if there was any tuple
+$(a_1,\ldots,a,\ldots,a_n)$ that satisfied the semantic condition of
+the lexicon entry that introduced the RE.  In the encoding into
+planning in the ACL paper, however, we only accept $a$ as a possible
+distractor if $a_1,\ldots,a_n$ are the intended referents for the
+other semantic roles in the lexicon entry. If we continue using this
+encoding here, we end up with a planning problem that generates too
+few distractors, and therefore can compute referring expressions that
+are not unique. This is something that needs to be fixed at some
+point, but for now the planning encoding seems to work pretty well in
+practice.
+
+
+\section{NP-completeness of the RTG generation problem}
+\label{sec:np-completeness}
+
+Finally, we can show that the sentence generation problem of RGGs is
+NP-complete. This means that it is combinatorially hard, and hence
+solving it with a worst-case exponential-time algorithm like a planner
+is appropriate.
+
+The NP-hardness proof below works by reducing the HAMILTONIAN-CYCLE
+problem \cite{garey79:_comput_and_intrac} to the sentence generation
+problem. HAMILTONIAN-CYCLE is the (NP-complete) problem of deciding
+whether a directed graph has a Hamiltonian cycle.  A Hamiltonian cycle
+is a path $(u_1,u_2,\ldots,u_n,u_1)$ in the graph such that the graph
+contains an edge $(u_i,u_{i+1})$ for every $1 \leq i <n$ and the edge
+$(u_n,u_1)$ -- i.e., it is a cycle --, and such that the cycle visits
+every node in the graph exactly once. In the example graph in
+Fig.~\ref{fig:npc}a, $(1,3,2,1)$ is a Hamiltonian cycle; $(1,2,1)$ is
+a cycle that is not Hamiltonian because it doesn't visit 3.
+
+
+\begin{prop} \label{prop:npc} The sentence generation problem of
+  regular generation grammars is NP-complete.
+\end{prop}
+\begin{proof}
+  It is obvious that the problem is in NP; once we have
+  nondeterministically guessed a candidate tree, we can test whether
+  it satisfies all conditions in polynomial time.
+
+  For the NP-hardness, let's say we have a graph $G =
+  (\{1,\ldots,n\},E)$ with $m$ edges of the form $(i,k)$ of which we
+  want to check whether it has a Hamiltonian cycle.  We construct a
+  regular generation grammar $G_G$ with nonterminals $N = \{S,
+  A_{11}\} \cup \{A_{ik} \;|\; 2 \leq i \leq n+1, 1 \leq k \leq n\}$,
+  start symbol $S$, terminal alphabet $\Sigma=\{f,a\}$, role alphabet
+  $R = \{\mathsf{r}, \self\}$, and the following lexicon entries:
+
+  $$\begin{array}{l}
+    S \rightarrow f(A_{11} \Neq \mathsf{r}) \\
+    \mathsf{sem} = \{ \mathsf{start}(\self,\mathsf{r})\} \\
+    \\
+    A_{ij} \rightarrow f(A_{(i+1)k} \Neq \self) \quad \mbox{for all
+      $(j,k) \in E$ and $1 \leq i \leq n$} \\ 
+    \mathsf{sem} = \{ \mathsf{neq}_j(\self) \} \\
+    \\
+    A_{(n+1)1} \rightarrow a \\
+    \mathsf{sem} = \emptyset
+  \end{array}
+  $$
+
+  Now the target referent $e$ and the communicative goal $\emptyset$
+  have a successful derivation given $G_G$ and the knowledge bases
+  $SKB = HKB = \{\mathsf{start}(e,1)\} \cup \{ \mathsf{neq}_i(k) \;|\;
+  1 \leq i,k \leq n \;\mbox{and}\; i \neq k \}$ iff $G$ has a
+  Hamiltonian cycle.  To see this, notice that any tree generated by
+  $G_G$ must be a linear tree with nonterminal symbols $S, A_{11},
+  A_{2u_2}, \ldots, A_{(n+1)1}$ from top to bottom, and for any two
+  subsequent nonterminals $A_{ij}$ and $A_{(i+1)k}$ in this sequence,
+  there must be an edge $(j,k)$ in the graph.  So the tree encodes a
+  cycle of length $n$.  Now, if any node in the graph, say $j$, was
+  not visited on this cycle, then the semantics in the subtree of the
+  referring expression with nonterminal $A_{11}$ does not contain the
+  atom $\mathsf{neq}_j(1)$.  In other words, the tree does not contain
+  sufficient information to distinguish 1 (the target referent of the
+  referring expression) from $j$, so the referring expression is not
+  unique, and the derivation is not successful.  Hence, the cycle
+  visits every node exactly once and is therefore Hamiltonian.
+\end{proof}
+
+\begin{figure}
+  \centering
+  \begin{tabular}{cp{2cm}c}
+  \includegraphics[scale=0.5]{pic-npc-graph}
+  &&
+  \includegraphics[scale=0.5]{pic-npc} \\
+  (a) && (b)
+  \end{tabular}
+  \caption{(a) A graph with a Hamiltonian cycle, and (b) a tree
+    encoding this cycle according to the construction in
+    Prop.~\ref{prop:npc}.} 
+  \label{fig:npc}
+\end{figure}
+
+
+An example of this construction (i.e., a graph together with the tree
+that encodes its Hamiltonian cycle and that is generated by the RGG)
+is shown in Fig.~\ref{fig:npc}. Notice that nothing in this
+construction particularly hinges in the generalization of the TAG
+generation problem to RGGs. The proof can thus be ported directly to a
+proof of the NP-completeness of the TAG sentence generation problem.
+
+
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+
+
+
+
+
+\section*{Version History}
+
+\begin{tabular}{lll}
+  v 3.0 & \today & Completely revised \\
+  v 2.0 & 29/10/07 & Version for Hector Geffner
+\end{tabular}
+
+
+
+\bibliographystyle{plainnat}
+\bibliography{gen}
+
+\end{document}

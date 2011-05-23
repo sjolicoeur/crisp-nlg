@@ -1,0 +1,154 @@
+\section{Introduction} \label{sec:intro}
+
+Representing semantics as a logical form that supports automated
+inference and model construction is vital for deeper language
+engineering tasks, such as dialogue systems.  Logical forms
+can be obtained from hand-crafted deep grammars
+\cite{butt:etal:1999,copestake:flickinger:2000} but 
+this lacks robustness: not all
+words and constructions are covered and by design
+ill-formed phrases fail to parse. 
+There has thus been a trend recently towards
+robust wide-coverage semantic construction (e.g., 
+\cite{bos:etal:2004,zettlemoyer:collins:2007}).     
+% COMMENT: this issue about optional arguments is really too cryptic.
+% Basically, there is no way for assessing by *any* learned language
+% processor whether a single word form that appears in
+% a number of different syntactic valencies is an example of lexical
+% sense ambiguity, or they are all examples of the same sense being
+% used in syntactically different ways (i.e., we have optional
+% arguments).  Only hand-crafted grammars can tell you this.  So, for
+% example, Bos et al (2004) would get bet(x,y) for "I bet 5 pounds",
+% and bet(x,y,z) for "I bet you 5 pounds" and bet(x,p) for "I bet it's
+% going to rain": I.e., the vocab of the semantic formalism is
+% constructed automatically from NL word forms, and the predicate
+% symbols in that automatically constructed vocab vary in (a) valency,
+% and (b) the semantic dependencies represented by a given argument
+% position (e.g., the second argument of "bet" in "I bet 5 pounds" is
+% 5 pounds, and for "I bet it's raining" it's "it's raining".
+% 
+But there are certain semantic phenomena that these robust
+approaches don't capture reliably, including quantifier scope,
+optional arguments, and long-distance dependencies (for instance,
+\newcite{clark:etal:2004} report that the parser used by
+\newcite{bos:etal:2004} yields 63\% accuracy on object
+extraction; e.g., {\em the man that I met\dots}).  Forcing a robust
+parser to make a decision about these phenomena can therefore be
+error-prone.  Depending on the application, it may be preferable to
+give the parser the option to leave a semantic decision open when it's not
+sufficiently informed---i.e., to compute a partial semantic
+representation and to complete it later, using information
+extraneous to the parser.
+
+In this paper, we focus on an approach to
+semantic representation that supports this strategy: Robust Minimal
+Recursion Semantics (\rmrs, \newcite{copestake:2007a}).
+\rmrs\ is designed to support underspecification of lexical information,
+scope, and predicate-argument structure.  It is an emerging standard
+for representing partial semantics, and has been applied in
+several implemented systems.  For instance, \newcite{copestake:2003}
+and \newcite{frank:2004} use it to specify semantic components to
+shallow parsers ranging in depth from {\sc pos} taggers to chunk
+parsers and intermediate parsers such as {\sc rasp}
+\cite{briscoe:etal:2006}.  {\sc mrs} analyses
+\cite{copestake:etal:2005} derived from deep grammars, such as the
+English Resource Grammar ({\sc erg}, \cite{copestake:flickinger:2000})
+are special cases of {\sc rmrs}.  But {\sc rmrs}, unlike {\sc mrs} and
+related formalisms like dominance constraints \cite{egg:etal:2001}, is
+able to express semantic information in the absence of full predicate
+argument structure and lexical subcategorisation.
+
+The key contribution we make is to cast {\sc rmrs}, for the first
+time, as a logic with a well-defined model theory.  Previously, no
+such model theory existed, and so \rmrs\ had to be used in a somewhat
+ad-hoc manner that left open exactly what any given \rmrs\
+representation actually \emph{means}.  This has hindered 
+practical progress, both in terms of understanding the relationship of
+\rmrs\ to other frameworks such as \mrs\ and predicate logic and in
+terms of the development of efficient algorithms.  As one application
+of our formalisation, we use
+entailment to propose a
+novel way of characterising consistency of \rmrs\ analyses across
+different parsers.
+
+Section~\ref{sec:motivation} introduces \rmrs\ informally and
+illustrates why it is necessary and useful for representing semantic
+information across deep and shallow language processors.
+Section~\ref{sec:rmrs} defines the syntax and model-theory of \rmrs.
+We finish in Section~\ref{sec:entailment} by pointing out some avenues
+for future research. %, and conclude in Section~\ref{sec:conclusion}.
+
+
+\hidden{
+The language in which these partial representations are expressed 
+
+
+Moreover, in a hybrid system that attempts to combine the outputs of
+deep and shallow parsers, 
+
+
+
+Robust language processors that produce a single conventional logical
+form for a given natural language string are beginning to emerge
+(e.g.,
+\cite{bos:etal:2004,rupp:etal:2000,wong:mooney:2006,zettlemoyer:collins:2005}).
+But the output of these systems don't relate to any gold standard deep
+parse as produced by expert grammar developers (for instance, while
+the training corpus used in \cite{zettlemoyer:collins:2005} features
+control phenomena in the language strings, their logical forms don't
+represent it).  This makes it hard to judge the logical forms that the
+models derive from a linguistic perspective; nor can one integrate
+their output with that of a hand-crafted grammar when desired.
+
+
+
+
+This paper focuses on a particular approach to producing partial
+semantic information from robust parsers, exemplified in
+\cite{copestake:2003,frank:2004}, among others.  Their strategy is to
+utilise semantic underspecification to semi-automatically build
+semantic components to shallow parsers, so that the output neither
+over-determines nor under-determines the semantic information that is
+revealed by the (shallow) syntactic analysis.  The semantic formalism
+used to express this is Robust Minimal Recursion Semantics
+
+; this is a generalisation of 
+
+ that is designed to be maximally flexible
+in the type of semantic information that can be left underspecified:
+it can express partial information about semantic scope, the values of
+arguments to predicate symbols and/or their argument position, the
+arity of the predicate symbols and the sorts of arguments they take.
+We show in Section~\ref{sec:motivation} that all these features are
+needed when information about lexical subcategorisation or syntactic
+dependencies is missing---a characteristic feature of shallow parsers.
+Several researchers have demonstrated that {\sc rmrs} is a suitable
+framework on which to semi-automatically construct semantic components
+to shallow parsers, ranging in depth .
+
+
+
+
+
+
+A major motivation for adopting {\sc rmrs} over other techniques for
+robustly deriving logical forms is the promise that it can form the
+basis for integrating the output of several parsers, and be compared
+in particular with the output of a hand-crafted grammar.  This paper
+demonstrates the feasibility of this integration for the first time,
+by introducing a model theory for {\sc rmrs}, that in turn defines
+entailment among {\sc rmrs} representations.  This entailment relation
+is also characterised syntactically as an extension of solved forms
+(ref to solved forms).  We show that the proof theory and model theory
+of {\sc rmrs} that results provides a formal basis for integrating the
+semantic output of several shallow parsers, for checking the
+satisfiability of a shallow parse, and for testing its compatibility
+with a deep parse.
+
+
+}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "rmrs-08"
+%%% End: 

@@ -1,0 +1,102 @@
+%
+% File naaclhlt2010.tex
+%
+% Contact: nasmith@cs.cmu.edu
+
+\documentclass[11pt,letterpaper]{article}
+\usepackage{naaclhlt2010}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{color}
+
+\usepackage{url}
+
+\setlength\titlebox{6.5cm}    % Expanding the titlebox
+
+\newlength{\rhwidth}
+
+\newcommand{\f}[1]{\mbox{#1}}
+\newcommand{\adj}[0]{\textit{adj}}
+\newcommand{\noadj}[0]{\textit{noadj}}
+\newcommand{\init}[0]{\textit{init}}
+\newcommand{\subst}[0]{\textit{subst}}
+
+\newcommand{\pcrisp}{PCRISP}
+\newcommand{\crisp}{CRISP}
+\newcommand{\ltag}{LTAG}
+\newcommand{\ptag}{PTAG}
+\renewcommand{\tag}{TAG}
+\newcommand{\spud}{SPUD}
+
+\newcommand{\todo}[1]{\textcolor{red}{(#1)}}
+
+
+
+\newcommand{\planaction}[3]{
+\begin{minipage}{.5\textwidth}
+\footnotesize
+\setlength{\rhwidth}{.5\textwidth}
+\addtolength{\rhwidth}{2.0cm}
+{#1:}
+
+\noindent \hspace{.2cm} \begin{minipage}{1.5cm}{Precond:}\end{minipage}\begin{minipage}[t]{\rhwidth} #2 \end{minipage}
+
+\noindent \hspace{.2cm} \begin{minipage}{1.5cm}{Effect:}\end{minipage} \begin{minipage}[t]{\rhwidth}\ #3 \end{minipage}
+\end{minipage}
+}
+
+\newcommand{\cplanaction}[4]{
+\begin{minipage}{.5\textwidth}
+\footnotesize
+\setlength{\rhwidth}{.5\textwidth}
+\addtolength{\rhwidth}{2.0cm}
+{#1:}
+
+\noindent \hspace{.2cm} \begin{minipage}{1.5cm}{Precond:}\end{minipage}\begin{minipage}[t]{\rhwidth} #2 \end{minipage}
+
+\noindent \hspace{.2cm} \begin{minipage}{1.5cm}{Effect:}\end{minipage} \begin{minipage}[t]{\rhwidth} #3 \end{minipage}
+
+\noindent \hspace{.2cm} \begin{minipage}{1.5cm}{Cost:}\end{minipage} \begin{minipage}[t]{\rhwidth} \ensuremath{#4} \end{minipage}
+\end{minipage}
+}
+
+
+
+\title{Sentence Generation as Planning with Probabilistic LTAG\\
+%\Thanks{}
+}
+
+\author{Daniel Bauer\\
+  Department of Computer Science\\
+  Columbia University\\
+  1214 Amsterdam Ave.\\
+  New York, NY 10027, USA\\
+  {\tt bauer@cs.columbia.edu} 
+  \And
+  Alexander Koller\\
+  Cluster of Excellence\\
+  Saarland University\\
+  Campus C7 4\\
+  66041 Saarbr\"{u}cken, Germany\\ 
+  {\tt koller@mmci.uni-saarland.de}}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\input abstract
+
+\input{introduction}
+\input{related} % Related work
+\input{crisp} % Sentence Generation as Planning
+\input{pcrisp} % Statistical Generation as Planning
+\input{experiments} % Experiments
+\input{conclusion}
+
+\bibliographystyle{naaclhlt2010}
+\bibliography{literature}
+
+\end{document}

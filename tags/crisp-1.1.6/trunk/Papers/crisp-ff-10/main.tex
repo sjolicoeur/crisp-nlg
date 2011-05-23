@@ -1,0 +1,57 @@
+\documentclass[letterpaper]{article}
+\usepackage{aaai}
+
+
+\usepackage{times}
+\usepackage{helvet}
+\usepackage{courier}
+
+\usepackage{graphicx}
+
+\newcommand{\todo}[1]{\textbf{(#1)}}
+\usepackage{url}
+
+\special{! /pdfmark where
+{pop} {userdict /pdfmark /cleartomark load put} ifelse
+[ /Author (Alexander Koller, Joerg Hoffmann)
+/Title (Waking Up a Sleeping Rabbit: On Natural-Language Sentence Generation with FF)
+/Keywords (AAAI, artificial intelligence)
+/DOCINFO pdfmark}
+
+
+%\pdfinfo{
+%/Title (Waking up a sleeping rabbit:\\ On Natural-Language Sentence Generation with FF)
+%/Subject (Proceedings of ICAPS, hopefully)
+%/Author (Anonymous authors)}
+
+\setcounter{secnumdepth}{0}
+
+\begin{document}
+\title{Waking Up a Sleeping Rabbit:\\ On Natural-Language Sentence Generation with FF}
+
+\author{
+Alexander Koller \\ Saarland University, Germany \\ koller@mmci.uni-saarland.de
+\And
+J\"org Hoffmann \\ INRIA, France \\ joerg.hoffmann@inria.fr
+}
+
+%\nocopyright
+
+\maketitle
+
+
+\input abstract
+\input introduction
+\input crisp
+\input crisp-ff
+\input experiments
+\input conclusion
+
+
+{\small
+\bibliography{bibliography}
+\bibliographystyle{aaai}
+}
+
+
+\end{document}

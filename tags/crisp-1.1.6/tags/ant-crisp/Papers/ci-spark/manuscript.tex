@@ -1,0 +1,79 @@
+%%%
+%%% Computational Intelligence manuscript based on SPARK'08 paper
+%%%
+%%% Alexander Koller and Ronald Petrick
+%%% 
+%%% Updated: 2009/06/03
+%%%
+\documentclass[useAMS,usenatbib]{coin}
+
+
+%\usepackage{times}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{natbib}
+\usepackage[labelformat=empty]{subfig}
+
+
+\title{Experiences with Planning for Natural Language Generation}
+
+
+\author{{\sc Alexander Koller}\\
+        {\it Cluster of Excellence, Saarland University, Saarbr\"ucken, Germany}\\ 
+		\and
+        {\sc Ronald P. A. Petrick}\\
+        {\it School of Informatics, University of Edinburgh,
+          Edinburgh, UK\thanks{Address correspondence to
+          \texttt{koller@mmci.uni-saarland.de} or
+          \texttt{rpetrick@inf.ed.ac.uk}.}}
+}
+
+
+% \author{\textbf{Alexander Koller} \\
+% Exzellenzcluster / FR 4.7 Computerlinguistik \\
+% Saarland University \\
+% Postfach 151150 \\
+% 66041 Saarbr\"ucken \\
+% Germany \\
+% Phone: +49 681 302 70040 \\
+% Fax: +49 681 302 4351 \\
+% E-mail: \url{koller@mmci.uni-saarland.de}
+% \and
+% \textbf{Ronald P. A. Petrick} \\
+% School of Informatics \\
+% University of Edinburgh \\
+% Informatics Forum, 10 Crichton Street \\
+% Edinburgh \ EH8 9AB \\
+% Scotland, United Kingdom \\
+% Phone: +44 131 650 4426 \\
+% Fax: +44 131 650 6899 \\
+% E-mail: \url{rpetrick@inf.ed.ac.uk}}
+
+\date{}
+
+\bibpunct{(}{)}{;}{a}{}{,}
+
+\newcommand{\todo}[1]{\textbf{(#1)}}
+\newcommand{\addact}[1]{\mathsf{add}\textsf{-}\mathsf{#1}}
+
+\begin{document}
+
+\input abstract
+
+\maketitle
+
+\input introduction
+\input nlg-as-planning
+\input domains
+\input experiments
+\input discussion
+\input conclusion
+
+\bibliography{references}
+\bibliographystyle{ci}
+
+\pagebreak
+\listoffigures
+
+\end{document}
+

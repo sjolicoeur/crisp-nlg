@@ -1,0 +1,54 @@
+We thank the reviewers for their constructive comments. 
+
+The major ommission we seem to have made in the write-up is to clarify
+what the results are with other state-of-the-art planners. NLG
+researchers (including one of the authors) have experimented with many
+planners. Many of those (including e.g. LPG) can't parse and
+instantiate the domain, partly for its complicated ADL constructs
+(quantified conditional effects etc), partly for the huge blow-up in
+grounding. Of those planners that do manage the pre-processing, our
+fixed FF is by far the best performer. Detailed results for SGPlan
+(vs. the original version of FF) are in the cited paper [Koller and
+Petrick 2010]. We ran the experiments from Figure 3 also with LAMA,
+which is sometimes better than OldFF, but is much worse than
+NewFF. LAMA runs out of time for d=0 n=4 (x-axis 4 Figure 3a) and for
+d=2 n=3 (x-axis Figure 3b). If accepted, we will include LAMA in
+Figure 3.
+
+Of course, we do not wish to claim that our fixes to FF are a
+contribution to planning research as such. What baffles us is that
+such simple changes can make the difference between success and
+failure. This is a valueable lesson learnt for the planning community,
+because it shows how important it is to develop automatic
+self-configuration techniques, even for simple parameters. Indeed, NLG
+researchers had long been experimenting unsuccessfully with many
+planning tools (cf above). It was only in the presented work, where we
+profiled FF with the help of an FF expert, that finally results were
+obtained that make planning a realistic possibility for NLG
+applications. It shouldn't be necessary for people who want to apply
+planning technology to solicit the help of planning experts -- at
+least not if the only problem are minor configuration switches.
+
+So the paper makes a valueable point on the importance and form of
+flexible planner configuration. We contribute a major advance (albeit
+using simple techniques) of planning for NLG. We finally bring to the
+attention of the planning community a highly interesting benchmark
+that (a) is relevant and realistic and (b) poses interesting
+challenges (as detailed in the paper) to widely used goal ordering and
+relaxed planning techniques. In sum, we believe the paper is quite
+suitable for a short ICAPS paper. If accepted, we will try to remove
+the inclarities pointed out by the reviewers.
+
+A few specific clarifications:
+
+The problem with the "hard operators" is not recognizing them, but the
+data structure for processing them. While it had been noticed before
+that this data structure is wasteful, it has to the best of our
+knowledge not occurred to anyone before that it is built even when
+there actually aren't any hard operators.
+
+We did check which features of NLG cause the various pitfalls of FF
+techniques. That's what we tried to explain with the examples in the
+"Search Techniques" sub-section. Of course we agree that a full
+experimental evaluation of these points could be useful. But that's
+beyond a short paper.

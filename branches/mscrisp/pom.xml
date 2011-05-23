@@ -155,6 +155,6 @@
   </repositories>
 
   <scm>
-    <developerConnection>scm:svn:https://crisp-nlg.googlecode.com/svn/tags/crisp-nlg-situated-1.1.3</developerConnection>
+    <developerConnection>scm:svn:https://crisp-nlg.googlecode.com/svn</developerConnection>
   </scm>
 </project>

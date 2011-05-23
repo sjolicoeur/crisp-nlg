@@ -111,20 +111,28 @@
         </configuration>
         </plugin>
     </plugins>
+
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+         <artifactId>wagon-ssh-external</artifactId>
+         <version>1.0-beta-6</version>
+      </extension>
+    </extensions>
   </build>
 
   <distributionManagement>
     <repository>
       <id>ecl-repository</id>
       <name>Coli ECL Maven repository</name>
-      <url>scp://httpd.coli.uni-saarland.de/web/www.coli.uni-saarland.de/html/projects/ecl/maven2/releases</url>
+      <url>scpexe://httpd.coli.uni-saarland.de/web/www.coli.uni-saarland.de/html/projects/ecl/maven2/releases</url>
     </repository>
 
     <snapshotRepository>
       <uniqueVersion>true</uniqueVersion>
       <id>ecl-snapshots</id>
       <name>ECL release snapshots</name>
-      <url>scp://httpd.coli.uni-saarland.de/web/www.coli.uni-saarland.de/html/projects/ecl/maven2/snapshots</url>
+      <url>scpexe://httpd.coli.uni-saarland.de/web/www.coli.uni-saarland.de/html/projects/ecl/maven2/snapshots</url>
     </snapshotRepository>
   </distributionManagement>
 
@@ -155,6 +163,6 @@
   </repositories>
 
   <scm>
-    <developerConnection>scm:svn:https://crisp-nlg.googlecode.com/svn</developerConnection>
+    <developerConnection>scm:svn:https://crisp-nlg.googlecode.com/svn/branches/mscrisp</developerConnection>
   </scm>
 </project>

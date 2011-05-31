@@ -1153,7 +1153,19 @@ public class MscrispREConverter implements CrispConverter {
 
 		//return new Compound("forall", newChildren);
 
-	    } else {
+	    } else if (t.getLabel().equals("exists")) {
+			List<Term> newChildren = new ArrayList<Term>();
+			List<Term> subterms = new ArrayList<Term>(t.getSubterms());
+			newChildren.add(newSubstituteVariablesForRoles(subterms.get(0), n, I, nextMap, additionalParams, additionalVars, ConstantType.QUANT));
+			subterms.remove(0);
+
+			for (Term sub : subterms) {
+			    newChildren.add(newSubstituteVariablesForRoles(sub, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL));
+			}
+
+			Compound forallCompound = new Compound("exists", newChildren);
+			return forallCompound;
+		    } else {
 		List<Term> newChildren = new ArrayList<Term>();
 
 		for (Term sub : t.getSubterms()) {

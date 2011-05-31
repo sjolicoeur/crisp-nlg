@@ -15,6 +15,7 @@ import crisp.planningproblem.codec.FluentsPddlOutputCodec;
 import crisp.planningproblem.codec.PddlOutputCodec;
 import crisp.profile.CrispProfile;
 import crisp.profile.MscrispProfile;
+import crisp.profile.MscrispREProfile;
 import crisp.profile.ScrispProfile;
 import crisp.result.CrispDerivationTreeBuilder;
 import crisp.result.DerivationTreeBuilder;
@@ -46,6 +47,7 @@ public class GenerateSentence {
 	Map<String, CrispProfile> map = new HashMap<String, CrispProfile>();
 	map.put("scrisp", new ScrispProfile());
 	map.put("mscrisp", new MscrispProfile());
+	map.put("mscrisp-re", new MscrispREProfile());
 	stringToProfile = Collections.unmodifiableMap(map);
     }
 
@@ -81,7 +83,7 @@ public class GenerateSentence {
     
     private static void usage() {
         System.out.println("Usage: crisp.main.GenerateSentence [grammar file] [problem file] [profile name]");
-        System.out.println("Available profiles: SCRISP, mSCRISP\n");
+        System.out.println("Available profiles: SCRISP, mSCRISP, mSCRISP-RE\n");
     }
 
     /**

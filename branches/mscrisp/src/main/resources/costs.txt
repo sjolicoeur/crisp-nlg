@@ -1,4 +1,12 @@
 taxonomic 0
+non-taxonomic 4
 absolute 0
-viewer 50
+non-absolute 3
+viewer 0
+non-viewer 10
 micro 20
+non-micro 0
+macro 2
+non-macro 0
+distractors 1
+non-distractors 0

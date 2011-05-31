@@ -5,25 +5,28 @@
 
 <impgoal>push(b5)</impgoal>
 <world>target(b5)</world>
+<world type="attribute individual">needtodecide(taxonomic-attr,b5)</world>
+<world type="attribute individual">needtodecide(micro-attr,b5)</world>
+<world type="attribute individual">needtodecide(macro-attr,b5)</world>
+<world type="attribute individual">needtodecide(viewer-attr,b5)</world>
+<world type="attribute individual">needtodecide(absolute-attr,b5)</world>
+<world type="attribute individual">needtodecide(distractors-attr,b5)</world>
 
 <world type="syntaxnode">premod-index-zero(root)</world>
 <world type="syntaxnode">premod-index-one(root)</world>
 <world type="syntaxnode">premod-index-two(root)</world>
 
-<!-- room object predicates -->
+<!-- object predicates -->
 
-<world>door(d3)</world>
 <world>button(b5)</world>
 <world>blue(b5)</world>
-<world>door(d4)</world>
-<world>lamp(lamp1)</world>
-<world>micro(lamp1)</world>
+<world>straight(b5)</world>
+<world>open(t1)</world>
+<world>alarmed(t1)</world>
 <world>micro(t1)</world>
+<world>macro(t1)</world>
 
 <!-- spatial relation predicates -->
 
-<world>left-of(d3,b5)</world>
-<world>left-of(b5,lamp1)</world>
-<world>above(t1,d3)</world>
 
 </crispproblem>

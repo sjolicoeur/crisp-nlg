@@ -56,7 +56,7 @@ public class MetricFfPlannerInterface implements PlannerInterface {
 
         long start;
         long end;
-
+        
         outputCodec.writeToDisk(domain, problem, new PrintWriter(new FileWriter(new File(TEMPDOMAIN_FILE))),
                 new PrintWriter(new FileWriter(new File(TEMPPROBLEM_FILE))));
 

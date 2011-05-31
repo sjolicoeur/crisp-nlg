@@ -4,6 +4,9 @@
 
   <!-- grammar -->
 
+  <tree id="nontree">
+  </tree>
+
   <tree id="i.n">
     <leaf cat="n" type="anchor" sem="self" />
   </tree>
@@ -157,7 +160,7 @@
     </tree>
   </entry>
 
-  <entry word='nonmicro_to_the_left_of' pos='a'>
+  <entry word='non_micro_to_the_left_of' pos='a'>
     <tree refid='a.an'>
       <pragcond>needtodecide(micro-attr,self)</pragcond>
       <prageff>not(needtodecide(micro-attr,self))</prageff>
@@ -175,7 +178,7 @@
     </tree>
   </entry>
 
-  <entry word='nonmacro_to_the_left_of' pos='a'>
+  <entry word='non_macro_to_the_left_of' pos='a'>
     <tree refid='a.an'>
       <pragcond>needtodecide(macro-attr,self)</pragcond>
       <prageff>not(needtodecide(macro-attr,self))</prageff>
@@ -193,7 +196,7 @@
     </tree>
   </entry>
 
-  <entry word='nondistractors_to_the_left_of' pos='a'>
+  <entry word='non_distractors_to_the_left_of' pos='a'>
     <tree refid='a.an'>
       <pragcond>needtodecide(distractors-attr,self)</pragcond>
       <prageff>not(needtodecide(distractors-attr,self))</prageff>
@@ -211,7 +214,7 @@
     </tree>
   </entry>
 
-  <entry word='nonmicro_to_the_right_of' pos='a'>
+  <entry word='non_micro_to_the_right_of' pos='a'>
     <tree refid='a.an'>
       <pragcond>needtodecide(micro-attr,self)</pragcond>
       <prageff>not(needtodecide(micro-attr,self))</prageff>
@@ -229,7 +232,7 @@
     </tree>
   </entry>
 
-  <entry word='nonmacro_to_the_right_of' pos='a'>
+  <entry word='non_macro_to_the_right_of' pos='a'>
     <tree refid='a.an'>
       <pragcond>needtodecide(macro-attr,self)</pragcond>
       <prageff>not(needtodecide(macro-attr,self))</prageff>
@@ -247,7 +250,7 @@
     </tree>
   </entry>
 
-  <entry word='nondistractors_to_the_right_of' pos='a'>
+  <entry word='non_distractors_to_the_right_of' pos='a'>
     <tree refid='a.an'>
       <pragcond>needtodecide(distractors-attr,self)</pragcond>
       <prageff>not(needtodecide(distractors-attr,self))</prageff>
@@ -265,7 +268,7 @@
     </tree>
   </entry>
 
-  <entry word='nonmicro_above' pos='a'>
+  <entry word='non_micro_above' pos='a'>
     <tree refid='a.an'>
       <pragcond>needtodecide(micro-attr,self)</pragcond>
       <prageff>not(needtodecide(micro-attr,self))</prageff>
@@ -283,7 +286,7 @@
     </tree>
   </entry>
 
-  <entry word='nonmacro_above' pos='a'>
+  <entry word='non_macro_above' pos='a'>
     <tree refid='a.an'>
       <pragcond>needtodecide(macro-attr,self)</pragcond>
       <prageff>not(needtodecide(macro-attr,self))</prageff>
@@ -301,7 +304,7 @@
     </tree>
   </entry>
 
-  <entry word='nondistractors_above' pos='a'>
+  <entry word='non_distractors_above' pos='a'>
     <tree refid='a.an'>
       <pragcond>needtodecide(distractors-attr,self)</pragcond>
       <prageff>not(needtodecide(distractors-attr,self))</prageff>
@@ -319,7 +322,7 @@
     </tree>
   </entry>
 
-  <entry word='nonmicro_below' pos='a'>
+  <entry word='non_micro_below' pos='a'>
     <tree refid='a.an'>
       <pragcond>needtodecide(micro-attr,self)</pragcond>
       <prageff>not(needtodecide(micro-attr,self))</prageff>
@@ -337,7 +340,7 @@
     </tree>
   </entry>
 
-  <entry word='nonmacro_below' pos='a'>
+  <entry word='non_macro_below' pos='a'>
     <tree refid='a.an'>
       <pragcond>needtodecide(macro-attr,self)</pragcond>
       <prageff>not(needtodecide(macro-attr,self))</prageff>
@@ -355,7 +358,7 @@
     </tree>
   </entry>
 
-  <entry word='nondistractors_below' pos='a'>
+  <entry word='non_distractors_below' pos='a'>
     <tree refid='a.an'>
       <pragcond>needtodecide(distractors-attr,self)</pragcond>
       <prageff>not(needtodecide(distractors-attr,self))</prageff>
@@ -372,7 +375,7 @@
     </tree>
   </entry>
 
-  <entry word='nonviewer_to_your_right' pos='pp'>
+  <entry word='non_viewer_to_your_right' pos='pp'>
     <tree refid='a.pp'>
       <pragcond>needtodecide(viewer-attr,self)</pragcond>
       <prageff>not(needtodecide(viewer-attr,self))</prageff>
@@ -389,7 +392,7 @@
     </tree>
   </entry>
 
-  <entry word='nonviewer_to_your_left' pos='pp'>
+  <entry word='non_viewer_to_your_left' pos='pp'>
     <tree refid='a.pp'>
       <pragcond>needtodecide(viewer-attr,self)</pragcond>
       <prageff>not(needtodecide(viewer-attr,self))</prageff>
@@ -406,7 +409,7 @@
     </tree>
   </entry>
 
-  <entry word='nonviewer_in_front_of_you' pos='pp'>
+  <entry word='non_viewer_in_front_of_you' pos='pp'>
     <tree refid='a.pp'>
       <pragcond>needtodecide(viewer-attr,self)</pragcond>
       <prageff>not(needtodecide(viewer-attr,self))</prageff>
@@ -423,7 +426,7 @@
     </tree>
   </entry>
 
-  <entry word='nonviewer_behind_you' pos='pp'>
+  <entry word='non_viewer_behind_you' pos='pp'>
     <tree refid='a.pp'>
       <pragcond>needtodecide(viewer-attr,self)</pragcond>
       <prageff>not(needtodecide(viewer-attr,self))</prageff>
@@ -434,6 +437,7 @@
   <entry word='left' pos='a'>
     <tree refid='a.an'>
       <pragcond>target(self)</pragcond>
+      <pragcond>exists(z,distractor(id(self),z))</pragcond>
       <pragcond>forall(y,not(and(distractor(id(self),y),left-of(y,self))))</pragcond>
       <prageff>forall(y,when(left-of(self,y),not(distractor(id(self),y))))</prageff>
       <prageff>not(premod-index-zero(id(self)))</prageff>
@@ -442,11 +446,12 @@
       <pragcond>needtodecide(viewer-attr,self)</pragcond>
       <prageff>not(needtodecide(viewer-attr,self))</prageff>
       <costclass>viewer</costclass>    
-      <var>y</var>
+      <var>y</var>    
+      <var>z</var>
     </tree>
   </entry>
   
-  <entry word='nonviewer_left' pos='a'>
+  <entry word='non_viewer_left' pos='a'>
     <tree refid='a.an'>
       <pragcond>target(self)</pragcond>
       <pragcond>needtodecide(viewer-attr,self)</pragcond>
@@ -470,6 +475,7 @@
   <entry word='right' pos='a'>
     <tree refid='a.an'>
       <pragcond>target(self)</pragcond>
+      <pragcond>exists(z,distractor(id(self),z))</pragcond>
       <pragcond>forall(y,not(and(distractor(id(self),y),left-of(self,y))))</pragcond>
       <prageff>forall(y,when(left-of(y,self),not(distractor(id(self),y))))</prageff>
       <prageff>not(premod-index-zero(id(self)))</prageff>
@@ -478,11 +484,12 @@
       <pragcond>needtodecide(viewer-attr,self)</pragcond>
       <prageff>not(needtodecide(viewer-attr,self))</prageff>
       <costclass>viewer</costclass>    
-      <var>y</var>
+      <var>y</var>    
+      <var>z</var>
     </tree>
   </entry>
   
-  <entry word='nonviewer_right' pos='a'>
+  <entry word='non_viewer_right' pos='a'>
     <tree refid='a.an'>
       <pragcond>target(self)</pragcond>
       <pragcond>needtodecide(viewer-attr,self)</pragcond>
@@ -506,6 +513,7 @@
   <entry word='upper' pos='a'>
     <tree refid='a.an'>
       <pragcond>target(self)</pragcond>
+      <pragcond>exists(z,distractor(id(self),z))</pragcond>
       <pragcond>forall(y,not(and(distractor(id(self),y),above(y,self))))</pragcond>
       <prageff>forall(y,when(above(self,y),not(distractor(id(self),y))))</prageff>
       <prageff>not(premod-index-zero(id(self)))</prageff>
@@ -514,11 +522,12 @@
       <pragcond>needtodecide(viewer-attr,self)</pragcond>
       <prageff>not(needtodecide(viewer-attr,self))</prageff>
       <costclass>viewer</costclass>    
-      <var>y</var>
+      <var>y</var>    
+      <var>z</var>
     </tree>
   </entry>
   
-  <entry word='nonviewer_upper' pos='a'>
+  <entry word='non_viewer_upper' pos='a'>
     <tree refid='a.an'>
       <pragcond>target(self)</pragcond>
       <pragcond>needtodecide(viewer-attr,self)</pragcond>
@@ -542,6 +551,7 @@
   <entry word='lower' pos='a'>
     <tree refid='a.an'>
       <pragcond>target(self)</pragcond>
+      <pragcond>exists(z,distractor(id(self),z))</pragcond>
       <pragcond>forall(y,not(and(distractor(id(self),y),above(self,y))))</pragcond>
       <prageff>forall(y,when(above(y,self),not(distractor(id(self),y))))</prageff>
       <prageff>not(premod-index-zero(id(self)))</prageff>
@@ -550,11 +560,12 @@
       <pragcond>needtodecide(viewer-attr,self)</pragcond>
       <prageff>not(needtodecide(viewer-attr,self))</prageff>
       <costclass>viewer</costclass>    
-      <var>y</var>
+      <var>y</var>    
+      <var>z</var>
     </tree>
   </entry>
   
-  <entry word='nonviewer_lower' pos='a'>
+  <entry word='non_viewer_lower' pos='a'>
     <tree refid='a.an'>
       <pragcond>target(self)</pragcond>
       <pragcond>needtodecide(viewer-attr,self)</pragcond>
@@ -589,7 +600,7 @@
     </tree>
   </entry>
 
-  <entry word='nonviewer_blue' pos='a'>
+  <entry word='non_absolute_blue' pos='a'>
     <tree refid='a.an'>
       <pragcond>target(self)</pragcond>
       <pragcond>needtodecide(absolute-attr,self)</pragcond>
@@ -623,7 +634,7 @@
     </tree>
   </entry>
 
-  <entry word='nonviewer_red' pos='a'>
+  <entry word='non_absolute_red' pos='a'>
     <tree refid='a.an'>
       <pragcond>target(self)</pragcond>
       <pragcond>needtodecide(absolute-attr,self)</pragcond>
@@ -657,7 +668,7 @@
     </tree>
   </entry>
 
-  <entry word='nonviewer_green' pos='a'>
+  <entry word='non_absolute_green' pos='a'>
     <tree refid='a.an'>
       <pragcond>target(self)</pragcond>
       <pragcond>needtodecide(absolute-attr,self)</pragcond>
@@ -691,7 +702,7 @@
     </tree>
   </entry>
 
-  <entry word='nonviewer_yellow' pos='a'>
+  <entry word='non_absolute_yellow' pos='a'>
     <tree refid='a.an'>
       <pragcond>target(self)</pragcond>
       <pragcond>needtodecide(absolute-attr,self)</pragcond>
@@ -729,6 +740,7 @@
   <entry word='one' pos='n'>
     <tree refid="i.n">
       <pragcond>target(self)</pragcond>
+      <prageff>mustadjoin(n,id(self))</prageff>  
       <pragcond>needtodecide(taxonomic-attr,self)</pragcond>
       <prageff>not(needtodecide(taxonomic-attr,self))</prageff>
       <costclass>non-taxonomic</costclass>      
@@ -838,5 +850,6 @@
       <semcontent>trophy(self)</semcontent>  
     </tree>
   </entry>
+
 
 </scrisp-grammar>

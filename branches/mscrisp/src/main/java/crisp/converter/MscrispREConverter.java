@@ -486,8 +486,13 @@ public class MscrispREConverter implements CrispConverter {
 	// for each tree in the grammar
 	for (String treeName : grammar.getAllTreeNames()) {
 
+		if (treeName.equals("nontree")) {
+			continue;
+		}
+		
 	    // Get all nodes in the tree
-	    ElementaryTree<Term> tree = grammar.getTree(treeName);
+		ElementaryTree<Term> tree = grammar.getTree(treeName);
+		
 	    List<String> allNodeIds = tree.getAllNodesInDfsOrder();
 
 	    // store list of roles in each tree in a map by name
@@ -550,7 +555,7 @@ public class MscrispREConverter implements CrispConverter {
 
 	// compute actions from lexical entries
 	for (String word : grammar.getAllWords()) {
-	    //System.out.println("\n" + word + ":");
+	    //System.out.println("\nWord " + word + ":");
 
 	    Collection<CrispLexiconEntry> entries = grammar.getCrispLexiconEntries(word);
 	    //System.out.println(entries.size());
@@ -558,6 +563,35 @@ public class MscrispREConverter implements CrispConverter {
 		// Get the tree for this lexical entry from the hash map
 		String treeRef = normalizeTreename(entry.tree);
 		ElementaryTree<Term> tree = grammar.getTree(entry.tree);
+		
+//		if (word.startsWith("non_")) {
+//			System.out.println("Nontree: " + entry.word);
+//			
+//			// compute the predicate
+//			String label = word;
+//			List<Term> variables = new ArrayList<Term>();
+//			List<String> variableTypes = new ArrayList<String>();
+//
+//			// Individuals
+//			variables.add(new Variable("?x"));
+//			variableTypes.add("individual");
+//			Compound pred = new Compound(label, variables);
+//
+//			List<Formula> goals = new ArrayList<Formula>();
+//			List<Formula> effects = new ArrayList<Formula>();
+//
+//			// Add pragmatic preconditions
+//			for (Term pragPrecondTerm : entry.getPragmaticPreconditions()) {
+//			    Compound termWithVariables = (Compound) newSubstituteVariablesForRoles(pragPrecondTerm, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL);
+//			    goals.add(new Literal(termWithVariables, true));
+//			}
+//			
+//			//Action a = new Action(pred, variableTypes, new Conjunction(goals), new Conjunction(effects), cost);
+//			//domain.addAction(a);
+//			continue;
+//		}
+		
+		
 		Collection<String> allNodes = tree.getAllNodesInDfsOrder();
 
 		// Get lists of nodes that are open for substitution and adjunction
@@ -683,11 +717,11 @@ public class MscrispREConverter implements CrispConverter {
 		// require reference from u to the parameter for role self
 		goals.add(new Literal("referent(?u," + I.get("?u") + ")", true));
 
-		if (tree.getType() == ElementaryTreeType.INITIAL) {
+		if (!word.startsWith("non_") && tree.getType() == ElementaryTreeType.INITIAL) {
 		    // initial tree: fills substitution node
 		    goals.add(new Literal("subst(" + rootCategory + ", ?u)", true));
 		    effects.add(new Literal("subst(" + rootCategory + ", ?u)", false));
-		} else {
+		} else if (!word.startsWith("non_")) {
 		    // auxiliary tree: adjoin, and satisfies mustadjoin requirements
 		    goals.add(new Literal("canadjoin(" + rootCategory + ", ?u)", true));
 		    effects.add(new Literal("mustadjoin(" + rootCategory + ", ?u)", false));
@@ -901,10 +935,12 @@ public class MscrispREConverter implements CrispConverter {
 		    }
 
 		    // canadjoin
+		    if (!word.startsWith("non_")) {
 		    effects.add(new Literal("canadjoin(" + cat + ", " + roleN + ")", true));
+		    }
 
 		    // mustadjoin
-		    if (tree.getNodeConstraint(adjNode) == Constraint.OBLIGATORY_ADJUNCTION) {
+		    if (!word.startsWith("non_") && tree.getNodeConstraint(adjNode) == Constraint.OBLIGATORY_ADJUNCTION) {
 			effects.add(new Literal("mustadjoin(" + cat + ", " + roleN + ")", true));
 			//domain.registerMustadjoin(); // set mustadjoin flag
 		    }
@@ -1163,8 +1199,8 @@ public class MscrispREConverter implements CrispConverter {
 			    newChildren.add(newSubstituteVariablesForRoles(sub, n, I, nextMap, additionalParams, additionalVars, ConstantType.NORMAL));
 			}
 
-			Compound forallCompound = new Compound("exists", newChildren);
-			return forallCompound;
+			Compound existsCompound = new Compound("exists", newChildren);
+			return existsCompound;
 		    } else {
 		List<Term> newChildren = new ArrayList<Term>();
 

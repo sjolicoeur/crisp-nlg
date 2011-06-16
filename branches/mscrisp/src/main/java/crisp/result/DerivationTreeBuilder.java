@@ -116,7 +116,7 @@ public abstract class DerivationTreeBuilder{
         // Create a substitution (individuals for variables) for the original action to instantiate it. 
         int i = 0;
         Substitution subst = new Substitution();
-        for (Term v : variables) {            
+        for (Term v : variables) {       
             subst.setSubstitution((Variable) v, arguments.get(i)); // Ok, because arguments.get(i) is an individual
             i++;
         }

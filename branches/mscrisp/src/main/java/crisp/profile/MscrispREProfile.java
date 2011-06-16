@@ -25,8 +25,8 @@ public class MscrispREProfile implements CrispProfile {
     }
 
     public PlannerInterface getPlannerInterface() {
-	//return new MetricFfPlannerInterface("-B -g 5 -h 1");
-	return new MetricFfPlannerInterface("-B");
+	return new MetricFfPlannerInterface("-B -g 5 -h 1");
+	//return new MetricFfPlannerInterface("-B");
     }
 
 }

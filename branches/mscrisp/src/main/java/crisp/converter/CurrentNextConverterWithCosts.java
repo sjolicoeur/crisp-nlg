@@ -922,7 +922,9 @@ public class CurrentNextConverterWithCosts implements CrispConverter {
 		    return Double.parseDouble(lineParts[1]);
 		}
 	    }
+	    br.close();
 	    in.close();
+	    fstream.close();
 	} catch (Exception e){
 	    System.err.println("Error: " + e.getMessage());
 	}	

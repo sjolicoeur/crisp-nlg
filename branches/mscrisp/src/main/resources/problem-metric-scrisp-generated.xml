@@ -3,24 +3,36 @@
 <crispproblem name="metric-scrisp" grammar="metric-scrisp-grammar.xml"
   cat="S" index="e-1" syntaxnodes="3" referents="1">
 
-<impgoal>push(b5)</impgoal>
-<world>target(b5)</world>
-<world type="attribute individual">needtodecide(taxonomic-attr,b5)</world>
-<world type="attribute individual">needtodecide(micro-attr,b5)</world>
-<world type="attribute individual">needtodecide(macro-attr,b5)</world>
-<world type="attribute individual">needtodecide(viewer-attr,b5)</world>
-<world type="attribute individual">needtodecide(absolute-attr,b5)</world>
-<world type="attribute individual">needtodecide(distractors-attr,b5)</world>
+<impgoal>push(b6)</impgoal>
+<world>target(b6)</world>
 
-<world type="syntaxnode">premod-index-zero(root)</world>
+<world type="attribute individual">needtodecide(taxonomic-attr,b6)</world><world type="attribute individual">needtodecide(micro-attr,b6)</world><world type="attribute individual">needtodecide(macro-attr,b6)</world><world type="attribute individual">needtodecide(viewer-attr,b6)</world><world type="attribute individual">needtodecide(absolute-attr,b6)</world><world type="attribute individual">needtodecide(distractors-attr,b6)</world><world type="syntaxnode">premod-index-zero(root)</world>
 <world type="syntaxnode">premod-index-one(root)</world>
 <world type="syntaxnode">premod-index-two(root)</world>
 
 <!-- object predicates -->
 
-<world>button(b5)</world>
-<world>blue(b5)</world>
-<world>straight(b5)</world>
+<world>flower(flower1)</world>
+<world>micro(flower1)</world>
+<world>button(b1)</world>
+<world>red(b1)</world>
+<world>around(b1)</world>
+<world>button(b2)</world>
+<world>green(b2)</world>
+<world>around(b2)</world>
+<world>button(b7)</world>
+<world>green(b7)</world>
+<world>straight(b7)</world>
+<world>door(d5)</world>
+<world>macro(d5)</world>
+<world>around(d5)</world>
+<world>open(d5)</world>
+<world>button(b6)</world>
+<world>blue(b6)</world>
+<world>straight(b6)</world>
+<world>button(b8)</world>
+<world>blue(b8)</world>
+<world>straight(b8)</world>
 <world>open(t1)</world>
 <world>alarmed(t1)</world>
 <world>micro(t1)</world>
@@ -28,5 +40,11 @@
 
 <!-- spatial relation predicates -->
 
+<world>left-of(b8,b7)</world>
+<world>left-of(flower1,b2)</world>
+<world>left-of(b8,b6)</world>
+<world>left-of(b2,d5)</world>
+<world>left-of(b7,b6)</world>
+<world>above(b7,b8)</world>
 
 </crispproblem>

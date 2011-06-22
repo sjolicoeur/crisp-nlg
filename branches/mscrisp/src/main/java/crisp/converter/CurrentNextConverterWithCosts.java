@@ -910,26 +910,25 @@ public class CurrentNextConverterWithCosts implements CrispConverter {
 	}
     }
 
-    private double computeCost(String costClass) {
-	try {
-	    FileInputStream fstream = new FileInputStream(defaultCostFilePath);
-	    DataInputStream in = new DataInputStream(fstream);
-	    BufferedReader br = new BufferedReader(new InputStreamReader(in));
-	    String strLine;
-	    while ((strLine = br.readLine()) != null)   {
-		if (strLine.startsWith(costClass)) {
-		    String[] lineParts = strLine.split(" ");
-		    return Double.parseDouble(lineParts[1]);
-		}
-	    }
-	    br.close();
-	    in.close();
-	    fstream.close();
-	} catch (Exception e){
-	    System.err.println("Error: " + e.getMessage());
-	}	
-	return 0;
-    }
+	private double computeCost(String costClass) {
+		double cost = 0;
+		try {
+			FileInputStream fstream = new FileInputStream(defaultCostFilePath);
+			DataInputStream in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String strLine;
+			while ((strLine = br.readLine()) != null)   {
+				if (strLine.startsWith(costClass)) {
+					String[] lineParts = strLine.split(" ");
+					cost = Double.parseDouble(lineParts[1]);
+				}
+			}
+			in.close();
+		} catch (Exception e){
+			System.err.println("Error: " + e.getMessage());
+		}	
+		return cost;
+	}
 
     /******** input, output, main program **********/
     /**

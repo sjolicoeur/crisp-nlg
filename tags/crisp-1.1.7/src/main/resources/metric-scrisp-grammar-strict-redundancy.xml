@@ -1,0 +1,878 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<scrisp-grammar>
+
+  <!-- grammar -->
+
+  <!-- <tree id="nontree">
+  </tree> -->
+
+  <tree id="i.n">
+    <leaf cat="n" type="anchor" sem="self" />
+  </tree>
+
+  <tree id="a.an">
+    <node cat="n" sem="self">
+      <leaf cat="a" type="anchor" sem="self"/>
+      <leaf cat="n" type="foot" sem="self" />
+    </node>
+  </tree>
+
+  <tree id="a.p">
+    <node cat="np" sem="self">
+      <leaf cat="np" type="foot" sem="self"/>
+      <node cat="pp" sem="self" >
+        <leaf cat="p" type="anchor" sem="self"/>
+        <leaf cat="np" type="substitution" sem="npcomp"/>
+      </node>
+    </node>
+  </tree>
+  
+  <tree id="a.pp">
+    <node cat="np" sem="self">
+      <leaf cat="np" type="foot" sem="self"/>
+      <node cat="pp" sem="self" >
+        <leaf cat="p" type="anchor" sem="self"/>
+      </node>
+    </node>
+  </tree>
+
+  <tree id="i.dn">   <!-- non-xtag --> 
+    <node cat="np" sem="self">
+      <leaf cat="d" type="anchor" sem="self" />
+      <node type="substitution" cat="n" sem="self" />
+    </node>
+  </tree>
+
+  <tree id="i.transimperative">
+    <node cat="s" sem="self">
+       <node cat="vp" sem="self">
+  	     <leaf cat="v" type="anchor" sem="self"/>
+	     <leaf cat="np" type="substitution" sem="obj" />
+       </node>
+     </node>
+  </tree>
+
+<!--
+  <tree id="i.intransimperative">
+    <node cat="s" sem="self">
+       <node cat="vp" sem="self">
+  	     <leaf cat="v" type="anchor" sem="self"/>
+       </node>
+     </node>
+  </tree>
+
+  <tree id="a.sentconjunction">
+    <node cat="s" sem="self">
+      <leaf cat="s" type="foot" sem="self"/>
+      <leaf cat="conj" type="anchor" sem="self" />
+      <leaf cat="s" type="substitution" sem="other" />
+    </node>
+  </tree>
+
+  <tree id="i.transppimperative">
+    <node cat="s" sem="self">
+      <node cat="vp" sem="self">
+        <leaf cat="v" type="anchor" sem="self"/>
+        <node cat="vp" sem="self">
+          <node cat="v" sem="self">
+            <leaf cat="" type="terminal" sem="self"/>
+          </node>
+          <node cat="pp" sem="ppobj">
+            <leaf cat="p" type="lex" sem="ppobj"/>
+            <leaf cat="np" type="substitution" sem="ppobj"/>
+          </node>
+        </node>
+      </node>
+    </node>
+  </tree>  
+
+ <tree id="a.sentconjunction2">
+    <node cat="s" sem="self">
+      <leaf cat="s" type="substitution" sem="other" />
+      <leaf cat="conj" type="anchor" sem="self" />
+      <leaf cat="s" type="foot" sem="self"/>
+    </node>
+  </tree>  
+
+  <tree id="i.ditranspp1pp2imperative">
+    <node cat="s" sem="self">
+      <node cat="vp" sem="self">
+        <leaf cat="v" type="anchor" sem="self"/>
+        <node cat="vp" sem="self">
+          <node cat="v" sem="self">
+            <leaf cat="" type="terminal" sem="self"/>
+          </node>
+          <node cat="pp" sem="ppobj1">
+            <leaf cat="p" type="lex" sem="ppobj1"/>
+            <leaf cat="np" type="substitution" sem="ppobj1"/>
+          </node>
+        </node>
+        <node cat="vp" sem="self">
+          <node cat="v" sem="self">
+            <leaf cat="" type="terminal" sem="self"/>
+          </node>
+          <node cat="pp" sem="ppobj2">
+            <leaf cat="p" type="lex" sem="ppobj2"/>
+            <leaf cat="np" type="substitution" sem="ppobj2"/>
+          </node>
+	</node>
+      </node>
+    </node>
+  </tree>
+-->  
+
+  <!-- lexicon -->
+
+  <entry word='push' pos='v'>
+    <tree refid="i.transimperative">
+      <semreq>button(obj)</semreq> 
+      <pragcond>target(obj)</pragcond>
+      <prageff>premod-index-zero(id(obj))</prageff>
+      <impeff>push(obj)</impeff>
+    </tree>
+  </entry>
+
+  <entry word='go_through' pos='v'>
+    <tree refid="i.transimperative">
+      <semreq>door(obj)</semreq> 
+      <semreq>open(obj)</semreq>  
+      <pragcond>target(obj)</pragcond>
+      <impeff>go_through(obj)</impeff>    
+    </tree>
+  </entry>
+ 
+  <entry word='take' pos='v'>
+    <tree refid="i.transimperative">
+      <semreq>trophy(obj)</semreq>  
+      <pragcond>target(obj)</pragcond>
+      <impeff>take(obj)</impeff> 
+    </tree>
+  </entry>
+
+  <entry word='to_the_left_of' pos='p'>
+    <tree refid='a.p'>
+      <pragcond>micro(npcomp)</pragcond>
+      <pragcond>needtodecide(micro-attr,self)</pragcond> 
+      <prageff>not(needtodecide(micro-attr,self))</prageff>
+      <semcontent>left-of(self,npcomp)</semcontent>
+      <costclass>micro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='non_micro_to_the_left_of' pos='a'>
+    <tree refid='a.an'>
+      <!-- <pragcond>needtodecide(micro-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(micro-attr,self))</prageff>
+      <costclass>non-micro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='to_the_left_of' pos='p'>
+    <tree refid='a.p'>
+      <pragcond>macro(npcomp)</pragcond>
+      <pragcond>needtodecide(macro-attr,self)</pragcond>
+      <prageff>not(needtodecide(macro-attr,self))</prageff>
+      <semcontent>left-of(self,npcomp)</semcontent>
+      <costclass>macro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='non_macro_to_the_left_of' pos='a'>
+    <tree refid='a.an'>
+      <!-- <pragcond>needtodecide(macro-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(macro-attr,self))</prageff>
+      <costclass>non-macro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='to_the_left_of' pos='p'>
+    <tree refid='a.p'>
+      <pragcond>button(npcomp)</pragcond>
+      <pragcond>needtodecide(distractors-attr,self)</pragcond>
+      <prageff>not(needtodecide(distractors-attr,self))</prageff>
+      <semcontent>left-of(self,npcomp)</semcontent>
+      <costclass>distractors</costclass>
+    </tree>
+  </entry>
+
+  <entry word='non_distractors_to_the_left_of' pos='a'>
+    <tree refid='a.an'>
+      <!-- <pragcond>needtodecide(distractors-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(distractors-attr,self))</prageff>
+      <costclass>non-distractors</costclass>
+    </tree>
+  </entry>
+
+  <entry word='to_the_right_of' pos='p'>
+    <tree refid='a.p'>
+      <pragcond>micro(npcomp)</pragcond>
+      <pragcond>needtodecide(micro-attr,self)</pragcond>
+      <prageff>not(needtodecide(micro-attr,self))</prageff>
+      <semcontent>left-of(npcomp,self)</semcontent>
+      <costclass>micro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='non_micro_to_the_right_of' pos='a'>
+    <tree refid='a.an'>
+      <!-- <pragcond>needtodecide(micro-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(micro-attr,self))</prageff>
+      <costclass>non-micro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='to_the_right_of' pos='p'>
+    <tree refid='a.p'>
+      <pragcond>macro(npcomp)</pragcond>
+      <pragcond>needtodecide(macro-attr,self)</pragcond>
+      <prageff>not(needtodecide(macro-attr,self))</prageff>
+      <semcontent>left-of(npcomp,self)</semcontent>
+      <costclass>macro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='non_macro_to_the_right_of' pos='a'>
+    <tree refid='a.an'>
+      <!-- <pragcond>needtodecide(macro-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(macro-attr,self))</prageff>
+      <costclass>non-macro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='to_the_right_of' pos='p'>
+    <tree refid='a.p'>
+      <pragcond>button(npcomp)</pragcond>
+      <pragcond>needtodecide(distractors-attr,self)</pragcond>
+      <prageff>not(needtodecide(distractors-attr,self))</prageff>
+      <semcontent>left-of(npcomp,self)</semcontent>
+      <costclass>distractors</costclass>
+    </tree>
+  </entry>
+
+  <entry word='non_distractors_to_the_right_of' pos='a'>
+    <tree refid='a.an'>
+      <!-- <pragcond>needtodecide(distractors-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(distractors-attr,self))</prageff>
+      <costclass>non-distractors</costclass>
+    </tree>
+  </entry>
+
+  <entry word='above' pos='p'>
+    <tree refid='a.p'>
+      <pragcond>micro(npcomp)</pragcond>
+      <pragcond>needtodecide(micro-attr,self)</pragcond>
+      <prageff>not(needtodecide(micro-attr,self))</prageff>
+      <semcontent>above(self,npcomp)</semcontent>
+      <costclass>micro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='non_micro_above' pos='a'>
+    <tree refid='a.an'>
+      <!-- <pragcond>needtodecide(micro-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(micro-attr,self))</prageff>
+      <costclass>non-micro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='above' pos='p'>
+    <tree refid='a.p'>
+      <pragcond>macro(npcomp)</pragcond>
+      <pragcond>needtodecide(macro-attr,self)</pragcond>
+      <prageff>not(needtodecide(macro-attr,self))</prageff>
+      <semcontent>above(self,npcomp)</semcontent>
+      <costclass>macro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='non_macro_above' pos='a'>
+    <tree refid='a.an'>
+      <!-- <pragcond>needtodecide(macro-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(macro-attr,self))</prageff>
+      <costclass>non-macro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='above' pos='p'>
+    <tree refid='a.p'>
+      <pragcond>button(npcomp)</pragcond>
+      <pragcond>needtodecide(distractors-attr,self)</pragcond>
+      <prageff>not(needtodecide(distractors-attr,self))</prageff>
+      <semcontent>above(self,npcomp)</semcontent>
+      <costclass>distractors</costclass>
+    </tree>
+  </entry>
+
+  <entry word='non_distractors_above' pos='a'>
+    <tree refid='a.an'>
+      <!-- <pragcond>needtodecide(distractors-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(distractors-attr,self))</prageff>
+      <costclass>non-distractors</costclass>
+    </tree>
+  </entry>
+
+  <entry word='below' pos='p'>
+    <tree refid='a.p'>
+      <pragcond>micro(npcomp)</pragcond>
+      <pragcond>needtodecide(micro-attr,self)</pragcond>
+      <prageff>not(needtodecide(micro-attr,self))</prageff>
+      <semcontent>above(npcomp,self)</semcontent>
+      <costclass>micro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='non_micro_below' pos='a'>
+    <tree refid='a.an'>
+      <!-- <pragcond>needtodecide(micro-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(micro-attr,self))</prageff>
+      <costclass>non-micro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='below' pos='p'>
+    <tree refid='a.p'>
+      <pragcond>macro(npcomp)</pragcond>
+      <pragcond>needtodecide(macro-attr,self)</pragcond> 
+      <prageff>not(needtodecide(macro-attr,self))</prageff>
+      <semcontent>above(npcomp,self)</semcontent>
+      <costclass>macro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='non_macro_below' pos='a'>
+    <tree refid='a.an'>
+      <!-- <pragcond>needtodecide(macro-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(macro-attr,self))</prageff>
+      <costclass>non-macro</costclass>
+    </tree>
+  </entry>
+
+  <entry word='below' pos='p'>
+    <tree refid='a.p'>
+      <pragcond>button(npcomp)</pragcond>
+      <pragcond>needtodecide(distractors-attr,self)</pragcond>
+      <prageff>not(needtodecide(distractors-attr,self))</prageff>
+      <semcontent>above(npcomp,self)</semcontent>
+      <costclass>distractors</costclass>
+    </tree>
+  </entry>
+
+  <entry word='non_distractors_below' pos='a'>
+    <tree refid='a.an'>
+      <!-- <pragcond>needtodecide(distractors-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(distractors-attr,self))</prageff>
+      <costclass>non-distractors</costclass>
+    </tree>
+  </entry>
+
+  <entry word='to_your_right' pos='pp'>
+    <tree refid='a.pp'>
+      <semcontent>right(self)</semcontent>
+      <pragcond>needtodecide(viewer-attr,self)</pragcond>
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>viewer</costclass>    
+    </tree>
+  </entry>
+
+  <entry word='non_viewer_to_your_right' pos='pp'>
+    <tree refid='a.pp'>
+      <!-- <pragcond>needtodecide(viewer-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>non-viewer</costclass>    
+    </tree>
+  </entry>
+
+  <entry word='to_your_left' pos='pp'>
+    <tree refid='a.pp'>
+      <semcontent>left(self)</semcontent>
+      <pragcond>needtodecide(viewer-attr,self)</pragcond>
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>viewer</costclass>    
+    </tree>
+  </entry>
+
+  <entry word='non_viewer_to_your_left' pos='pp'>
+    <tree refid='a.pp'>
+      <!-- <pragcond>needtodecide(viewer-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>non-viewer</costclass>    
+    </tree>
+  </entry>
+
+  <entry word='in_front_of_you' pos='pp'>
+    <tree refid='a.pp'>
+      <semcontent>straight(self)</semcontent>
+      <pragcond>needtodecide(viewer-attr,self)</pragcond>
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>viewer</costclass>    
+    </tree>
+  </entry>
+
+  <entry word='non_viewer_in_front_of_you' pos='pp'>
+    <tree refid='a.pp'>
+      <!-- <pragcond>needtodecide(viewer-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>non-viewer</costclass>    
+    </tree>
+  </entry>
+
+  <entry word='behind_you' pos='pp'>
+    <tree refid='a.pp'>
+      <semcontent>around(self)</semcontent>
+      <pragcond>needtodecide(viewer-attr,self)</pragcond>
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>viewer</costclass>    
+    </tree>
+  </entry>
+
+  <entry word='non_viewer_behind_you' pos='pp'>
+    <tree refid='a.pp'>
+      <!-- <pragcond>needtodecide(viewer-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>non-viewer</costclass>    
+    </tree>
+  </entry>
+  
+  <entry word='left' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <pragcond>and(left-of(self,z),distractor(id(self),z))</pragcond>
+      <pragcond>forall(y,not(and(distractor(id(self),y),left-of(y,self))))</pragcond>
+      <prageff>forall(y,when(left-of(self,y),not(distractor(id(self),y))))</prageff>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-one(id(self)))</prageff>
+      <prageff>premod-index-two(id(self))</prageff>
+      <!-- <pragcond>needtodecide(viewer-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>viewer</costclass>    
+      <var>y</var>
+      <param type="individual">z</param>
+    </tree>
+  </entry>
+  
+  <entry word='non_viewer_left' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <!-- <pragcond>needtodecide(viewer-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>non-viewer</costclass>
+    </tree>
+  </entry>
+  
+  <entry word='left' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>not(target(self))</pragcond>
+      <pragcond>and(left-of(self,z),distractor(id(self),z))</pragcond>
+      <pragcond>forall(y,not(and(distractor(id(self),y),left-of(y,self))))</pragcond>
+      <prageff>forall(y,when(left-of(self,y),not(distractor(id(self),y))))</prageff>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-one(id(self)))</prageff>
+      <prageff>premod-index-two(id(self))</prageff>
+      <var>y</var>
+      <param type="individual">z</param>
+    </tree>
+  </entry>
+
+  <entry word='right' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <pragcond>and(left-of(z,self),distractor(id(self),z))</pragcond>
+      <pragcond>forall(y,not(and(distractor(id(self),y),left-of(self,y))))</pragcond>
+      <prageff>forall(y,when(left-of(y,self),not(distractor(id(self),y))))</prageff>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-one(id(self)))</prageff>
+      <prageff>premod-index-two(id(self))</prageff>
+      <!-- <pragcond>needtodecide(viewer-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>viewer</costclass>    
+      <var>y</var>
+      <param type="individual">z</param>
+    </tree>
+  </entry>
+  
+  <entry word='non_viewer_right' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <!-- <pragcond>needtodecide(viewer-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>non-viewer</costclass>
+    </tree>
+  </entry>
+
+  <entry word='right' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>not(target(self))</pragcond>
+      <pragcond>and(left-of(z,self),distractor(id(self),z))</pragcond>
+      <pragcond>forall(y,not(and(distractor(id(self),y),left-of(self,y))))</pragcond>
+      <prageff>forall(y,when(left-of(y,self),not(distractor(id(self),y))))</prageff>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-one(id(self)))</prageff>
+      <prageff>premod-index-two(id(self))</prageff>
+      <var>y</var>
+      <param type="individual">z</param>
+    </tree>
+  </entry>
+
+  <entry word='upper' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <pragcond>and(above(self,z),distractor(id(self),z))</pragcond>
+      <pragcond>forall(y,not(and(distractor(id(self),y),above(y,self))))</pragcond>
+      <prageff>forall(y,when(above(self,y),not(distractor(id(self),y))))</prageff>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-one(id(self)))</prageff>
+      <prageff>premod-index-two(id(self))</prageff>
+      <!-- <pragcond>needtodecide(viewer-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>viewer</costclass>    
+      <var>y</var>
+      <param type="individual">z</param>
+    </tree>
+  </entry>
+  
+  <entry word='non_viewer_upper' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <!-- <pragcond>needtodecide(viewer-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>non-viewer</costclass>
+    </tree>
+  </entry>
+
+  <entry word='upper' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>not(target(self))</pragcond>
+      <pragcond>and(above(self,z),distractor(id(self),z))</pragcond>
+      <pragcond>forall(y,not(and(distractor(id(self),y),above(y,self))))</pragcond>
+      <prageff>forall(y,when(above(self,y),not(distractor(id(self),y))))</prageff>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-one(id(self)))</prageff>
+      <prageff>premod-index-two(id(self))</prageff>
+      <var>y</var>
+      <param type="individual">z</param>
+    </tree>
+  </entry>
+  
+    <entry word='lower' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <pragcond>and(above(z,self),distractor(id(self),z))</pragcond>
+      <pragcond>forall(y,not(and(distractor(id(self),y),above(self,y))))</pragcond>
+      <prageff>forall(y,when(above(y,self),not(distractor(id(self),y))))</prageff>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-one(id(self)))</prageff>
+      <prageff>premod-index-two(id(self))</prageff>
+      <!-- <pragcond>needtodecide(viewer-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>viewer</costclass>    
+      <var>y</var>
+      <param type="individual">z</param>
+    </tree>
+  </entry>
+  
+  <entry word='non_viewer_lower' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <!-- <pragcond>needtodecide(viewer-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(viewer-attr,self))</prageff>
+      <costclass>non-viewer</costclass>
+    </tree>
+  </entry>
+
+  <entry word='lower' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>not(target(self))</pragcond>
+      <pragcond>and(above(z,self),distractor(id(self),z))</pragcond>
+      <pragcond>forall(y,not(and(distractor(id(self),y),above(self,y))))</pragcond>
+      <prageff>forall(y,when(above(y,self),not(distractor(id(self),y))))</prageff>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-one(id(self)))</prageff>
+      <prageff>premod-index-two(id(self))</prageff>
+      <var>y</var>
+      <param type="individual">z</param>
+    </tree>
+  </entry>
+
+  <entry word='blue' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <semcontent>blue(self)</semcontent>
+      <pragcond>not(premod-index-two(id(self)))</pragcond>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-two(id(self)))</prageff>
+      <prageff>premod-index-one(id(self))</prageff>
+      <!-- <pragcond>needtodecide(absolute-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(absolute-attr,self))</prageff>
+      <costclass>absolute</costclass>      
+    </tree>
+  </entry>
+
+  <entry word='non_absolute_blue' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <!-- <pragcond>needtodecide(absolute-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(absolute-attr,self))</prageff>
+      <costclass>non-absolute</costclass>      
+    </tree>
+  </entry>
+
+  <entry word='blue' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>not(target(self))</pragcond>
+      <semcontent>blue(self)</semcontent>
+      <pragcond>not(premod-index-two(id(self)))</pragcond>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-two(id(self)))</prageff>
+      <prageff>premod-index-one(id(self))</prageff>
+    </tree>
+  </entry>
+
+  <entry word='red' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <semcontent>red(self)</semcontent>
+      <pragcond>not(premod-index-two(id(self)))</pragcond>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-two(id(self)))</prageff>
+      <prageff>premod-index-one(id(self))</prageff>
+      <!-- <pragcond>needtodecide(absolute-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(absolute-attr,self))</prageff>
+      <costclass>absolute</costclass>      
+    </tree>
+  </entry>
+
+  <entry word='non_absolute_red' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <!-- <pragcond>needtodecide(absolute-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(absolute-attr,self))</prageff>
+      <costclass>non-absolute</costclass>      
+    </tree>
+  </entry>
+
+  <entry word='red' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>not(target(self))</pragcond>
+      <semcontent>red(self)</semcontent>
+      <pragcond>not(premod-index-two(id(self)))</pragcond>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-two(id(self)))</prageff>
+      <prageff>premod-index-one(id(self))</prageff>
+    </tree>
+  </entry>
+
+  <entry word='green' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <semcontent>green(self)</semcontent>
+      <pragcond>not(premod-index-two(id(self)))</pragcond>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-two(id(self)))</prageff>
+      <prageff>premod-index-one(id(self))</prageff>
+      <!-- <pragcond>needtodecide(absolute-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(absolute-attr,self))</prageff>
+      <costclass>absolute</costclass>      
+    </tree>
+  </entry>
+
+  <entry word='non_absolute_green' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <!-- <pragcond>needtodecide(absolute-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(absolute-attr,self))</prageff>
+      <costclass>non-absolute</costclass>      
+    </tree>
+  </entry>
+
+  <entry word='green' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>not(target(self))</pragcond>
+      <semcontent>green(self)</semcontent>
+      <pragcond>not(premod-index-two(id(self)))</pragcond>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-two(id(self)))</prageff>
+      <prageff>premod-index-one(id(self))</prageff>
+    </tree>
+  </entry>
+
+  <entry word='yellow' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <semcontent>yellow(self)</semcontent>
+      <pragcond>not(premod-index-two(id(self)))</pragcond>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-two(id(self)))</prageff>
+      <prageff>premod-index-one(id(self))</prageff>
+      <!-- <pragcond>needtodecide(absolute-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(absolute-attr,self))</prageff>
+      <costclass>absolute</costclass>      
+    </tree>
+  </entry>
+
+  <entry word='non_absolute_yellow' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>target(self)</pragcond>
+      <!-- <pragcond>needtodecide(absolute-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(absolute-attr,self))</prageff>
+      <costclass>non-absolute</costclass>      
+    </tree>
+  </entry>
+
+  <entry word='yellow' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>not(target(self))</pragcond>
+      <semcontent>yellow(self)</semcontent>
+      <pragcond>not(premod-index-two(id(self)))</pragcond>
+      <prageff>not(premod-index-zero(id(self)))</prageff>
+      <prageff>not(premod-index-two(id(self)))</prageff>
+      <prageff>premod-index-one(id(self))</prageff>
+    </tree>
+  </entry>
+
+  <entry word='the' pos='d'>
+    <tree refid="i.dn">  
+    </tree>
+  </entry>
+
+  <entry word='button' pos='n'>
+    <tree refid="i.n">
+      <pragcond>target(self)</pragcond>
+      <semcontent>button(self)</semcontent>
+      <!-- <pragcond>needtodecide(taxonomic-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(taxonomic-attr,self))</prageff>
+      <costclass>taxonomic</costclass>      
+    </tree>
+  </entry>
+
+  <entry word='one' pos='n'>
+    <tree refid="i.n">
+      <pragcond>target(self)</pragcond>
+      <prageff>mustadjoin(n,id(self))</prageff>  
+      <!-- <pragcond>needtodecide(taxonomic-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(taxonomic-attr,self))</prageff>
+      <costclass>non-taxonomic</costclass>      
+    </tree>
+  </entry>
+
+  <entry word='button' pos='n'>
+    <tree refid="i.n">
+      <pragcond>not(target(self))</pragcond>
+      <semcontent>button(self)</semcontent>   
+    </tree>
+  </entry>
+
+<!-- 
+  <entry word='one' pos='n'>
+    <tree refid="i.n">  
+    <pragcond>target(self)</pragcond>   
+    <prageff>mustadjoin(n,id(self))</prageff>  
+    </tree>
+  </entry>
+
+  <entry word='one' pos='n'>
+    <tree refid="i.n"> 
+    <pragcond>not(target(self))</pragcond>    
+    <prageff>mustadjoin(n,id(self))</prageff>  
+    <costclass>distractors</costclass>   
+    </tree>
+  </entry> -->
+
+  <entry word='alarm' pos='n'>
+    <tree refid="i.n">
+      <semreq>alarmed(self)</semreq>
+      <semcontent>alarm(self)</semcontent>    
+    </tree>
+  </entry>
+
+  <entry word='door' pos='n'>
+    <tree refid="i.n">
+      <semreq>not(open(self))</semreq>
+      <semcontent>door(self)</semcontent>   
+    </tree>
+  </entry>
+
+  <entry word='doorway' pos='n'>
+    <tree refid="i.n">
+      <semreq>open(self)</semreq>
+      <semcontent>door(self)</semcontent>  
+      <pragcond>not(target(self))</pragcond> 
+    </tree>
+  </entry>
+
+  <entry word='doorway' pos='n'>
+    <tree refid="i.n">
+      <semreq>open(self)</semreq>
+      <semcontent>door(self)</semcontent>
+      <pragcond>target(self)</pragcond>
+      <!-- <pragcond>needtodecide(taxonomic-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(taxonomic-attr,self))</prageff>
+      <costclass>taxonomic</costclass>    
+    </tree>
+  </entry>     
+
+  <entry word='safe' pos='n'>
+    <tree refid="i.n">
+      <semcontent>safe(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='picture' pos='n'>
+    <tree refid="i.n">
+      <semcontent>picture(self)</semcontent>   
+    </tree>
+  </entry>
+
+  <entry word='lamp' pos='n'>
+    <tree refid="i.n">
+      <semcontent>lamp(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='flower' pos='n'>
+    <tree refid="i.n">
+      <semcontent>flower(self)</semcontent>   
+    </tree>
+  </entry>
+
+  <entry word='chair' pos='n'>
+    <tree refid="i.n">
+      <semcontent>chair(self)</semcontent>   
+    </tree>
+  </entry>
+
+  <entry word='couch' pos='n'>
+    <tree refid="i.n">
+      <semcontent>couch(self)</semcontent>  
+    </tree>
+  </entry>
+
+  <entry word='window' pos='n'>
+    <tree refid="i.n">
+      <semcontent>window(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='bed' pos='n'>
+    <tree refid="i.n">
+      <semcontent>bed(self)</semcontent> 
+    </tree>
+  </entry>
+
+  <entry word='dresser' pos='n'>
+    <tree refid="i.n">
+      <semcontent>dresser(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='trophy' pos='n'>
+    <tree refid="i.n">
+      <semcontent>trophy(self)</semcontent>  
+      <pragcond>target(self)</pragcond>
+      <!-- <pragcond>needtodecide(taxonomic-attr,self)</pragcond> -->
+      <prageff>not(needtodecide(taxonomic-attr,self))</prageff>
+      <costclass>taxonomic</costclass>   
+    </tree>
+  </entry>
+
+</scrisp-grammar>

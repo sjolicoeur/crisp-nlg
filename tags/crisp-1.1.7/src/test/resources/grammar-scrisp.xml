@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<scrisp-grammar>
+
+  <!-- grammar -->
+
+  <tree id="i.n">
+    <leaf cat="n" type="anchor" sem="self" />
+  </tree>
+
+  <tree id="a.an">
+    <node cat="n" sem="self">
+      <leaf cat="a" type="anchor" sem="self"/>
+      <leaf cat="n" type="foot" sem="self" />
+    </node>
+  </tree>
+
+  <tree id="i.dn">   <!-- non-xtag --> 
+    <node cat="np" sem="self">
+      <leaf cat="d" type="anchor" sem="self" />
+      <node type="substitution" cat="n" sem="self" />
+    </node>
+  </tree>
+
+  <tree id="i.transimperative">
+    <node cat="s" sem="self">
+       <node cat="vp" sem="self">
+  	     <leaf cat="v" type="anchor" sem="self"/>
+	     <leaf cat="np" type="substitution" sem="obj" />
+       </node>
+     </node>
+  </tree>
+
+  <tree id="i.intransimperative">
+    <node cat="s" sem="self">
+       <node cat="vp" sem="self">
+  	     <leaf cat="v" type="anchor" sem="self"/>
+       </node>
+     </node>
+  </tree>
+
+  <tree id="a.sentconjunction">
+    <node cat="s" sem="self">
+      <leaf cat="s" type="foot" sem="self"/>
+      <leaf cat="conj" type="anchor" sem="self" />
+      <leaf cat="s" type="substitution" sem="other" />
+    </node>
+  </tree>
+
+<!--
+  <tree id="i.transppimperative">
+    <node cat="s" sem="self">
+      <node cat="vp" sem="self">
+        <leaf cat="v" type="anchor" sem="self"/>
+        <node cat="vp" sem="self">
+          <node cat="v" sem="self">
+            <leaf cat="" type="terminal" sem="self"/>
+          </node>
+          <node cat="pp" sem="ppobj">
+            <leaf cat="p" type="lex" sem="ppobj"/>
+            <leaf cat="np" type="substitution" sem="ppobj"/>
+          </node>
+        </node>
+      </node>
+    </node>
+  </tree>  
+
+ <tree id="a.sentconjunction2">
+    <node cat="s" sem="self">
+      <leaf cat="s" type="substitution" sem="other" />
+      <leaf cat="conj" type="anchor" sem="self" />
+      <leaf cat="s" type="foot" sem="self"/>
+    </node>
+  </tree>  
+
+  <tree id="i.ditranspp1pp2imperative">
+    <node cat="s" sem="self">
+      <node cat="vp" sem="self">
+        <leaf cat="v" type="anchor" sem="self"/>
+        <node cat="vp" sem="self">
+          <node cat="v" sem="self">
+            <leaf cat="" type="terminal" sem="self"/>
+          </node>
+          <node cat="pp" sem="ppobj1">
+            <leaf cat="p" type="lex" sem="ppobj1"/>
+            <leaf cat="np" type="substitution" sem="ppobj1"/>
+          </node>
+        </node>
+        <node cat="vp" sem="self">
+          <node cat="v" sem="self">
+            <leaf cat="" type="terminal" sem="self"/>
+          </node>
+          <node cat="pp" sem="ppobj2">
+            <leaf cat="p" type="lex" sem="ppobj2"/>
+            <leaf cat="np" type="substitution" sem="ppobj2"/>
+          </node>
+	</node>
+      </node>
+    </node>
+  </tree>
+-->  
+
+  <!-- lexicon -->
+
+  <entry word='push' pos='v'>
+    <tree refid="i.transimperative">
+      <semreq>button(obj)</semreq> 
+      <semreq>visible(p,o,obj)</semreq>
+      <pragcond>target(obj)</pragcond>
+      <pragcond>player-position(p)</pragcond>
+      <pragcond>player-orientation(o)</pragcond>
+      <pragcond>object-orientation(obj,o3)</pragcond>
+      <pragcond>next-orientation-left(o,o2)</pragcond>
+      <pragcond>next-orientation-left(o2,o3)</pragcond>
+      <impeff>push(obj)</impeff>
+      <param type="positiontype">p</param>
+      <param type="orientationtype">o</param>
+      <param type="orientationtype">o2</param>
+      <param type="orientationtype">o3</param>
+    </tree>
+  </entry>
+
+  <entry word='moveonestep' pos='v'>
+    <tree refid="i.intransimperative">
+      <pragcond>player-position(p1)</pragcond>
+      <pragcond>player-orientation(o)</pragcond>
+      <pragcond>adjacent(p1,p2,o)</pragcond>
+      <pragcond>not(blocked(p1,p2))</pragcond>
+      <pragcond>not(alarmed(p2))</pragcond>
+      <prageff>not(player-position(p1))</prageff>
+      <prageff>player-position(p2)</prageff>
+      <impeff>moveonestep()</impeff>
+      <param type="positiontype">p1</param>
+      <param type="positiontype">p2</param>
+      <param type="orientationtype">o</param>
+    </tree>
+  </entry>
+
+  <entry word='movetwosteps' pos='v'>
+    <tree refid="i.intransimperative">
+      <pragcond>player-position(p1)</pragcond>
+      <pragcond>player-orientation(o)</pragcond>
+      <pragcond>adjacent(p1,p2,o)</pragcond>
+      <pragcond>not(blocked(p1,p2))</pragcond>
+      <pragcond>not(alarmed(p2))</pragcond>
+      <pragcond>adjacent(p2,p3,o)</pragcond>
+      <pragcond>not(blocked(p2,p3))</pragcond>
+      <pragcond>not(alarmed(p3))</pragcond>
+      <prageff>not(player-position(p1))</prageff>
+      <prageff>player-position(p3)</prageff>
+      <impeff>movetwosteps()</impeff>
+      <param type="positiontype">p1</param>
+      <param type="positiontype">p2</param>
+      <param type="positiontype">p3</param>
+      <param type="orientationtype">o</param>
+    </tree>
+  </entry>
+
+  <entry word='movethreesteps' pos='v'>
+    <tree refid="i.intransimperative">
+      <pragcond>player-position(p1)</pragcond>
+      <pragcond>player-orientation(o)</pragcond>
+      <pragcond>adjacent(p1,p2,o)</pragcond>
+      <pragcond>not(blocked(p1,p2))</pragcond>
+      <pragcond>not(alarmed(p2))</pragcond>
+      <pragcond>adjacent(p2,p3,o)</pragcond>
+      <pragcond>not(blocked(p2,p3))</pragcond>
+      <pragcond>not(alarmed(p3))</pragcond>
+      <pragcond>adjacent(p3,p4,o)</pragcond>
+      <pragcond>not(blocked(p3,p4))</pragcond>
+      <pragcond>not(alarmed(p4))</pragcond>
+      <prageff>not(player-position(p1))</prageff>
+      <prageff>player-position(p4)</prageff>
+      <impeff>movethreesteps()</impeff>
+      <param type="positiontype">p1</param>
+      <param type="positiontype">p2</param>
+      <param type="positiontype">p3</param>
+      <param type="positiontype">p4</param>
+      <param type="orientationtype">o</param>
+    </tree>
+  </entry>
+
+  <entry word='turnleft' pos='v'>
+    <tree refid="i.intransimperative">
+      <pragcond>player-orientation(o1)</pragcond>
+      <pragcond>next-orientation-left(o1,o2)</pragcond>
+      <prageff>not(player-orientation(o1))</prageff>
+      <prageff>player-orientation(o2)</prageff>
+      <impeff>turnleft()</impeff>
+      <param type="orientationtype">o1</param>
+      <param type="orientationtype">o2</param>
+    </tree>
+  </entry>
+
+  <entry word='turnright' pos='v'>
+    <tree refid="i.intransimperative">
+      <pragcond>player-orientation(o1)</pragcond>
+      <pragcond>next-orientation-left(o2,o1)</pragcond>
+      <prageff>not(player-orientation(o1))</prageff>
+      <prageff>player-orientation(o2)</prageff>
+      <impeff>turnright()</impeff>
+      <param type="orientationtype">o1</param>
+      <param type="orientationtype">o2</param>
+    </tree>
+  </entry>
+
+  <entry word='turnaround' pos='v'>
+    <tree refid="i.intransimperative">
+      <pragcond>player-orientation(o1)</pragcond>
+      <pragcond>next-orientation-left(o1,o2)</pragcond>
+      <pragcond>next-orientation-left(o2,o3)</pragcond>
+      <prageff>not(player-orientation(o1))</prageff>
+      <prageff>player-orientation(o3)</prageff>
+      <impeff>turnaround()</impeff>
+      <param type="orientationtype">o1</param>
+      <param type="orientationtype">o2</param>
+      <param type="orientationtype">o3</param>
+    </tree>
+  </entry>
+
+  <entry word='and' pos='conj'>
+    <tree refid="a.sentconjunction">
+      <pragcond>next-referent(self,other)</pragcond>
+      <pragcond>conj-node()</pragcond>
+      <prageff>not(conj-node())</prageff>
+    </tree>
+  </entry>   
+
+  <entry word='then' pos='conj'>
+    <tree refid="a.sentconjunction">
+      <pragcond>next-referent(self,other)</pragcond>
+      <pragcond>not(conj-node())</pragcond>
+      <prageff>conj-node()</prageff>
+    </tree>
+  </entry> 
+
+  <entry word='left' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>forall(y,not(and(distractor(id(self),y),left-of(y,self))))</pragcond>
+      <prageff>forall(y,when(left-of(self,y),not(distractor(id(self),y))))</prageff>
+      <var>y</var>
+    </tree>
+  </entry>
+
+  <entry word='right' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>forall(y,not(and(distractor(id(self),y),left-of(self,y))))</pragcond>
+      <prageff>forall(y,when(left-of(y,self),not(distractor(id(self),y))))</prageff>
+      <var>y</var>
+    </tree>
+  </entry>
+
+  <entry word='upper' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>forall(y,not(and(distractor(id(self),y),above(y,self))))</pragcond>
+      <prageff>forall(y,when(above(self,y),not(distractor(id(self),y))))</prageff>
+      <var>y</var>
+    </tree>
+  </entry>
+
+  <entry word='lower' pos='a'>
+    <tree refid='a.an'>
+      <pragcond>forall(y,not(and(distractor(id(self),y),above(self,y))))</pragcond>
+      <prageff>forall(y,when(above(y,self),not(distractor(id(self),y))))</prageff>
+      <var>y</var>
+    </tree>
+  </entry>
+
+  <entry word='blue' pos='a'>
+    <tree refid='a.an'>
+      <semcontent>blue(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='red' pos='a'>
+    <tree refid='a.an'>
+      <semcontent>red(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='green' pos='a'>
+    <tree refid='a.an'>
+      <semcontent>green(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='the' pos='d'>
+    <tree refid="i.dn">
+    </tree>
+  </entry>
+
+  <entry word='button' pos='n'>
+    <tree refid="i.n">
+      <semcontent>button(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='alarm' pos='n'>
+    <tree refid="i.n">
+      <semcontent>alarm(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='door' pos='n'>
+    <tree refid="i.n">
+      <semcontent>door(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='safe' pos='n'>
+    <tree refid="i.n">
+      <semcontent>safe(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='picture' pos='n'>
+    <tree refid="i.n">
+      <semcontent>picture(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='lamp' pos='n'>
+    <tree refid="i.n">
+      <semcontent>lamp(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='flower' pos='n'>
+    <tree refid="i.n">
+      <semcontent>flower(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='chair' pos='n'>
+    <tree refid="i.n">
+      <semcontent>chair(self)</semcontent>
+    </tree>
+  </entry>
+
+  <entry word='trophy' pos='n'>
+    <tree refid="i.n">
+      <semcontent>trophy(self)</semcontent>
+    </tree>
+  </entry>
+
+</scrisp-grammar>

@@ -71,6 +71,8 @@ public class MetricFfPlannerInterface implements PlannerInterface {
         while (resultReader.read(buffer) != -1) {
             str.write(buffer);
         }
+        resultReader.close();
+        str.close();
 
         if (metricFfplanner.exitValue() != 0) {
             throw new RuntimeException("Metric FF in " + binaryLocation + " terminated inappropriately. Exit Value was " + metricFfplanner.exitValue() + ".\n" + str.toString());

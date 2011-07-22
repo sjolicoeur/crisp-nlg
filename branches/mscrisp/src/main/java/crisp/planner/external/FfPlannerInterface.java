@@ -1,34 +1,27 @@
 package crisp.planner.external;
 
 
-import crisp.evaluation.ffplanparser.ParseException;
-
-import java.io.FileWriter;
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
-
-import crisp.planningproblem.Domain;
-import crisp.planningproblem.Problem;
-import crisp.planningproblem.codec.PddlOutputCodec;
-
-import crisp.evaluation.ffplanparser.FfPlanParser;
-
-
-
-import de.saar.chorus.term.Term;
-
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import crisp.evaluation.ffplanparser.FfPlanParser;
+import crisp.evaluation.ffplanparser.ParseException;
+import crisp.planningproblem.Domain;
+import crisp.planningproblem.Problem;
+import crisp.planningproblem.codec.PddlOutputCodec;
+import de.saar.chorus.term.Term;
 
 //import javax.swing.JFrame;
 //import org.jgraph.JGraph;
@@ -83,6 +76,8 @@ public class FfPlannerInterface implements PlannerInterface {
         while (resultReader.read(buffer) != -1) {
             str.write(buffer);
         }
+        resultReader.close();
+        str.close();
 
         if (ffplanner.exitValue() != 0) {
             throw new RuntimeException("FF in " + binaryLocation + " terminated inappropriately. Exit Value was " + ffplanner.exitValue() + ".\n" + str.toString());

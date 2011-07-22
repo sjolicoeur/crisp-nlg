@@ -1,7 +1,7 @@
 package crisp.planningproblem.codec;
 
 import java.io.PrintWriter;
-
+import java.util.List;
 
 import crisp.planningproblem.Action;
 import crisp.planningproblem.Domain;
@@ -14,7 +14,6 @@ import crisp.planningproblem.formula.Negation;
 import crisp.planningproblem.formula.Universal;
 import de.saar.basic.StringTools;
 import de.saar.chorus.term.Term;
-import java.util.List;
 
 public class CostPddlOutputCodec extends PddlOutputCodec {
 
@@ -57,6 +56,7 @@ public class CostPddlOutputCodec extends PddlOutputCodec {
 
         dw.println(")");
         dw.flush(); //otherwise output is incomplete
+        dw.close();
     }
 
 

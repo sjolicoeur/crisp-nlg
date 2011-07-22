@@ -61,6 +61,7 @@ public class FluentsPddlOutputCodec extends PddlOutputCodec {
         pw.println("   (:metric minimize (total-cost))");
         pw.println(")");
         pw.flush(); //otherwise output is incomplete 
+        pw.close();
     }
 
 
@@ -102,6 +103,7 @@ public class FluentsPddlOutputCodec extends PddlOutputCodec {
 
         dw.println(")");
         dw.flush(); //otherwise output is incomplete
+        dw.close();
     }
 
 

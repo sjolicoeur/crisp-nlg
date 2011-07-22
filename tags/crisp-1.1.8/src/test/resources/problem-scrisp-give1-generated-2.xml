@@ -1,0 +1,1638 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<crispproblem name="scrisp-give1" grammar="grammar-scrisp.xml"
+  cat="S" index="e-1" syntaxnodes="6" referents="4">
+
+<impgoal>push(b2)</impgoal>
+
+<world>conj-node()</world>
+
+<!-- domain static predicates -->
+
+<world>button(b1_dist1)</world>
+<world>green(b1_dist1)</world>
+<world type="individual positiontype">object-position(b1_dist1,pos_1_5)</world>
+<world type="individual orientationtype">object-orientation(b1_dist1,east)</world>
+<world>chair(chair1)</world>
+<world>button(b1_dist2)</world>
+<world>blue(b1_dist2)</world>
+<world type="individual positiontype">object-position(b1_dist2,pos_1_5)</world>
+<world type="individual orientationtype">object-orientation(b1_dist2,east)</world>
+<world>picture(p1)</world>
+<world>button(b1_dist3)</world>
+<world>green(b1_dist3)</world>
+<world type="individual positiontype">object-position(b1_dist3,pos_1_5)</world>
+<world type="individual orientationtype">object-orientation(b1_dist3,east)</world>
+<world>button(bt1)</world>
+<world>blue(bt1)</world>
+<world type="individual positiontype">object-position(bt1,pos_6_1)</world>
+<world type="individual orientationtype">object-orientation(bt1,north)</world>
+<world>button(b5_dist1)</world>
+<world>blue(b5_dist1)</world>
+<world type="individual positiontype">object-position(b5_dist1,pos_4_6)</world>
+<world type="individual orientationtype">object-orientation(b5_dist1,south)</world>
+<world>button(b6_dist1)</world>
+<world>blue(b6_dist1)</world>
+<world type="individual positiontype">object-position(b6_dist1,pos_5_3)</world>
+<world type="individual orientationtype">object-orientation(b6_dist1,west)</world>
+<world>button(b6_dist2)</world>
+<world>red(b6_dist2)</world>
+<world type="individual positiontype">object-position(b6_dist2,pos_5_3)</world>
+<world type="individual orientationtype">object-orientation(b6_dist2,west)</world>
+<world>button(b3_dist1)</world>
+<world>blue(b3_dist1)</world>
+<world type="individual positiontype">object-position(b3_dist1,pos_4_1)</world>
+<world type="individual orientationtype">object-orientation(b3_dist1,north)</world>
+<world>button(bt2)</world>
+<world>green(bt2)</world>
+<world type="individual positiontype">object-position(bt2,pos_9_3)</world>
+<world type="individual orientationtype">object-orientation(bt2,south)</world>
+<world>button(bt3)</world>
+<world>red(bt3)</world>
+<world type="individual positiontype">object-position(bt3,pos_9_3)</world>
+<world type="individual orientationtype">object-orientation(bt3,south)</world>
+<world>button(b4_dist2)</world>
+<world>red(b4_dist2)</world>
+<world type="individual positiontype">object-position(b4_dist2,pos_1_1)</world>
+<world type="individual orientationtype">object-orientation(b4_dist2,east)</world>
+<world>button(b4_dist1)</world>
+<world>red(b4_dist1)</world>
+<world type="individual positiontype">object-position(b4_dist1,pos_1_3)</world>
+<world type="individual orientationtype">object-orientation(b4_dist1,east)</world>
+<world>button(b2_dist1)</world>
+<world>red(b2_dist1)</world>
+<world type="individual positiontype">object-position(b2_dist1,pos_5_6)</world>
+<world type="individual orientationtype">object-orientation(b2_dist1,west)</world>
+<world>button(b2_dist2)</world>
+<world>blue(b2_dist2)</world>
+<world type="individual positiontype">object-position(b2_dist2,pos_5_6)</world>
+<world type="individual orientationtype">object-orientation(b2_dist2,south)</world>
+<world>trophy(t1)</world>
+<world>button(b3)</world>
+<world>blue(b3)</world>
+<world type="individual positiontype">object-position(b3,pos_4_1)</world>
+<world type="individual orientationtype">object-orientation(b3,north)</world>
+<world>button(b2)</world>
+<world>red(b2)</world>
+<world type="individual positiontype">object-position(b2,pos_5_6)</world>
+<world type="individual orientationtype">object-orientation(b2,south)</world>
+<world>button(b5)</world>
+<world>red(b5)</world>
+<world type="individual positiontype">object-position(b5,pos_4_6)</world>
+<world type="individual orientationtype">object-orientation(b5,south)</world>
+<world>button(b4)</world>
+<world>red(b4)</world>
+<world type="individual positiontype">object-position(b4,pos_1_1)</world>
+<world type="individual orientationtype">object-orientation(b4,east)</world>
+<world>button(b6)</world>
+<world>green(b6)</world>
+<world type="individual positiontype">object-position(b6,pos_5_3)</world>
+<world type="individual orientationtype">object-orientation(b6,west)</world>
+<world>flower(flower1)</world>
+<world>button(b1)</world>
+<world>blue(b1)</world>
+<world type="individual positiontype">object-position(b1,pos_1_5)</world>
+<world type="individual orientationtype">object-orientation(b1,east)</world>
+<world>alarm(a1)</world>
+<world>lamp(lamp1)</world>
+<world>safe(s1)</world>
+<world>door(dt1)</world>
+<world type="individual positiontype">object-position(dt1,pos_6_1)</world>
+<world type="individual orientationtype">object-orientation(dt1,east)</world>
+<world>picture(pt1)</world>
+
+<world type="orientationtype orientationtype">next-orientation-left(north,east)</world>
+<world type="orientationtype orientationtype">next-orientation-left(west,north)</world>
+<world type="orientationtype orientationtype">next-orientation-left(south,west)</world>
+<world type="orientationtype orientationtype">next-orientation-left(east,south)</world>
+
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_0,pos_0_1,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_0,pos_1_0,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_1,pos_0_0,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_1,pos_0_2,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_1,pos_1_1,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_2,pos_0_1,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_2,pos_0_3,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_2,pos_1_2,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_3,pos_0_2,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_3,pos_0_4,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_3,pos_1_3,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_4,pos_0_3,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_4,pos_0_5,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_4,pos_1_4,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_5,pos_0_4,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_5,pos_0_6,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_5,pos_1_5,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_6,pos_0_5,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_6,pos_0_7,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_6,pos_1_6,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_7,pos_0_6,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_7,pos_0_8,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_7,pos_1_7,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_8,pos_0_7,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_0_8,pos_1_8,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_0,pos_0_0,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_0,pos_1_1,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_0,pos_2_0,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_1,pos_0_1,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_1,pos_1_0,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_1,pos_1_2,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_1,pos_2_1,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_2,pos_0_2,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_2,pos_1_1,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_2,pos_1_3,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_2,pos_2_2,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_3,pos_0_3,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_3,pos_1_2,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_3,pos_1_4,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_3,pos_2_3,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_4,pos_0_4,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_4,pos_1_3,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_4,pos_1_5,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_4,pos_2_4,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_5,pos_0_5,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_5,pos_1_4,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_5,pos_1_6,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_5,pos_2_5,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_6,pos_0_6,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_6,pos_1_5,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_6,pos_1_7,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_6,pos_2_6,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_7,pos_0_7,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_7,pos_1_6,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_7,pos_1_8,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_7,pos_2_7,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_8,pos_0_8,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_8,pos_1_7,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_1_8,pos_2_8,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_0,pos_1_0,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_0,pos_2_1,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_0,pos_3_0,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_1,pos_1_1,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_1,pos_2_0,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_1,pos_2_2,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_1,pos_3_1,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_2,pos_1_2,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_2,pos_2_1,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_2,pos_2_3,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_2,pos_3_2,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_3,pos_1_3,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_3,pos_2_2,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_3,pos_2_4,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_3,pos_3_3,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_4,pos_1_4,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_4,pos_2_3,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_4,pos_2_5,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_4,pos_3_4,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_5,pos_1_5,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_5,pos_2_4,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_5,pos_2_6,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_5,pos_3_5,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_6,pos_1_6,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_6,pos_2_5,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_6,pos_2_7,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_6,pos_3_6,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_7,pos_1_7,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_7,pos_2_6,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_7,pos_2_8,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_7,pos_3_7,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_8,pos_1_8,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_8,pos_2_7,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_2_8,pos_3_8,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_0,pos_2_0,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_0,pos_3_1,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_0,pos_4_0,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_1,pos_2_1,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_1,pos_3_0,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_1,pos_3_2,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_1,pos_4_1,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_2,pos_2_2,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_2,pos_3_1,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_2,pos_3_3,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_2,pos_4_2,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_3,pos_2_3,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_3,pos_3_2,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_3,pos_3_4,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_3,pos_4_3,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_4,pos_2_4,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_4,pos_3_3,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_4,pos_3_5,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_4,pos_4_4,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_5,pos_2_5,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_5,pos_3_4,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_5,pos_3_6,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_5,pos_4_5,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_6,pos_2_6,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_6,pos_3_5,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_6,pos_3_7,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_6,pos_4_6,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_7,pos_2_7,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_7,pos_3_6,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_7,pos_3_8,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_7,pos_4_7,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_8,pos_2_8,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_8,pos_3_7,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_3_8,pos_4_8,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_0,pos_3_0,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_0,pos_4_1,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_0,pos_5_0,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_1,pos_3_1,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_1,pos_4_0,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_1,pos_4_2,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_1,pos_5_1,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_2,pos_3_2,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_2,pos_4_1,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_2,pos_4_3,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_2,pos_5_2,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_3,pos_3_3,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_3,pos_4_2,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_3,pos_4_4,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_3,pos_5_3,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_4,pos_3_4,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_4,pos_4_3,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_4,pos_4_5,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_4,pos_5_4,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_5,pos_3_5,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_5,pos_4_4,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_5,pos_4_6,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_5,pos_5_5,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_6,pos_3_6,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_6,pos_4_5,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_6,pos_4_7,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_6,pos_5_6,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_7,pos_3_7,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_7,pos_4_6,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_7,pos_4_8,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_7,pos_5_7,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_8,pos_3_8,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_8,pos_4_7,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_4_8,pos_5_8,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_0,pos_4_0,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_0,pos_5_1,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_0,pos_6_0,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_1,pos_4_1,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_1,pos_5_0,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_1,pos_5_2,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_1,pos_6_1,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_2,pos_4_2,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_2,pos_5_1,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_2,pos_5_3,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_2,pos_6_2,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_3,pos_4_3,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_3,pos_5_2,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_3,pos_5_4,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_3,pos_6_3,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_4,pos_4_4,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_4,pos_5_3,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_4,pos_5_5,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_4,pos_6_4,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_5,pos_4_5,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_5,pos_5_4,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_5,pos_5_6,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_5,pos_6_5,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_6,pos_4_6,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_6,pos_5_5,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_6,pos_5_7,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_6,pos_6_6,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_7,pos_4_7,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_7,pos_5_6,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_7,pos_5_8,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_7,pos_6_7,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_8,pos_4_8,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_8,pos_5_7,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_5_8,pos_6_8,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_0,pos_5_0,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_0,pos_6_1,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_0,pos_7_0,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_1,pos_5_1,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_1,pos_6_0,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_1,pos_6_2,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_1,pos_7_1,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_2,pos_5_2,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_2,pos_6_1,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_2,pos_6_3,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_2,pos_7_2,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_3,pos_5_3,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_3,pos_6_2,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_3,pos_6_4,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_3,pos_7_3,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_4,pos_5_4,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_4,pos_6_3,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_4,pos_6_5,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_4,pos_7_4,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_5,pos_5_5,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_5,pos_6_4,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_5,pos_6_6,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_5,pos_7_5,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_6,pos_5_6,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_6,pos_6_5,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_6,pos_6_7,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_6,pos_7_6,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_7,pos_5_7,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_7,pos_6_6,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_7,pos_6_8,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_7,pos_7_7,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_8,pos_5_8,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_8,pos_6_7,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_6_8,pos_7_8,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_0,pos_6_0,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_0,pos_7_1,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_0,pos_8_0,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_1,pos_6_1,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_1,pos_7_0,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_1,pos_7_2,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_1,pos_8_1,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_2,pos_6_2,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_2,pos_7_1,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_2,pos_7_3,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_2,pos_8_2,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_3,pos_6_3,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_3,pos_7_2,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_3,pos_7_4,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_3,pos_8_3,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_4,pos_6_4,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_4,pos_7_3,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_4,pos_7_5,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_4,pos_8_4,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_5,pos_6_5,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_5,pos_7_4,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_5,pos_7_6,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_5,pos_8_5,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_6,pos_6_6,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_6,pos_7_5,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_6,pos_7_7,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_6,pos_8_6,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_7,pos_6_7,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_7,pos_7_6,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_7,pos_7_8,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_7,pos_8_7,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_8,pos_6_8,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_8,pos_7_7,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_7_8,pos_8_8,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_0,pos_7_0,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_0,pos_8_1,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_0,pos_9_0,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_1,pos_7_1,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_1,pos_8_0,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_1,pos_8_2,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_1,pos_9_1,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_2,pos_7_2,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_2,pos_8_1,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_2,pos_8_3,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_2,pos_9_2,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_3,pos_7_3,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_3,pos_8_2,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_3,pos_8_4,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_3,pos_9_3,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_4,pos_7_4,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_4,pos_8_3,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_4,pos_8_5,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_4,pos_9_4,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_5,pos_7_5,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_5,pos_8_4,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_5,pos_8_6,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_5,pos_9_5,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_6,pos_7_6,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_6,pos_8_5,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_6,pos_8_7,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_6,pos_9_6,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_7,pos_7_7,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_7,pos_8_6,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_7,pos_8_8,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_7,pos_9_7,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_8,pos_7_8,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_8,pos_8_7,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_8_8,pos_9_8,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_0,pos_8_0,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_0,pos_9_1,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_0,pos_10_0,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_1,pos_8_1,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_1,pos_9_0,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_1,pos_9_2,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_1,pos_10_1,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_2,pos_8_2,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_2,pos_9_1,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_2,pos_9_3,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_2,pos_10_2,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_3,pos_8_3,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_3,pos_9_2,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_3,pos_9_4,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_3,pos_10_3,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_4,pos_8_4,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_4,pos_9_3,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_4,pos_9_5,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_4,pos_10_4,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_5,pos_8_5,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_5,pos_9_4,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_5,pos_9_6,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_5,pos_10_5,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_6,pos_8_6,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_6,pos_9_5,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_6,pos_9_7,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_6,pos_10_6,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_7,pos_8_7,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_7,pos_9_6,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_7,pos_9_8,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_7,pos_10_7,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_8,pos_8_8,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_8,pos_9_7,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_9_8,pos_10_8,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_0,pos_9_0,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_0,pos_10_1,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_0,pos_11_0,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_1,pos_9_1,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_1,pos_10_0,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_1,pos_10_2,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_1,pos_11_1,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_2,pos_9_2,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_2,pos_10_1,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_2,pos_10_3,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_2,pos_11_2,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_3,pos_9_3,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_3,pos_10_2,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_3,pos_10_4,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_3,pos_11_3,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_4,pos_9_4,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_4,pos_10_3,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_4,pos_10_5,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_4,pos_11_4,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_5,pos_9_5,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_5,pos_10_4,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_5,pos_10_6,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_5,pos_11_5,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_6,pos_9_6,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_6,pos_10_5,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_6,pos_10_7,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_6,pos_11_6,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_7,pos_9_7,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_7,pos_10_6,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_7,pos_10_8,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_7,pos_11_7,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_8,pos_9_8,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_8,pos_10_7,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_10_8,pos_11_8,east)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_0,pos_10_0,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_0,pos_11_1,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_1,pos_10_1,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_1,pos_11_0,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_1,pos_11_2,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_2,pos_10_2,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_2,pos_11_1,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_2,pos_11_3,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_3,pos_10_3,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_3,pos_11_2,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_3,pos_11_4,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_4,pos_10_4,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_4,pos_11_3,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_4,pos_11_5,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_5,pos_10_5,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_5,pos_11_4,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_5,pos_11_6,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_6,pos_10_6,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_6,pos_11_5,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_6,pos_11_7,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_7,pos_10_7,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_7,pos_11_6,south)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_7,pos_11_8,north)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_8,pos_10_8,west)</world>
+<world type="positiontype positiontype orientationtype">adjacent(pos_11_8,pos_11_7,south)</world>
+
+<world>left-of(b2_dist2,b1_dist1)</world>
+<world>left-of(b2_dist2,b1_dist2)</world>
+<world>left-of(b2_dist1,b5_dist1)</world>
+<world>left-of(b6_dist1,bt1)</world>
+<world>left-of(b5_dist1,b1_dist1)</world>
+<world>left-of(b6,b2_dist1)</world>
+<world>left-of(b6,b2_dist2)</world>
+<world>left-of(b5_dist1,b1_dist2)</world>
+<world>left-of(b5_dist1,b1_dist3)</world>
+<world>left-of(bt2,b2_dist1)</world>
+<world>left-of(bt2,b2_dist2)</world>
+<world>left-of(b6,b2)</world>
+<world>left-of(b6,b5)</world>
+<world>left-of(b2_dist1,bt1)</world>
+<world>left-of(b1_dist2,b3)</world>
+<world>left-of(b1,b3_dist1)</world>
+<world>left-of(b1_dist2,b4)</world>
+<world>left-of(b1,bt3)</world>
+<world>left-of(b6,bt3)</world>
+<world>left-of(b6,bt2)</world>
+<world>left-of(b6,bt1)</world>
+<world>left-of(b3,b3_dist1)</world>
+<world>left-of(bt2,b1_dist3)</world>
+<world>left-of(bt3,b2_dist2)</world>
+<world>left-of(bt2,b1_dist2)</world>
+<world>left-of(bt3,b2_dist1)</world>
+<world>left-of(bt2,b1_dist1)</world>
+<world>left-of(b6_dist1,bt2)</world>
+<world>left-of(b6_dist1,b2)</world>
+<world>left-of(b6_dist1,bt3)</world>
+<world>left-of(b6_dist1,b5)</world>
+<world>left-of(b2_dist1,b2_dist2)</world>
+<world>left-of(b1_dist1,bt3)</world>
+<world>left-of(b1,bt2)</world>
+<world>left-of(b5_dist1,b1)</world>
+<world>left-of(b1,bt1)</world>
+<world>left-of(b5_dist1,b4)</world>
+<world>left-of(b4_dist1,b4_dist2)</world>
+<world>left-of(b1_dist1,bt2)</world>
+<world>left-of(b1_dist1,bt1)</world>
+<world>left-of(b3_dist1,bt1)</world>
+<world>left-of(b3_dist1,b6_dist2)</world>
+<world>left-of(b3_dist1,b6_dist1)</world>
+<world>left-of(b1,b4_dist1)</world>
+<world>left-of(bt2,b5_dist1)</world>
+<world>left-of(b4_dist1,b3_dist1)</world>
+<world>left-of(b1_dist3,bt1)</world>
+<world>left-of(b1_dist3,bt2)</world>
+<world>left-of(b4,b3_dist1)</world>
+<world>left-of(b1_dist3,bt3)</world>
+<world>left-of(b1,b4_dist2)</world>
+<world>left-of(b3,bt1)</world>
+<world>left-of(bt3,b5_dist1)</world>
+<world>left-of(b2,b2_dist2)</world>
+<world>left-of(b1_dist1,b4_dist2)</world>
+<world>left-of(b2,b1_dist1)</world>
+<world>left-of(b4_dist1,bt1)</world>
+<world>left-of(b2,b1_dist3)</world>
+<world>left-of(b2,b1_dist2)</world>
+<world>left-of(b1_dist1,b4_dist1)</world>
+<world>left-of(b4_dist2,b3)</world>
+<world>left-of(bt3,b6_dist1)</world>
+<world>left-of(b3_dist1,b6)</world>
+<world>left-of(b5,b5_dist1)</world>
+<world>left-of(b2_dist2,b5_dist1)</world>
+<world>left-of(b3,b6_dist2)</world>
+<world>left-of(bt1,b6_dist2)</world>
+<world>left-of(bt1,b6_dist1)</world>
+<world>left-of(b1_dist1,b1_dist2)</world>
+<world>left-of(b3,b6)</world>
+<world>left-of(b1_dist3,b4_dist1)</world>
+<world>left-of(b1_dist3,b4_dist2)</world>
+<world>left-of(b1_dist1,b1_dist3)</world>
+<world>left-of(b2_dist2,b4)</world>
+<world>left-of(b4_dist2,bt1)</world>
+<world>left-of(b1_dist1,b3_dist1)</world>
+<world>left-of(b2_dist2,b5)</world>
+<world>left-of(bt2,b4_dist1)</world>
+<world>left-of(bt2,b4_dist2)</world>
+<world>left-of(b2_dist2,b1)</world>
+<world>left-of(b6_dist2,b2_dist2)</world>
+<world>left-of(b2,b5_dist1)</world>
+<world>left-of(b6_dist2,b2_dist1)</world>
+<world>left-of(bt3,b6_dist2)</world>
+<world>left-of(b3,b6_dist1)</world>
+<world>left-of(b3,b2_dist1)</world>
+<world>left-of(b6_dist1,b5_dist1)</world>
+<world>left-of(bt2,b1)</world>
+<world>left-of(b1_dist3,b3_dist1)</world>
+<world>left-of(b5,b4_dist2)</world>
+<world>left-of(b1_dist3,b3)</world>
+<world>left-of(b1_dist2,bt1)</world>
+<world>left-of(b1_dist3,b4)</world>
+<world>left-of(bt3,b6)</world>
+<world>left-of(b1_dist2,bt2)</world>
+<world>left-of(b5,b4_dist1)</world>
+<world>left-of(bt3,b5)</world>
+<world>left-of(b1_dist2,bt3)</world>
+<world>left-of(b4,b3)</world>
+<world>left-of(b6_dist2,b5)</world>
+<world>left-of(bt3,b4)</world>
+<world>left-of(b2,b4_dist2)</world>
+<world>left-of(b2,b4_dist1)</world>
+<world>left-of(bt3,b1)</world>
+<world>left-of(bt2,b6_dist2)</world>
+<world>left-of(bt2,b6_dist1)</world>
+<world>left-of(bt3,b2)</world>
+<world>left-of(b6_dist2,b2)</world>
+<world>left-of(b2_dist1,b5)</world>
+<world>left-of(b1_dist2,b4_dist2)</world>
+<world>left-of(b2_dist1,b2)</world>
+<world>left-of(b1_dist2,b4_dist1)</world>
+<world>left-of(b5_dist1,b4_dist2)</world>
+<world>left-of(bt2,b2)</world>
+<world>left-of(bt2,b5)</world>
+<world>left-of(bt2,b4)</world>
+<world>left-of(bt2,b6)</world>
+<world>left-of(b4,bt1)</world>
+<world>left-of(b2,b1)</world>
+<world>left-of(b5_dist1,b4_dist1)</world>
+<world>left-of(b6,b6_dist1)</world>
+<world>left-of(b6,b6_dist2)</world>
+<world>left-of(b1_dist2,b3_dist1)</world>
+<world>left-of(b1_dist1,b4)</world>
+<world>left-of(b1_dist1,b3)</world>
+<world>left-of(b6_dist1,b2_dist2)</world>
+<world>left-of(b2_dist2,b4_dist1)</world>
+<world>left-of(b6_dist1,b2_dist1)</world>
+<world>left-of(b2_dist2,b4_dist2)</world>
+<world>left-of(b6_dist2,bt3)</world>
+<world>left-of(b6_dist2,b5_dist1)</world>
+<world>left-of(b6_dist2,bt1)</world>
+<world>left-of(bt1,b2_dist1)</world>
+<world>left-of(b6_dist2,bt2)</world>
+<world>left-of(bt3,b4_dist1)</world>
+<world>left-of(b4_dist1,b3)</world>
+<world>left-of(bt3,b4_dist2)</world>
+<world>left-of(b4_dist1,b4)</world>
+<world>left-of(b6_dist1,b6_dist2)</world>
+<world>left-of(b3_dist1,b2_dist1)</world>
+<world>left-of(b1,b1_dist2)</world>
+<world>left-of(bt3,b1_dist2)</world>
+<world>left-of(b1,b1_dist3)</world>
+<world>left-of(bt3,b1_dist1)</world>
+<world>left-of(bt3,b1_dist3)</world>
+<world>left-of(b5,b1)</world>
+<world>left-of(b5,b4)</world>
+<world>left-of(b4_dist2,b3_dist1)</world>
+<world>left-of(bt1,b6)</world>
+<world>left-of(b2_dist2,b1_dist3)</world>
+<world>left-of(b1,b4)</world>
+<world>left-of(b1,b3)</world>
+<world>left-of(b6,b5_dist1)</world>
+<world>left-of(b5,b1_dist3)</world>
+<world>left-of(b2,b4)</world>
+<world>left-of(b5,b1_dist1)</world>
+<world>left-of(b5,b1_dist2)</world>
+<world>left-of(b2,b5)</world>
+<world>above(b2_dist2,b2_dist2)</world>
+<world>above(b1_dist3,b1_dist2)</world>
+<world>above(b3_dist1,b3_dist1)</world>
+<world>above(b1_dist1,b1_dist1)</world>
+<world>above(b5_dist1,b5_dist1)</world>
+<world>above(b6,b6)</world>
+<world>above(b4_dist2,b4)</world>
+<world>above(b3,b3)</world>
+<world>above(bt1,bt1)</world>
+<world>above(b6_dist2,b6_dist2)</world>
+<world>above(b4,b4)</world>
+<world>above(b4_dist2,b4_dist2)</world>
+<world>above(b2_dist1,b2_dist1)</world>
+<world>above(bt3,bt3)</world>
+<world>above(b1,b1)</world>
+<world>above(b6_dist1,b6_dist1)</world>
+<world>above(bt3,bt2)</world>
+<world>above(b1,b1_dist1)</world>
+<world>above(b1_dist3,b1_dist3)</world>
+<world>above(b5,b5)</world>
+<world>above(bt2,bt2)</world>
+<world>above(b1_dist2,b1_dist2)</world>
+<world>above(b2,b2)</world>
+<world>above(b4_dist1,b4_dist1)</world>
+
+<world type="positiontype orientationtype individual">visible(pos_1_1,east,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_1,east,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_1,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_1,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_1,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_1,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_1,east,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_1,east,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_1,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_1,north,b4)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_1,north,b4_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_1,north,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_1,west,b4)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_1,west,b4_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_2,east,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_2,north,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_2,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_2,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,north,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,north,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,north,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,north,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,south,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_3,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,east,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,east,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,east,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,east,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,east,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,east,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,east,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,east,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,east,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,north,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,north,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,north,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,north,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,south,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_4,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,east,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,east,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,east,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,east,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,east,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,east,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,east,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,east,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,east,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,north,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,north,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,south,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_5,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_6,east,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_6,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_6,south,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_1_6,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,east,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,east,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,east,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,north,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,north,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,north,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,north,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,north,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,north,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,west,b4)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,west,b4_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_1,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,east,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,east,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,east,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,east,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,east,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,east,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,north,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,north,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,north,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,north,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,north,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,north,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_2,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,east,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,east,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,east,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,east,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,east,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,east,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,east,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,north,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,north,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,north,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,north,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_3,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,east,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,east,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,east,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,east,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,east,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,east,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,north,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,north,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,south,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_4,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,east,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,east,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,east,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,east,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,east,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,east,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,south,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_5,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,east,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,east,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,east,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,east,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,east,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,east,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,south,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,south,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,south,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,south,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,south,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_2_6,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,east,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,east,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,east,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,west,b4)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,west,b4_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_1,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,east,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,east,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,north,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,north,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,north,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,north,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,north,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_2,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,east,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,east,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,north,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,north,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,north,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,north,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,north,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_3,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,east,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,east,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,east,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,east,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_4,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,east,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,east,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,east,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,east,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,east,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,south,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,south,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,south,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_5,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,east,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,east,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,east,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,east,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,east,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,east,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,south,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,south,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,south,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,south,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,south,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,south,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_3_6,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,east,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,west,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,west,b4)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,west,b4_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,west,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_1,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,north,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,north,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,north,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,north,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,north,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,north,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,north,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_2,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,north,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_3,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,east,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,north,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,south,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_4,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,east,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,east,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,east,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,south,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,south,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,south,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,south,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,south,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_5,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,east,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,east,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,east,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,east,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,east,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,south,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,south,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,south,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,south,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,south,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,south,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,south,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_4_6,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,east,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,east,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,west,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,west,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,west,b4)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,west,b4_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,west,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_1,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,east,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,north,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,north,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,north,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,north,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,north,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,north,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,west,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,west,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_2,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,east,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,east,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,east,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,north,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,north,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,south,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,west,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_3,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,north,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,south,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,south,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,south,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,south,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,west,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_4,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,east,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,north,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,north,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,north,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,north,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,south,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,south,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,south,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,south,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,south,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,south,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,west,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,west,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_5,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,east,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,east,b2_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,north,b2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,north,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,south,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,south,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,south,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,south,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,south,b6)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,south,b6_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,south,b6_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,south,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,south,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,south,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,west,a1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,west,b2_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,west,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,west,b5_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_5_6,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,east,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,east,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,north,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,north,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,north,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,north,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,north,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,north,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,west,b1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,west,b1_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,west,b1_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,west,b1_dist3)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,west,b3)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,west,b3_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,west,b4)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,west,b4_dist1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,west,b4_dist2)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,west,chair1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_1,west,lamp1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_2,east,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_2,east,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_2,east,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_2,north,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_2,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_2,south,dt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_2,west,dt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_3,east,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_3,east,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_3,east,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_3,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_3,south,dt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_5,east,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_5,north,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_5,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_5,north,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_5,south,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_5,south,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_5,south,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_5,south,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_5,west,b5)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_5,west,flower1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_5,west,p1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_5,west,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_6_5,west,t1)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_1,east,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_1,east,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_1,north,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_1,north,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_1,north,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_1,west,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_1,west,dt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_2,east,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_2,east,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_2,east,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_2,north,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_2,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_2,west,dt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_3,east,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_3,east,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_3,east,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_3,north,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_3,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_3,south,dt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_3,west,dt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_7_3,west,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_1,north,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_1,north,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_1,north,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_1,west,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_1,west,dt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_2,east,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_2,east,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_2,north,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_2,north,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_2,north,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_2,west,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_2,west,dt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_3,east,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_3,east,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_3,east,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_3,north,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_3,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_3,west,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_3,west,dt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_8_3,west,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_1,north,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_1,north,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_1,north,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_1,west,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_1,west,dt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_2,north,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_2,north,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_2,north,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_2,west,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_2,west,dt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_2,west,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_3,north,bt2)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_3,north,bt3)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_3,north,pt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_3,south,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_3,west,bt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_3,west,dt1)</world>
+<world type="positiontype orientationtype individual">visible(pos_9_3,west,pt1)</world>
+
+<!-- domain dynamic predicates -->
+
+<world>target(b2)</world>
+<world type="positiontype">player-position(pos_4_1)</world>
+<world type="orientationtype">player-orientation(east)</world>
+
+<world type="positiontype positiontype">blocked(pos_1_7,pos_1_6)</world>
+<world type="positiontype positiontype">blocked(pos_5_7,pos_5_6)</world>
+<world type="positiontype positiontype">blocked(pos_4_7,pos_4_6)</world>
+<world type="positiontype positiontype">blocked(pos_1_1,pos_1_0)</world>
+<world type="positiontype positiontype">blocked(pos_1_0,pos_1_1)</world>
+<world type="positiontype positiontype">blocked(pos_7_3,pos_7_4)</world>
+<world type="positiontype positiontype">blocked(pos_1_6,pos_0_6)</world>
+<world type="positiontype positiontype">blocked(pos_6_4,pos_6_3)</world>
+<world type="positiontype positiontype">blocked(pos_3_7,pos_3_6)</world>
+<world type="positiontype positiontype">blocked(pos_6_1,pos_6_0)</world>
+<world type="positiontype positiontype">blocked(pos_6_1,pos_5_1)</world>
+<world type="positiontype positiontype">blocked(pos_9_1,pos_10_1)</world>
+<world type="positiontype positiontype">blocked(pos_1_2,pos_0_2)</world>
+<world type="positiontype positiontype">blocked(pos_5_1,pos_6_1)</world>
+<world type="positiontype positiontype">blocked(pos_6_4,pos_5_4)</world>
+<world type="positiontype positiontype">blocked(pos_2_0,pos_2_1)</world>
+<world type="positiontype positiontype">blocked(pos_10_2,pos_9_2)</world>
+<world type="positiontype positiontype">blocked(pos_8_4,pos_8_3)</world>
+<world type="positiontype positiontype">blocked(pos_5_6,pos_5_7)</world>
+<world type="positiontype positiontype">blocked(pos_9_3,pos_9_4)</world>
+<world type="positiontype positiontype">blocked(pos_0_4,pos_1_4)</world>
+<world type="positiontype positiontype">blocked(pos_6_5,pos_5_5)</world>
+<world type="positiontype positiontype">blocked(pos_5_2,pos_6_2)</world>
+<world type="positiontype positiontype">blocked(pos_9_2,pos_10_2)</world>
+<world type="positiontype positiontype">blocked(pos_0_1,pos_1_1)</world>
+<world type="positiontype positiontype">blocked(pos_4_1,pos_4_0)</world>
+<world type="positiontype positiontype">blocked(pos_1_1,pos_0_1)</world>
+<world type="positiontype positiontype">blocked(pos_9_4,pos_9_3)</world>
+<world type="positiontype positiontype">blocked(pos_0_6,pos_1_6)</world>
+<world type="positiontype positiontype">blocked(pos_1_5,pos_0_5)</world>
+<world type="positiontype positiontype">blocked(pos_4_0,pos_4_1)</world>
+<world type="positiontype positiontype">blocked(pos_8_3,pos_8_4)</world>
+<world type="positiontype positiontype">blocked(pos_5_1,pos_5_0)</world>
+<world type="positiontype positiontype">blocked(pos_3_6,pos_3_7)</world>
+<world type="positiontype positiontype">blocked(pos_9_3,pos_10_3)</world>
+<world type="positiontype positiontype">blocked(pos_1_3,pos_0_3)</world>
+<world type="positiontype positiontype">blocked(pos_1_6,pos_1_7)</world>
+<world type="positiontype positiontype">blocked(pos_7_4,pos_7_3)</world>
+<world type="positiontype positiontype">blocked(pos_2_7,pos_2_6)</world>
+<world type="positiontype positiontype">blocked(pos_0_5,pos_1_5)</world>
+<world type="positiontype positiontype">blocked(pos_5_4,pos_6_4)</world>
+<world type="positiontype positiontype">blocked(pos_6_3,pos_5_3)</world>
+<world type="positiontype positiontype">blocked(pos_2_6,pos_2_7)</world>
+<world type="positiontype positiontype">blocked(pos_6_0,pos_6_1)</world>
+<world type="positiontype positiontype">blocked(pos_6_3,pos_6_4)</world>
+<world type="positiontype positiontype">blocked(pos_6_6,pos_5_6)</world>
+<world type="positiontype positiontype">blocked(pos_0_2,pos_1_2)</world>
+<world type="positiontype positiontype">blocked(pos_0_3,pos_1_3)</world>
+<world type="positiontype positiontype">blocked(pos_5_5,pos_6_5)</world>
+<world type="positiontype positiontype">blocked(pos_5_0,pos_5_1)</world>
+<world type="positiontype positiontype">blocked(pos_10_1,pos_9_1)</world>
+<world type="positiontype positiontype">blocked(pos_7_0,pos_7_1)</world>
+<world type="positiontype positiontype">blocked(pos_10_3,pos_9_3)</world>
+<world type="positiontype positiontype">blocked(pos_9_1,pos_9_0)</world>
+<world type="positiontype positiontype">blocked(pos_5_6,pos_6_6)</world>
+<world type="positiontype positiontype">blocked(pos_8_1,pos_8_0)</world>
+<world type="positiontype positiontype">blocked(pos_6_2,pos_5_2)</world>
+<world type="positiontype positiontype">blocked(pos_7_1,pos_7_0)</world>
+<world type="positiontype positiontype">blocked(pos_8_0,pos_8_1)</world>
+<world type="positiontype positiontype">blocked(pos_5_3,pos_6_3)</world>
+<world type="positiontype positiontype">blocked(pos_3_1,pos_3_0)</world>
+<world type="positiontype positiontype">blocked(pos_9_0,pos_9_1)</world>
+<world type="positiontype positiontype">blocked(pos_1_4,pos_0_4)</world>
+<world type="positiontype positiontype">blocked(pos_3_0,pos_3_1)</world>
+<world type="positiontype positiontype">blocked(pos_4_6,pos_4_7)</world>
+<world type="positiontype positiontype">blocked(pos_2_1,pos_2_0)</world>
+<world type="positiontype">alarmed(pos_6_5)</world>
+
+</crispproblem>

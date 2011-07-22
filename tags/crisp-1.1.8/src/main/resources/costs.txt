@@ -1,0 +1,12 @@
+absolute 0.0
+non-absolute 1.626436
+distractors 0.0
+non-distractors 0.015550999999996873
+viewer 0
+non-viewer 10.0
+micro 0.0
+non-micro 7.421133000000001
+macro 0.0
+non-macro 1.8741600000000003
+taxonomic 2.5212390000000005
+non-taxonomic 0.0

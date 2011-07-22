@@ -1,0 +1,4435 @@
+<crisp-grammar>
+    <tree id='i.W1nx0Vnx2nx1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst3'>
+                    </node>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Ncnx1Vs2bynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst2'>
+                        </node>
+                        <node cat='PP' sem='subst3'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst3'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N0nx0Vnx1s2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst3'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N1nx1Vs2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst2'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx0Ax1-PRO'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='AP' sem='self'>
+                    <node cat='A' type='anchor' sem='self'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N2nx2Vnx1bynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='PP' sem='subst3'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst3'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Inx0Vnx2nx1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='EPSILON' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.nx1Vbynx0s2-PRO'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='PP' sem='subst1'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                </node>
+                <node cat='S' type='foot' constraint='na'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx0Ax1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='AP' sem='self'>
+                    <node cat='A' type='anchor' sem='self'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Ncnx1Vs2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst2'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W2nx0Vnx1s2'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst3'>
+                    </node>
+                    <node cat='S' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc1nx1Vs2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst1'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.nx1Vs2bynx0-PRO'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='S' type='foot' constraint='na'>
+                </node>
+                <node cat='PP' sem='subst1'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N0nx2Vnx1bynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst3'>
+                        </node>
+                        <node cat='PP' constraint='na'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' constraint='na'>
+                                <node cat='EPSILON' constraint='na'>
+                                </node>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.nx1Vs2-PRO'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='S' type='foot' constraint='na'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx0Vnx1s2-PRO'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' type='substitution' sem='subst2'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx0Vnx1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.ax1CONJax2'>
+        <node cat='AP' sem='self'>
+            <node cat='AP' type='foot' constraint='na'>
+            </node>
+            <node cat='Conj' type='anchor' sem='self'>
+            </node>
+            <node cat='AP' type='substitution' sem='subst1'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx2Vnx1bynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='PP' sem='subst3'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst3'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Ncnx0Vnx2nx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst3'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.s0Ax1'>
+        <node cat='S' sem='self'>
+            <node cat='S' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='AP' sem='self'>
+                    <node cat='A' type='anchor' sem='self'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Npxs0Ax1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='PP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='S' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='AP' sem='self'>
+                            <node cat='A' type='anchor' sem='self'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Ncnx2Vnx1bynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                        <node cat='PP' sem='subst3'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst3'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx0Vnx1s2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='S' type='substitution' sem='subst3'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Npxnx0Ax1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='PP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='AP' sem='self'>
+                            <node cat='A' type='anchor' sem='self'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N2nx2Vnx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx1Vbynx0s2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='PP' sem='subst2'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                </node>
+                <node cat='S' type='substitution' sem='subst3'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.nx0Vnx1s2'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='S' type='foot' constraint='na'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Ncnx1V'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W0nx0V'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.D'>
+        <node cat='D' type='anchor' sem='self'>
+        </node>
+    </tree>
+
+    <tree id='i.A'>
+        <node cat='A' type='anchor' sem='self'>
+        </node>
+    </tree>
+
+    <tree id='a.N0nx0Vnx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W0nx0Vnx2nx1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst3'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.AXA'>
+        <node cat='AP' sem='self'>
+            <node cat='A' type='anchor' sem='self'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Ncs0Ax1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='S' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='AP' sem='self'>
+                            <node cat='A' type='anchor' sem='self'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx2Vnx1bynx0-PRO'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='PP' sem='subst2'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N1nx0Vnx1s2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst3'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc0nx2Vnx1bynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                        <node cat='PP' constraint='na'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' constraint='na'>
+                                <node cat='EPSILON' constraint='na'>
+                                </node>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W2nx2Vnx1bynx0'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='PP' sem='subst3'>
+                        <node cat='P' constraint='na'>
+                            <node cat='by' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst3'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N0nx0Ax1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='AP' sem='self'>
+                            <node cat='A' type='anchor' sem='self'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W2nx0Vnx2nx1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst3'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.AV'>
+        <node cat='A' sem='self'>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W0nx0Vnx1s2'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='S' type='substitution' sem='subst3'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx1Vbynx0-PRO'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='PP' sem='subst1'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx0Vnx2nx1-PRO'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc1nx1Vs2bynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst1'>
+                        </node>
+                        <node cat='PP' sem='subst2'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst2'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Npxnx2Vnx1bynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='PP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst3'>
+                        </node>
+                        <node cat='PP' sem='subst4'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst4'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx1V-PRO'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc1nx2Vnx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst1'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc1nx1Vbynx0s2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='PP' sem='subst1'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst1'>
+                            </node>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst2'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Dnx0Vnx2nx1'>
+        <node cat='NP' sem='self'>
+            <node cat='D' type='substitution' sem='subst1'>
+            </node>
+            <node cat='N' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='PP' sem='subst2'>
+                    <node cat='P' constraint='na'>
+                        <node cat='for' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                </node>
+                <node cat='PP' sem='subst3'>
+                    <node cat='P' constraint='na'>
+                        <node cat='of' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst3'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx0Ax1-PRO'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='AP' sem='self'>
+                    <node cat='A' type='anchor' sem='self'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.puPpuvx'>
+        <node cat='VP' sem='self'>
+            <node cat='Punct' type='substitution' sem='subst1'>
+            </node>
+            <node cat='PP' sem='self'>
+                <node cat='P' type='anchor' sem='self'>
+                </node>
+                <node cat='S' type='substitution' sem='subst2'>
+                </node>
+            </node>
+            <node cat='Punct' type='substitution' sem='subst3'>
+            </node>
+            <node cat='VP' type='foot' constraint='na'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc0nx0Vnx2nx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst1'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx2Vnx1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.pW0nx2Vnx1bynx0'>
+        <node cat='S' sem='self'>
+            <node cat='PP' sem='subst1'>
+                <node cat='P' constraint='na'>
+                    <node cat='by' constraint='na'>
+                    </node>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst3'>
+                    </node>
+                    <node cat='PP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W1nx1V'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Inx0Ax1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='EPSILON' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='AP' sem='self'>
+                    <node cat='A' type='anchor' sem='self'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx1Vs2bynx0-PRO'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='S' type='substitution' sem='subst1'>
+                </node>
+                <node cat='PP' sem='subst2'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.punxVnx1puvx'>
+        <node cat='VP' sem='self'>
+            <node cat='Punct' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst3'>
+                    </node>
+                </node>
+            </node>
+            <node cat='Punct' type='substitution' sem='subst4'>
+            </node>
+            <node cat='VP' type='foot' constraint='na'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx0V-PRO'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx2Vnx1-PRO'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W1nx0Vnx1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx1V'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Npxnx2Vnx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='PP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst3'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Npxnx0Vnx1s2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='PP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst3'>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst4'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx2Vnx1bynx0'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='PP' sem='subst3'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst3'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.nx0Vnx1s2-PRO'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' type='foot' constraint='na'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.spuPs'>
+        <node cat='S' sem='self'>
+            <node cat='S' type='foot' constraint='na'>
+            </node>
+            <node cat='Punct' type='substitution' sem='subst1'>
+            </node>
+            <node cat='PP' sem='self'>
+                <node cat='P' type='anchor' sem='self'>
+                </node>
+                <node cat='S' type='substitution' sem='subst2'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W1nx1Vs2bynx0'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='S' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='PP' sem='subst3'>
+                        <node cat='P' constraint='na'>
+                            <node cat='by' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst3'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Ncnx0Ax1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='AP' sem='self'>
+                            <node cat='A' type='anchor' sem='self'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx2Vnx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx0Vnx2nx1-PRO'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc2nx0Vnx2nx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                        <node cat='NP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc1nx0Vnx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Npxnx0Vnx2nx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='PP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst3'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst4'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx1Vs2bynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='S' type='substitution' sem='subst2'>
+                </node>
+                <node cat='PP' sem='subst3'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst3'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc0nx0Vnx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst1'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc1nx1Vbynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='PP' sem='subst1'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst1'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N1nx2Vnx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.nx1CONJnx2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='Conj' type='anchor' sem='self'>
+            </node>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Npxnx1Vs2bynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='PP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst3'>
+                        </node>
+                        <node cat='PP' sem='subst4'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst4'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N1nx1Vbynx0s2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='PP' sem='subst2'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst2'>
+                            </node>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst3'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.WA1nx0Ax1'>
+        <node cat='S' sem='self'>
+            <node cat='AP' sem='self'>
+                <node cat='A' type='anchor' sem='self'>
+                </node>
+            </node>
+            <node cat='S' sem='subst1'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='VP' constraint='na'>
+                    <node cat='V' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='AP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.pW0nx1Vbynx0'>
+        <node cat='S' sem='self'>
+            <node cat='PP' sem='subst1'>
+                <node cat='P' constraint='na'>
+                    <node cat='by' constraint='na'>
+                    </node>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='PP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.a1CONJa2'>
+        <node cat='A' sem='self'>
+            <node cat='A' type='foot' constraint='na'>
+            </node>
+            <node cat='Conj' type='anchor' sem='self'>
+            </node>
+            <node cat='A' type='substitution' sem='subst1'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Ncnx0Vnx1s2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst3'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.d1CONJd2'>
+        <node cat='D' sem='self'>
+            <node cat='D' type='foot' constraint='na'>
+            </node>
+            <node cat='Conj' type='anchor' sem='self'>
+            </node>
+            <node cat='D' type='substitution' sem='subst1'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.arb1CONJarb2'>
+        <node cat='Ad' sem='self'>
+            <node cat='Ad' type='foot' constraint='na'>
+            </node>
+            <node cat='Conj' type='anchor' sem='self'>
+            </node>
+            <node cat='Ad' type='substitution' sem='subst1'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Ncnx1Vbynx0s2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='PP' sem='subst2'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst2'>
+                            </node>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst3'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx0Vnx1-PRO'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nbynx0nx1Vbynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='PP' sem='subst1'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='PP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Ncnx2Vnx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc2nx2Vnx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx1Vs2-PRO'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='S' type='substitution' sem='subst1'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W0nx1Vbynx0'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='PP' constraint='na'>
+                        <node cat='P' constraint='na'>
+                            <node cat='by' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='NP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx0Ax1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='AP' sem='self'>
+                    <node cat='A' type='anchor' sem='self'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nn'>
+        <node cat='N' sem='self'>
+            <node cat='N' type='anchor' sem='self'>
+            </node>
+            <node cat='N' type='foot' constraint='na'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W1nx0Vnx1s2'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='S' type='substitution' sem='subst3'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W0nx1Vbynx0s2'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='S' type='substitution' sem='subst3'>
+                    </node>
+                    <node cat='PP' constraint='na'>
+                        <node cat='P' constraint='na'>
+                            <node cat='by' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='NP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N1nx0Vnx2nx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst3'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W1nx2Vnx1bynx0'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='PP' sem='subst3'>
+                        <node cat='P' constraint='na'>
+                            <node cat='by' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst3'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.px1CONJpx2'>
+        <node cat='PP' sem='self'>
+            <node cat='PP' type='foot' constraint='na'>
+            </node>
+            <node cat='Conj' type='anchor' sem='self'>
+            </node>
+            <node cat='PP' type='substitution' sem='subst1'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx0Vnx1-PRO'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx2Vnx1-PRO'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx1V-PRO'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.nx1Vs2'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='S' type='foot' constraint='na'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W0nx0Ax1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='AP' sem='self'>
+                        <node cat='A' type='anchor' sem='self'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N1nx0Vnx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Inx0V'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='EPSILON' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx0V'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N0nx0V'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Npxnx1Vbynx0s2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='PP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='PP' sem='subst3'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst3'>
+                            </node>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst4'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc2nx2Vnx1bynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='PP' sem='subst2'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst2'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Npxnx0Vnx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='PP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst3'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Dnx0Vnx1s2'>
+        <node cat='NP' sem='self'>
+            <node cat='D' type='substitution' sem='subst1'>
+            </node>
+            <node cat='N' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='PP' sem='subst2'>
+                    <node cat='P' constraint='na'>
+                        <node cat='of' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                </node>
+                <node cat='S' type='substitution' sem='subst3'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc1nx0Vnx1s2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst2'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W0nx2Vnx1bynx0'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst3'>
+                    </node>
+                    <node cat='PP' constraint='na'>
+                        <node cat='P' constraint='na'>
+                            <node cat='by' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='NP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N1nx1Vbynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='PP' sem='subst2'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst2'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc1nx1V'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc0nx1Vbynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='PP' constraint='na'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' constraint='na'>
+                                <node cat='EPSILON' constraint='na'>
+                                </node>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.nx1Vs2bynx0'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='S' type='foot' constraint='na'>
+                </node>
+                <node cat='PP' sem='subst2'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N2nx0Vnx2nx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst3'>
+                        </node>
+                        <node cat='NP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Npxnx1V'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='PP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.nx1Vbynx0s2'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='PP' sem='subst2'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                </node>
+                <node cat='S' type='foot' constraint='na'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Vintransn'>
+        <node cat='N' sem='self'>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+            </node>
+            <node cat='N' type='foot' constraint='na'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx2Vnx1bynx0-PRO'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='PP' sem='subst2'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W1nx1Vbynx0'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='PP' sem='subst2'>
+                        <node cat='P' constraint='na'>
+                            <node cat='by' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W0nx0Vnx1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Ncnx0V'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Inx0Vnx1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='EPSILON' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N1nx1Vs2bynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst2'>
+                        </node>
+                        <node cat='PP' sem='subst3'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst3'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc1nx0Vnx2nx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nbynx0nx2Vnx1bynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='PP' sem='subst1'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst3'>
+                        </node>
+                        <node cat='PP' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W2nx2Vnx1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N0nx0Vnx2nx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst3'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc1nx2Vnx1bynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst1'>
+                        </node>
+                        <node cat='PP' sem='subst2'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst2'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.N'>
+        <node cat='N' type='anchor' sem='self'>
+        </node>
+    </tree>
+
+    <tree id='a.Npxnx1Vbynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='PP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='PP' sem='subst3'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst3'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc0nx0Vnx1s2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst1'>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst2'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.pW0nx1Vbynx0s2'>
+        <node cat='S' sem='self'>
+            <node cat='PP' sem='subst1'>
+                <node cat='P' constraint='na'>
+                    <node cat='by' constraint='na'>
+                    </node>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='PP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='S' type='substitution' sem='subst3'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.An'>
+        <node cat='N' sem='self'>
+            <node cat='A' type='anchor' sem='self'>
+            </node>
+            <node cat='N' type='foot' constraint='na'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W0s0Ax1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='S' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='AP' sem='self'>
+                        <node cat='A' type='anchor' sem='self'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N1nx2Vnx1bynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                        <node cat='PP' sem='subst3'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst3'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W1nx1Vbynx0s2'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='PP' sem='subst2'>
+                        <node cat='P' constraint='na'>
+                            <node cat='by' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                    </node>
+                    <node cat='S' type='substitution' sem='subst3'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx1V'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N1nx1V'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W1nx2Vnx1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Pss'>
+        <node cat='S' sem='self'>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='P' type='anchor' sem='self'>
+                </node>
+                <node cat='S' type='substitution' sem='subst1'>
+                </node>
+            </node>
+            <node cat='S' type='foot' constraint='na'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx1Vs2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='S' type='substitution' sem='subst2'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.N0nx1Vbynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='PP' constraint='na'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' constraint='na'>
+                                <node cat='EPSILON' constraint='na'>
+                                </node>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Inx0Vnx1s2'>
+        <node cat='S' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='EPSILON' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' type='substitution' sem='subst2'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Dnx0V'>
+        <node cat='NP' sem='self'>
+            <node cat='D' type='substitution' sem='subst1'>
+            </node>
+            <node cat='N' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Npxnx0V'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='PP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.CONJs'>
+        <node cat='S' sem='self'>
+            <node cat='Conj' type='anchor' sem='self'>
+            </node>
+            <node cat='S' type='substitution' sem='subst1'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx1Vbynx0-PRO'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='PP' sem='subst1'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.s1CONJs2'>
+        <node cat='S' sem='self'>
+            <node cat='S' type='foot' constraint='na'>
+            </node>
+            <node cat='Conj' type='anchor' sem='self'>
+            </node>
+            <node cat='S' type='substitution' sem='subst1'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.punxVnx1pus'>
+        <node cat='S' sem='self'>
+            <node cat='S' sem='self'>
+                <node cat='NP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                </node>
+            </node>
+            <node cat='Punct' type='substitution' sem='subst3'>
+            </node>
+            <node cat='S' type='foot' constraint='na'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Dnx'>
+        <node cat='NP' sem='self'>
+            <node cat='D' type='anchor' sem='self'>
+            </node>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx0Vnx2nx1'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst3'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Dnx0Vnx1'>
+        <node cat='NP' sem='self'>
+            <node cat='D' type='substitution' sem='subst1'>
+            </node>
+            <node cat='N' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='PP' sem='subst2'>
+                    <node cat='P' constraint='na'>
+                        <node cat='of' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Ncnx0Vnx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='NP' type='substitution' sem='subst2'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx1Vbynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='PP' sem='subst2'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.vxPs'>
+        <node cat='VP' sem='self'>
+            <node cat='VP' type='foot' constraint='na'>
+            </node>
+            <node cat='PP' sem='self'>
+                <node cat='P' type='anchor' sem='self'>
+                </node>
+                <node cat='S' type='substitution' sem='subst1'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx1Vbynx0s2-PRO'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='PP' sem='subst1'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                </node>
+                <node cat='S' type='substitution' sem='subst2'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.n1CONJn2'>
+        <node cat='N' sem='self'>
+            <node cat='N' type='foot' constraint='na'>
+            </node>
+            <node cat='Conj' type='anchor' sem='self'>
+            </node>
+            <node cat='N' type='substitution' sem='subst1'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Npxnx1Vs2'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='PP' type='substitution' sem='subst1'>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='S' type='substitution' sem='subst3'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Vtransn'>
+        <node cat='N' sem='self'>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+            </node>
+            <node cat='N' type='foot' constraint='na'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx0V-PRO'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' constraint='na'>
+                <node cat='PRO' constraint='na'>
+                </node>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc0nx0V'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Nc0nx0Ax1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' constraint='na'>
+                        <node cat='EPSILON' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' constraint='na'>
+                            <node cat='EPSILON' constraint='na'>
+                            </node>
+                        </node>
+                        <node cat='AP' sem='self'>
+                            <node cat='A' type='anchor' sem='self'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.Ncnx1Vbynx0'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='foot' constraint='na'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='S' sem='self'>
+                    <node cat='NP' type='substitution' sem='subst1'>
+                    </node>
+                    <node cat='VP' sem='self'>
+                        <node cat='V' type='anchor' sem='self'>
+                        </node>
+                        <node cat='PP' sem='subst2'>
+                            <node cat='P' constraint='na'>
+                                <node cat='by' constraint='na'>
+                                </node>
+                            </node>
+                            <node cat='NP' type='substitution' sem='subst2'>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.W1nx1Vs2'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self'>
+                <node cat='NP' constraint='na'>
+                    <node cat='EPSILON' constraint='na'>
+                    </node>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='S' type='substitution' sem='subst2'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx1Vbynx0'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='PP' sem='subst2'>
+                    <node cat='P' constraint='na'>
+                        <node cat='by' constraint='na'>
+                        </node>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst2'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.p1CONJp2'>
+        <node cat='P' sem='self'>
+            <node cat='P' type='foot' constraint='na'>
+            </node>
+            <node cat='Conj' type='anchor' sem='self'>
+            </node>
+            <node cat='P' type='substitution' sem='subst1'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx0Vnx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='a.spunxVnx1'>
+        <node cat='S' sem='self'>
+            <node cat='S' type='foot' constraint='na'>
+            </node>
+            <node cat='Punct' type='substitution' sem='subst1'>
+            </node>
+            <node cat='S' sem='self' constraint='na'>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='VP' sem='self'>
+                    <node cat='V' type='anchor' sem='self'>
+                    </node>
+                    <node cat='NP' type='substitution' sem='subst3'>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.NXN'>
+        <node cat='NP' sem='self'>
+            <node cat='N' type='anchor' sem='self'>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.nx0V'>
+        <node cat='S' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+    <tree id='i.Gnx0Vnx2nx1'>
+        <node cat='NP' sem='self'>
+            <node cat='NP' type='substitution' sem='subst1'>
+            </node>
+            <node cat='VP' sem='self'>
+                <node cat='V' type='anchor' sem='self'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst2'>
+                </node>
+                <node cat='NP' type='substitution' sem='subst3'>
+                </node>
+            </node>
+        </node>
+    </tree>
+
+
+    <entry word='businessman1'>
+        <tree refid='i.NXN'>
+            <semcontent>businessman-11(self)</semcontent>
+        </tree>
+        <tree refid='i.N'>
+            <semcontent>businessman-11(self)</semcontent>
+        </tree>
+        <tree refid='a.Nn'>
+            <semcontent>businessman-11(self)</semcontent>
+        </tree>
+    </entry>
+
+    <entry word='but'>
+        <tree refid='a.CONJs'>
+            <semcontent>but-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.a1CONJa2'>
+            <semcontent>but-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.arb1CONJarb2'>
+            <semcontent>but-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.ax1CONJax2'>
+            <semcontent>but-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.d1CONJd2'>
+            <semcontent>but-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.n1CONJn2'>
+            <semcontent>but-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.nx1CONJnx2'>
+            <semcontent>but-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.p1CONJp2'>
+            <semcontent>but-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.px1CONJpx2'>
+            <semcontent>but-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.s1CONJs2'>
+            <semcontent>but-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.vxPs'>
+            <semcontent>but-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Pss'>
+            <semcontent>but-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.spuPs'>
+            <semcontent>but-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.puPpuvx'>
+            <semcontent>but-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+    </entry>
+
+    <entry word='give'>
+        <tree refid='i.W0nx0V'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.nx0V'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.N0nx0V'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.Inx0V'>
+            <semcontent>give-1(self)</semcontent>
+        </tree>
+        <tree refid='i.Dnx0V'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Vintransn'>
+            <semcontent>give-1(self)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx0V'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Nc0nx0V'>
+            <semcontent>give-1(self)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx0V'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.nx0V-PRO'>
+            <semcontent>give-1(self)</semcontent>
+        </tree>
+        <tree refid='i.Gnx0V-PRO'>
+            <semcontent>give-1(self)</semcontent>
+        </tree>
+        <tree refid='i.Gnx0V'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.nx0Vnx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.nx1Vbynx0'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.W0nx0Vnx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.N0nx0Vnx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.W1nx0Vnx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.N1nx0Vnx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.W1nx1Vbynx0'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.N1nx1Vbynx0'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Inx0Vnx1'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.nx1V'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.W1nx1V'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.N1nx1V'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.W0nx1Vbynx0'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.N0nx1Vbynx0'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.pW0nx1Vbynx0'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Dnx0Vnx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Vtransn'>
+            <semcontent>give-1(self)</semcontent>
+        </tree>
+        <tree refid='i.AV'>
+            <semcontent>give-1(self)</semcontent>
+        </tree>
+        <tree refid='a.Nbynx0nx1Vbynx0'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx0Vnx1'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx1Vbynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx1V'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Nc0nx0Vnx1'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Nc1nx0Vnx1'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Nc1nx1Vbynx0'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Nc1nx1V'>
+            <semcontent>give-1(self)</semcontent>
+        </tree>
+        <tree refid='a.Nc0nx1Vbynx0'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx0Vnx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx1Vbynx0'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx1V'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.nx0Vnx1-PRO'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.nx1Vbynx0-PRO'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.nx1V-PRO'>
+            <semcontent>give-1(self)</semcontent>
+        </tree>
+        <tree refid='i.Gnx0Vnx1-PRO'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.Gnx1Vbynx0-PRO'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.Gnx1V-PRO'>
+            <semcontent>give-1(self)</semcontent>
+        </tree>
+        <tree refid='i.Gnx0Vnx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Gnx1Vbynx0'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Gnx1V'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.nx0Vnx1s2'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.W0nx0Vnx1s2'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.N0nx0Vnx1s2'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.W1nx0Vnx1s2'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.N1nx0Vnx1s2'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.W2nx0Vnx1s2'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.nx1Vbynx0s2'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.W1nx1Vbynx0s2'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.Inx0Vnx1s2'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.N1nx1Vs2'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.W1nx1Vs2'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Dnx0Vnx1s2'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.nx1Vs2bynx0'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.W1nx1Vs2bynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.pW0nx1Vbynx0s2'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.nx1Vs2'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.W0nx1Vbynx0s2'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.N1nx1Vbynx0s2'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.N1nx1Vs2bynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.spunxVnx1'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.punxVnx1pus'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.punxVnx1puvx'>
+            <semcontent>give-5(self,subst1,subst2,subst3,subst4)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx0Vnx1s2'>
+            <semcontent>give-5(self,subst1,subst2,subst3,subst4)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx1Vbynx0s2'>
+            <semcontent>give-5(self,subst1,subst2,subst3,subst4)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx1Vs2bynx0'>
+            <semcontent>give-5(self,subst1,subst2,subst3,subst4)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx1Vs2'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.Nc0nx0Vnx1s2'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Nc1nx0Vnx1s2'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Nc1nx1Vs2'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Nc1nx1Vbynx0s2'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Nc1nx1Vs2bynx0'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx0Vnx1s2'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx1Vbynx0s2'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx1Vs2bynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx1Vs2'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Gnx0Vnx1s2-PRO'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Gnx1Vs2bynx0-PRO'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Gnx1Vbynx0s2-PRO'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Gnx1Vs2-PRO'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.Gnx0Vnx1s2'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.Gnx1Vs2bynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.Gnx1Vbynx0s2'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.Gnx1Vs2'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.nx0Vnx1s2-PRO'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.nx1Vbynx0s2-PRO'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.nx1Vs2bynx0-PRO'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.nx1Vs2-PRO'>
+            <semcontent>give-1(self)</semcontent>
+        </tree>
+        <tree refid='i.nx0Vnx2nx1'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.nx2Vnx1bynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.W0nx0Vnx2nx1'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.N0nx0Vnx2nx1'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.W2nx0Vnx2nx1'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.N1nx0Vnx2nx1'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.W1nx0Vnx2nx1'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.N2nx0Vnx2nx1'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.Inx0Vnx2nx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.nx2Vnx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.W0nx2Vnx1bynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.pW0nx2Vnx1bynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.W1nx2Vnx1bynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.W1nx2Vnx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.N1nx2Vnx1bynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.N1nx2Vnx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.W2nx2Vnx1bynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.W2nx2Vnx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.N0nx2Vnx1bynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.N2nx2Vnx1bynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.N2nx2Vnx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Nbynx0nx2Vnx1bynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx0Vnx2nx1'>
+            <semcontent>give-5(self,subst1,subst2,subst3,subst4)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx2Vnx1bynx0'>
+            <semcontent>give-5(self,subst1,subst2,subst3,subst4)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx2Vnx1'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.Nc0nx0Vnx2nx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Nc1nx0Vnx2nx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Nc2nx0Vnx2nx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Nc1nx2Vnx1bynx0'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Nc1nx2Vnx1'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Nc0nx2Vnx1bynx0'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Nc2nx2Vnx1bynx0'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Nc2nx2Vnx1'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx0Vnx2nx1'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx2Vnx1bynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx2Vnx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Dnx0Vnx2nx1'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.Gnx0Vnx2nx1-PRO'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Gnx2Vnx1bynx0-PRO'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Gnx2Vnx1-PRO'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.Gnx0Vnx2nx1'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.Gnx2Vnx1bynx0'>
+            <semcontent>give-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='i.Gnx2Vnx1'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.nx0Vnx2nx1-PRO'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.nx2Vnx1bynx0-PRO'>
+            <semcontent>give-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.nx2Vnx1-PRO'>
+            <semcontent>give-2(self,subst1)</semcontent>
+        </tree>
+    </entry>
+
+    <entry word='sneeze'>
+        <tree refid='i.W0nx0V'>
+            <semcontent>sneeze-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.nx0V'>
+            <semcontent>sneeze-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.N0nx0V'>
+            <semcontent>sneeze-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.Inx0V'>
+            <semcontent>sneeze-1(self)</semcontent>
+        </tree>
+        <tree refid='i.Dnx0V'>
+            <semcontent>sneeze-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Vintransn'>
+            <semcontent>sneeze-1(self)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx0V'>
+            <semcontent>sneeze-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Nc0nx0V'>
+            <semcontent>sneeze-1(self)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx0V'>
+            <semcontent>sneeze-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.nx0V-PRO'>
+            <semcontent>sneeze-1(self)</semcontent>
+        </tree>
+        <tree refid='i.Gnx0V-PRO'>
+            <semcontent>sneeze-1(self)</semcontent>
+        </tree>
+        <tree refid='i.Gnx0V'>
+            <semcontent>sneeze-2(self,subst1)</semcontent>
+        </tree>
+    </entry>
+
+    <entry word='the'>
+        <tree refid='i.D'>
+            <semcontent>the-1(self)</semcontent>
+        </tree>
+        <tree refid='a.Dnx'>
+            <semcontent>the-1(self)</semcontent>
+        </tree>
+        <tree refid='a.Dnx'>
+            <semcontent>the-1(self)</semcontent>
+        </tree>
+        <tree refid='a.Dnx'>
+            <semcontent>the-1(self)</semcontent>
+        </tree>
+        <tree refid='a.Dnx'>
+            <semcontent>the-1(self)</semcontent>
+        </tree>
+        <tree refid='a.Dnx'>
+            <semcontent>the-1(self)</semcontent>
+        </tree>
+    </entry>
+
+    <entry word='admire'>
+        <tree refid='i.nx0Vnx1'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.nx1Vbynx0'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.W0nx0Vnx1'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.N0nx0Vnx1'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.W1nx0Vnx1'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.N1nx0Vnx1'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.W1nx1Vbynx0'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.N1nx1Vbynx0'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Inx0Vnx1'>
+            <semcontent>admire-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.nx1V'>
+            <semcontent>admire-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.W1nx1V'>
+            <semcontent>admire-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.N1nx1V'>
+            <semcontent>admire-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.W0nx1Vbynx0'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.N0nx1Vbynx0'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.pW0nx1Vbynx0'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Dnx0Vnx1'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Vtransn'>
+            <semcontent>admire-1(self)</semcontent>
+        </tree>
+        <tree refid='i.AV'>
+            <semcontent>admire-1(self)</semcontent>
+        </tree>
+        <tree refid='a.Nbynx0nx1Vbynx0'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx0Vnx1'>
+            <semcontent>admire-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx1Vbynx0'>
+            <semcontent>admire-4(self,subst1,subst2,subst3)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx1V'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Nc0nx0Vnx1'>
+            <semcontent>admire-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Nc1nx0Vnx1'>
+            <semcontent>admire-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Nc1nx1Vbynx0'>
+            <semcontent>admire-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Nc1nx1V'>
+            <semcontent>admire-1(self)</semcontent>
+        </tree>
+        <tree refid='a.Nc0nx1Vbynx0'>
+            <semcontent>admire-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx0Vnx1'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx1Vbynx0'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx1V'>
+            <semcontent>admire-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.nx0Vnx1-PRO'>
+            <semcontent>admire-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.nx1Vbynx0-PRO'>
+            <semcontent>admire-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.nx1V-PRO'>
+            <semcontent>admire-1(self)</semcontent>
+        </tree>
+        <tree refid='i.Gnx0Vnx1-PRO'>
+            <semcontent>admire-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.Gnx1Vbynx0-PRO'>
+            <semcontent>admire-2(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.Gnx1V-PRO'>
+            <semcontent>admire-1(self)</semcontent>
+        </tree>
+        <tree refid='i.Gnx0Vnx1'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Gnx1Vbynx0'>
+            <semcontent>admire-3(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='i.Gnx1V'>
+            <semcontent>admire-2(self,subst1)</semcontent>
+        </tree>
+    </entry>
+
+    <entry word='rich1'>
+        <tree refid='i.nx0Ax1'>
+            <semcontent>rich-21(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.W0nx0Ax1'>
+            <semcontent>rich-21(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.WA1nx0Ax1'>
+            <semcontent>rich-21(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.Inx0Ax1'>
+            <semcontent>rich-11(self)</semcontent>
+        </tree>
+        <tree refid='a.N0nx0Ax1'>
+            <semcontent>rich-21(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Npxnx0Ax1'>
+            <semcontent>rich-31(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Nc0nx0Ax1'>
+            <semcontent>rich-11(self)</semcontent>
+        </tree>
+        <tree refid='a.Ncnx0Ax1'>
+            <semcontent>rich-21(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.Gnx0Ax1'>
+            <semcontent>rich-21(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.nx0Ax1-PRO'>
+            <semcontent>rich-11(self)</semcontent>
+        </tree>
+        <tree refid='i.Gnx0Ax1-PRO'>
+            <semcontent>rich-11(self)</semcontent>
+        </tree>
+        <tree refid='i.s0Ax1'>
+            <semcontent>rich-21(self,subst1)</semcontent>
+        </tree>
+        <tree refid='i.W0s0Ax1'>
+            <semcontent>rich-21(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.Npxs0Ax1'>
+            <semcontent>rich-31(self,subst1,subst2)</semcontent>
+        </tree>
+        <tree refid='a.Ncs0Ax1'>
+            <semcontent>rich-21(self,subst1)</semcontent>
+        </tree>
+        <tree refid='a.An'>
+            <semcontent>rich-11(self)</semcontent>
+        </tree>
+        <tree refid='i.A'>
+            <semcontent>rich-11(self)</semcontent>
+        </tree>
+        <tree refid='i.AXA'>
+            <semcontent>rich-11(self)</semcontent>
+        </tree>
+    </entry>
+
+</crisp-grammar>

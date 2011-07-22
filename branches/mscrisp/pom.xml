@@ -6,7 +6,7 @@
   <groupId>de.saar.penguin</groupId>
   <artifactId>crisp</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.8-SNAPSHOT</version>
+  <version>1.1.8</version>
   <name>crisp</name>
   <url>http://maven.apache.org</url>
 
@@ -163,6 +163,6 @@
   </repositories>
 
   <scm>
-    <developerConnection>scm:svn:https://crisp-nlg.googlecode.com/svn/branches/mscrisp</developerConnection>
+    <developerConnection>scm:svn:https://crisp-nlg.googlecode.com/svn/tags/crisp-1.1.8</developerConnection>
   </scm>
 </project>
